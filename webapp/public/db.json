@@ -1,0 +1,106 @@
+{
+  "items": [
+    {
+      "id": "1",
+      "title": "An Ultrasound Scanner",
+      "description": "Running doom on the ultrasound scanner (GE Vivid S5 Ultrasound) medical equipment.",
+      "authors": [{
+        "name": "BWaveTV",
+        "url": "https://www.youtube.com/@bwavetv3765"
+      }],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/xlxfWQ8EQZU"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": true,
+      "publishDate": "Aug 8, 2014",
+      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
+      "tags": ["medical", "ultrasound", "classic doom"],
+      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+    },
+    {
+      "id": "2",
+      "title": "Apple MacBook TouchBar",
+      "description": "Apple MacBook's has a TouchBar that is normally used for simple navigational tasks, media controls and such. It is also technically a display - thus, you could run doom on it.",
+      "authors": [{
+        "name": "diffractive",
+        "url": "https://www.youtube.com/@diffractive"
+      }],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/GD0L46y3IqI"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Nov 20, 2016",
+      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
+      "tags": ["computer", "device", "classic doom"],
+      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+    },
+    {
+      "id": "3",
+      "title": "A Piano",
+      "description": "Used a Piano as a controller to play doom. The piano is not exactly displaying the game, but an achievement nonetheless.",
+      "authors": [{
+        "name": "Sos Sosowski",
+        "url": "https://www.youtube.com/@SosSosowski"
+      }],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/sJu997jwBcA"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Sep 17, 2013",
+      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
+      "tags": ["controls", "classic doom", "accessories"],
+      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+    },
+    {
+      "id": "4",
+      "title": "Graphics Calculator",
+      "description": "Doom on the TI-Nspire Graphics calculator - that device used for math and physics calculations.",
+      "authors": [
+        {
+          "name": "Xavier Andréani",
+          "url": "https://tiplanet.org/forum/archives_list.php?ref=6631&author=1"
+        },
+        {
+          "name": "Mrakoplaz",
+          "url": "https://tiplanet.org/forum/archives_list.php?ref=6631&author=2"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/NsN2JIRGHAo"}],
+      "sourceCodeUrl": [{ "name": "Tiplanet", "url": "https://tiplanet.org/forum/archives_voir.php?id=6631"}],
+      "isFirstLevelComplete": false,
+      "publishDate": "Feb 16, 2011",
+      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
+      "tags": ["device", "classic doom", "calculator"],
+      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+    },
+    {
+      "id": "5",
+      "title": "A Toaster",
+      "description": "Three toasters used as controllers to play doom.",
+      "authors": [{
+        "name": "Vexal",
+        "url": "https://www.youtube.com/@vexal"
+      }],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/vI7tWd7B3iI"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Jan 10, 2015",
+      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
+      "tags": ["controls", "brutal doom", "accessories"],
+      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+    },
+    {
+      "id": "6",
+      "title": "Porsche 911: controls and display",
+      "description": "Play doom on the car's screen. Honk to shoot and turn with the steering wheel.",
+      "authors": [{
+        "name": "Vexal",
+        "url": "https://www.youtube.com/@vexal"
+      }],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/NRMpNA86e8Q"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Feb 19, 2017",
+      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
+      "tags": ["controls", "brutal doom", "accessories", "device", "display", "vehicle"],
+      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+    }
+  ]
+}
