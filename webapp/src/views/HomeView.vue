@@ -1,7 +1,6 @@
 <template lang="pug">
 #HomeView
-  //- .flex.justify-start.gap-10.flex-col.bg-gray-700
-  .grid.grid-cols-12.gap-5
+  .grid.grid-cols-12.gap-5(v-if="!hasError")
     Item.col-start-4.col-span-7(
       class="ml-5"
       v-for="item in items"
@@ -15,13 +14,16 @@
       :imageUrl="item.previewImgUrl"
       :tags="item.tags"
     )
+  .flex(v-else).justify-center.doom-color-danger
+    p.text-lg.font-bold Critical damage taken. Couldn't reach the servers...
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import Item from '@/components/Item.vue'
 import { useDbStore } from '@/stores'
 
+const hasError = ref(false)
 
 const dbStore = computed(() => useDbStore())
 
@@ -29,6 +31,10 @@ const items = computed(() => dbStore.value.$state.items)
 
 
 onMounted(async () => {
-  await dbStore.value.fetchAllData()
+  hasError.value = false
+  await dbStore.value.fetchAllData().catch((error) => {
+    console.error(error.message)
+    hasError.value = true
+  })
 })
 </script>
