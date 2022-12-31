@@ -23,7 +23,6 @@ const props = defineProps<{
 <style lang="scss" scoped>
 .meta-col {
   text-align: right;
-  // width: 15rem;
 }
 
 .dsc, .dsc-value {
