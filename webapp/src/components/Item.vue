@@ -2,8 +2,7 @@
 .item
   .title.doom-color-danger {{title}}
   p.description.mb-2.text-slate-300 {{description}}
-  //- .grid.grid-rows-2.grid-flow-col.gap-1
-  .flex.flex-row.gap-2
+  .flex.flex-row.gap-2.item-container
     .image-preview
       img.rounded-md(
         :src="imageUrl"
@@ -40,7 +39,7 @@
       MetadataField(
         title="Source Code:"
       )
-        a.text-blue-400(
+        a(
           v-if="props.sourceCodeUrl"
           v-for="source in props.sourceCodeUrl"
           :href="source.url" target="_blank"
@@ -56,13 +55,15 @@
       )
 
       .flex.flex-wrap.gap-1.mt-5
-        p.tag(v-for="(tag) in props.tags" :key="tag") \#{{tag}}
+        p.tag.bg-gray-700(
+          v-for="(tag) in props.tags" :key="tag"
+          @click="onTagClicked(tag)"
+        ) \#{{tag}}
 </template>
 
 
 <script setup lang="ts">
 import MetadataField from './MetadataField.vue'
-import { defineProps } from "vue";
 
 const props = defineProps<{
   authors: Array<any>,
@@ -77,6 +78,7 @@ const props = defineProps<{
   isFirstLevelComplete?: boolean,
 }>()
 
+const emit = defineEmits(['tagClicked'])
 
 function boolToText(value: boolean | null | undefined): string {
   return value ? 'Yes' : 'No'
@@ -94,45 +96,67 @@ function getDomainFromUrl(url: string) {
   trimmed = trimmed.splice(0, trimmed.length - 1) // remove .com
   return trimmed.join('.')
 }
+
+
+function onTagClicked(tagName: string) {
+  emit('tagClicked', tagName)
+}
 </script>
 
-<style lang="scss" scoped>
-.item {
-  transition: all 0.2s ease-in-out;
 
-  &:hover {
-    box-shadow: 0px 5px 7px -5px rgb(173, 1, 1, 0.9);
+<style lang="scss" scoped>
+@import '@/assets/styles/doom.scss';
+
+.item-container {
+  transition: 0.1s ease-in, 0.4s ease-out;
+
+  &:hover > .card, &:hover > .image-preview > img {
+    box-shadow: 0px 2px 10px -3px rgb(173, 1, 1, 0.9);
   }
 }
 
 .card {
   background-color: #373737;
+  border: 1px solid gray;
+  transition: 0.1s ease-in, 0.4s ease-out;
 }
 
 .image-preview {
+  img {
+    transition: 0.1s ease-in, 0.4s ease-out;
+  }
+
   width: 21rem;
-  max-height: 15rem;
   object-fit: fill;
+  transition: 0.1s ease-in, 0.4s ease-out;
 }
 
 .tag {
+  cursor: pointer;
   font-size: 12px;
-  border: 1px solid gray;
+  border: 1px solid #1a1a1a;
+  font-weight: 600;
   border-radius: 2px;
-  background: white;
-  padding: 1px 4px 1px 4px;
-  background-color: #656565;
+  padding: 2px 5px 2px 5px;
+  transition: 0.2s ease-in, 0.4s ease-out;
+
+  &:hover {
+    color: $doomColorSecondary;
+    border: 1px solid $doomColorDanger;
+    box-shadow: 0px 5px 7px -5px rgb(173, 1, 1, 0.9);
+    text-shadow: 3px 3px 0px rgba(61,1,6,255);
+  }
 }
 
 .title {
-  font-size: 21px;
+  font-size: 24px;
   font-weight: 800;
   -webkit-text-stroke: 1.4px #410001;
 }
 
 .description {
-  font-size: 14px;
-  font-weight: 300;
+  font-size: 16px;
+  font-weight: 400;
   font-variant: normal;
 }
 
@@ -143,12 +167,11 @@ a {
 a:hover {
   text-shadow: none;
   color: red;
-  font-weight: 600;
+  font-weight: 700;
   -webkit-text-stroke: 0.5px black;
 }
 
 .icon {
-  // display: none;
   position: absolute;
   width: 24px;
   height: 28px;
