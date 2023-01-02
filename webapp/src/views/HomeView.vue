@@ -9,9 +9,14 @@
         arial-label="Search"
         @input="onSearch"
       )
-  .grid.grid-cols-12.gap-0(v-if="!hasError")
-    Item.col-start-4.col-span-7.mb-5(
-      class="ml-5"
+  .grid.grid-cols-12.gap-0(
+    class=""
+    v-if="!hasError"
+  )
+    Item.col-start-0.col-span-12.mb-5.px-2(
+      class="sm:col-start-2 sm:col-span-10 \
+        md:col-start-3 md:col-span-8 \
+        2xl:col-start-4 2xl:col-span-6"
       v-for="item in filtered"
       :title="item.title"
       :description="item.description"
@@ -26,22 +31,57 @@
     )
   .flex(v-else).justify-center.doom-color-danger
     p.text-lg.font-bold Critical damage taken. Couldn't reach the servers...
+
+  Pagination(
+    v-if="numberOfPages > 2"
+    :numberOfPages="numberOfPages"
+    :currentPage="+currentPage"
+  )
 </template>
 
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue'
-import Item from '@/components/Item.vue'
-import { useDbStore } from '@/stores'
+import { onBeforeRouteUpdate } from 'vue-router'
+import { useRoute } from 'vue-router'
+import { onMounted, computed, ref, watch } from 'vue'
 import dayjs from 'dayjs'
+import Item from '@/components/Item.vue'
+import Pagination from '@/components/Pagination.vue'
+import { useDbStore } from '@/stores'
+import { paginate } from '@/utils/pagination'
+import {
+  findTag,
+  findAuthor,
+  findDate,
+  findWordInTitle
+} from '@/utils/itemsFilters.ts'
 
 
 const hasError = ref(false)
 const searchingString = ref('')
 const filtered = ref([])
+const route = useRoute()
+const numberOfItemsPerPage = ref(10)
+const filteredBeforePagination = ref([])
 
 const dbStore = computed(() => useDbStore())
 
-const items = computed(() =>  dbStore.value.$state.items)
+const items = computed(() => dbStore.value.$state.items)
+
+const currentPage = computed(() => route.query?.page || 1 )
+
+const numberOfPages = computed(() =>
+  Math.round(filteredBeforePagination.value.length / numberOfItemsPerPage.value)
+)
+
+
+onBeforeRouteUpdate(async (to) => {
+  const page = +(to.query?.page || 1)
+  filtered.value =  paginate(
+                      filteredBeforePagination.value,
+                      page - 1,
+                      numberOfItemsPerPage.value
+                    )
+})
 
 
 onMounted(async () => {
@@ -51,6 +91,9 @@ onMounted(async () => {
     hasError.value = true
   })
   filtered.value = proxyArrayToNormal(items.value)
+  filteredBeforePagination.value = [ ...filtered.value ]
+
+  filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
 }) // onMounted
 
 
@@ -58,6 +101,16 @@ function onTagClicked(tagName: string) {
   searchingString.value += ` ${tagName}`
   onSearch()
 } // onTagClicked
+
+
+function proxyArrayToNormal(target: any): any {
+  // idk WTF this is and why.
+  const values = Object.values(JSON.parse(JSON.stringify(target)))
+  // @ts-ignore
+  return values.sort((a: any, b: any) =>
+    dayjs(a.publishDate).isAfter(dayjs(b.publishDate))
+  )
+} // proxyArrayToNormal
 
 
 function onSearch() {
@@ -83,41 +136,9 @@ function onSearch() {
       return findDate(item.publishDate, word)
     }) // keywords
   }) as any // filtered
+
+  filteredBeforePagination.value = [ ...filtered.value ]
+  filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
 } // onSearch
 
-
-function findTag(tags: Array<any>, wordToFind: string) {
-  return tags?.find((tag: any) => {
-    return tag?.replace('#', '').startsWith(wordToFind.replace('#', ''))
-  })
-} // findTag
-
-
-function findAuthor(authors: Array<any>, wordToFind: string) {
-  return authors.find((author: any) => {
-    return author?.name.toLowerCase().startsWith(wordToFind.toLowerCase())
-  })
-} // findAuthor
-
-
-function findDate(date: string, wordToFind: string) {
-  return dayjs(date).format('MMM D YYYY').split(' ').find((day: any) => {
-    return day.toLowerCase() === (wordToFind.toLowerCase())
-  })
-} // findDate
-
-
-function findWordInTitle(title: string, wordToFind: string) {
-  return title.split(' ').find((word: string) => {
-    return word.toLowerCase().startsWith(wordToFind.toLowerCase())
-  })
-} // findWordInTitle
-
-
-function proxyArrayToNormal(target: any): any {
-  // idk WTF this is and why.
-  const values = Object.values(JSON.parse(JSON.stringify(target)))
-  // @ts-ignore
-  return values.sort((a, b) => dayjs(a.publishDate).isAfter(dayjs(b.publishDate)))
-}
 </script>

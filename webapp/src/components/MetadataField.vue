@@ -1,8 +1,8 @@
 <template lang="pug">
 .grid.grid-cols-12.gap-2
   .meta-col.col-span-5
-    p.dsc {{props.title}}
-  .dsc-value.doom-color-secondary.col-span-7.bg-gray-700
+    p.dsc.doom-text-shadow {{props.title}}
+  .dsc-value.doom-color-secondary.doom-text-shadow.col-span-7.px-2.bg-gray-700
     template(v-if="!!$slots.default")
       slot
     template(v-else)
@@ -11,9 +11,6 @@
 
 
 <script setup lang="ts">
-
-import { defineProps, computed } from "vue";
-
 const props = defineProps<{
   title: string,
   value?: string,
@@ -23,10 +20,6 @@ const props = defineProps<{
 <style lang="scss" scoped>
 .meta-col {
   text-align: right;
-}
-
-.dsc, .dsc-value {
-  text-shadow: 3px 3px 0px rgba(61,1,6,255);
 }
 
 .dsc {

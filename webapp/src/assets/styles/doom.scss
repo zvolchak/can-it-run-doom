@@ -1,5 +1,9 @@
 $doomColorDanger: #ad0101;
+$doomColorDangerDark: #3d0106;
 $doomColorSecondary: #FCFD85;
+$doomColorAlt: #373737;
+
+$doomTextShadow: 3px 3px 0px $doomColorDangerDark;
 
 .doom-font {
   letter-spacing: 2px;
@@ -14,4 +18,8 @@ $doomColorSecondary: #FCFD85;
 
 .doom-color-secondary {
   color: $doomColorSecondary;
+}
+
+.doom-text-shadow {
+  text-shadow: $doomTextShadow;
 }

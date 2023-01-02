@@ -1,12 +1,12 @@
 <template lang="pug">
 #nav.doom-font
-  nav.navbar.navbar-dark.bg-dark.mb-2.h-10
-    .container-fluid
+  Navbar.mb-4
   router-view
   .footer.h-40.mt-5
 </template>
 
 <script setup lang="ts">
+import Navbar from '@/components/Navbar.vue'
 </script>
 
 <style lang="scss">
