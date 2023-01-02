@@ -2,14 +2,16 @@
 .item
   .title.doom-color-danger {{title}}
   p.description.mb-2.text-slate-300 {{description}}
-  .flex.flex-row.gap-2.item-container
-    .image-preview
+  .flex.flex-row.gap-2.item-container(
+    class=""
+  )
+    .image-preview.hidden(class="sm:block")
       img.rounded-md(
         :src="imageUrl"
       )
-    .card.flex.flex-col.gap-1.content-center.p-2(class="w-full")
+    .doom-card.flex.flex-col.gap-1.content-center.p-2(class="w-full")
       MetadataField(
-        title="Author:"
+        :title="$t('item.header.author') + ':'"
       )
         a(
           v-for="(author, index) in props.authors"
@@ -20,12 +22,12 @@
           img.icon(src="@/assets/icons/doom-guy-look-left.png")
 
       MetadataField(
-        title="Published Date:"
+        :title="$t('item.header.publishedDate') + ':'"
         :value="props.publishDate"
       )
 
       MetadataField(
-        title="Sources:"
+        :title="$t('item.header.sources') + ':'"
       )
         a(
           v-if="props.sourcesUrl"
@@ -34,10 +36,10 @@
           :key="source.url"
         ) {{source.name}}
           img.icon(src="@/assets/icons/doom-guy-grin.png")
-        p.no-text-shadow(v-else) n/a
+        p.no-text-shadow(v-else) {{ $t('common.na') }}
 
       MetadataField(
-        title="Source Code:"
+        :title="$t('item.header.sourceCode') + ':'"
       )
         a(
           v-if="props.sourceCodeUrl"
@@ -47,11 +49,11 @@
         ) {{source.name}}
           img.icon(src="@/assets/icons/doom-guy-scream.png")
 
-        p.no-text-shadow(v-else) n/a
+        p.no-text-shadow(v-else) {{ $t('common.na') }}
 
       MetadataField(
-        title="First Level Complete:"
-        :value="boolToText(props.isFirstLevelComplete)"
+        :title="$t('item.header.firstLevelComplete') + ':'"
+        :value="props.isFirstLevelComplete ? $t('common.yes') : $t('common.no')"
       )
 
       .flex.flex-wrap.gap-1.mt-5
@@ -80,10 +82,6 @@ const props = defineProps<{
 
 const emit = defineEmits(['tagClicked'])
 
-function boolToText(value: boolean | null | undefined): string {
-  return value ? 'Yes' : 'No'
-}
-
 
 function getDomainFromUrl(url: string) {
   const domain = (new URL(url))
@@ -107,47 +105,6 @@ function onTagClicked(tagName: string) {
 <style lang="scss" scoped>
 @import '@/assets/styles/doom.scss';
 
-.item-container {
-  transition: 0.1s ease-in, 0.4s ease-out;
-
-  &:hover > .card, &:hover > .image-preview > img {
-    box-shadow: 0px 2px 10px -3px rgb(173, 1, 1, 0.9);
-  }
-}
-
-.card {
-  background-color: #373737;
-  border: 1px solid gray;
-  transition: 0.1s ease-in, 0.4s ease-out;
-}
-
-.image-preview {
-  img {
-    transition: 0.1s ease-in, 0.4s ease-out;
-  }
-
-  width: 21rem;
-  object-fit: fill;
-  transition: 0.1s ease-in, 0.4s ease-out;
-}
-
-.tag {
-  cursor: pointer;
-  font-size: 12px;
-  border: 1px solid #1a1a1a;
-  font-weight: 600;
-  border-radius: 2px;
-  padding: 2px 5px 2px 5px;
-  transition: 0.2s ease-in, 0.4s ease-out;
-
-  &:hover {
-    color: $doomColorSecondary;
-    border: 1px solid $doomColorDanger;
-    box-shadow: 0px 5px 7px -5px rgb(173, 1, 1, 0.9);
-    text-shadow: 3px 3px 0px rgba(61,1,6,255);
-  }
-}
-
 .title {
   font-size: 24px;
   font-weight: 800;
@@ -169,17 +126,6 @@ a:hover {
   color: red;
   font-weight: 700;
   -webkit-text-stroke: 0.5px black;
-}
-
-.icon {
-  position: absolute;
-  width: 24px;
-  height: 28px;
-  z-index: 10;
-  right: -28px;
-  top: -2px;
-  opacity: 0;
-  transition: opacity 0.2s ease-in, opacity 0.4s ease-out;
 }
 
 a:hover > .icon {
