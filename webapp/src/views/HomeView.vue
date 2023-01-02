@@ -53,7 +53,7 @@ import {
   findAuthor,
   findDate,
   findWordInTitle
-} from '@/utils/itemsFilters.ts'
+} from '@/utils/itemsFilters'
 
 
 const hasError = ref(false)
