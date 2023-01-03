@@ -9,6 +9,16 @@
 }
 
 
+.description {
+  font-size: 16px;
+  font-weight: 400;
+  font-variant: normal;
+  letter-spacing: 3px;
+  line-height: 18px;
+  color: $colorSlate;
+}
+
+
 .doom-card {
   background-color: $doomColorAlt;
   border: 1px solid gray;

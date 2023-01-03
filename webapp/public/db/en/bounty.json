@@ -1,15 +1,23 @@
 {
   "bounty": [
     {
-      "name": "A Fridge with a screen",
+      "id": "1",
+      "title": "A Fridge with a screen",
       "model": "any",
-      "tags": ["appliance", "fridge"]
+      "description": "Is it possible to run Classic Doom natively (no cloud gaming) on any smart fridge?",
+      "tags": ["appliance", "fridge"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/fridge-with-screen.webp?raw=true",
+      "claimedBy": [ { "name": "Nobody", "date": "n/A" }]
     },
 
     {
-      "name": "Control Doom with bananas.",
+      "id": "2",
+      "title": "Control Doom with bananas",
       "model": "Only organic bananas.",
-      "tags": ["fruit", "controls", "accessories"]
+      "description": "There where instances of people controlling other games with bananas. So it must be possible to do the same for Classic Doom.",
+      "tags": ["fruit", "controls", "accessories"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/banana-controls.jpg?raw=true",
+      "claimedBy": []
     }
   ]
 }

@@ -3,13 +3,19 @@
     {
       "name": "A Fridge with a screen",
       "model": "any",
-      "tags": ["appliance", "fridge"]
+      "description": "Is it possible to run Classic Doom natively (no cloud gaming) on any smart fridge?",
+      "tags": ["appliance", "fridge"],
+      "previewImage": "",
+      "claimedBy": []
     },
 
     {
       "name": "Control Doom with bananas.",
       "model": "Only organic bananas.",
-      "tags": ["fruit", "controls", "accessories"]
+      "description": "There where instances of people controlling other games with bananas. Must be possible with Classic Doom as well.",
+      "tags": ["fruit", "controls", "accessories"],
+      "previewImage": "",
+      "claimedBy": []
     }
   ]
 }

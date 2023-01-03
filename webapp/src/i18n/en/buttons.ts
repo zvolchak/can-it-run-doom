@@ -3,4 +3,6 @@ export const buttons = {
     home: 'Home',
     bounty: 'Bounty',
   },
+
+  claimBounty: 'Claim This Bounty',
 } // export buttons

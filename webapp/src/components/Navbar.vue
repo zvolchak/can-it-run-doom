@@ -40,7 +40,7 @@ const routes = [
 .nav-btn {
   padding: 9px 12px 9px 12px;
   border-radius: 5px;
-  text-shadow: $doomTextShadow;
+  text-shadow: $doomTextShadowDanger;
   transition: 0.1s linear;
 
   &:hover, &.active {
