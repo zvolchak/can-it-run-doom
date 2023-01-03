@@ -1,0 +1,15 @@
+{
+  "bounty": [
+    {
+      "name": "A Fridge with a screen",
+      "model": "any",
+      "tags": ["appliance", "fridge"]
+    },
+
+    {
+      "name": "Control Doom with bananas.",
+      "model": "Only organic bananas.",
+      "tags": ["fruit", "controls", "accessories"]
+    }
+  ]
+}

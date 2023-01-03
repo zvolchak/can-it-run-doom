@@ -1,17 +1,10 @@
 <template lang="pug">
 #HomeView
-  .flex.justify-center.mb-6
-    form.d-flex
-      input.form-control.rounded-none.w-96(
-        v-model="searchingString"
-        type="search"
-        placeholder="Filter by title, author, hashtag or date..."
-        arial-label="Search"
-        @input="onSearch"
-      )
-  .grid.grid-cols-12.gap-0(
-    class=""
-    v-if="!hasError"
+  ItemDisplay(
+    :numberOfPages="numberOfPages"
+    :hasError="hasError"
+    @input="searching"
+    v-model="searchingString"
   )
     Item.col-start-0.col-span-12.mb-5.px-2(
       class="sm:col-start-2 sm:col-span-10 \
@@ -29,31 +22,19 @@
       :tags="item.tags"
       @tagClicked="onTagClicked"
     )
-  .flex(v-else).justify-center.doom-color-danger
-    p.text-lg.font-bold Critical damage taken. Couldn't reach the servers...
-
-  Pagination(
-    v-if="numberOfPages > 2"
-    :numberOfPages="numberOfPages"
-    :currentPage="+currentPage"
-  )
 </template>
 
 <script setup lang="ts">
 import { onBeforeRouteUpdate } from 'vue-router'
 import { useRoute } from 'vue-router'
-import { onMounted, computed, ref, watch } from 'vue'
+import { onMounted, computed, ref } from 'vue'
 import dayjs from 'dayjs'
-import Item from '@/components/Item.vue'
-import Pagination from '@/components/Pagination.vue'
+import { Item } from '@/components/'
+import ItemDisplay from '@/layouts/ItemsDisplay.vue'
+
 import { useDbStore } from '@/stores'
 import { paginate } from '@/utils/pagination'
-import {
-  findTag,
-  findAuthor,
-  findDate,
-  findWordInTitle
-} from '@/utils/itemsFilters'
+import { onSearch } from '@/utils/itemsFilters'
 
 
 const hasError = ref(false)
@@ -98,13 +79,13 @@ onMounted(async () => {
 
 
 function onTagClicked(tagName: string) {
-  searchingString.value += ` ${tagName}`
-  onSearch()
+  searchingString.value += ` #${tagName}`
+  searching({ target: { value: searchingString.value }})
 } // onTagClicked
 
 
 function proxyArrayToNormal(target: any): any {
-  // idk WTF this is and why.
+  // idk WTF this is and why. Cause Proxy... but still.
   const values = Object.values(JSON.parse(JSON.stringify(target)))
   // @ts-ignore
   return values.sort((a: any, b: any) =>
@@ -112,33 +93,9 @@ function proxyArrayToNormal(target: any): any {
   )
 } // proxyArrayToNormal
 
-
-function onSearch() {
-  // @ts-ignore
-  const target = proxyArrayToNormal(items.value)
-  const keywords = searchingString.value.split(' ').filter(i => !!i)
-  if (keywords.length === 0) {
-    filtered.value = proxyArrayToNormal(items.value)
-    return
-  }
-
-  filtered.value = target.filter((item: any) => {
-    return keywords.find((word: string) => {
-      const foundTag = findTag(item.tags, word)
-      if (foundTag) return foundTag
-
-      const foundAuthor = findAuthor(item.authors, word)
-      if (foundAuthor) return foundAuthor
-
-      const foundTitleWord = findWordInTitle(item.title, word)
-      if (foundTitleWord) return foundTitleWord
-
-      return findDate(item.publishDate, word)
-    }) // keywords
-  }) as any // filtered
-
-  filteredBeforePagination.value = [ ...filtered.value ]
+function searching(target: any) {
+  filtered.value = onSearch(target.target.value, proxyArrayToNormal(items.value))
+  filteredBeforePagination.value = filtered.value
   filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
-} // onSearch
-
+}
 </script>
