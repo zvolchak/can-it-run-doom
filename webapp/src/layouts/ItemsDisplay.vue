@@ -8,10 +8,11 @@
         placeholder="Filter by title, author, hashtag or date..."
         arial-label="Search"
         contenteditable="true"
-        @input="onSearch"
+        @input="searching"
       )
-  .grid.grid-cols-12.gap-0(
-    class=""
+  //- .grid.grid-cols-12.gap-0(
+  .flex(
+    :class="alignItemsClass ? alignItemsClass.split(' ') : ['flex-col', 'justify-center', 'items-center']"
     v-if="!hasError"
   )
     slot
@@ -20,7 +21,6 @@
     p.text-lg.font-bold Critical damage taken. Couldn't reach the servers...
 
   Pagination(
-    v-if="numberOfPages > 2"
     :numberOfPages="numberOfPages"
     :currentPage="+currentPage"
   )
@@ -28,29 +28,26 @@
 
 
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue'
+import { computed } from 'vue'
 import { toRefs } from 'vue'
-import { onBeforeRouteUpdate } from 'vue-router'
 import { useRoute } from 'vue-router'
 import { Pagination } from '@/components'
 
+
 const props = defineProps<{
-  numberOfPages: number,
   hasError?: boolean,
   modelValue?: string,
+  numberOfPages: number,
+  alignItemsClass?: string,
 }>()
 
-const emit = defineEmits(['search', 'update:modelValue'])
-
-const { numberOfPages, hasError, } = toRefs(props)
-
+const emit = defineEmits(['search', 'update:modelValue', 'update:items'])
 const route = useRoute()
 
 const currentPage = computed(() => route.query?.page || 1 )
 
-
-function onSearch(e: any) {
+function searching(e: any) {
   emit('update:modelValue', e.target.value)
+  emit('search', e.target.value)
 }
-
 </script>

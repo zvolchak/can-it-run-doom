@@ -104,6 +104,10 @@ function onTagClicked(tagName: string) {
 <style lang="scss" scoped>
 @import '@/assets/styles/doom.scss';
 
+.item {
+  max-width: 46rem;
+}
+
 .title {
   font-size: 24px;
   font-weight: 800;

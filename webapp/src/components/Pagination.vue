@@ -82,6 +82,7 @@ function getRange() {
   }
 
   &.active {
+    cursor: default;
     color: $doomColorDanger;
     font-weight: 700;
   }

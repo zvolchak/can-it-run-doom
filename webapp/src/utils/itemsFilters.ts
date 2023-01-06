@@ -10,7 +10,7 @@ export const findTag = (tags: Array<any>, wordToFind: string) => {
 
 
 export const findAuthor = (authors: Array<any>, wordToFind: string) => {
-  return authors.find((author: any) => {
+  return authors?.find((author: any) => {
     return author?.name.toLowerCase().startsWith(wordToFind.toLowerCase())
   })
 } // findAuthor
@@ -24,14 +24,14 @@ export const findDate = (date: string, wordToFind: string) => {
 
 
 export const findWordInTitle = (title: string, wordToFind: string) => {
-  return title.split(' ').find((word: string) => {
+  return title?.split(' ').find((word: string) => {
     return word.toLowerCase().startsWith(wordToFind.toLowerCase())
   })
 } // findWordInTitle
 
 
 export const onSearch = (searching: string, items: Array<any>): any => {
-  const keywords = searching.split(' ').filter(i => !!i)
+  const keywords = searching?.split(' ').filter(i => !!i)
   if (keywords.length === 0) {
     return items
   }
@@ -53,3 +53,13 @@ export const onSearch = (searching: string, items: Array<any>): any => {
 
   return items
 } // onSearch
+
+
+export const proxyArrayToNormal = (target: any): any => {
+  // idk WTF this is and why. Cause Proxy... but still.
+  const values = Object.values(JSON.parse(JSON.stringify(target)))
+  // @ts-ignore
+  return values.sort((a: any, b: any) =>
+    dayjs(a.publishDate).isAfter(dayjs(b.publishDate))
+  )
+} // proxyArrayToNormal

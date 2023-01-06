@@ -3,7 +3,7 @@
   ItemDisplay(
     :numberOfPages="numberOfPages"
     :hasError="hasError"
-    @input="searching"
+    @search="searching"
     v-model="searchingString"
   )
     Item.col-start-0.col-span-12.mb-5.px-2(
@@ -34,14 +34,14 @@ import ItemDisplay from '@/layouts/ItemsDisplay.vue'
 
 import { useDbStore } from '@/stores'
 import { paginate } from '@/utils/pagination'
-import { onSearch } from '@/utils/itemsFilters'
+import { onSearch, proxyArrayToNormal } from '@/utils/itemsFilters'
 
 
 const hasError = ref(false)
-const searchingString = ref('')
-const filtered = ref([])
 const route = useRoute()
 const numberOfItemsPerPage = ref(10)
+const searchingString = ref('')
+const filtered = ref([])
 const filteredBeforePagination = ref([])
 
 const dbStore = computed(() => useDbStore())
@@ -71,6 +71,8 @@ onMounted(async () => {
     console.error(error.message)
     hasError.value = true
   })
+  filtered.value = Object.values(JSON.parse(JSON.stringify(items.value)))
+
   filtered.value = proxyArrayToNormal(items.value)
   filteredBeforePagination.value = [ ...filtered.value ]
 
@@ -79,22 +81,13 @@ onMounted(async () => {
 
 
 function onTagClicked(tagName: string) {
-  searchingString.value += ` #${tagName}`
-  searching({ target: { value: searchingString.value }})
+  searchingString.value = `${searchingString.value} #${tagName}`
+  searching(searchingString.value)
 } // onTagClicked
 
 
-function proxyArrayToNormal(target: any): any {
-  // idk WTF this is and why. Cause Proxy... but still.
-  const values = Object.values(JSON.parse(JSON.stringify(target)))
-  // @ts-ignore
-  return values.sort((a: any, b: any) =>
-    dayjs(a.publishDate).isAfter(dayjs(b.publishDate))
-  )
-} // proxyArrayToNormal
-
 function searching(target: any) {
-  filtered.value = onSearch(target.target.value, proxyArrayToNormal(items.value))
+  filtered.value = onSearch(target, proxyArrayToNormal(items.value))
   filteredBeforePagination.value = filtered.value
   filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
 }
