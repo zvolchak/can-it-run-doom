@@ -70,7 +70,7 @@ function getRange() {
 .page-link {
   cursor: pointer;
   position: relative;
-  text-shadow: $doomTextShadow;
+  text-shadow: $doomTextShadowDanger;
   color: $doomColorSecondary;
   transition: 0.1s linear;
 
@@ -82,6 +82,7 @@ function getRange() {
   }
 
   &.active {
+    cursor: default;
     color: $doomColorDanger;
     font-weight: 700;
   }

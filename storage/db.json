@@ -12,9 +12,8 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": true,
       "publishDate": "Aug 8, 2014",
-      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
       "tags": ["medical", "ultrasound", "classic doom"],
-      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/ge-vivid-s5-ultrasound-machine.jpg?raw=true"
     },
     {
       "id": "2",
@@ -28,9 +27,9 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Nov 20, 2016",
-      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
+
       "tags": ["computer", "device", "classic doom"],
-      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-touch-bar-macbook.jpg?raw=true"
     },
     {
       "id": "3",
@@ -44,9 +43,8 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Sep 17, 2013",
-      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
       "tags": ["controls", "classic doom", "accessories"],
-      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-piano.jpg?raw=true"
     },
     {
       "id": "4",
@@ -66,9 +64,8 @@
       "sourceCodeUrl": [{ "name": "Tiplanet", "url": "https://tiplanet.org/forum/archives_voir.php?id=6631"}],
       "isFirstLevelComplete": false,
       "publishDate": "Feb 16, 2011",
-      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
       "tags": ["device", "classic doom", "calculator"],
-      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-calculator.jpg?raw=true"
     },
     {
       "id": "5",
@@ -82,9 +79,8 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Jan 10, 2015",
-      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
       "tags": ["controls", "brutal doom", "accessories"],
-      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-toaster.jpg?raw=true"
     },
     {
       "id": "6",
@@ -98,9 +94,8 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Feb 19, 2017",
-      "imageUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg",
       "tags": ["controls", "brutal doom", "accessories", "device", "display", "vehicle"],
-      "previewImgUrl": "https://oramind.com/content/images/2020/08/doom-560.jpg"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-porsche-911.webp"
     }
   ]
 }

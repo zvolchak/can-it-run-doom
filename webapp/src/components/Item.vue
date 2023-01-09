@@ -2,12 +2,11 @@
 .item
   .title.doom-color-danger {{title}}
   p.description.mb-2.text-slate-300 {{description}}
-  .flex.flex-row.gap-2.item-container(
-    class=""
-  )
+  .flex.flex-row.gap-2.item-container
     .image-preview.hidden(class="sm:block")
       img.rounded-md(
         :src="imageUrl"
+        onerror="this.style.display='none'"
       )
     .doom-card.flex.flex-col.gap-1.content-center.p-2(class="w-full")
       MetadataField(
@@ -105,16 +104,14 @@ function onTagClicked(tagName: string) {
 <style lang="scss" scoped>
 @import '@/assets/styles/doom.scss';
 
+.item {
+  max-width: 46rem;
+}
+
 .title {
   font-size: 24px;
   font-weight: 800;
   -webkit-text-stroke: 1.4px #410001;
-}
-
-.description {
-  font-size: 16px;
-  font-weight: 400;
-  font-variant: normal;
 }
 
 a {

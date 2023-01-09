@@ -1,6 +1,7 @@
 @import './doom.scss';
 
 .item-container {
+  height: 16rem;
   transition: 0.1s ease-in, 0.4s ease-out;
 
   &:hover > .doom-card, &:hover > .image-preview > img {
@@ -9,7 +10,18 @@
 }
 
 
+.description {
+  font-size: 16px;
+  font-weight: 400;
+  font-variant: normal;
+  letter-spacing: 2px;
+  line-height: 18px;
+  color: $colorSlate;
+}
+
+
 .doom-card {
+  overflow-y: scroll;
   background-color: $doomColorAlt;
   border: 1px solid gray;
   transition: 0.1s ease-in, 0.4s ease-out;
@@ -19,11 +31,11 @@
 .image-preview {
   img {
     transition: 0.1s ease-in, 0.4s ease-out;
-    height: 14rem;
+    height: 100%;
     width: 100%;
   }
 
-  width: 23rem;
+  width: 24rem;
   transition: 0.1s ease-in, 0.4s ease-out;
 }
 

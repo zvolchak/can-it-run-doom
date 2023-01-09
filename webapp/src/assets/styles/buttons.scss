@@ -1,0 +1,23 @@
+@import './doom.scss';
+
+.d-btn {
+  color: $doomColorSecondary;
+  text-shadow: $doomTextShadowDanger;
+  // blended border color with bg for smoother hover effect
+  border: 1px solid $doomColorAltDark;
+  background-color: $doomColorAltDark;
+  padding: 7px 8px 9px 8px;
+
+  box-shadow: 7px 7px 4px -6px #898989 inset, 4px 5px 2px -3px black;
+  transition: 0.1s ease-in, 0.4s ease-out;
+
+  &:hover {
+    border-color: $doomColorDangerDark;
+    box-shadow: none;
+    text-shadow: none;
+    font-weight: 600;
+    padding: 7px 10px 9px 10px;
+    // box-shadow: 0px 0px 3px 0px $doomColorDangerDark inset;
+
+}
+}
