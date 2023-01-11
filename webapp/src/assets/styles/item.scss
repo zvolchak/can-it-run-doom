@@ -1,5 +1,13 @@
 @import './doom.scss';
 
+a {
+  transition: 0.1s linear;
+
+  &:hover {
+    color: $doomColorDanger;
+  }
+}
+
 .item-container {
   height: 16rem;
   transition: 0.1s ease-in, 0.4s ease-out;

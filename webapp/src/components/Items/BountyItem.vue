@@ -39,15 +39,22 @@
           @click="onTagClicked(tag)"
         ) \#{{tag}}
 
-      ClaimBountyForm.mt-4.mb-3.description.text-xs.align-self-center
-      //- p.mt-4.mb-3.description.text-xs.align-self-center
-      //-   button.d-btn {{$t('buttons.claimBounty')}}
+      .flex.justify-center.my-6
+        SimpleModal(
+          :title="$t('bounty.howToSubmit.title')"
+          :btnText="$t('buttons.claimBounty')"
+        )
+          p {{$t('bounty.howToSubmit.description')}} <ContactEmailLink />
+          ul.list-disc.ml-10.mt-4
+            li.mb-2(
+              v-for="(value, index) in $tm('bounty.howToSubmit.instructions')"
+              :key="`instruction_${index}`"
+            ) {{value}}
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { MetadataField } from '@/components'
-import { ClaimBountyForm } from './'
+import { MetadataField, SimpleModal, ContactEmailLink } from '@/components'
 
 const props = defineProps<{
   title?: string,
@@ -81,8 +88,6 @@ function flattenClaimedAuthors(target: Array<any>) {
 
 
 <style lang="scss" scoped>
-
-
 .item-bounty {
   max-width: 45rem;
 
@@ -106,5 +111,4 @@ function flattenClaimedAuthors(target: Array<any>) {
     }
   }
 }
-
 </style>

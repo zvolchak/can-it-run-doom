@@ -6,4 +6,5 @@ export const buttons = {
 
   claimBounty: 'Claim This Bounty',
   close: "Close",
+  howToAddBounty: "Add Bounty",
 } // export buttons

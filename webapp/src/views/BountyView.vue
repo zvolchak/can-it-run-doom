@@ -19,6 +19,21 @@
       :previewImage="item.previewImage"
       @tagClicked="onTagClicked"
     )
+
+    template(v-slot:afterSearch)
+      .flex.justify-center.mb-6
+        SimpleModal(
+          :title="$t('bounty.howToAddItem.title')"
+          :btnText="$t('buttons.howToAddBounty')"
+        )
+          p {{$t('bounty.howToAddItem.description')}} <ContactEmailLink />
+          ul.list-disc.ml-10.mt-4
+            li.mb-2(
+              v-for="(value, index) in $tm('bounty.howToAddItem.instructions')"
+              :key="`instruction_${index}`"
+            ) {{value}}
+          p.mt-4(v-html="$t('bounty.howToAddItem.orGithub', [bountyDbLink])")
+
 </template>
 
 
@@ -26,11 +41,14 @@
 import { onMounted, computed, ref } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useDbStore } from '@/stores'
 import { BountyItem } from '@/components/Items'
+import { SimpleModal } from '@/components'
 import ItemsDisplay from '@/layouts/ItemsDisplay.vue'
 import { onSearch, proxyArrayToNormal } from '@/utils/itemsFilters'
 import { paginate } from '@/utils/pagination'
+import { ContactEmailLink } from '@/components'
 
 const hasError = ref(false)
 const route = useRoute()
@@ -39,6 +57,7 @@ const numberOfItemsPerPage = ref(5)
 const searchingString = ref('')
 const filtered = ref([])
 const filteredBeforePagination = ref([])
+const { locale } = useI18n()
 
 const dbStore = computed(() => useDbStore())
 const items = computed(() => dbStore.value.$state.bounties)
@@ -46,7 +65,7 @@ const currentPage = computed(() => route.query?.page || 1 )
 const numberOfPages = computed(() =>
   Math.round(filteredBeforePagination.value.length / numberOfItemsPerPage.value)
 )
-
+const bountyDbLink = computed(() => `https://github.com/zvolchak/can-it-run-doom/blob/main/storage/db/${locale.value}/bounty.db`)
 
 onMounted(async () => {
   hasError.value = false

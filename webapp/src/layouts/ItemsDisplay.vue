@@ -10,6 +10,7 @@
         contenteditable="true"
         @input="searching"
       )
+  slot(name="afterSearch")
   //- .grid.grid-cols-12.gap-0(
   .flex(
     :class="alignItemsClass ? alignItemsClass.split(' ') : ['flex-col', 'justify-center', 'items-center']"
