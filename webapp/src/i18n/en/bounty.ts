@@ -11,9 +11,10 @@ export const bounty = {
     ],
     orGithub: "<b>Or</b>, if you are familiar with Github, you can submit a PR request with new entries for <a class='doom-text-shadow-danger doom-color-secondary' href='{0}' target='blank'>bounty.json</a> file.",
   },
-  howToSubmit: {
+  howToClaim: {
     title: 'Claim Bounty',
     description: 'If you\'d like to claim this bounty for yourself or on behalf of someone else, please, send an email with the following content to',
+    includeId: 'Include ID [{0}] of the bounty you are trying to claim.',
     instructions: [
         'Name(s) to be displayed as Author(s) for this bounty.',
         'Link to a video of running game on the claimed device/platform.',

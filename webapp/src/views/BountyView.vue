@@ -1,17 +1,18 @@
 <template lang="pug">
 #Bounty(class="lg:flex justify-center")
   ItemsDisplay(
-    class="lg:basis-4/6"
+    class="justify-center"
     :numberOfPages="numberOfPages"
     :hasError="hasError"
     @search="searching"
     v-model="searchingString"
-    alignItemsClass="w-full flex-col \
+    alignItemsClass="w-full flex-col justify-center\
                     lg:flex-row lg:flex-wrap lg:justify-left"
   )
-    BountyItem.col-start-1.col-span-12.mb-5.px-2(
+    BountyItem.mb-5.px-2(
       v-for="item in filtered"
       :key="`item_${item.title}`"
+      :id="item.id"
       :title="item.title"
       :description="item.description"
       :tags="item.tags"

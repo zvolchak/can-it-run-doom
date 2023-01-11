@@ -20,6 +20,12 @@
 
       MetadataField.mt-4(
         v-if="claimedBy?.length > 0"
+        :title="$t('common.id')"
+        :value="id"
+      )
+
+      MetadataField.mt-1(
+        v-if="claimedBy?.length > 0"
         :title="$t('item.header.claimedBy')"
         :value="flattenClaimedAuthors(claimedBy)"
       )
@@ -41,13 +47,16 @@
 
       .flex.justify-center.my-6
         SimpleModal(
-          :title="$t('bounty.howToSubmit.title')"
+          :title="$t('bounty.howToClaim.title')"
           :btnText="$t('buttons.claimBounty')"
         )
-          p {{$t('bounty.howToSubmit.description')}} <ContactEmailLink />
+          p {{$t('bounty.howToClaim.description')}} <ContactEmailLink />
           ul.list-disc.ml-10.mt-4
             li.mb-2(
-              v-for="(value, index) in $tm('bounty.howToSubmit.instructions')"
+            ) {{$t('bounty.howToClaim.includeId', [id])}}
+
+            li.mb-2(
+              v-for="(value, index) in $tm('bounty.howToClaim.instructions')"
               :key="`instruction_${index}`"
             ) {{value}}
 </template>
@@ -57,6 +66,7 @@ import { ref } from 'vue'
 import { MetadataField, SimpleModal, ContactEmailLink } from '@/components'
 
 const props = defineProps<{
+  id: string,
   title?: string,
   description?: string,
   previewImage?: string,
