@@ -6,13 +6,13 @@
       "description": "Running doom on the ultrasound scanner (GE Vivid S5 Ultrasound) medical equipment.",
       "authors": [{
         "name": "BWaveTV",
-        "url": "https://www.youtube.com/@bwavetv3765"
+        "url": "https://www.youtube.com/@bwavetv3765/about"
       }],
       "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/xlxfWQ8EQZU"}],
       "sourceCodeUrl": null,
       "isFirstLevelComplete": true,
       "publishDate": "Aug 8, 2014",
-      "tags": ["medical", "ultrasound", "classic doom"],
+      "tags": ["medical", "ultrasound", "doom 1"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/ge-vivid-s5-ultrasound-machine.jpg?raw=true"
     },
     {
@@ -21,14 +21,14 @@
       "description": "Apple MacBook's has a TouchBar that is normally used for simple navigational tasks, media controls and such. It is also technically a display - thus, you could run doom on it.",
       "authors": [{
         "name": "diffractive",
-        "url": "https://www.youtube.com/@diffractive"
+        "url": "https://www.youtube.com/@diffractive/about"
       }],
       "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/GD0L46y3IqI"}],
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Nov 20, 2016",
 
-      "tags": ["computer", "device", "classic doom"],
+      "tags": ["computer", "device", "doom 1"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-touch-bar-macbook.jpg?raw=true"
     },
     {
@@ -37,13 +37,13 @@
       "description": "Used a Piano as a controller to play doom. The piano is not exactly displaying the game, but an achievement nonetheless.",
       "authors": [{
         "name": "Sos Sosowski",
-        "url": "https://www.youtube.com/@SosSosowski"
+        "url": "https://www.youtube.com/@SosSosowski/about"
       }],
       "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/sJu997jwBcA"}],
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Sep 17, 2013",
-      "tags": ["controls", "classic doom", "accessories"],
+      "tags": ["controls", "doom 1", "accessories"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-piano.jpg?raw=true"
     },
     {
@@ -64,7 +64,7 @@
       "sourceCodeUrl": [{ "name": "Tiplanet", "url": "https://tiplanet.org/forum/archives_voir.php?id=6631"}],
       "isFirstLevelComplete": false,
       "publishDate": "Feb 16, 2011",
-      "tags": ["device", "classic doom", "calculator"],
+      "tags": ["device", "nDoom", "calculator"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-calculator.jpg?raw=true"
     },
     {
@@ -73,7 +73,7 @@
       "description": "Three toasters used as controllers to play doom.",
       "authors": [{
         "name": "Vexal",
-        "url": "https://www.youtube.com/@vexal"
+        "url": "https://www.youtube.com/@vexal/about"
       }],
       "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/vI7tWd7B3iI"}],
       "sourceCodeUrl": null,
@@ -88,7 +88,7 @@
       "description": "Play doom on the car's screen. Honk to shoot and turn with the steering wheel.",
       "authors": [{
         "name": "Vexal",
-        "url": "https://www.youtube.com/@vexal"
+        "url": "https://www.youtube.com/@vexal/about"
       }],
       "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/NRMpNA86e8Q"}],
       "sourceCodeUrl": null,
@@ -96,6 +96,354 @@
       "publishDate": "Feb 19, 2017",
       "tags": ["controls", "brutal doom", "accessories", "device", "display", "vehicle"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-porsche-911.webp"
+    },
+    {
+      "id": "7",
+      "title": "An ATM",
+      "description": "Running doom 1 on the ATM machine and using its own buttons for controls.",
+      "authors": [
+        {
+          "name": "Aussie50",
+          "url": "https://www.youtube.com/@Aussie50/about"
+        },
+        {
+          "name": "jgcertified",
+          "url": "https://www.youtube.com/@jgcertified/about"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/PW5ELKTivbE"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Jul 26, 2014",
+      "tags": ["banking", "doom 1", "device"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-atm.jpg"
+    },
+    {
+      "id": "8",
+      "title": "An Office Phone (Polycom)",
+      "description": "doom 1 on the office phone made by Polycom.",
+      "authors": [
+        {
+          "name": "@NeilBostian",
+          "url": "https://twitter.com/NeilBostian"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Twitter", "url": "https://twitter.com/NeilBostian/status/1422014712326279171?s=20"}],
+      "sourceCodeUrl": [{
+        "name": "blog",
+        "url": "https://neilbostian.github.io/#/doomphone"
+      }],
+      "isFirstLevelComplete": true,
+      "publishDate": "Aug 28, 2021",
+      "tags": ["office", "doom 1", "device"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doome-polycom-office-phone.webp"
+    },
+    {
+      "id": "9",
+      "title": "Digital Camera: Kodak dc210 (1998)",
+      "description": "Running doom on the 1998 digital camera. For timeline reference, original doom was released in 1993 at required a relatively high-performance i486 processor to run it on PC., with 8MB of RAM.",
+      "authors": [
+        {
+          "name": "Clint Basinger (LGR)",
+          "url": "https://www.youtube.com/@LGR/about"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/7gCZZkBATSc"}],
+      "sourceCodeUrl": [{
+        "name": "Web.archive.org",
+        "url": "https://web.archive.org/web/20010613100345/http://digita.mame.net:80/download.htm"
+      }],
+      "isFirstLevelComplete": true,
+      "publishDate": "Nov 29, 2019",
+      "tags": ["digital camera", "doom 1"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-camera-kodak-dc210.jpg"
+    },
+    {
+      "id": "10",
+      "title": "Myki - public transportation card reader",
+      "description": "Myki is the contactless card ticket system for public transport in Melbourne, Australia. A reddit user 'zbios' got a hold of such a system and ran a doom (Chocolate Doom in this case) on it, by extracting a [doom's] CAB file via the machine's compact flash port. Since it has no USB ports, he connects to it via VNC (e.g. remote desktop) to control it with the keyboard.",
+      "authors": [
+        {
+          "name": "u/zbios",
+          "url": "https://www.reddit.com/user/zbios/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/melbourne/comments/gfhenf/gaming_on_my_myki_reader/?context=3"}],
+      "sourceCodeUrl": [{
+        "name": "Unmodified; Chocolate Doom",
+        "url": "https://www.chocolate-doom.org/wiki/index.php/About"
+      }],
+      "isFirstLevelComplete": false,
+      "publishDate": "May 07, 2020",
+      "tags": ["other", "doom 1"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-myki.png"
+    },
+    {
+      "id": "11",
+      "title": "Kodak Picture Kiosk",
+      "description": "As explained by the author, the kiosk is a Lenovo PC Thinkstation in the base running Windows XP. Thus, you could run any XP compatible Doom build (Chocolate Doom in this case) on it.",
+      "authors": [
+        {
+          "name": "u/zbios",
+          "url": "https://www.reddit.com/user/zbios/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/yksrxl/doom_on_a_kodak_picture_kiosk/"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Nov 02, 2022",
+      "tags": ["other", "chocolate doom"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kodak-kiosk.jpg"
+    },
+    {
+      "id": "12",
+      "title": "Lego brick with Raspberry Pi RP2040",
+      "description": "James Brown created a custom Lego brick screen that can display a monochrome, 72×40 resolution (< 3,000 pixels) image. It wasn't made specifically to run Doom, but it can run Doom nonetheless.",
+      "authors": [
+        {
+          "name": "James Brown",
+          "url": "https://www.youtube.com/@ancientjames/featured"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/TJHSMpYi8bg"}],
+      "sourceCodeUrl": [{
+        "name": "Github",
+        "url": "https://github.com/AncientJames/uGrey"
+      }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Nov 4, 2022",
+      "tags": ["other", "doom 1"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-lego-brick.png"
+    },
+    {
+      "id": "13",
+      "title": "Commercial kitchen appliance orders unit",
+      "description": "Author ran doom on the commercial kitchen appliance unit - the machine that connects to the monitors to display the current order status for the cooks and servers in the restaurants.",
+      "authors": [
+        {
+          "name": "This Does Not Compute",
+          "url": "https://www.youtube.com/@ThisDoesNotCompute/about"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/8fSdLKx5HlU?t=1379"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Nov 4, 2022",
+      "tags": ["kitchen", "doom 1", "appliance"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kitchen-appliance.png"
+    },
+    {
+      "id": "14",
+      "title": "Commodore 64 (none-optimized)",
+      "description": "A port of the Doom 1 to the 1996 Commodore 64.",
+      "authors": [
+        {
+          "name": "Nostalgia Nerd",
+          "url": "https://www.youtube.com/@Nostalgianerd/about"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/7ZzivzuDOls"}],
+      "sourceCodeUrl": [{
+        "name": "scpu.amidog.se",
+        "url": "https://scpu.amidog.se/doku.php?id=scpu%3Adoom"
+      }],
+      "isFirstLevelComplete": true,
+      "publishDate": "Nov 4, 2022",
+      "tags": ["kitchen", "doom 1", "appliance"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kitchen-appliance.png"
+    },
+    {
+      "id": "15",
+      "title": "MP3 Player: SanDisk Sansa e270 (2006)",
+      "description": "Sansa Mp3 players were can be jailbroken an run all sorts of emulators like NES or Gameboy. It can also run Doom.",
+      "authors": [
+        {
+          "name": "tony na",
+          "url": "https://www.youtube.com/@tonyna5178/about"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/op843cRGkNU?t=4"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Mar 14, 2016",
+      "tags": ["mp3 player", "doom 1", "audio", "device"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mp3-sansa-e270.png"
+    },
+    {
+      "id": "16",
+      "title": "Custom built camera on Kodak base.",
+      "description": "Author built a custom camera device based on some Kodak digital camera that can run Doom.",
+      "authors": [
+        {
+          "name": "JJ Dasher",
+          "url": "https://www.youtube.com/@JJDasher/about"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/uk7z-RIo07k"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Mar 1, 2010",
+      "tags": ["digital camera", "doom 1", "custom"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mp3-sansa-e270.png"
+    },
+    {
+      "id": "17",
+      "title": "Doom inside Doom",
+      "description": "There is a mod for the GZDoom that can run a Doom arcade within the game by using the Action Code Script tool.",
+      "authors": [
+        {
+          "name": "The Zombie Killer",
+          "url": "https://forum.zdoom.org/viewtopic.php?f=19&t=49057#p848006"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/5G0m_c8iwgg"}],
+      "sourceCodeUrl": [{ "name": "zdoom.org", "url": "https://forum.zdoom.org/viewtopic.php?f=19&t=49057#p848006"}],
+      "isFirstLevelComplete": false,
+      "publishDate": "Jul 16, 2015",
+      "tags": ["mod", "GZDoom", "other"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mod-doom-arcade.png"
+    },
+    {
+      "id": "18",
+      "title": "Doom on the Oscilloscope",
+      "description": "Running doom on the Oscilloscope with connected keyboard for controls.",
+      "authors": [
+        {
+          "name": "Zekinn",
+          "url": "https://www.youtube.com/@Zekinn/about"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/xZaKlLyikKg"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "May 24, 2013",
+      "tags": ["mod", "doom 1", "other"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mod-doom-arcade.png"
+    },
+    {
+      "id": "19",
+      "title": "Canon wireless printer",
+      "description": "As described by the author, you can install a custom firmware on the printer that could run anything within the machine's specs. It got complicated due to it needing all the operating system dependences to be implemented in Arm without access to a debugger, or even multiplication or division. Yet doable.",
+      "authors": [
+        {
+          "name": "Steve_At_Hypothermia",
+          "url": "https://www.youtube.com/@SteveAtHypothermia/about"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/XLHx3vO7KJM"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Sep 15, 2014",
+      "tags": ["office", "doom 1", "printer"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-printer-canon.png"
+    },
+    {
+      "id": "20",
+      "title": "Doom on the Pregnancy Test screen",
+      "description": "As mentioned by the author, this is a replacement display AND a replacement microcontroller. Foone is not using any of the original tester other than the shell.",
+      "authors": [
+        {
+          "name": "@Foone",
+          "url": "https://twitter.com/Foone"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Twitter", "url": "https://ia601909.us.archive.org/7/items/pregnancy_test_videos/pregtest-doom.mp4"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": true,
+      "publishDate": "Sep 6, 2020",
+      "tags": ["doom 1", "other"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-pregnancy-test.png"
+    },
+    {
+      "id": "21",
+      "title": "Honeywell Prestige thermostat",
+      "description": "Doom on the thermostat with a connected controller via usb.",
+      "authors": [
+        {
+          "name": "cz7asm555",
+          "url": "https://www.youtube.com/@cz7asm555/about"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/2T5LyEjLfP8"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "May 12, 2017",
+      "tags": ["chocolate doom", "other", "baremetal"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-thermostat-honewell.png"
+    },
+    {
+      "id": "22",
+      "title": "Apple watch",
+      "description": "Ported nDoom to an Apple watch running on watchOS 2.",
+      "authors": [
+        {
+          "name": "lior2b",
+          "url": "https://www.youtube.com/@lior2b"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/KXhf_SpO6wA"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Oct 1, 2015",
+      "tags": ["nDoom", "watch", "baremetal"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-apple-watch.png"
+    },
+    {
+      "id": "22",
+      "title": "Apple watch",
+      "description": "Ported nDoom to an Apple watch running on watchOS 2.",
+      "authors": [
+        {
+          "name": "Mehdi Mulani",
+          "url": "https://www.youtube.com/@mehdiisdumb/about"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/Kphyme60f4s"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Oct 1, 2015",
+      "tags": ["nDoom", "tv", "baremetal"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-apple-tv.png"
+    },
+    {
+      "id": "23",
+      "title": "Game & Watch portable device",
+      "description": "Game & Watch is a portable console released by Nintendo in 1980 can now run Doom.",
+      "authors": [
+        {
+          "name": "@ghidraninja",
+          "url": "https://twitter.com/ghidraninja"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/sNg_S9UM5ps?t=25"}],
+      "sourceCodeUrl": [{
+        "name": "Github",
+        "url": "https://github.com/ghidraninja/game-and-watch-doom"
+      }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Nov 22, 2020",
+      "tags": ["doom 1", "portable", "console", "baremetal"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-game-and-watch.png"
+    },
+    {
+      "id": "23",
+      "title": "Doom in the ASCII/text-based terminal",
+      "description": "",
+      "authors": [
+        {
+          "name": "@ghidraninja",
+          "url": "https://twitter.com/ghidraninja"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/tc2k2u/textbased_terminals_run_doom/?utm_source=share&utm_medium=web2x&context=3"}],
+      "sourceCodeUrl": [{
+        "name": "Github",
+        "url": "https://github.com/wojciech-graj/doom-ascii"
+      }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Mar 11, 2022",
+      "tags": ["doom 1", "other"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-ascii-terminal.png"
     }
   ]
 }

@@ -1,0 +1,13 @@
+{
+  "bounty": [
+    {
+      "id": "1",
+      "title": "Холодильник с экраном",
+      "model": "Любой",
+      "description": "Возможно ли запустить классический Дум на холодильнике (без облачных технологий).",
+      "tags": ["appliance", "fridge"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/fridge-with-screen.webp?raw=true",
+      "claimedBy": [ { "name": "Nobody", "date": "n/A" }]
+    }
+  ]
+}
