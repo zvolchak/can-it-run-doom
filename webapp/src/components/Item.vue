@@ -1,5 +1,7 @@
 <template lang="pug">
-.item
+.item(
+  :id="`item_${id}`"
+)
   .title.doom-color-danger {{title}}
   p.description.mb-2.text-slate-300 {{description}}
   .flex.flex-row.gap-2.item-container
@@ -54,6 +56,10 @@
         :title="$t('item.header.firstLevelComplete') + ':'"
         :value="props.isFirstLevelComplete ? $t('common.yes') : $t('common.no')"
       )
+      MetadataField(
+        :title="$t('common.id') + ':'"
+        :value="props.id"
+      )
 
       .flex.flex-wrap.gap-1.mt-5
         p.tag.bg-gray-700(
@@ -67,6 +73,7 @@
 import MetadataField from './MetadataField.vue'
 
 const props = defineProps<{
+  id: string,
   authors: Array<any>,
   description?: string,
   authorUrl?: string,

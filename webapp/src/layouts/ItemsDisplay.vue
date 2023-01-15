@@ -11,7 +11,12 @@
         @input="searching"
       )
   slot(name="afterSearch")
-  //- .grid.grid-cols-12.gap-0(
+
+  Pagination.mt-5.mb-4(
+    :numberOfPages="numberOfPages"
+    :currentPage="+currentPage"
+  )
+
   .flex(
     :class="alignItemsClass ? alignItemsClass.split(' ') : ['flex-col', 'justify-center', 'items-center']"
     v-if="!hasError"

@@ -11,6 +11,7 @@
         md:col-start-3 md:col-span-8 \
         2xl:col-start-4 2xl:col-span-6"
       v-for="item in filtered"
+      :id="item.id"
       :title="item.title"
       :description="item.description"
       :authors="item.authors"
@@ -67,10 +68,7 @@ onBeforeRouteUpdate(async (to) => {
 
 onMounted(async () => {
   hasError.value = false
-  await dbStore.value.fetchAllData().catch((error) => {
-    console.error(error.message)
-    hasError.value = true
-  })
+  await dbStore.value.fetchItemsData()
   filtered.value = Object.values(JSON.parse(JSON.stringify(items.value)))
 
   filtered.value = proxyArrayToNormal(items.value)
