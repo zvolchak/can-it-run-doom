@@ -20,7 +20,6 @@
       :previewImage="item.previewImage"
       @tagClicked="onTagClicked"
     )
-
     template(v-slot:afterSearch)
       .flex.justify-center.mb-6
         SimpleModal(
@@ -39,11 +38,11 @@
 
 
 <script setup lang="ts">
-import { onMounted, computed, ref } from 'vue'
+import { onMounted, computed, ref, watch  } from 'vue'
 import { onBeforeRouteUpdate } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { useDbStore } from '@/stores'
+import { useDbStore, useUXStore } from '@/stores'
 import { BountyItem } from '@/components/Items'
 import { SimpleModal } from '@/components'
 import ItemsDisplay from '@/layouts/ItemsDisplay.vue'
@@ -58,22 +57,24 @@ const numberOfItemsPerPage = ref(5)
 const searchingString = ref('')
 const filtered = ref([])
 const filteredBeforePagination = ref([])
-const { locale } = useI18n()
+const i18n = useI18n()
 
 const dbStore = computed(() => useDbStore())
+const uxStore = computed(() => useUXStore())
+
 const items = computed(() => dbStore.value.$state.bounties)
 const currentPage = computed(() => route.query?.page || 1 )
 const numberOfPages = computed(() =>
   Math.round(filteredBeforePagination.value.length / numberOfItemsPerPage.value)
 )
-const bountyDbLink = computed(() => `https://github.com/zvolchak/can-it-run-doom/blob/main/storage/db/${locale.value}/bounty.db`)
+const bountyDbLink = computed(() =>
+  `https://github.com/zvolchak/can-it-run-doom/blob/main/storage/db/${i18n.locale}/bounty.db`
+  )
+const currentLocale = computed(() => uxStore.value.currentLocale)
+
 
 onMounted(async () => {
-  hasError.value = false
-  await dbStore.value.fetchBountyData().catch((error) => {
-    console.error(error.message)
-    hasError.value = true
-  })
+  await fetchItems()
 }) // onMounted
 
 
@@ -87,19 +88,22 @@ onBeforeRouteUpdate(async (to) => {
 })
 
 
-onMounted(async () => {
+watch(currentLocale, async () => {
+  console.debug('Locale changed')
+  await fetchItems()
+})
+
+
+async function fetchItems() {
   hasError.value = false
-  await dbStore.value.fetchAllData().catch((error) => {
-    console.error(error.message)
-    hasError.value = true
-  })
+  await dbStore.value.fetchBountyData(currentLocale.value)
   filtered.value = Object.values(JSON.parse(JSON.stringify(items.value)))
 
   filtered.value = proxyArrayToNormal(items.value)
   filteredBeforePagination.value = [ ...filtered.value ]
 
   filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
-}) // onMounted
+}
 
 
 function onTagClicked(tagName: string) {

@@ -27,6 +27,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted  } from 'vue'
+// @ts-ignore
 import { Modal } from 'bootstrap'
 
 const props = defineProps<{

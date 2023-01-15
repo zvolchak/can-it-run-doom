@@ -16,21 +16,51 @@ String.prototype.format = function () {
 }
 
 
+const mergeById = (orig: Array<any>, toMerge: Array<any>) => {
+  if (!toMerge) return orig
+
+  for(const key in toMerge) {
+    const target = toMerge[key]
+    const index = orig.findIndex((i) => i?.id === target?.id)
+    if (index < 0) continue
+
+    orig[index] = { ...target }
+  } // for
+  return orig
+} // mergeById
+
+
+const fetchDB = async (url: string, locale: string | null | undefined) => {
+
+}
+
+
 export const useDbStore = defineStore('db', () => {
   const items = ref([])
   const bounties = ref([])
 
-  const fetchAllData = async (locale: string | null = 'en') => {
-    const enUrl = import.meta.env.VITE_DB_URL.format(locale || 'en')
+  const fetchAllData = async (locale: string | null | undefined) => {
+    const enUrl = import.meta.env.VITE_DB_URL.format('en')
     const { data } = await axios.get(enUrl)
 
     items.value = { ...data.items }
   }
 
 
-  const fetchBountyData = async (locale: string | null = 'en') => {
-    const enUrl = import.meta.env.VITE_BOUNTY_DB_URL.format(locale || 'en')
-    const { data } = await axios.get(enUrl)
+  const fetchBountyData = async (locale: string | null | undefined) => {
+    let url = import.meta.env.VITE_BOUNTY_DB_URL.format('en')
+    const { data } = await axios.get(url)
+    let langData
+    if (locale && locale?.toLowerCase() !== 'en') {
+      url = import.meta.env.VITE_BOUNTY_DB_URL.format(locale)
+      try {
+        // @ts-ignore
+        langData = await axios.get(url)
+      } catch(error) {
+        console.error(`Couldn't fetch bounties for lang ${locale}`)
+      }
+      data.bounty = mergeById(data.bounty, langData?.data.bounty || {})
+    } // if
 
     bounties.value = { ...data.bounty }
   }
