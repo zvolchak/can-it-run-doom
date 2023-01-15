@@ -36,7 +36,8 @@ const route = useRouter()
 function onChangePage(page: number) {
   if (page < 0)
     page = 0
-  route.push({ query: { page } });
+  window?.scrollTo(0, 10)
+  route.push({ query: { page } })
 }
 
 

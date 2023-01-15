@@ -30,8 +30,19 @@ const mergeById = (orig: Array<any>, toMerge: Array<any>) => {
 } // mergeById
 
 
-const fetchDB = async (url: string, locale: string | null | undefined) => {
-
+const fetchDB = async (url: string, localeUrl?: string | null) => {
+  const { data } = await axios.get(url)
+  const keyName = Object.keys(data)[0]
+  let langData
+  if (localeUrl) {
+    try {
+      langData = await axios.get(localeUrl)
+    } catch(error) {
+      console.error(`Couldn't fetch ${url}`)
+    }
+    data[keyName] = mergeById(data[keyName], langData?.data[keyName] || {})
+  } // if
+  return data
 }
 
 
@@ -39,31 +50,21 @@ export const useDbStore = defineStore('db', () => {
   const items = ref([])
   const bounties = ref([])
 
-  const fetchAllData = async (locale: string | null | undefined) => {
-    const enUrl = import.meta.env.VITE_DB_URL.format('en')
-    const { data } = await axios.get(enUrl)
-
+  const fetchItemsData = async (locale?: string | null | undefined) => {
+    const url = import.meta.env.VITE_DB_URL.format('en')
+    const localeUrl = locale !== 'en' ? import.meta.env.VITE_DB_URL.format(locale) : null
+    const data = await fetchDB(url, localeUrl)
     items.value = { ...data.items }
   }
 
 
   const fetchBountyData = async (locale: string | null | undefined) => {
-    let url = import.meta.env.VITE_BOUNTY_DB_URL.format('en')
-    const { data } = await axios.get(url)
-    let langData
-    if (locale && locale?.toLowerCase() !== 'en') {
-      url = import.meta.env.VITE_BOUNTY_DB_URL.format(locale)
-      try {
-        // @ts-ignore
-        langData = await axios.get(url)
-      } catch(error) {
-        console.error(`Couldn't fetch bounties for lang ${locale}`)
-      }
-      data.bounty = mergeById(data.bounty, langData?.data.bounty || {})
-    } // if
+    const url = import.meta.env.VITE_BOUNTY_DB_URL.format('en')
+    const localeUrl = locale !== 'en' ? import.meta.env.VITE_BOUNTY_DB_URL.format(locale) : null
+    const data = await fetchDB(url, localeUrl)
 
     bounties.value = { ...data.bounty }
   }
 
-  return { items, bounties, fetchAllData, fetchBountyData }
+  return { items, bounties, fetchItemsData, fetchBountyData }
 })
