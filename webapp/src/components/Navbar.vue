@@ -7,8 +7,9 @@ nav.bg-gray-800
 
       .flex.flex-1.items-center.justify-center(class="sm:items-stretch sm:justify-start")
         .flex.space-x-4.pl-10
-          a.nav-btn.bg-gray-900e(
+          router-link.nav-btn.bg-gray-900e(
             v-for="r in routes"
+            :to="r.path"
             :key="`route_btn_${r.name}`"
             :href="r.path"
             :aria-current="$route?.name"
@@ -22,15 +23,38 @@ nav.bg-gray-800
               v-for="locale in $i18n.availableLocales"
               :key="`locale-${locale}`"
               :value="locale"
+              @click="setLocale(locale)"
             ) {{locale.toUpperCase()}}
 </template>
 
 
 <script setup lang="ts">
+import { computed, onMounted } from 'vue'
+import { useI18n } from "vue-i18n"
+import { useUXStore } from '@/stores'
+
+const uxStore = computed(() => useUXStore())
+const currentLocale = computed(() => uxStore.value.currentLocale)
+
 const routes = [
   { localeVar: 'buttons.routes.home',  name: 'Home', path: '/' },
   { localeVar: 'buttons.routes.bounty',  name: 'Bounty', path: '/bounty' },
 ]
+
+const i18n = useI18n()
+
+onMounted(() => {
+  // @ts-ignore
+  const sysLang = (navigator.language || navigator.userLanguage)?.split('-')[0]
+  if (i18n.availableLocales.indexOf(sysLang) >= 0)
+    uxStore.value.setLocale(sysLang)
+  i18n.locale.value = sysLang
+})
+
+function setLocale(target: string) {
+  uxStore.value.setLocale(target)
+  i18n.locale.value = target
+}
 </script>
 
 
