@@ -12,7 +12,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": true,
       "publishDate": "Aug 8, 2014",
-      "tags": ["medical", "ultrasound", "doom 1"],
+      "tags": ["medical", "ultrasound", "doom"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/ge-vivid-s5-ultrasound-machine.jpg?raw=true"
     },
     {
@@ -28,7 +28,7 @@
       "isFirstLevelComplete": false,
       "publishDate": "Nov 20, 2016",
 
-      "tags": ["computer", "device", "doom 1"],
+      "tags": ["computer", "device", "doom"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-touch-bar-macbook.jpg?raw=true"
     },
     {
@@ -43,7 +43,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Sep 17, 2013",
-      "tags": ["controls", "doom 1", "accessories"],
+      "tags": ["controls", "doom", "accessories"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-piano.jpg?raw=true"
     },
     {
@@ -100,7 +100,7 @@
     {
       "id": "7",
       "title": "An ATM",
-      "description": "Running doom 1 on the ATM machine and using its own buttons for controls.",
+      "description": "Running doom on the ATM machine and using its own buttons for controls.",
       "authors": [
         {
           "name": "Aussie50",
@@ -115,13 +115,13 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Jul 26, 2014",
-      "tags": ["banking", "doom 1", "device"],
+      "tags": ["banking", "doom", "device"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-atm.jpg"
     },
     {
       "id": "8",
       "title": "An Office Phone (Polycom)",
-      "description": "doom 1 on the office phone made by Polycom.",
+      "description": "doom on the office phone made by Polycom.",
       "authors": [
         {
           "name": "@NeilBostian",
@@ -135,7 +135,7 @@
       }],
       "isFirstLevelComplete": true,
       "publishDate": "Aug 28, 2021",
-      "tags": ["office", "doom 1", "device"],
+      "tags": ["office", "doom", "device"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doome-polycom-office-phone.webp"
     },
     {
@@ -155,7 +155,7 @@
       }],
       "isFirstLevelComplete": true,
       "publishDate": "Nov 29, 2019",
-      "tags": ["digital camera", "doom 1"],
+      "tags": ["digital camera", "doom"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-camera-kodak-dc210.jpg"
     },
     {
@@ -175,7 +175,7 @@
       }],
       "isFirstLevelComplete": false,
       "publishDate": "May 07, 2020",
-      "tags": ["other", "doom 1"],
+      "tags": ["other", "doom"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-myki.png"
     },
     {
@@ -212,7 +212,7 @@
       }],
       "isFirstLevelComplete": false,
       "publishDate": "Nov 4, 2022",
-      "tags": ["other", "doom 1"],
+      "tags": ["other", "doom"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-lego-brick.png"
     },
     {
@@ -229,13 +229,13 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Nov 4, 2022",
-      "tags": ["kitchen", "doom 1", "appliance"],
+      "tags": ["kitchen", "doom", "appliance"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kitchen-appliance.png"
     },
     {
       "id": "14",
       "title": "Commodore 64 (none-optimized)",
-      "description": "A port of the Doom 1 to the 1996 Commodore 64.",
+      "description": "A port of the doom to the 1996 Commodore 64.",
       "authors": [
         {
           "name": "Nostalgia Nerd",
@@ -249,7 +249,7 @@
       }],
       "isFirstLevelComplete": true,
       "publishDate": "Nov 4, 2022",
-      "tags": ["kitchen", "doom 1", "appliance"],
+      "tags": ["kitchen", "doom", "appliance"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-commodore64.png"
     },
     {
@@ -266,7 +266,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Mar 14, 2016",
-      "tags": ["mp3 player", "doom 1", "audio", "device"],
+      "tags": ["mp3 player", "doom", "audio", "device"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mp3-sansa-e270.png"
     },
     {
@@ -283,7 +283,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Mar 1, 2010",
-      "tags": ["digital camera", "doom 1", "custom"],
+      "tags": ["digital camera", "doom", "custom"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mp3-sansa-e270.png"
     },
     {
@@ -317,7 +317,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "May 24, 2013",
-      "tags": ["mod", "doom 1", "other"],
+      "tags": ["mod", "doom", "other"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mod-doom-arcade.png"
     },
     {
@@ -334,7 +334,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Sep 15, 2014",
-      "tags": ["office", "doom 1", "printer"],
+      "tags": ["office", "doom", "printer"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-printer-canon.png"
     },
     {
@@ -351,7 +351,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": true,
       "publishDate": "Sep 6, 2020",
-      "tags": ["doom 1", "other"],
+      "tags": ["doom", "other"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-pregnancy-test.png"
     },
     {
@@ -422,7 +422,7 @@
       }],
       "isFirstLevelComplete": false,
       "publishDate": "Nov 22, 2020",
-      "tags": ["doom 1", "portable", "console", "baremetal"],
+      "tags": ["doom", "portable", "console", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-game-and-watch.png"
     },
     {
@@ -442,7 +442,7 @@
       }],
       "isFirstLevelComplete": false,
       "publishDate": "Mar 11, 2022",
-      "tags": ["doom 1", "other"],
+      "tags": ["doom", "other"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-ascii-terminal.png"
     }
   ]

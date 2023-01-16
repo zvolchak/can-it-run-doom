@@ -1,11 +1,13 @@
 <template lang="pug">
 #ItemsDisplay
   .flex.justify-center.mb-6
-    form.d-flex
-      input.form-control.rounded-none.w-96(
+    form.d-flex(
+      class="w-5/12"
+      )
+      input.form-control.rounded-none(
         :value="modelValue"
         type="search"
-        placeholder="Filter by title, author, hashtag or date..."
+        :placeholder="$t('item.searchPlaceholder')"
         arial-label="Search"
         contenteditable="true"
         @input="searching"
