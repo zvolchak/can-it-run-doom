@@ -1,6 +1,10 @@
 export const buttons = {
   routes: {
     home: 'Главная',
-    bounty: 'Баунти',
+    bounty: 'Награды',
   },
+
+  claimBounty: 'Заявка на Награду',
+  close: "Закрыть",
+  howToAddBounty: "Добавить Награду",
 } // export buttons

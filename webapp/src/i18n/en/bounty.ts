@@ -3,9 +3,8 @@ export const bounty = {
     title: 'How to add bounty?',
     description: 'To add a new bounty, please email the following information to',
     instructions: [
-      'Name of the hardware to run the doom at.',
+      'Name of the hardware to run the doom at. (e.g. MP3 Player Company, model-123)',
       'Describe the platform/device to run the doom at and/or leave a link to any source describing the platform/device.',
-      '(optional) Version of Doom to run other than Classic Doom (e.g. brutal doom, doom 2...).',
       '(optional) Link to an image or attach an image to an email to use as a preview for the bounty.',
       '(optional) Your name/handle to use for this bounty.',
     ],

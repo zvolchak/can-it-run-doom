@@ -112,7 +112,7 @@ function onTagClicked(tagName: string) {
 @import '@/assets/styles/doom.scss';
 
 .item {
-  max-width: 46rem;
+  max-width: 50rem;
 }
 
 .title {

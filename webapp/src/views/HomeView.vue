@@ -27,7 +27,7 @@
 
 <script setup lang="ts">
 import { onBeforeRouteUpdate } from 'vue-router'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { onMounted, computed, ref } from 'vue'
 import dayjs from 'dayjs'
 import { Item } from '@/components/'
@@ -37,7 +37,7 @@ import { useDbStore } from '@/stores'
 import { paginate } from '@/utils/pagination'
 import { onSearch, proxyArrayToNormal } from '@/utils/itemsFilters'
 
-
+const router = useRouter()
 const hasError = ref(false)
 const route = useRoute()
 const numberOfItemsPerPage = ref(10)
@@ -88,5 +88,6 @@ function searching(target: any) {
   filtered.value = onSearch(target, proxyArrayToNormal(items.value))
   filteredBeforePagination.value = filtered.value
   filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
+  router.replace({ query: {} });
 }
 </script>

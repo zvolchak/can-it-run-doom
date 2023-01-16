@@ -32,9 +32,12 @@ nav.bg-gray-800
 import { computed, onMounted } from 'vue'
 import { useI18n } from "vue-i18n"
 import { useUXStore } from '@/stores'
+import { useCookies } from "vue3-cookies"
 
+const { cookies } = useCookies()
 const uxStore = computed(() => useUXStore())
 const currentLocale = computed(() => uxStore.value.currentLocale)
+
 
 const routes = [
   { localeVar: 'buttons.routes.home',  name: 'Home', path: '/' },
@@ -44,8 +47,7 @@ const routes = [
 const i18n = useI18n()
 
 onMounted(() => {
-  // @ts-ignore
-  const sysLang = (navigator.language || navigator.userLanguage)?.split('-')[0]
+  const sysLang = cookies.get('lang')
   if (i18n.availableLocales.indexOf(sysLang) >= 0)
     uxStore.value.setLocale(sysLang)
   i18n.locale.value = sysLang
@@ -54,6 +56,7 @@ onMounted(() => {
 function setLocale(target: string) {
   uxStore.value.setLocale(target)
   i18n.locale.value = target
+  cookies.set('lang', target)
 }
 </script>
 

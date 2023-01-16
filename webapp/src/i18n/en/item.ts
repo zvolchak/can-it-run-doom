@@ -8,4 +8,6 @@ export const item = {
     claimedBy: 'Claimed By',
     date: 'Date',
   },
+
+  searchPlaceholder: 'Filter by title, author, #hashtag or date...',
 } // export item

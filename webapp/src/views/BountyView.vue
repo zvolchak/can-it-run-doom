@@ -116,7 +116,7 @@ function searching(target: any) {
   filtered.value = onSearch(target, proxyArrayToNormal(items.value))
   filteredBeforePagination.value = filtered.value
   filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
-  router.push({ query: {} });
+  router.replace({ query: {} });
 }
 </script>
 
