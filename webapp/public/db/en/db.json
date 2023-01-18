@@ -271,7 +271,7 @@
     },
     {
       "id": "16",
-      "title": "Custom built camera on Kodak base.",
+      "title": "Custom built camera on Kodak base",
       "description": "Author built a custom camera device based on some Kodak digital camera that can run Doom.",
       "authors": [
         {
@@ -284,7 +284,7 @@
       "isFirstLevelComplete": false,
       "publishDate": "Mar 1, 2010",
       "tags": ["digital camera", "doom", "custom"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mp3-sansa-e270.png"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-custom-kodak-camera"
     },
     {
       "id": "17",

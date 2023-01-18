@@ -61,16 +61,17 @@
         :value="props.id"
       )
 
-      .flex.flex-wrap.gap-1.mt-5
-        p.tag.bg-gray-700(
-          v-for="(tag) in props.tags" :key="tag"
-          @click="onTagClicked(tag)"
-        ) \#{{tag}}
+      .flex.flex-wrap.gap-1.mt-7
+        TagsList(
+          :tags="props.tags"
+          @click="onTagClicked"
+        )
 </template>
 
 
 <script setup lang="ts">
 import MetadataField from './MetadataField.vue'
+import { TagsList } from '@/components'
 
 const props = defineProps<{
   id: string,

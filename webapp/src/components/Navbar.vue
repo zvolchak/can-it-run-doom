@@ -16,15 +16,22 @@ nav.bg-gray-800
             :class="$route?.name?.toLowerCase() === r.name.toLowerCase() ? 'active' : ''"
           ) {{ $t(r.localeVar) }}
 
-      .flex.justify-end
-        .dropdown.nav-btn
-          select.form-select(v-model="$i18n.locale")
-            option(
-              v-for="locale in $i18n.availableLocales"
-              :key="`locale-${locale}`"
-              :value="locale"
-              @click="setLocale(locale)"
-            ) {{locale.toUpperCase()}}
+      .flex.justify-end.items-center.pr-5
+        select.form-select.dropdown.nav-btn(v-model="$i18n.locale")
+          option(
+            v-for="locale in $i18n.availableLocales"
+            :key="`locale-${locale}`"
+            :value="locale"
+            @click="setLocale(locale)"
+          ) {{locale.toUpperCase()}}
+
+        img.block.h-6.w-auto.source-code(
+          class="sm:ml-4"
+          src="@/assets/icons/github-mark-white.png"
+          alt="source code?"
+          @click="onSourceCodeClick"
+        )
+
 </template>
 
 
@@ -47,7 +54,7 @@ const routes = [
 const i18n = useI18n()
 
 onMounted(() => {
-  const sysLang = cookies.get('lang')
+  const sysLang = cookies.get('lang') || 'en'
   if (i18n.availableLocales.indexOf(sysLang) >= 0)
     uxStore.value.setLocale(sysLang)
   i18n.locale.value = sysLang
@@ -58,6 +65,14 @@ function setLocale(target: string) {
   i18n.locale.value = target
   cookies.set('lang', target)
 }
+
+
+function onSourceCodeClick() {
+  // @ts-ignore
+  const url = import.meta.env.VITE_SOURCE_CODE_URL
+  window.open(url, '_blank')
+}
+
 </script>
 
 
@@ -84,7 +99,8 @@ function setLocale(target: string) {
   background-color: transparent;
   border: none;
   color: inherit;
-  padding: 1px;
+  padding: 5px;
+  width: 55px;
 
   & > option {
     padding: 10px;
@@ -93,6 +109,15 @@ function setLocale(target: string) {
 
   &:focus {
     box-shadow: none;
+  }
+}
+
+.source-code {
+  cursor: pointer;
+  transition: 0.1s ease-in, 0.4s ease-out;
+
+  &:hover {
+    box-shadow: $doomBoxShadowDanger;
   }
 }
 </style>

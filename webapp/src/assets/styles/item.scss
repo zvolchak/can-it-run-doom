@@ -13,7 +13,7 @@ a {
   transition: 0.1s ease-in, 0.4s ease-out;
 
   &:hover > .doom-card, &:hover > .image-preview > img {
-    box-shadow: 0px 2px 10px -3px rgb(173, 1, 1, 0.9);
+    box-shadow: $doomBoxShadowDanger;
   }
 }
 
