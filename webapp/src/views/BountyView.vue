@@ -89,7 +89,6 @@ onBeforeRouteUpdate(async (to) => {
 
 
 watch(currentLocale, async () => {
-  console.debug('Locale changed')
   await fetchItems()
 })
 

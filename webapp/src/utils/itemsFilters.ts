@@ -4,6 +4,7 @@ export const findTag = (tags: Array<any>, wordToFind: string) => {
   if (!wordToFind.startsWith('#')) return undefined
 
   return tags?.find((tag: any) => {
+    // console.debug(`word: [${wordToFind.replace('#', '')}] -> tag: [${tag?.replace('#', '')}]`)
     return tag?.replace('#', '').startsWith(wordToFind.replace('#', ''))
   })
 } // findTag
@@ -31,7 +32,10 @@ export const findWordInTitle = (title: string, wordToFind: string) => {
 
 
 export const onSearch = (searching: string, items: Array<any>): any => {
-  const keywords = searching?.split(' ').filter(i => !!i)
+  let keywords = searching?.split(' ').filter(i => !!i)
+  if (searching.indexOf('#') >= 0)
+    keywords = searching.split('#').filter(i => i.trim()).map(i => `#${i}`.trim())
+
   if (keywords.length === 0) {
     return items
   }
@@ -39,7 +43,9 @@ export const onSearch = (searching: string, items: Array<any>): any => {
   items = items.filter((item: any) => {
     return keywords.find((word: string) => {
       const foundTag = findTag(item.tags, word)
-      if (foundTag) return foundTag
+      if (foundTag) {
+        return foundTag
+      }
 
       const foundAuthor = findAuthor(item.authors, word)
       if (foundAuthor) return foundAuthor

@@ -50,9 +50,10 @@ export const useDbStore = defineStore('db', () => {
   const items = ref([])
   const bounties = ref([])
 
+
   const fetchItemsData = async (locale?: string | null | undefined) => {
     const url = import.meta.env.VITE_DB_URL.format('en')
-    const localeUrl = locale !== 'en' ? import.meta.env.VITE_DB_URL.format(locale) : null
+    const localeUrl = locale && locale !== 'en' ? import.meta.env.VITE_DB_URL.format(locale) : null
     const data = await fetchDB(url, localeUrl)
     items.value = { ...data.items }
   }
@@ -60,11 +61,12 @@ export const useDbStore = defineStore('db', () => {
 
   const fetchBountyData = async (locale: string | null | undefined) => {
     const url = import.meta.env.VITE_BOUNTY_DB_URL.format('en')
-    const localeUrl = locale !== 'en' ? import.meta.env.VITE_BOUNTY_DB_URL.format(locale) : null
+    const localeUrl = locale && locale !== 'en' ? import.meta.env.VITE_BOUNTY_DB_URL.format(locale) : null
     const data = await fetchDB(url, localeUrl)
 
     bounties.value = { ...data.bounty }
   }
+
 
   return { items, bounties, fetchItemsData, fetchBountyData }
 })

@@ -63,7 +63,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { MetadataField, SimpleModal, ContactEmailLink } from '@/components'
+import { SimpleModal, ContactEmailLink } from '@/components'
+import MetadataField from './MetadataField.vue'
 
 const props = defineProps<{
   id: string,
