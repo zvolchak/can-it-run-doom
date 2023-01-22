@@ -20,7 +20,7 @@
       :isFirstLevelComplete="item.isFirstLevelComplete"
       :publishDate="item.publishDate"
       :imageUrl="item.previewImgUrl"
-      :tags="item.tags"
+      :tags="getItemTags(item.tags)"
       @tagClicked="onTagClicked"
     )
 
@@ -39,15 +39,26 @@
 <script setup lang="ts">
 import { onBeforeRouteUpdate } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
-import { onMounted, computed, ref } from 'vue'
+import {
+  onMounted,
+  computed,
+  ref,
+  watch
+} from 'vue'
 import dayjs from 'dayjs'
 import { Item } from '@/components/Items'
 import { TagsList } from '@/components'
 import ItemDisplay from '@/layouts/ItemsDisplay.vue'
+import type { ITagProp } from '@/interfaces'
 
-import { useDbStore } from '@/stores'
+import { useDbStore, useUXStore } from '@/stores'
 import { paginate } from '@/utils/pagination'
-import { onSearch, proxyArrayToNormal } from '@/utils/itemsFilters'
+import {
+  onSearch,
+  proxyToArray,
+  extractTagsFromString,
+  proxyToObject,
+} from '@/utils/itemsFilters'
 
 const router = useRouter()
 const hasError = ref(false)
@@ -58,12 +69,11 @@ const searchingString = ref('')
 const filtered = ref([])
 const filteredBeforePagination = ref([])
 
+const uxStore = computed(() => useUXStore())
 const dbStore = computed(() => useDbStore())
-
 const items = computed(() => dbStore.value.$state.items)
-
 const currentPage = computed(() => route.query?.page || 1 )
-
+const currentLocale = computed(() => uxStore.value.currentLocale)
 const numberOfPages = computed(() =>
   Math.round(filteredBeforePagination.value.length / numberOfItemsPerPage.value)
 )
@@ -80,15 +90,25 @@ onBeforeRouteUpdate(async (to) => {
 
 
 onMounted(async () => {
+  await fetchItems()
+})
+
+
+watch(currentLocale, async () => {
+  await fetchItems()
+})
+
+
+async function fetchItems() {
   hasError.value = false
-  await dbStore.value.fetchItemsData()
+  await dbStore.value.fetchItemsData(currentLocale.value)
   filtered.value = Object.values(JSON.parse(JSON.stringify(items.value)))
 
-  filtered.value = proxyArrayToNormal(items.value)
+  filtered.value = proxyToArray(items.value)
   filteredBeforePagination.value = [ ...filtered.value ]
 
   filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
-}) // onMounted
+}
 
 
 function onTagClicked(tagName: string) {
@@ -102,15 +122,17 @@ function onTagClicked(tagName: string) {
 
 
 function searching(target: string) {
-  filtered.value = onSearch(target, proxyArrayToNormal(items.value))
+  filtered.value = onSearch(target, proxyToArray(items.value))
   filteredBeforePagination.value = filtered.value
   filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
   router.replace({ query: {} });
+  uxStore.value.setCurrentSearch('dbSearch', target)
 }
 
-function getAllTags() {
+
+function getAllTags(): Array<ITagProp> {
   const tags: any = {}
-  proxyArrayToNormal(filtered.value).forEach((i: any) => {
+  proxyToArray(filtered.value).forEach((i: any) => {
     i.tags.forEach((tag: string) => {
       if (!(tag in tags)) tags[tag] = 0
       tags[tag] += 1
@@ -122,6 +144,20 @@ function getAllTags() {
     const value2 = tags[key2]
     return value1 < value2 ? key1 : key2;
   })
-  return result.splice(0, numberOfTagsPreview.value)
+
+  return getItemTags(result.splice(0, numberOfTagsPreview.value))
+} // getAllTags
+
+
+function getItemTags(tags: any): Array<ITagProp> {
+  const searched = extractTagsFromString(uxStore.value.currentSearch['dbSearch'] || '')
+  const result = tags.map((t: any) => {
+    return {
+      name: t,
+      active: searched.indexOf(`#${t}`) >= 0
+    }
+  }) // map
+  return result
 }
+
 </script>

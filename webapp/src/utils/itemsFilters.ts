@@ -1,10 +1,10 @@
 import dayjs from 'dayjs'
 
+
 export const findTag = (tags: Array<any>, wordToFind: string) => {
   if (!wordToFind.startsWith('#')) return undefined
 
   return tags?.find((tag: any) => {
-    // console.debug(`word: [${wordToFind.replace('#', '')}] -> tag: [${tag?.replace('#', '')}]`)
     return tag?.replace('#', '').startsWith(wordToFind.replace('#', ''))
   })
 } // findTag
@@ -33,14 +33,20 @@ export const findWordInTitle = (title: string, wordToFind: string) => {
 
 export const onSearch = (searching: string, items: Array<any>): any => {
   let keywords = searching?.split(' ').filter(i => !!i)
-  if (searching.indexOf('#') >= 0)
-    keywords = searching.split('#').filter(i => i.trim()).map(i => `#${i}`.trim())
+  const isSearchByTag = searching.startsWith('#')
+  if (isSearchByTag)
+    keywords = extractTagsFromString(searching)
 
   if (keywords.length === 0) {
     return items
   }
 
   items = items.filter((item: any) => {
+    if (isSearchByTag) {
+      const foundTags = item.tags.filter((i: any) => keywords.includes(`#${i}`))
+      return foundTags.length === keywords.length
+    }
+
     return keywords.find((word: string) => {
       const foundTag = findTag(item.tags, word)
       if (foundTag) {
@@ -61,11 +67,21 @@ export const onSearch = (searching: string, items: Array<any>): any => {
 } // onSearch
 
 
-export const proxyArrayToNormal = (target: any): any => {
+export const proxyToArray = (target: any): any => {
   // idk WTF this is and why. Cause Proxy... but still.
   const values = Object.values(JSON.parse(JSON.stringify(target)))
   // @ts-ignore
   return values.sort((a: any, b: any) =>
     dayjs(a.publishDate).isAfter(dayjs(b.publishDate))
   )
-} // proxyArrayToNormal
+} // proxyToArray
+
+
+export const proxyToObject = (target: any): any => {
+  return JSON.parse(JSON.stringify(target))
+}
+
+
+export const extractTagsFromString = (target: string) => {
+  return target.split('#').filter(i => i.trim()).map(i => `#${i}`.trim())
+}
