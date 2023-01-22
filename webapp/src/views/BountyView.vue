@@ -9,7 +9,10 @@
     alignItemsClass="w-full flex-col justify-center\
                     lg:flex-row lg:flex-wrap lg:justify-left"
   )
-    BountyItem.mb-5.px-2(
+    BountyItem.col-start-0.col-span-12.mb-5.px-2(
+      class="sm:col-start-2 sm:col-span-10 \
+        md:col-start-3 md:col-span-8 \
+        2xl:col-start-4 2xl:col-span-6"
       v-for="item in filtered"
       :key="`item_${item.title}`"
       :id="item.id"
@@ -46,7 +49,7 @@ import { useDbStore, useUXStore } from '@/stores'
 import { BountyItem } from '@/components/Items'
 import { SimpleModal } from '@/components'
 import ItemsDisplay from '@/layouts/ItemsDisplay.vue'
-import { onSearch, proxyArrayToNormal } from '@/utils/itemsFilters'
+import { onSearch, proxyToArray } from '@/utils/itemsFilters'
 import { paginate } from '@/utils/pagination'
 import { ContactEmailLink } from '@/components'
 
@@ -75,7 +78,7 @@ const currentLocale = computed(() => uxStore.value.currentLocale)
 
 onMounted(async () => {
   await fetchItems()
-}) // onMounted
+})
 
 
 onBeforeRouteUpdate(async (to) => {
@@ -98,7 +101,7 @@ async function fetchItems() {
   await dbStore.value.fetchBountyData(currentLocale.value)
   filtered.value = Object.values(JSON.parse(JSON.stringify(items.value)))
 
-  filtered.value = proxyArrayToNormal(items.value)
+  filtered.value = proxyToArray(items.value)
   filteredBeforePagination.value = [ ...filtered.value ]
 
   filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
@@ -112,7 +115,7 @@ function onTagClicked(tagName: string) {
 
 
 function searching(target: any) {
-  filtered.value = onSearch(target, proxyArrayToNormal(items.value))
+  filtered.value = onSearch(target, proxyToArray(items.value))
   filteredBeforePagination.value = filtered.value
   filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
   router.replace({ query: {} });

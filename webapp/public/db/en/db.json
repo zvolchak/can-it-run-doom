@@ -12,7 +12,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": true,
       "publishDate": "Aug 8, 2014",
-      "tags": ["medical", "ultrasound", "doom"],
+      "tags": ["medical", "equipment", "baremetal", "doom"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/ge-vivid-s5-ultrasound-machine.jpg?raw=true"
     },
     {
@@ -64,7 +64,7 @@
       "sourceCodeUrl": [{ "name": "Tiplanet", "url": "https://tiplanet.org/forum/archives_voir.php?id=6631"}],
       "isFirstLevelComplete": false,
       "publishDate": "Feb 16, 2011",
-      "tags": ["device", "nDoom", "calculator"],
+      "tags": ["device", "nDoom", "calculator", "baremetal"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-calculator.jpg?raw=true"
     },
     {
@@ -94,13 +94,13 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Feb 19, 2017",
-      "tags": ["controls", "brutal doom", "accessories", "device", "display", "vehicle"],
+      "tags": ["controls", "brutal doom", "accessories", "vehicle", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-porsche-911.webp"
     },
     {
       "id": "7",
       "title": "An ATM",
-      "description": "Running doom on the ATM machine and using its own buttons for controls.",
+      "description": "Doom on the ATM and using its own buttons for controls.",
       "authors": [
         {
           "name": "Aussie50",
@@ -115,7 +115,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Jul 26, 2014",
-      "tags": ["banking", "doom", "device"],
+      "tags": ["banking", "doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-atm.jpg"
     },
     {
@@ -135,7 +135,7 @@
       }],
       "isFirstLevelComplete": true,
       "publishDate": "Aug 28, 2021",
-      "tags": ["office", "doom", "device"],
+      "tags": ["office", "doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doome-polycom-office-phone.webp"
     },
     {
@@ -155,7 +155,7 @@
       }],
       "isFirstLevelComplete": true,
       "publishDate": "Nov 29, 2019",
-      "tags": ["digital camera", "doom"],
+      "tags": ["digital camera", "doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-camera-kodak-dc210.jpg"
     },
     {
@@ -175,7 +175,7 @@
       }],
       "isFirstLevelComplete": false,
       "publishDate": "May 07, 2020",
-      "tags": ["other", "doom"],
+      "tags": ["other", "doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-myki.png"
     },
     {
@@ -192,7 +192,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Nov 02, 2022",
-      "tags": ["other", "chocolate doom"],
+      "tags": ["other", "chocolate doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kodak-kiosk.jpg"
     },
     {
@@ -212,7 +212,7 @@
       }],
       "isFirstLevelComplete": false,
       "publishDate": "Nov 4, 2022",
-      "tags": ["other", "doom"],
+      "tags": ["other", "doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-lego-brick.png"
     },
     {
@@ -229,7 +229,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Nov 4, 2022",
-      "tags": ["kitchen", "doom", "appliance"],
+      "tags": ["kitchen", "doom", "appliance", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kitchen-appliance.png"
     },
     {
@@ -249,13 +249,13 @@
       }],
       "isFirstLevelComplete": true,
       "publishDate": "Nov 4, 2022",
-      "tags": ["kitchen", "doom", "appliance"],
+      "tags": ["console", "doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-commodore64.png"
     },
     {
       "id": "15",
       "title": "MP3 Player: SanDisk Sansa e270 (2006)",
-      "description": "Sansa Mp3 players were can be jailbroken an run all sorts of emulators like NES or Gameboy. It can also run Doom.",
+      "description": "Sansa Mp3 players could be jailbroken, which then supports all sorts of emulators like NES or Gameboy. It can also run Doom.",
       "authors": [
         {
           "name": "tony na",
@@ -265,8 +265,8 @@
       "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/op843cRGkNU?t=4"}],
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
-      "publishDate": "Mar 14, 2016",
-      "tags": ["mp3 player", "doom", "audio", "device"],
+      "publishDate": "14 Мар, 2016",
+      "tags": ["mp3 player", "doom", "device", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mp3-sansa-e270.png"
     },
     {
@@ -283,13 +283,13 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Mar 1, 2010",
-      "tags": ["digital camera", "doom", "custom"],
+      "tags": ["digital camera", "doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-custom-kodak-camera"
     },
     {
       "id": "17",
       "title": "Doom inside Doom",
-      "description": "There is a mod for the GZDoom that can run a Doom arcade within the game by using the Action Code Script tool.",
+      "description": "There is a mod for the GZDoom that can emulate an arcade within the game. By using the Action Code Script tool, author put Doom on such an arcade within the Doom.",
       "authors": [
         {
           "name": "The Zombie Killer",
@@ -317,7 +317,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "May 24, 2013",
-      "tags": ["mod", "doom", "other"],
+      "tags": ["other", "doom", "baremetal", "device"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mod-doom-arcade.png"
     },
     {
@@ -334,13 +334,13 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Sep 15, 2014",
-      "tags": ["office", "doom", "printer"],
+      "tags": ["office", "doom", "printer", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-printer-canon.png"
     },
     {
       "id": "20",
       "title": "Doom on the Pregnancy Test screen",
-      "description": "As mentioned by the author, this is a replacement display AND a replacement microcontroller. Foone is not using any of the original tester other than the shell.",
+      "description": "As mentioned by the author, this is a replacement display and a replacement microcontroller. @Foone is not using any of the original tester other than the shell.",
       "authors": [
         {
           "name": "@Foone",
@@ -351,7 +351,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": true,
       "publishDate": "Sep 6, 2020",
-      "tags": ["doom", "other"],
+      "tags": ["doom", "other", "hygiene", "display"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-pregnancy-test.png"
     },
     {
@@ -374,7 +374,7 @@
     {
       "id": "22",
       "title": "Apple watch",
-      "description": "Ported nDoom to an Apple watch running on watchOS 2.",
+      "description": "Ported nDoom to an Apple watch running on 'watchOS 2.'",
       "authors": [
         {
           "name": "lior2b",
@@ -387,23 +387,6 @@
       "publishDate": "Oct 1, 2015",
       "tags": ["nDoom", "watch", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-apple-watch.png"
-    },
-    {
-      "id": "22",
-      "title": "Apple watch",
-      "description": "Ported nDoom to an Apple watch running on watchOS 2.",
-      "authors": [
-        {
-          "name": "Mehdi Mulani",
-          "url": "https://www.youtube.com/@mehdiisdumb/about"
-        }
-      ],
-      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/Kphyme60f4s"}],
-      "sourceCodeUrl": null,
-      "isFirstLevelComplete": false,
-      "publishDate": "Oct 1, 2015",
-      "tags": ["nDoom", "tv", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-apple-tv.png"
     },
     {
       "id": "23",
@@ -428,7 +411,7 @@
     {
       "id": "23",
       "title": "Doom in the ASCII/text-based terminal",
-      "description": "",
+      "description": "Rendering doom with the ASCII character on the linux terminal.",
       "authors": [
         {
           "name": "@ghidraninja",

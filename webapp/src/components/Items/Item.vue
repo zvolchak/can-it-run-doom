@@ -72,6 +72,9 @@
 <script setup lang="ts">
 import MetadataField from './MetadataField.vue'
 import { TagsList } from '@/components'
+import { extractTagsFromString } from '@/utils/itemsFilters'
+import type { ITagProp } from '@/interfaces'
+
 
 const props = defineProps<{
   id: string,
@@ -83,7 +86,7 @@ const props = defineProps<{
   sourceCodeUrl?: Array<string>,
   imageUrl: string,
   title: string,
-  tags: Array<string>,
+  tags: Array<ITagProp>,
   isFirstLevelComplete?: boolean,
 }>()
 

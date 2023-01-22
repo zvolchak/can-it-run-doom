@@ -1,7 +1,7 @@
 <template lang="pug">
 .flex.justify-center.gap-4
   .page-link(
-    v-if="numberOfPages > 2"
+    v-if="numberOfPages >= 2"
     @click="onChangePage(currentPage - 1)"
   ) Previous
 
@@ -13,7 +13,7 @@
   ) {{i}}
 
   .page-link(
-    v-if="numberOfPages > 2"
+    v-if="numberOfPages >= 2"
     @click="onChangePage(currentPage + 1)"
   ) Next
 </template>
