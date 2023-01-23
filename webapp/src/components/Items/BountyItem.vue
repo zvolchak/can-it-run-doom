@@ -1,78 +1,73 @@
 <template lang="pug">
-.item-bounty(
-  :class="isNoPreviewImage ? 'short' : ''"
+Item.item-bounty(
+  :id="id"
+  :imageUrl="imageUrl"
+  :title="title"
+)
+  p.description.text-xs.break-normal.text-justify(
+    v-if="description"
+  ) {{description}}
+
+  MetadataField.mt-4(
+    :title="$t('common.id')"
+    :value="id"
   )
-  .flex.flex-row.gap-2.item-container
-    .image-preview.hidden(
-      :class="isNoPreviewImage ? 'hidden' : 'sm:block'"
-      v-if="previewImage"
+
+  MetadataField.mt-1(
+    :title="$t('bounty.modelOrManufacturer')"
+    :value="targetModel"
+  )
+
+  MetadataField.mt-1(
+    v-if="claimedBy?.length > 0"
+    :title="$t('item.header.claimedBy')"
+    :value="flattenClaimedAuthors(claimedBy)"
+  )
+
+  MetadataField.mt-1(
+    v-if="claimedBy?.length > 0 && claimedBy[0]?.date"
+    :title="$t('item.header.date')"
+    :value="claimedBy[0]?.date"
+  )
+
+  .flex.justify-center.mt-2
+    SimpleModal(
+      :title="$t('bounty.howToClaim.title')"
+      :btnText="$t('buttons.claimBounty')"
     )
-        img.rounded-md(
-          :src="previewImage"
-          :onerror="onPreviewImageError"
-        )
-    .doom-card.flex.flex-col.gap-1.content-center.p-2(class="w-full")
-      p.doom-color-secondary.doom-text-shadow-danger.text-lg {{props.title}}
+      p {{$t('bounty.howToClaim.description')}} <ContactEmailLink />
+      ul.list-disc.ml-10.mt-4
+        li.mb-2(
+        ) {{$t('bounty.howToClaim.includeId', [id])}}
 
-      p.description.text-xs.break-normal.text-justify(
-        v-if="props.description"
-      ) {{props.description}}
+        li.mb-2(
+          v-for="(value, index) in $tm('bounty.howToClaim.instructions')"
+          :key="`instruction_${index}`"
+        ) {{value}}
 
-      MetadataField.mt-4(
-        v-if="claimedBy?.length > 0"
-        :title="$t('common.id')"
-        :value="id"
-      )
-
-      MetadataField.mt-1(
-        v-if="claimedBy?.length > 0"
-        :title="$t('item.header.claimedBy')"
-        :value="flattenClaimedAuthors(claimedBy)"
-      )
-
-      MetadataField.mt-1(
-        v-if="claimedBy?.length > 0 && claimedBy[0]?.date"
-        :title="$t('item.header.date')"
-        :value="claimedBy[0]?.date"
-      )
-
-      .flex.flex-wrap.gap-1.mt-5.bottom-5(
-        class="lg:absolute"
-        v-if="tags?.length > 0"
-      )
-        p.tag.bg-gray-700.self-end(
-          v-for="(tag) in props.tags" :key="tag"
-          @click="onTagClicked(tag)"
-        ) \#{{tag}}
-
-      .flex.justify-center.my-6
-        SimpleModal(
-          :title="$t('bounty.howToClaim.title')"
-          :btnText="$t('buttons.claimBounty')"
-        )
-          p {{$t('bounty.howToClaim.description')}} <ContactEmailLink />
-          ul.list-disc.ml-10.mt-4
-            li.mb-2(
-            ) {{$t('bounty.howToClaim.includeId', [id])}}
-
-            li.mb-2(
-              v-for="(value, index) in $tm('bounty.howToClaim.instructions')"
-              :key="`instruction_${index}`"
-            ) {{value}}
+  .flex.flex-wrap.gap-1.mt-7
+    TagsList.self-end(
+      :tags="props.tags"
+      @click="onTagClicked"
+    )
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { SimpleModal, ContactEmailLink } from '@/components'
+import { SimpleModal, ContactEmailLink, TagsList } from '@/components'
+import Item from './Item.vue'
 import MetadataField from './MetadataField.vue'
+import type { ITagProp } from '@/interfaces'
+
 
 const props = defineProps<{
   id: string,
   title?: string,
   description?: string,
-  previewImage?: string,
-  tags?: Array<string>,
+  imageUrl?: string,
+  tags?: Array<ITagProp>,
   claimedBy?: Array<any>,
+  targetModel?: string,
 }>()
 
 
@@ -98,28 +93,13 @@ function flattenClaimedAuthors(target: Array<any>) {
 </script>
 
 
-<style lang="scss" scoped>
+<style lang="scss">
+@import '@/assets/styles/doom.scss';
+
 .item-bounty {
-  max-width: 45rem;
-
-  &.short {
-    max-width: 33rem;
-  }
-
-  & > .item-container {
-    height: 20rem;
-  }
-
-  @media (max-width: 1024px) {
-    max-width: 100%;
-
-    &.short {
-      max-width: 100%;
-    }
-
-    & > .item-container {
-      height: auto;
-    }
+  & > .title {
+    color: $doomColorSecondary !important;
+    text-shadow: $doomTextShadowDanger;
   }
 }
 </style>

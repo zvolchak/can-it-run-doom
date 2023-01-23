@@ -3,4 +3,6 @@ export const common = {
   yes: 'Yes',
   na: 'n/a',
   id: 'ID',
+  next: 'Next',
+  previous: 'Previous',
 } // export common

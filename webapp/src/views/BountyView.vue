@@ -1,13 +1,10 @@
 <template lang="pug">
-#Bounty(class="lg:flex justify-center")
+#Bounty
   ItemsDisplay(
-    class="justify-center"
     :numberOfPages="numberOfPages"
     :hasError="hasError"
     @search="searching"
     v-model="searchingString"
-    alignItemsClass="w-full flex-col justify-center\
-                    lg:flex-row lg:flex-wrap lg:justify-left"
   )
     BountyItem.col-start-0.col-span-12.mb-5.px-2(
       class="sm:col-start-2 sm:col-span-10 \
@@ -18,13 +15,23 @@
       :id="item.id"
       :title="item.title"
       :description="item.description"
-      :tags="item.tags"
+      :tags="getItemTags(item.tags)"
       :claimedBy="item.claimedBy"
-      :previewImage="item.previewImage"
+      :imageUrl="item.previewImage"
+      :targetModel="item.model"
       @tagClicked="onTagClicked"
     )
     template(v-slot:afterSearch)
-      .flex.justify-center.mb-6
+      .flex.justify-center
+        .flex.flex-wrap.gap-1(
+          class="w-full sm:w-3/4 xl:w-5/12"
+        )
+          TagsList(
+            :tags="getAllTags()"
+            @click="onTagClicked"
+          )
+
+      .flex.justify-center.mt-12.mb-6
         SimpleModal(
           :title="$t('bounty.howToAddItem.title')"
           :btnText="$t('buttons.howToAddBounty')"
@@ -47,16 +54,23 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { useDbStore, useUXStore } from '@/stores'
 import { BountyItem } from '@/components/Items'
-import { SimpleModal } from '@/components'
+import { SimpleModal, TagsList } from '@/components'
 import ItemsDisplay from '@/layouts/ItemsDisplay.vue'
 import { onSearch, proxyToArray } from '@/utils/itemsFilters'
 import { paginate } from '@/utils/pagination'
 import { ContactEmailLink } from '@/components'
+import {
+  getAllTagsFromItems,
+  getTagsFromString,
+  toggleTagFromString,
+} from './tagBuilder'
+import type { ITagProp } from '@/interfaces'
 
 const hasError = ref(false)
 const route = useRoute()
 const router = useRouter()
 const numberOfItemsPerPage = ref(5)
+const numberOfTagsPreview = ref(20)
 const searchingString = ref('')
 const filtered = ref([])
 const filteredBeforePagination = ref([])
@@ -67,6 +81,7 @@ const uxStore = computed(() => useUXStore())
 
 const items = computed(() => dbStore.value.$state.bounties)
 const currentPage = computed(() => route.query?.page || 1 )
+const currentSearch = computed(() => uxStore.value.currentSearch['bountySearch'] || '')
 const numberOfPages = computed(() =>
   Math.round(filteredBeforePagination.value.length / numberOfItemsPerPage.value)
 )
@@ -77,7 +92,9 @@ const currentLocale = computed(() => uxStore.value.currentLocale)
 
 
 onMounted(async () => {
+  searchingString.value = currentSearch.value
   await fetchItems()
+  searching(searchingString.value)
 })
 
 
@@ -109,7 +126,7 @@ async function fetchItems() {
 
 
 function onTagClicked(tagName: string) {
-  searchingString.value = `${searchingString.value} #${tagName}`
+  searchingString.value = toggleTagFromString(searchingString.value, tagName)
   searching(searchingString.value)
 } // onTagClicked
 
@@ -119,6 +136,18 @@ function searching(target: any) {
   filteredBeforePagination.value = filtered.value
   filtered.value = paginate(filtered.value, +currentPage.value - 1, numberOfItemsPerPage.value)
   router.replace({ query: {} });
+  uxStore.value.setCurrentSearch('bountySearch', target)
+}
+
+
+function getAllTags(): Array<ITagProp> {
+  const tags = getAllTagsFromItems(filtered.value).splice(0, numberOfTagsPreview.value)
+  return getTagsFromString(tags, currentSearch.value)
+} // getAllTags
+
+
+function getItemTags(tags: any): Array<ITagProp> {
+  return getTagsFromString(tags, currentSearch.value)
 }
 </script>
 

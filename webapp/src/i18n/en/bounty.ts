@@ -19,5 +19,6 @@ export const bounty = {
         'Link to a video of running game on the claimed device/platform.',
         '(optional) Link to a source code if you have it publicly available.'
     ],
-  }
+  },
+  modelOrManufacturer: "Model/Manufacturer"
 }

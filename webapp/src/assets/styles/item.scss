@@ -8,6 +8,12 @@ a {
   }
 }
 
+
+.item {
+  max-width: 50rem;
+}
+
+
 .item-container {
   height: 16rem;
   transition: 0.1s ease-in, 0.4s ease-out;
@@ -17,6 +23,11 @@ a {
   }
 }
 
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  -webkit-text-stroke: 1.4px #410001;
+}
 
 .description {
   font-size: 16px;

@@ -3,7 +3,7 @@
   .page-link(
     v-if="numberOfPages >= 2"
     @click="onChangePage(currentPage - 1)"
-  ) Previous
+  ) {{$t('common.previous')}}
 
   .page-link(
     v-if="numberOfPages > 1"
@@ -15,7 +15,7 @@
   .page-link(
     v-if="numberOfPages >= 2"
     @click="onChangePage(currentPage + 1)"
-  ) Next
+  ) {{$t('common.next')}}
 </template>
 
 <script setup lang="ts">
@@ -34,9 +34,11 @@ const route = useRouter()
 
 
 function onChangePage(page: number) {
-  if (page < 0)
-    page = 0
-  window?.scrollTo(0, 10)
+  if (page <= 1)
+    page = 1
+  if (page >= numberOfPages.value)
+    page = numberOfPages.value
+  window?.scrollTo(0, 0)
   route.push({ query: { page } })
 }
 

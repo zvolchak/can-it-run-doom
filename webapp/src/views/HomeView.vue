@@ -6,7 +6,7 @@
     @search="searching"
     v-model="searchingString"
   )
-    Item.col-start-0.col-span-12.mb-5.px-2(
+    ItemDb.col-start-0.col-span-12.mb-5.px-2(
       class="sm:col-start-2 sm:col-span-10 \
         md:col-start-3 md:col-span-8 \
         2xl:col-start-4 2xl:col-span-6"
@@ -46,11 +46,10 @@ import {
   watch
 } from 'vue'
 import dayjs from 'dayjs'
-import { Item } from '@/components/Items'
+import { ItemDb } from '@/components/Items'
 import { TagsList } from '@/components'
 import ItemDisplay from '@/layouts/ItemsDisplay.vue'
 import type { ITagProp } from '@/interfaces'
-
 import { useDbStore, useUXStore } from '@/stores'
 import { paginate } from '@/utils/pagination'
 import {
@@ -59,6 +58,8 @@ import {
   extractTagsFromString,
   proxyToObject,
 } from '@/utils/itemsFilters'
+import { getAllTagsFromItems, getTagsFromString } from './tagBuilder'
+
 
 const router = useRouter()
 const hasError = ref(false)
@@ -74,9 +75,8 @@ const dbStore = computed(() => useDbStore())
 const items = computed(() => dbStore.value.$state.items)
 const currentPage = computed(() => route.query?.page || 1 )
 const currentLocale = computed(() => uxStore.value.currentLocale)
-const numberOfPages = computed(() =>
-  Math.round(filteredBeforePagination.value.length / numberOfItemsPerPage.value)
-)
+const currentSearch = computed(() => uxStore.value.currentSearch['dbSearch'] || '')
+const numberOfPages = computed(() =>  Math.ceil(filteredBeforePagination.value.length / numberOfItemsPerPage.value))
 
 
 onBeforeRouteUpdate(async (to) => {
@@ -90,7 +90,9 @@ onBeforeRouteUpdate(async (to) => {
 
 
 onMounted(async () => {
+  searchingString.value = currentSearch.value
   await fetchItems()
+  searching(searchingString.value)
 })
 
 
@@ -131,33 +133,17 @@ function searching(target: string) {
 
 
 function getAllTags(): Array<ITagProp> {
-  const tags: any = {}
-  proxyToArray(filtered.value).forEach((i: any) => {
-    i.tags.forEach((tag: string) => {
-      if (!(tag in tags)) tags[tag] = 0
-      tags[tag] += 1
-    })
-  })
-
-  const result = Object.keys(tags).sort((key1: any, key2: any) => {
-    const value1 = tags[key1]
-    const value2 = tags[key2]
-    return value1 < value2 ? key1 : key2;
-  })
-
-  return getItemTags(result.splice(0, numberOfTagsPreview.value))
+  // FIXME: When switching pages, tags change according to current page items.
+  // This solution is dumb. Won't work for filtered items with more than 1 page.
+  // But good enough for now.
+  const target = currentSearch.value ? filtered.value : items.value
+  const tags = getAllTagsFromItems(target).splice(0, numberOfTagsPreview.value)
+  return getTagsFromString(tags, currentSearch.value)
 } // getAllTags
 
 
 function getItemTags(tags: any): Array<ITagProp> {
-  const searched = extractTagsFromString(uxStore.value.currentSearch['dbSearch'] || '')
-  const result = tags.map((t: any) => {
-    return {
-      name: t,
-      active: searched.indexOf(`#${t}`) >= 0
-    }
-  }) // map
-  return result
+  return getTagsFromString(tags, currentSearch.value)
 }
 
 </script>
