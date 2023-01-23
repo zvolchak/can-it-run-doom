@@ -1,7 +1,7 @@
 {
   "items": [
     {
-      "id": "1",
+      "id": "1001",
       "title": "An Ultrasound Scanner",
       "description": "Running doom on the ultrasound scanner (GE Vivid S5 Ultrasound) medical equipment.",
       "authors": [{
@@ -16,7 +16,7 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/ge-vivid-s5-ultrasound-machine.jpg?raw=true"
     },
     {
-      "id": "2",
+      "id": "1002",
       "title": "Apple MacBook TouchBar",
       "description": "Apple MacBook's has a TouchBar that is normally used for simple navigational tasks, media controls and such. It is also technically a display - thus, you could run doom on it.",
       "authors": [{
@@ -32,7 +32,7 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-touch-bar-macbook.jpg?raw=true"
     },
     {
-      "id": "3",
+      "id": "1003",
       "title": "A Piano",
       "description": "Used a Piano as a controller to play doom. The piano is not exactly displaying the game, but an achievement nonetheless.",
       "authors": [{
@@ -47,7 +47,7 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-piano.jpg?raw=true"
     },
     {
-      "id": "4",
+      "id": "1004",
       "title": "Graphics Calculator",
       "description": "Doom on the TI-Nspire Graphics calculator - that device used for math and physics calculations.",
       "authors": [
@@ -68,7 +68,7 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-calculator.jpg?raw=true"
     },
     {
-      "id": "5",
+      "id": "1005",
       "title": "A Toaster",
       "description": "Three toasters used as controllers to play doom.",
       "authors": [{
@@ -83,7 +83,7 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-toaster.jpg?raw=true"
     },
     {
-      "id": "6",
+      "id": "1006",
       "title": "Porsche 911: controls and display",
       "description": "Play doom on the car's screen. Honk to shoot and turn with the steering wheel.",
       "authors": [{
@@ -98,7 +98,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-porsche-911.webp"
     },
     {
-      "id": "7",
+      "id": "1007",
       "title": "An ATM",
       "description": "Doom on the ATM and using its own buttons for controls.",
       "authors": [
@@ -119,7 +119,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-atm.jpg"
     },
     {
-      "id": "8",
+      "id": "1008",
       "title": "An Office Phone (Polycom)",
       "description": "doom on the office phone made by Polycom.",
       "authors": [
@@ -139,7 +139,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doome-polycom-office-phone.webp"
     },
     {
-      "id": "9",
+      "id": "1009",
       "title": "Digital Camera: Kodak dc210 (1998)",
       "description": "Running doom on the 1998 digital camera. For timeline reference, original doom was released in 1993 at required a relatively high-performance i486 processor to run it on PC., with 8MB of RAM.",
       "authors": [
@@ -159,7 +159,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-camera-kodak-dc210.jpg"
     },
     {
-      "id": "10",
+      "id": "1010",
       "title": "Myki - public transportation card reader",
       "description": "Myki is the contactless card ticket system for public transport in Melbourne, Australia. A reddit user 'zbios' got a hold of such a system and ran a doom (Chocolate Doom in this case) on it, by extracting a [doom's] CAB file via the machine's compact flash port. Since it has no USB ports, he connects to it via VNC (e.g. remote desktop) to control it with the keyboard.",
       "authors": [
@@ -179,7 +179,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-myki.png"
     },
     {
-      "id": "11",
+      "id": "1011",
       "title": "Kodak Picture Kiosk",
       "description": "As explained by the author, the kiosk is a Lenovo PC Thinkstation in the base running Windows XP. Thus, you could run any XP compatible Doom build (Chocolate Doom in this case) on it.",
       "authors": [
@@ -196,7 +196,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kodak-kiosk.jpg"
     },
     {
-      "id": "12",
+      "id": "1012",
       "title": "Lego brick with Raspberry Pi RP2040",
       "description": "James Brown created a custom Lego brick screen that can display a monochrome, 72×40 resolution (< 3,000 pixels) image. It wasn't made specifically to run Doom, but it can run Doom nonetheless.",
       "authors": [
@@ -216,7 +216,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-lego-brick.png"
     },
     {
-      "id": "13",
+      "id": "1013",
       "title": "Commercial kitchen appliance orders unit",
       "description": "Author ran doom on the commercial kitchen appliance unit - the machine that connects to the monitors to display the current order status for the cooks and servers in the restaurants.",
       "authors": [
@@ -233,7 +233,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kitchen-appliance.png"
     },
     {
-      "id": "14",
+      "id": "1014",
       "title": "Commodore 64 (none-optimized)",
       "description": "A port of the doom to the 1996 Commodore 64.",
       "authors": [
@@ -253,7 +253,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-commodore64.png"
     },
     {
-      "id": "15",
+      "id": "1015",
       "title": "MP3 Player: SanDisk Sansa e270 (2006)",
       "description": "Sansa Mp3 players could be jailbroken, which then supports all sorts of emulators like NES or Gameboy. It can also run Doom.",
       "authors": [
@@ -270,7 +270,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mp3-sansa-e270.png"
     },
     {
-      "id": "16",
+      "id": "1016",
       "title": "Custom built camera on Kodak base",
       "description": "Author built a custom camera device based on some Kodak digital camera that can run Doom.",
       "authors": [
@@ -284,10 +284,10 @@
       "isFirstLevelComplete": false,
       "publishDate": "Mar 1, 2010",
       "tags": ["digital camera", "doom", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-custom-kodak-camera"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-custom-kodak-camera.png"
     },
     {
-      "id": "17",
+      "id": "1017",
       "title": "Doom inside Doom",
       "description": "There is a mod for the GZDoom that can emulate an arcade within the game. By using the Action Code Script tool, author put Doom on such an arcade within the Doom.",
       "authors": [
@@ -304,7 +304,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mod-doom-arcade.png"
     },
     {
-      "id": "18",
+      "id": "1018",
       "title": "Doom on the Oscilloscope",
       "description": "Running doom on the Oscilloscope with connected keyboard for controls.",
       "authors": [
@@ -318,10 +318,10 @@
       "isFirstLevelComplete": false,
       "publishDate": "May 24, 2013",
       "tags": ["other", "doom", "baremetal", "device"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mod-doom-arcade.png"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-oscilloscope.png"
     },
     {
-      "id": "19",
+      "id": "1019",
       "title": "Canon wireless printer",
       "description": "As described by the author, you can install a custom firmware on the printer that could run anything within the machine's specs. It got complicated due to it needing all the operating system dependences to be implemented in Arm without access to a debugger, or even multiplication or division. Yet doable.",
       "authors": [
@@ -338,7 +338,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-printer-canon.png"
     },
     {
-      "id": "20",
+      "id": "1020",
       "title": "Doom on the Pregnancy Test screen",
       "description": "As mentioned by the author, this is a replacement display and a replacement microcontroller. @Foone is not using any of the original tester other than the shell.",
       "authors": [
@@ -355,7 +355,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-pregnancy-test.png"
     },
     {
-      "id": "21",
+      "id": "1021",
       "title": "Honeywell Prestige thermostat",
       "description": "Doom on the thermostat with a connected controller via usb.",
       "authors": [
@@ -372,7 +372,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-thermostat-honewell.png"
     },
     {
-      "id": "22",
+      "id": "1022",
       "title": "Apple watch",
       "description": "Ported nDoom to an Apple watch running on 'watchOS 2.'",
       "authors": [
@@ -389,7 +389,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-apple-watch.png"
     },
     {
-      "id": "23",
+      "id": "1023",
       "title": "Game & Watch portable device",
       "description": "Game & Watch is a portable console released by Nintendo in 1980 can now run Doom.",
       "authors": [
@@ -409,7 +409,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-game-and-watch.png"
     },
     {
-      "id": "23",
+      "id": "1024",
       "title": "Doom in the ASCII/text-based terminal",
       "description": "Rendering doom with the ASCII character on the linux terminal.",
       "authors": [

@@ -1,7 +1,7 @@
 {
   "items": [
     {
-      "id": "1",
+      "id": "1001",
       "title": "Ультразвуковой сканер",
       "description": "Дум на медицинское, ультразвуковом сканере (GE Vivid S5 Ultrasound).",
       "authors": [{
@@ -16,7 +16,7 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/ge-vivid-s5-ultrasound-machine.jpg?raw=true"
     },
     {
-      "id": "2",
+      "id": "1002",
       "title": "Apple MacBook TouchBar",
       "description": "Apple MacBook имеет сенсорную панель, которая обычно используется для простых задач навигации, управления мультимедиа и тому подобного. Технически это также дисплей, поэтому на нем можно запустить дум.",
       "authors": [{
@@ -32,7 +32,7 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-touch-bar-macbook.jpg?raw=true"
     },
     {
-      "id": "3",
+      "id": "1003",
       "title": "Пианино",
       "description": "Автар использовал пианино в качестве контроллера для игры в дум. Фортепиано само по себе не отображает игру, а имеет встроенный экран с подключенным компьютером на котором игра и запущен.",
       "authors": [{
@@ -47,7 +47,7 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-piano.jpg?raw=true"
     },
     {
-      "id": "4",
+      "id": "1004",
       "title": "Графический калькулятор",
       "description": "Doom на графическом калькуляторе TI-Nspire — устройстве, используемом для математических и физических расчетов.",
       "authors": [
@@ -68,7 +68,7 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-calculator.jpg?raw=true"
     },
     {
-      "id": "5",
+      "id": "1005",
       "title": "Тостер",
       "description": "Три тостера используются в качестве контроллеров для игры в дум.",
       "authors": [{
@@ -83,7 +83,7 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-toaster.jpg?raw=true"
     },
     {
-      "id": "6",
+      "id": "1006",
       "title": "Porsche 911: управление и дисплей",
       "description": "Дум запущен на дисплее машины и для управление используется руль автомобиля.",
       "authors": [{
@@ -98,7 +98,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-porsche-911.webp"
     },
     {
-      "id": "7",
+      "id": "1007",
       "title": "Банкомат",
       "description": "Запуск дума на банкомате и использование собственных кнопок для управления.",
       "authors": [
@@ -119,7 +119,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-atm.jpg"
     },
     {
-      "id": "8",
+      "id": "1008",
       "title": "Офисный телефон (Polycom)",
       "description": "Дум на офисном телефоне Polycom.",
       "authors": [
@@ -139,7 +139,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doome-polycom-office-phone.webp"
     },
     {
-      "id": "9",
+      "id": "1009",
       "title": "Цифровая камера: Kodak dc210 (1998)",
       "description": "Дум на цифровом фотоаппарате 1998 года. Для справки по хронологии: оригинальный doom был выпущен в 1993 году, и для его запуска на ПК требовался относительно высокопроизводительный процессор i486 с 8 МБ ОЗУ.",
       "authors": [
@@ -159,7 +159,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-camera-kodak-dc210.jpg"
     },
     {
-      "id": "10",
+      "id": "1010",
       "title": "Myki - считыватель карт общественного транспорта",
       "description": "Myki — это система бесконтактных карт для проезда в общественном транспорте в Мельбурне, Австралия. Пользователь Reddit «zbios» достал себе такую систему и запустил на ней дум, извлекая CAB-файл [дума] через порт компактной флэш-памяти машины. Поскольку у него нет портов USB, он подключается к нему через VNC (RemoteDesktop), чтобы управлять им с клавиатуры.",
       "authors": [
@@ -179,7 +179,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-myki.png"
     },
     {
-      "id": "11",
+      "id": "1011",
       "title": "Киоск фото печати Kodak",
       "description": "Как пояснил автор, киоск представляет собой ПК Lenovo Thinkstation на базе Windows XP. Таким образом, вы можете запустить на нем любую сборку Doom, совместимую с XP (в данном случае Chocolate Doom).",
       "authors": [
@@ -196,7 +196,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kodak-kiosk.jpg"
     },
     {
-      "id": "12",
+      "id": "1012",
       "title": "Кубик Lego + Raspberry Pi RP2040",
       "description": "Джеймс Браун создал собственный кирпичный экран Lego, который может отображать монохромное изображение с разрешением 72 × 40 (<3000 пикселей). Устройство не был создан специально для запуска Doom, но, тем не менее, он может его запускать может.",
       "authors": [
@@ -216,7 +216,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-lego-brick.png"
     },
     {
-      "id": "13",
+      "id": "1013",
       "title": "Коммерческое кухонное оборудования для приема заказов",
       "description": "Автор запустил doom на коммерческом кухонном приборе — машине, которая подключается к мониторам для отображения текущего статуса заказа для поваров и официантов в ресторанах.",
       "authors": [
@@ -233,7 +233,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kitchen-appliance.png"
     },
     {
-      "id": "14",
+      "id": "1014",
       "title": "Commodore 64 [эмулятор] (без оптимизации)",
       "description": "Порт дума на эмуляторе Commodore 64 1996 года.",
       "authors": [
@@ -253,7 +253,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-commodore64.png"
     },
     {
-      "id": "15",
+      "id": "1015",
       "title": "MP3-плеер: SanDisk Sansa e270 (2006)",
       "description": "Sansa Mp3-плеер можно взломать, а затем запустить всевозможные эмуляторы, такие как NES или Gameboy. Он также может запускать Doom",
       "authors": [
@@ -270,7 +270,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mp3-sansa-e270.png"
     },
     {
-      "id": "16",
+      "id": "1016",
       "title": "В ручную сделанная камера на базе Kodak",
       "description": "JJ Dasher сделаю свою кастомную камеру на основе камеры от Kodak, на которой работает Doom.",
       "authors": [
@@ -284,10 +284,10 @@
       "isFirstLevelComplete": false,
       "publishDate": "Mar 1, 2010",
       "tags": ["цифровая камера", "doom", "нативно"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-custom-kodak-camera"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-custom-kodak-camera.png"
     },
     {
-      "id": "17",
+      "id": "1017",
       "title": "Дум в Думе",
       "description": "Есть мод для GZDoom, который может эмулировать аркадные автоматы. С помощью Action Code Script, автор поместил Дум на такой аркадный автомат в Думе.",
       "authors": [
@@ -304,7 +304,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mod-doom-arcade.png"
     },
     {
-      "id": "18",
+      "id": "1018",
       "title": "Дум на осциллографе",
       "description": "Запуск Дума на осциллографе с подключенной клавиатурой для управления.",
       "authors": [
@@ -318,10 +318,10 @@
       "isFirstLevelComplete": false,
       "publishDate": "24 Мая, 2013",
       "tags": ["прочее", "doom", "нативно", "устройство"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mod-doom-arcade.png"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-oscilloscope.png"
     },
     {
-      "id": "19",
+      "id": "1019",
       "title": "Canon беспроводной принтер",
       "description": "Как описано автором, вы можете установить на принтер специальную прошивку, которая может запускать все, что соответствует спецификациям машины. Это усложнилось из-за необходимости реализации всех зависимостей операционной системы под Arm процессор без доступа к отладчику или даже к умножению или делению. Тем не менее - Дум запущен на принтере.",
       "authors": [
@@ -338,7 +338,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-printer-canon.png"
     },
     {
-      "id": "20",
+      "id": "1020",
       "title": "Экран теста на беременность",
       "description": "Как упоминал автор, это сменный дисплей и сменный микроконтроллер. @Foone не использует какой-либо оригинальный тестер, кроме оболочки.",
       "authors": [
@@ -355,7 +355,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-pregnancy-test.png"
     },
     {
-      "id": "21",
+      "id": "1021",
       "title": "Honeywell Prestige термостат",
       "description": "Дум на термостате с подключенным контроллером через usb.",
       "authors": [
@@ -372,7 +372,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-thermostat-honewell.png"
     },
     {
-      "id": "22",
+      "id": "1022",
       "title": "Apple часы",
       "description": "Порт nDoom на Apple часы под 'watchOS 2' ОС.",
       "authors": [
@@ -389,7 +389,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-apple-watch.png"
     },
     {
-      "id": "23",
+      "id": "1023",
       "title": "Game & Watch portable портативная консоль",
       "description": "Game & Watch - портативная консоль, выпущенная Nintendo в 1980 году, теперь может запускать Doom.",
       "authors": [
@@ -409,7 +409,7 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-game-and-watch.png"
     },
     {
-      "id": "24",
+      "id": "1024",
       "title": "ASCII/текстовый терминал",
       "description": "Рендеринг Дума с помощью символа ASCII на терминале Linux.",
       "authors": [
