@@ -8,7 +8,7 @@ Item(
   MetadataField(
     :title="$t('item.header.author') + ':'"
   )
-    a(
+    a.relative(
       v-for="(author, index) in props.authors"
       :href="author.url"
       :key="author.name"
@@ -24,19 +24,20 @@ Item(
   MetadataField(
     :title="$t('item.header.sources') + ':'"
   )
-    a(
+    a.relative(
       v-if="props.sourcesUrl"
       v-for="(source) in props.sourcesUrl"
       :href="source.url" target="_blank"
       :key="source.url"
     ) {{source.name}}
       img.icon(src="@/assets/icons/doom-guy-grin.png")
+
     p.no-text-shadow(v-else) {{ $t('common.na') }}
 
   MetadataField(
     :title="$t('item.header.sourceCode') + ':'"
   )
-    a(
+    a.relative(
       v-if="props.sourceCodeUrl"
       v-for="source in props.sourceCodeUrl"
       :href="source.url" target="_blank"
@@ -109,4 +110,20 @@ function onTagClicked(tagName: string) {
 
 
 <style lang="scss" scoped>
+@import '@/assets/styles/doom.scss';
+
+a {
+  transition: 0.1s linear;
+}
+
+a:hover {
+  text-shadow: none;
+  color: red;
+  font-weight: 700;
+  -webkit-text-stroke: 0.5px black;
+}
+
+a:hover > .icon {
+  opacity: 1;
+}
 </style>
