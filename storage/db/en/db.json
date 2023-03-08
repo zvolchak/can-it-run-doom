@@ -472,7 +472,7 @@
           "url": "https://www.reddit.com/user/the_nerdling/"
         }
       ],
-      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/119s9hc/screens_upside_down_but_its_on_my_drone_radio/"}, { "name": "Reddit", "url": "https://www.reddit.com/r/DoomMods/comments/10ts0p8/doom_but_on_a_pricetag/"}],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/119s9hc/screens_upside_down_but_its_on_my_drone_radio/"}],
       "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/DavBfr/edgetx-doom" }],
       "isFirstLevelComplete": false,
       "publishDate": "Feb 4, 2023",
