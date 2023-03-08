@@ -116,7 +116,7 @@
       "isFirstLevelComplete": false,
       "publishDate": "Jul 26, 2014",
       "tags": ["banking", "doom", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-atm.jpg"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-atm.png"
     },
     {
       "id": "1008",
@@ -156,7 +156,7 @@
       "isFirstLevelComplete": true,
       "publishDate": "Nov 29, 2019",
       "tags": ["digital camera", "doom", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-camera-kodak-dc210.jpg"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-camera-kodak-dc210.png"
     },
     {
       "id": "1010",
@@ -427,6 +427,57 @@
       "publishDate": "Mar 11, 2022",
       "tags": ["doom", "other"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-ascii-terminal.png"
+    },
+    {
+      "id": "1025",
+      "title": "Lenovo smart clock 2",
+      "description": "Doom on the smart clock device.",
+      "authors": [
+        {
+          "name": "Steppan_5g",
+          "url": "https://www.reddit.com/user/Steppan_5g/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/10cjymr/the_lenovo_smart_clock_2_runs_doom/"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Jan 15, 2023",
+      "tags": ["doom", "smart home", "baremetal"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-lenovo-smart-clock-2.png"
+    },
+    {
+      "id": "1026",
+      "title": "Digital price tag",
+      "description": "Author hacked the digital price tag that you can find in many stores and played the in-game demo of the level on it, instead of playing it live, since the refresh rate on the device is very low.",
+      "authors": [
+        {
+          "name": "makersfunduck",
+          "url": "https://www.youtube.com/@makersfunduck"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://www.youtube.com/watch?v=lUv_m5oj5jM&t=1s&ab_channel=Maker%27sFunDuck"}, { "name": "Reddit", "url": "https://www.reddit.com/r/DoomMods/comments/10ts0p8/doom_but_on_a_pricetag/"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Feb 4, 2023",
+      "tags": ["doom", "price tag", "appliance", "display"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-pricetag.png"
+    },
+    {
+      "id": "1027",
+      "title": "Drone Radio Controller: RadioMaster TX16S",
+      "description": "Author modified the firmware of the drone controller that includes doom and can be played on the device natively.",
+      "authors": [
+        {
+          "name": "the_nerdling",
+          "url": "https://www.reddit.com/user/the_nerdling/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/119s9hc/screens_upside_down_but_its_on_my_drone_radio/"}, { "name": "Reddit", "url": "https://www.reddit.com/r/DoomMods/comments/10ts0p8/doom_but_on_a_pricetag/"}],
+      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/DavBfr/edgetx-doom" }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Feb 4, 2023",
+      "tags": ["doom", "baremetal", "drone"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-pricetag.png"
     }
   ]
 }
