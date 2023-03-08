@@ -24,7 +24,7 @@ Item(
   MetadataField(
     :title="$t('item.header.sources') + ':'"
   )
-    a.relative(
+    a.relative.pr-2(
       v-if="props.sourcesUrl"
       v-for="(source) in props.sourcesUrl"
       :href="source.url" target="_blank"
