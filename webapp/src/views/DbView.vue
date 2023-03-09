@@ -90,6 +90,11 @@ onBeforeRouteUpdate(async (to) => {
 
 
 onMounted(async () => {
+  const ids = typeof route.query.id === 'string' ? [route.query.id] : route.query.id
+  if (ids) {
+    uxStore.value.setCurrentSearch('dbSearch', ids.join(' '))
+  }
+
   searchingString.value = currentSearch.value
   await fetchItems()
   searching(searchingString.value)
