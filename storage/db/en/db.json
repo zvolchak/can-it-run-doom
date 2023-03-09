@@ -44,7 +44,7 @@
       "isFirstLevelComplete": false,
       "publishDate": "Sep 17, 2013",
       "tags": ["controls", "doom", "accessories"],
-      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-piano.jpg?raw=true"
+      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-piano.png?raw=true"
     },
     {
       "id": "1004",
@@ -65,7 +65,7 @@
       "isFirstLevelComplete": false,
       "publishDate": "Feb 16, 2011",
       "tags": ["device", "nDoom", "calculator", "baremetal"],
-      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-calculator.jpg?raw=true"
+      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-calculator.png?raw=true"
     },
     {
       "id": "1005",
@@ -80,7 +80,7 @@
       "isFirstLevelComplete": false,
       "publishDate": "Jan 10, 2015",
       "tags": ["controls", "brutal doom", "accessories"],
-      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-toaster.jpg?raw=true"
+      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-toaster.png?raw=true"
     },
     {
       "id": "1006",
@@ -95,7 +95,7 @@
       "isFirstLevelComplete": false,
       "publishDate": "Feb 19, 2017",
       "tags": ["controls", "brutal doom", "accessories", "vehicle", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-porsche-911.webp"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-porsche-911.png"
     },
     {
       "id": "1007",
@@ -136,7 +136,7 @@
       "isFirstLevelComplete": true,
       "publishDate": "Aug 28, 2021",
       "tags": ["office", "doom", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doome-polycom-office-phone.webp"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-polycom-office-phone.png"
     },
     {
       "id": "1009",

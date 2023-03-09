@@ -59,6 +59,9 @@ export const onSearch = (searching: string, items: Array<any>): any => {
       const foundTitleWord = findWordInTitle(item.title, word)
       if (foundTitleWord) return foundTitleWord
 
+      const foundId = `${item.id}`.startsWith(word)
+      if (foundId) return word
+
       return findDate(item.publishDate, word)
     }) // keywords
   }) as any // items
