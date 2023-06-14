@@ -16,6 +16,7 @@
       :title="item.title"
       :description="item.description"
       :tags="getItemTags(item.tags)"
+      :requestors="item.requestors"
       :claimedBy="item.claimedBy"
       :imageUrl="item.previewImage"
       :targetModel="item.model"

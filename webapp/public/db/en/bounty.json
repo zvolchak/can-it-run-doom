@@ -9,14 +9,23 @@
       "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/fridge-with-screen.webp?raw=true",
       "claimedBy": []
     },
-
     {
       "id": "5002",
       "title": "Control Doom with bananas",
       "model": "Only organic bananas",
       "description": "There were instances of people controlling other games with bananas. Doom should be compatible too.",
       "tags": ["fruit", "controls", "accessories"],
-      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/banana-controls.jpg?raw=true",
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/banana-controller.jpg?raw=true",
+      "claimedBy": []
+    },
+    {
+      "id": "5003",
+      "title": "All-In-One printer Brother MFC-L2710DW",
+      "model": "MFC-L2710DW",
+      "description": "",
+      "tags": ["appliance", "printer"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/brother-mfc-l2710dw.png?raw=true",
+      "requestors": [{ "name": "Willquantique", "date": "May 12, 2023" }],
       "claimedBy": []
     }
   ]
