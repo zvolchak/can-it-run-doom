@@ -19,6 +19,23 @@ Item.item-bounty(
   )
 
   MetadataField.mt-1(
+    v-if="requestors?.length > 0"
+    :title="$t('item.header.requestor')"
+  )
+    a.relative(
+        v-for="(author, index) in requestors"
+        :href="author?.url"
+        :key="author.name"
+        target="_blank"
+      ) {{requestors.length > 1 && index !== 0 ? ',' : '' }} {{author.name}}
+
+  MetadataField.mt-1(
+    v-if="requestors?.length > 0 && requestors[0]?.date"
+    :title="$t('item.header.requestDate')"
+    :value="requestors[0]?.date"
+  )
+
+  MetadataField.mt-1(
     v-if="claimedBy?.length > 0"
     :title="$t('item.header.claimedBy')"
     :value="flattenClaimedAuthors(claimedBy)"
@@ -68,6 +85,7 @@ const props = defineProps<{
   tags?: Array<ITagProp>,
   claimedBy?: Array<any>,
   targetModel?: string,
+  requestors?: Array<string>,
 }>()
 
 
