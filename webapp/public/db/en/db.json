@@ -478,6 +478,23 @@
       "publishDate": "Feb 4, 2023",
       "tags": ["doom", "baremetal", "drone"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-drone-radio-controller.png"
+    },
+    {
+      "id": "1028",
+      "title": "Flipper Zero - a portable multi-tool hacking device.",
+      "description": "Basing of another Doom por for the Arduino Nano, author managed to run it on the Flipper Zero device that has 1.4 inch monochrome LCD display (128x64px). ",
+      "authors": [
+        {
+          "name": "xoreo@p4nic4ttack",
+          "url": "https://github.com/p4nic4ttack"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://www.youtube.com/watch?v=lbNFdDEDLy0&t=57s&ab_channel=ts"}],
+      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/p4nic4ttack/doom-flipper-zero" }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Aug 26, 2022",
+      "tags": ["doom", "baremetal", "display", "portable", "other"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/flipper-zero.png.png"
     }
   ]
 }
