@@ -37,6 +37,16 @@
       "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/vtech-kidibuzz-80-541100.png?raw=true",
       "requestors": [{ "name": "N/A", "date": "Sep 12, 2023" }],
       "claimedBy": []
+    },
+    {
+      "id": "5005",
+      "title": "Guitar amplifier with a small digital screen.",
+      "model": "Fender Mustang LT25 (or similar with a screen)",
+      "description": "A guitar amplifier with the ability to be plugged into a computer via usb with a small screen and knob dedicated to browsing/interacting with the screen.",
+      "tags": ["music", "instrument", "other"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/fender-mustang-lt25.png?raw=true",
+      "requestors": [{ "name": "N/A", "date": "Sep 12, 2023" }],
+      "claimedBy": []
     }
   ]
 }
