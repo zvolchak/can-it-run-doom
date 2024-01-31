@@ -424,9 +424,26 @@
         "url": "https://github.com/wojciech-graj/doom-ascii"
       }],
       "isFirstLevelComplete": false,
-      "publishDate": "Mar 11, 2022",
+      "publishDate": "Март 11, 2022",
       "tags": ["doom", "прочее"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-ascii-terminal.png"
+    },
+    {
+      "id": "1029",
+      "title": "Дисплей Дум через кишечную палочку.",
+      "description": "Лорен Рамлан из Массачусетского технологического института перевела графику игры в черно-белые пиксили, активируя флуоресцентные белки встроенные в кишечную палочку. Разрешение дисплея 32х48 и для рендера одного фрейма понадобилось 8 часов 20 минут.",
+      "authors": [
+        {
+          "name": "Lauren Ramlan",
+          "url": "https://www.youtube.com/@laurenramlan990"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Научный Отчет", "url": "https://docs.google.com/document/d/1SFm1dS6myqq7psBKttP7CVYN4jO66lOp7ZMA829c_hc/edit"}, { "name": "Youtube", "url": "https://youtu.be/8DnoOOgYxck?t=298"}],
+      "sourceCodeUrl": [{ "name": "Colab", "url": "https://colab.research.google.com/drive/1ZnWzeqKxjQSK2VTnfFzna0mFfseVMsZR?usp=sharing" }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Дек 7, 2023",
+      "tags": ["doom", "биология", "дисплей", "экран", "прочее"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/e-coli-display.png"
     }
   ]
 }
