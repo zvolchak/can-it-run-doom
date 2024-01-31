@@ -495,6 +495,23 @@
       "publishDate": "Aug 26, 2022",
       "tags": ["doom", "baremetal", "display", "portable", "other"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/flipper-zero.png"
+    },
+    {
+      "id": "1029",
+      "title": "Gut Bacteria (E. Coli) as a display for Doom.",
+      "description": "MIT biotechnology PhD student researcher Lauren 'Ren' Ramlan used illuminated E.Coli, that could be 'trained' to simulate a black-and-white 32x48 image. It takes about 8 hours and 20 minutes to 'render' a single frame.",
+      "authors": [
+        {
+          "name": "Lauren Ramlan",
+          "url": "https://www.youtube.com/@laurenramlan990"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Written Report", "url": "https://docs.google.com/document/d/1SFm1dS6myqq7psBKttP7CVYN4jO66lOp7ZMA829c_hc/edit"}, { "name": "Youtube", "url": "https://youtu.be/8DnoOOgYxck?t=298"}],
+      "sourceCodeUrl": [{ "name": "Colab", "url": "https://colab.research.google.com/drive/1ZnWzeqKxjQSK2VTnfFzna0mFfseVMsZR?usp=sharing" }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Dec 7, 2023",
+      "tags": ["doom", "biology", "display", "other"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/e-coli-display.png"
     }
   ]
 }
