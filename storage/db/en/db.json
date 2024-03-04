@@ -250,7 +250,7 @@
       "isFirstLevelComplete": true,
       "publishDate": "Nov 4, 2022",
       "tags": ["console", "doom", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-commodore64.png"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/commodore64_baremetal.png"
     },
     {
       "id": "1015",
@@ -528,7 +528,7 @@
       "isFirstLevelComplete": false,
       "publishDate": "Feb 29, 2024",
       "tags": ["doom", "baremetal", "accessories"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/commando64_with_rad.png"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/commodore_via_rad.png"
     }
   ]
 }
