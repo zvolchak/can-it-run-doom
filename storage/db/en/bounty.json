@@ -47,6 +47,16 @@
       "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/fender-mustang-lt25.png?raw=true",
       "requestors": [{ "name": "N/A", "date": "Sep 12, 2023" }],
       "claimedBy": []
+    },
+    {
+      "id": "5006",
+      "title": "Can a 1987 Toshiba3200 laptop run doom?",
+      "model": "Toshiba 3200",
+      "description": "",
+      "tags": ["baremetal", "laptop"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/toshiba3200.png?raw=true",
+      "requestors": [{ "name": "N/A", "date": "Feb 22, 2024" }],
+      "claimedBy": []
     }
   ]
 }
