@@ -250,7 +250,7 @@
       "isFirstLevelComplete": true,
       "publishDate": "Nov 4, 2022",
       "tags": ["console", "doom", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-commodore64.png"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/commodore64_baremetal.png"
     },
     {
       "id": "1015",
@@ -478,6 +478,57 @@
       "publishDate": "Feb 4, 2023",
       "tags": ["doom", "baremetal", "drone"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-drone-radio-controller.png"
+    },
+    {
+      "id": "1028",
+      "title": "Doom played over audio and displayed as spectrogram.",
+      "description": "The game is displayed by generating an audio signal that can be viewed as a spectrogram, while input is taken from the microphone, with specific frequencies being mapped to specific keys.",
+      "authors": [
+        {
+          "name": "wojtek-graj",
+          "url": "https://www.reddit.com/user/wojtek-graj"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1aop9xc/doom_is_playable_over_audio/"}],
+      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/wojciech-graj/doom-audio" }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Feb 11, 2024",
+      "tags": ["doom", "audio", "other"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-spectogram.png"
+    },
+    {
+      "id": "1029",
+      "title": "Doom on a toothbrush display over wifi",
+      "description": "",
+      "authors": [
+        {
+          "name": "atc1441 ",
+          "url": "https://www.reddit.com/user/atc1441/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1b2lgxw/doom_runs_on_wifi_toothbrush_without_hardware_mods/"},{ "name": "Youtube", "url": "https://youtu.be/cO-Are8053g?si=bGr9X-MeP6UTIyON"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Feb 28, 2024",
+      "tags": ["doom", "toothbrush", "medical", "wifi", "display"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/toothbrush.png"
+    },
+    {
+      "id": "1030",
+      "title": "Commodore 64 via the RAD Expansion Unit.",
+      "description": "The RAD Expansion Unit lets the C64 offload certain tasks to the CPU of a Raspberry Pi Zero 2W, which is installed via the cartridge port on the C64.",
+      "authors": [
+        {
+          "name": "wowbobwowj",
+          "url": "https://www.reddit.com/user/wowbobwow/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1b3iwlj/playing_doom_on_my_commodore_64_via_the_rad/"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Feb 29, 2024",
+      "tags": ["doom", "baremetal", "accessories"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/commodore_via_rad.png"
     }
   ]
 }

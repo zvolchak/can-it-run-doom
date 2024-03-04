@@ -250,7 +250,7 @@
       "isFirstLevelComplete": true,
       "publishDate": "Nov 4, 2022",
       "tags": ["console", "doom", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-commodore64.png"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/commodore64_baremetal.png"
     },
     {
       "id": "1015",
@@ -481,37 +481,54 @@
     },
     {
       "id": "1028",
-      "title": "Flipper Zero - a portable multi-tool hacking device.",
-      "description": "Basing of another Doom por for the Arduino Nano, author managed to run it on the Flipper Zero device that has 1.4 inch monochrome LCD display (128x64px). ",
+      "title": "Doom played over audio and displayed as spectrogram.",
+      "description": "The game is displayed by generating an audio signal that can be viewed as a spectrogram, while input is taken from the microphone, with specific frequencies being mapped to specific keys.",
       "authors": [
         {
-          "name": "xoreo@p4nic4ttack",
-          "url": "https://github.com/p4nic4ttack"
+          "name": "wojtek-graj",
+          "url": "https://www.reddit.com/user/wojtek-graj"
         }
       ],
-      "sourcesUrl": [{ "name": "Youtube", "url": "https://www.youtube.com/watch?v=lbNFdDEDLy0&t=57s&ab_channel=ts"}],
-      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/p4nic4ttack/doom-flipper-zero" }],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1aop9xc/doom_is_playable_over_audio/"}],
+      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/wojciech-graj/doom-audio" }],
       "isFirstLevelComplete": false,
-      "publishDate": "Aug 26, 2022",
-      "tags": ["doom", "baremetal", "display", "portable", "other"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/flipper-zero.png"
+      "publishDate": "Feb 11, 2024",
+      "tags": ["doom", "audio", "other"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-spectogram.png"
     },
     {
       "id": "1029",
-      "title": "Gut Bacteria (E. Coli) as a display for Doom.",
-      "description": "MIT biotechnology PhD student researcher Lauren 'Ren' Ramlan used illuminated E.Coli, that could be 'trained' to simulate a black-and-white 32x48 image. It takes about 8 hours and 20 minutes to 'render' a single frame.",
+      "title": "Doom on a toothbrush display over wifi",
+      "description": "",
       "authors": [
         {
-          "name": "Lauren Ramlan",
-          "url": "https://www.youtube.com/@laurenramlan990"
+          "name": "atc1441 ",
+          "url": "https://www.reddit.com/user/atc1441/"
         }
       ],
-      "sourcesUrl": [{ "name": "Written Report", "url": "https://docs.google.com/document/d/1SFm1dS6myqq7psBKttP7CVYN4jO66lOp7ZMA829c_hc/edit"}, { "name": "Youtube", "url": "https://youtu.be/8DnoOOgYxck?t=298"}],
-      "sourceCodeUrl": [{ "name": "Colab", "url": "https://colab.research.google.com/drive/1ZnWzeqKxjQSK2VTnfFzna0mFfseVMsZR?usp=sharing" }],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1b2lgxw/doom_runs_on_wifi_toothbrush_without_hardware_mods/"},{ "name": "Youtube", "url": "https://youtu.be/cO-Are8053g?si=bGr9X-MeP6UTIyON"}],
+      "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
-      "publishDate": "Dec 7, 2023",
-      "tags": ["doom", "biology", "display", "other"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/e-coli-display.png"
+      "publishDate": "Feb 28, 2024",
+      "tags": ["doom", "toothbrush", "medical", "wifi", "display"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/toothbrush.png"
+    },
+    {
+      "id": "1030",
+      "title": "Commodore 64 via the RAD Expansion Unit.",
+      "description": "The RAD Expansion Unit lets the C64 offload certain tasks to the CPU of a Raspberry Pi Zero 2W, which is installed via the cartridge port on the C64.",
+      "authors": [
+        {
+          "name": "wowbobwowj",
+          "url": "https://www.reddit.com/user/wowbobwow/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1b3iwlj/playing_doom_on_my_commodore_64_via_the_rad/"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Feb 29, 2024",
+      "tags": ["doom", "baremetal", "accessories"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/commodore_via_rad.png"
     }
   ]
 }

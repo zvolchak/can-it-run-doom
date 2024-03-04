@@ -75,7 +75,7 @@ export const proxyToArray = (target: any): any => {
   const values = Object.values(JSON.parse(JSON.stringify(target)))
   // @ts-ignore
   return values.sort((a: any, b: any) =>
-    dayjs(a.publishDate).isAfter(dayjs(b.publishDate))
+    dayjs(b.publishDate).isAfter(dayjs(a.publishDate))
   )
 } // proxyToArray
 

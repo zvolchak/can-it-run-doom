@@ -87,7 +87,7 @@ const numberOfPages = computed(() =>
   Math.round(filteredBeforePagination.value.length / numberOfItemsPerPage.value)
 )
 const bountyDbLink = computed(() =>
-  `https://github.com/zvolchak/can-it-run-doom/blob/main/storage/db/${i18n.locale}/bounty.db`
+  `https://github.com/zvolchak/can-it-run-doom/blob/main/storage/db/${i18n.locale.value}/bounty.json`
   )
 const currentLocale = computed(() => uxStore.value.currentLocale)
 
