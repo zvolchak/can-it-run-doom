@@ -5,7 +5,7 @@ nav.bg-gray-800
       .flex.flex-shrink-0.items-center
         img.block.h-16.w-auto(src="/favicon.ico" alt="can it run doom?")
 
-      .flex.flex-1.items-center.justify-center(class="sm:items-stretch sm:justify-start")
+      .flex.flex-3.items-center.justify-center(class="sm:items-stretch sm:justify-start")
         .flex.space-x-4.pl-10
           router-link.nav-btn.bg-gray-900e(
             v-for="r in routes"
@@ -25,12 +25,21 @@ nav.bg-gray-800
             @click="setLocale(locale)"
           ) {{locale.toUpperCase()}}
 
-        img.block.h-6.w-auto.source-code(
-          class="sm:ml-4"
-          src="@/assets/icons/github-mark-white.png"
-          alt="source code?"
-          @click="onSourceCodeClick"
-        )
+        .w-12.nav-icon
+          img.block.h-6.w-auto.rounded-full(
+            class="sm:ml-4"
+            src="@/assets/icons/github-mark-white.png"
+            alt="source code?"
+            @click="onSourceCodeClick"
+          )
+
+        .w-12.nav-icon
+          img.block.h-6.w-auto.rounded-full(
+            class="sm:ml-4"
+            src="@/assets/icons/discord-48.png"
+            alt="discord server"
+            @click="onJoinDiscordClick"
+          )
 
 </template>
 
@@ -73,6 +82,13 @@ function onSourceCodeClick() {
   window.open(url, '_blank')
 }
 
+
+function onJoinDiscordClick() {
+  // @ts-ignore
+  const url = import.meta.env.VITE_DISCORD_URL
+  window.open(url, '_blank')
+}
+
 </script>
 
 
@@ -112,12 +128,20 @@ function onSourceCodeClick() {
   }
 }
 
-.source-code {
+.nav-icon {
   cursor: pointer;
-  transition: 0.1s ease-in, 0.4s ease-out;
 
-  &:hover {
+  img {
+    transition: 0.1s ease-in, 0.2s ease-out;
+  }
+
+  .text {
+    opacity: 0;
+  }
+
+  &:hover > img {
     box-shadow: $doomBoxShadowDanger;
+    height: 1.8rem;
   }
 }
 </style>

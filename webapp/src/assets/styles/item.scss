@@ -16,10 +16,20 @@ a {
 
 .item-container {
   height: 16rem;
-  transition: 0.1s ease-in, 0.4s ease-out;
+  transition: 0.1s ease-in-out;
 
   &:hover > .doom-card, &:hover > .image-preview > img {
     box-shadow: $doomBoxShadowDanger;
+  }
+
+  // &:hover >.doom-card {
+  //   transform: scale(1.02);
+  // }
+
+  &:hover > .image-preview {
+    position: relative;
+    transform: scale(1.04);
+    margin-right: 8px;
   }
 }
 

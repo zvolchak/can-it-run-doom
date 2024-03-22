@@ -529,6 +529,23 @@
       "publishDate": "Feb 29, 2024",
       "tags": ["doom", "baremetal", "accessories"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/commodore_via_rad.png"
+    },
+    {
+      "id": "1031",
+      "title": "Hyperscan console runs Doom demo.",
+      "description": "It is not yet fully playable, but it can still run a Doom demo from within the game itself.",
+      "authors": [
+        {
+          "name": "Hyperscandev",
+          "url": "https://www.reddit.com/user/Hyperscandev/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1bkia19/mattel_hyperscan_running_doom_demos/"}, { "name": "Youtube", "url": "https://youtu.be/8pIFYUJNJwI?si=00C5MOV1o_yS-GRm"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Mar 21, 2024",
+      "tags": ["doom", "demo", "console"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/hyperscan-console.png"
     }
   ]
 }
