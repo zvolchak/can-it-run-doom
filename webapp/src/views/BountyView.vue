@@ -22,6 +22,7 @@
       :targetModel="item.model"
       @tagClicked="onTagClicked"
     )
+
     template(v-slot:afterSearch)
       .flex.justify-center
         .flex.flex-wrap.gap-1(
