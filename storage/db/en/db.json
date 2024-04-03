@@ -546,6 +546,40 @@
       "publishDate": "Mar 21, 2024",
       "tags": ["doom", "demo", "console"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/hyperscan-console.png"
+    },
+    {
+      "id": "1032",
+      "title": "Flipper Zero",
+      "description": "Runs on a 'doom-nano' port for Arduino Nano - a raycasting enging using Doom sprites. Not an id Tech 1 Engine.",
+      "authors": [
+        {
+          "name": "p4nic4ttack",
+          "url": "https://github.com/p4nic4ttack"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://www.youtube.com/watch?v=AvYe3_3qRnA&ab_channel=ornotermes"}],
+      "sourceCodeUrl": [{ "name": "doom-flipper-zero", "url": "https://github.com/p4nic4ttack/doom-flipper-zero"}],
+      "isFirstLevelComplete": false,
+      "publishDate": "Aug 26, 2022",
+      "tags": ["doom-nano", "baremetal", "custom-engine", "device", "other"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/flipper-zero.png"
+    },
+    {
+      "id": "1033",
+      "title": "A 3d raycast engine for Arduino Nano.",
+      "description": "The engine is not an id Tech 1 Engine, but a custome one similar to Wolfeistein  3D.",
+      "authors": [
+        {
+          "name": "daveruiz",
+          "url": "https://github.com/daveruiz"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube part 1", "url": "https://www.youtube.com/watch?v=FX7PQtUAkHk&ab_channel=DavidRuizGuti%C3%A9rrez"}, { "name": "Youtube part 2", "url": "https://www.youtube.com/watch?v=wJG04DSo7Xw&ab_channel=DavidRuizGuti%C3%A9rrez"}],
+      "sourceCodeUrl": [{ "name": "doom-nano", "url": "https://github.com/daveruiz/doom-nano/"}],
+      "isFirstLevelComplete": false,
+      "publishDate": "Apr 29, 2022",
+      "tags": ["doom", "baremetal", "custom-engine", "device", "other"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/arduino-nano.png"
     }
   ]
 }
