@@ -580,6 +580,23 @@
       "publishDate": "Apr 29, 2022",
       "tags": ["doom", "baremetal", "custom-engine", "device", "other"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/arduino-nano.png"
-    }
+    },
+    {
+        "id": "1034",
+        "title": "Cisco Email Security Appliance device.",
+        "description": "The Cisco C195 role is to act as an SMTP gateway on network perimeter. The author jailbroke it to run unintended - such as Doom.",
+        "authors": [
+            {
+                "name": "Aaron Thacker",
+                "url": "https://github.com/thackeraaron"
+            }
+        ],
+        "sourcesUrl": [{ "name": "LRQA Nettitude", "url": "https://labs.nettitude.com/blog/cve-2024-20356-jailbreaking-a-cisco-appliance-to-run-doom/"}],
+        "sourceCodeUrl": [{ "name": "nettitude/CVE-2024-20356", "url": "https://github.com/nettitude/CVE-2024-20356"}],
+        "isFirstLevelComplete": false,
+        "publishDate": "April 18, 2024",
+        "tags": ["doom", "baremetal", "office", "appliance"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/acisco-smtp-C195.png"
+      }
   ]
 }
