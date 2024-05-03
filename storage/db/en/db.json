@@ -600,8 +600,8 @@
       },
       {
         "id": "1035",
-        "title": "Doom powered by BIO-Ethanol Strinling-engine.",
-        "description": "A Strinling-engine provides a portion of needed power to run a Raspberry Pi, with additional needed power supplied by a power bank.",
+        "title": "Doom powered by BIO-Ethanol Stirling engine.",
+        "description": "A Stirling engine provides a portion of needed power to run a Raspberry Pi, with additional needed power supplied by a power bank.",
         "authors": [
             {
                 "name": "Kristof Kronenberg Zeidler",
