@@ -600,8 +600,8 @@
       },
       {
         "id": "1035",
-        "title": "Doom powered by BIO-Ethanol Strinling-engine.",
-        "description": "A Strinling-engine provides a portion of needed power to run a Raspberry Pi, with additional needed power supplied by a power bank.",
+        "title": "Doom powered by BIO-Ethanol Stirling engine.",
+        "description": "A Stirling engine provides a portion of needed power to run a Raspberry Pi, with additional needed power supplied by a power bank.",
         "authors": [
             {
                 "name": "Kristof Kronenberg Zeidler",
@@ -613,7 +613,7 @@
         "isFirstLevelComplete": false,
         "publishDate": "April 21, 2024",
         "tags": ["chocolate doom", "other", "power source"],
-        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/strinling-engine-power-source.png"
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/stirling-engine-power-source.png"
       }
   ]
 }
