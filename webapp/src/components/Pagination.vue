@@ -8,7 +8,7 @@
   .page-link(
     v-if="numberOfPages > 1"
     v-for="i in getRange()"
-    :class="i === currentPage ? 'active' : ''"
+    :class="getPageClass(i)"
     @click="onChangePage(i)"
   ) {{i}}
 
@@ -33,7 +33,10 @@ const { currentPage, numberOfPages } = toRefs(props)
 const route = useRouter()
 
 
-function onChangePage(page: number) {
+function onChangePage(page: number | string) {
+  if (typeof(page) !== 'number')
+    return
+
   if (page <= 1)
     page = 1
   if (page >= numberOfPages.value)
@@ -45,23 +48,39 @@ function onChangePage(page: number) {
 
 // I'm not proud of this function.
 function getRange() {
-  let range = [currentPage.value, currentPage.value, currentPage.value]
+  let maxRange = 2
+  if (currentPage.value > 2)
+    maxRange = 1
+  if (currentPage.value >= numberOfPages.value - 1)
+    maxRange = 2
 
-  if (range[0] <= 1)
-    range[0] = 0
-  if (range[0] - 1 > 1)
-    range[0] = range[0] - 1
+  let range: any[] = []
 
-  if (range[1] <= 1 || range[1] == numberOfPages.value) range[1] = 0
+  for (let i = -maxRange; i <= maxRange; i++) {
+    const page = currentPage.value + i
+    if (page <= 1)
+      continue
+    if (page >= numberOfPages.value)
+      continue
 
-  if (range[2] + 1 <= numberOfPages.value - 1)
-    range[2] = range[2] + 1
-  else
-    range[2] = 0
+    range.push(page)
+  }
 
-  range = range.filter(i => i > 0)
+  if (currentPage.value - maxRange > 2)
+    range.splice(0, 0, '...')
+  if (currentPage.value + maxRange < numberOfPages.value - 1)
+    range.splice(range.length, 0, '...')
 
-  return new Set([1, ...range, numberOfPages.value])
+  return [1, ...range,  numberOfPages.value]
+}
+
+
+function getPageClass(page: string | number) {
+  if (typeof(page) === 'string')
+    return 'disabled'
+  if (page === currentPage.value)
+    return 'active'
+  return ''
 }
 
 </script>
