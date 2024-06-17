@@ -635,14 +635,14 @@
       {
         "id": "1037",
         "title": "Doom on Desmos Graphing Calculator",
-        "description": "Using a iPhantom3D python converter, author transpiled Doom gameplay frames into Desmos graphs. A single frame would take up to 1 minute to render - so playing it real time would be at about 1 fps. To make a 1 minute gameplay video, it took 4 days to manually stiching the screenshots of each frame in video editor to make it look like a 30 fps gameplay.",
+        "description": "Using an image/video to Desmos graph converter written by Junfermo, author transpiled Doom gameplay frames into the Desmos graphs. A single frame would take up to 1 minute to render - so playing it real time would be at about 1 fps. To make a 1 minute gameplay video, it took 4 days to manually stiching the screenshots of each frame in video editor making it feel like a 30 fps gameplay.",
         "authors": [
             {
-                "name": "A10",
+                "name": "SairA10",
                 "url": "https://www.reddit.com/user/A1042/"
             }
         ],
-        "sourcesUrl": [{ "name": "TikTop", "url": "https://www.tiktok.com/@sairadies/video/7376450666522381573"}],
+        "sourcesUrl": [{ "name": "TikTok", "url": "https://www.tiktok.com/@sairadies/video/7376450666522381573" }, { "name": "DesmosBezierRenderer", "url": "https://github.com/kevinjycui/DesmosBezierRenderer" }],
         "sourceCodeUrl": null,
         "isFirstLevelComplete": false,
         "publishDate": "June 4, 2024",
@@ -655,8 +655,8 @@
         "description": "It runs and shoots on the Lego EV3 screen.",
         "authors": [
             {
-                "name": "grubbyplaya",
-                "url": "https://www.reddit.com/user/grubbyplaya/"
+                "name": "Seva167",
+                "url": "https://github.com/Seva167"
             }
         ],
         "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1csv9xw/doom_running_on_the_lego_mindstorms_ev3/#lightbox"}],
