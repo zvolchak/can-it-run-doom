@@ -141,20 +141,25 @@
     {
       "id": "1009",
       "title": "Digital Camera: Kodak dc210 (1998)",
-      "description": "Running doom on the 1998 digital camera. For timeline reference, original doom was released in 1993 at required a relatively high-performance i486 processor to run it on PC., with 8MB of RAM.",
+      "description": "Running doom on a digital 1998 Kodak camera.",
       "authors": [
         {
-          "name": "Clint Basinger (LGR)",
-          "url": "https://www.youtube.com/@LGR/about"
+          "name": "James Surine",
+          "url": "https://github.com/plaidpants"
         }
       ],
-      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/7gCZZkBATSc"}],
-      "sourceCodeUrl": [{
+      "sourcesUrl": [{ "name": "Youtube (LGR)", "url": "https://youtu.be/7gCZZkBATSc"}],
+      "sourceCodeUrl": [
+        {
+          "name": "MAMED!",
+          "url": "https://plaidpants.github.io/mamed/download.htm"
+        },
+        {
         "name": "Web.archive.org",
         "url": "https://web.archive.org/web/20010613100345/http://digita.mame.net:80/download.htm"
       }],
       "isFirstLevelComplete": true,
-      "publishDate": "Nov 29, 2019",
+      "publishDate": "Jul 7, 2000",
       "tags": ["digital camera", "doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-camera-kodak-dc210.png"
     },
@@ -597,6 +602,108 @@
         "publishDate": "April 18, 2024",
         "tags": ["doom", "baremetal", "office", "appliance"],
         "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/cisco-smtp-C195.png"
+      },
+      {
+        "id": "1035",
+        "title": "Doom powered by BIO-Ethanol Stirling engine.",
+        "description": "A Stirling engine provides a portion of needed power to run a Raspberry Pi, with additional needed power supplied by a power bank.",
+        "authors": [
+            {
+                "name": "Kristof Kronenberg Zeidler",
+                "url": "http://the-nerd.org/"
+            }
+        ],
+        "sourcesUrl": [{ "name": "The-nerd.org", "url": "http://the-nerd.org/"}, { "name": "Youtube", "url": "https://youtu.be/xumymnzufhU?feature=shared"}],
+        "sourceCodeUrl": null,
+        "isFirstLevelComplete": false,
+        "publishDate": "April 21, 2024",
+        "tags": ["chocolate doom", "other", "power source"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/stirling-engine-power-source.png"
+      },
+      {
+        "id": "1036",
+        "title": "Candy of Doom",
+        "description": "Adafruit System that looks like Milky Way runing doom. Seems like a pre-recorded or a demo - since there are no buttons to control the game.",
+        "authors": [
+            {
+                "name": "Adafruit Industries",
+                "url": "https://www.youtube.com/@adafruit"
+            }
+        ],
+        "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/6V_ofcX9cic?si=7fSfb3xL1pjnQzXq"}],
+        "sourceCodeUrl": null,
+        "isFirstLevelComplete": false,
+        "publishDate": "Oct 21, 2022",
+        "tags": ["demo", "recording", "other"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/candy-of-doom.png"
+      },
+      {
+        "id": "1037",
+        "title": "Doom on Desmos Graphing Calculator",
+        "description": "Using an image/video to Desmos graph converter written by Junfermo, author transpiled Doom gameplay frames into the Desmos graphs. A single frame would take up to 1 minute to render - so playing it real time would be at about 1 fps. To make a 1 minute gameplay video, it took 4 days to manually stiching the screenshots of each frame in video editor making it feel like a 30 fps gameplay.",
+        "authors": [
+            {
+                "name": "SairA10",
+                "url": "https://www.reddit.com/user/A1042/"
+            }
+        ],
+        "sourcesUrl": [{ "name": "TikTok", "url": "https://www.tiktok.com/@sairadies/video/7376450666522381573" }, { "name": "DesmosBezierRenderer", "url": "https://github.com/kevinjycui/DesmosBezierRenderer" }],
+        "sourceCodeUrl": null,
+        "isFirstLevelComplete": false,
+        "publishDate": "June 4, 2024",
+        "tags": ["calculator", "rendering", "other"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/desmos-doom.png"
+      },
+      {
+        "id": "1038",
+        "title": "Lego Mindstorms EV3 bricks",
+        "description": "It runs and shoots on the Lego EV3 screen.",
+        "authors": [
+            {
+                "name": "Seva167",
+                "url": "https://github.com/Seva167"
+            }
+        ],
+        "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1csv9xw/doom_running_on_the_lego_mindstorms_ev3/#lightbox"}],
+        "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/Seva167/ev3doom?tab=readme-ov-file"}],
+        "isFirstLevelComplete": false,
+        "publishDate": "May 15, 2024",
+        "tags": ["lego", "baremetal"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/lego-mindstorms-ev3.png"
+      },
+      {
+        "id": "1039",
+        "title": "Windows XP MS Paint",
+        "description": "The gameplay frames are painted into MS Paint at about 1-2.5 minutes per frame.",
+        "authors": [
+            {
+                "name": "wojtek-graj",
+                "url": "https://www.reddit.com/user/wojtek-graj/"
+            }
+        ],
+        "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1cbi1b9/doom_is_playable_through_ms_paint/"}],
+        "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/wojciech-graj/cydoomgeneric"}],
+        "isFirstLevelComplete": false,
+        "publishDate": "April 23, 2024",
+        "tags": ["rendering", "software"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/windows-xp-ms-paint.png"
+      },
+      {
+        "id": "1040",
+        "title": "Minecraft IRIS Redstone computer.",
+        "description": "Doom is running on the computer inside Minecraft. The screen uses retextured redstone dust and it runs at about 23fps.",
+        "authors": [
+            {
+                "name": "ModPunchtree",
+                "url": "https://www.reddit.com/user/ModPunchtree/"
+            }
+        ],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/_SvLXy74Jr4?si=T5vvC-p1QpxIrDU7"}],
+        "sourceCodeUrl": null,
+        "isFirstLevelComplete": false,
+        "publishDate": "April 7, 2024",
+        "tags": ["rendering", "software", "minecraft", "baremetal"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/minecraft-iris-redstone.png"
       }
   ]
 }
