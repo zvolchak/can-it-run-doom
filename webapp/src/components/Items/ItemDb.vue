@@ -13,7 +13,8 @@ Item(
       :href="author.url"
       :key="author.name"
       target="_blank"
-    ) {{props.authors.length > 1 && index !== 0 ? ',' : '' }} {{author.name}}
+    ) {{author.name}}
+      br.my-1(v-if="isUseComma(props.authors, index)")
       img.icon(src="@/assets/icons/doom-guy-look-left.png")
 
   MetadataField(
@@ -24,12 +25,13 @@ Item(
   MetadataField(
     :title="$t('item.header.sources') + ':'"
   )
-    a.relative.pr-2(
+    a.relative(
       v-if="props.sourcesUrl"
-      v-for="(source) in props.sourcesUrl"
+      v-for="(source, index) in props.sourcesUrl"
       :href="source.url" target="_blank"
       :key="source.url"
     ) {{source.name}}
+      br.my-1(v-if="isUseComma(props.sourcesUrl, index)")
       img.icon(src="@/assets/icons/doom-guy-grin.png")
 
     p.no-text-shadow(v-else) {{ $t('common.na') }}
@@ -39,10 +41,11 @@ Item(
   )
     a.relative(
       v-if="props.sourceCodeUrl"
-      v-for="source in props.sourceCodeUrl"
+      v-for="(source, index) in props.sourceCodeUrl"
       :href="source.url" target="_blank"
       :key="source.url"
     ) {{source.name}}
+      br.my-1(v-if="isUseComma(props.sourceCodeUrl, index)")
       img.icon(src="@/assets/icons/doom-guy-scream.png")
 
     p.no-text-shadow(v-else) {{ $t('common.na') }}
@@ -106,6 +109,10 @@ function getDomainFromUrl(url: string) {
 function onTagClicked(tagName: string) {
   emit('tagClicked', tagName)
 }
+
+function isUseComma(items: Array<any>, index: number) {
+  return items?.length > 1 && index < items?.length - 1
+}
 </script>
 
 
@@ -114,6 +121,8 @@ function onTagClicked(tagName: string) {
 
 a {
   transition: 0.1s linear;
+  padding-top: 2px;
+  padding-bottom: 2px;
 }
 
 a:hover {
