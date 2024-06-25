@@ -141,20 +141,20 @@
     {
       "id": "1009",
       "title": "Digital Camera: Kodak dc210 (1998)",
-      "description": "Running doom on the 1998 digital camera. For timeline reference, original doom was released in 1993 at required a relatively high-performance i486 processor to run it on PC., with 8MB of RAM.",
+      "description": "Running doom on a digital 1998 Kodak camera.",
       "authors": [
         {
-          "name": "Clint Basinger (LGR)",
-          "url": "https://www.youtube.com/@LGR/about"
+          "name": "James Surine",
+          "url": "https://github.com/plaidpants"
         }
       ],
-      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/7gCZZkBATSc"}],
+      "sourcesUrl": [{ "name": "Youtube (LGR)", "url": "https://youtu.be/7gCZZkBATSc"}],
       "sourceCodeUrl": [{
         "name": "Web.archive.org",
         "url": "https://web.archive.org/web/20010613100345/http://digita.mame.net:80/download.htm"
       }],
       "isFirstLevelComplete": true,
-      "publishDate": "Nov 29, 2019",
+      "publishDate": "Jul 7, 2000",
       "tags": ["digital camera", "doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-camera-kodak-dc210.png"
     },
