@@ -149,7 +149,12 @@
         }
       ],
       "sourcesUrl": [{ "name": "Youtube (LGR)", "url": "https://youtu.be/7gCZZkBATSc"}],
-      "sourceCodeUrl": [{
+      "sourceCodeUrl": [
+        {
+          "name": "MAMED!",
+          "url": "https://plaidpants.github.io/mamed/download.htm"
+        },
+        {
         "name": "Web.archive.org",
         "url": "https://web.archive.org/web/20010613100345/http://digita.mame.net:80/download.htm"
       }],
