@@ -704,6 +704,36 @@
         "publishDate": "April 7, 2024",
         "tags": ["rendering", "software", "minecraft", "baremetal"],
         "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/minecraft-iris-redstone.png"
+      },
+      {
+        "id": "1041",
+        "title": "Doom on a satellite (OPS-SAT)",
+        "description": "OPS-SAT is a satellite orbiting the Earth which purpose is to test and validate new techniques in mission control and on-board satellite systems. Since it doesn't have a graphics card and controlling its live would be problematic - instead, satellite ran a Doom demo within the game, while making periodical screenshots of the gameplay and sending them back to Earth.",
+        "authors": [{
+          "name": "Ólafur Waage",
+          "url": "https://www.youtube.com/@olafurw"
+        }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/w8AE_1wPJ7A?si=T9cRtYyaHCoJpUnZ"}],
+        "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/olafurw/opssat-doom" }],
+        "isFirstLevelComplete": true,
+        "publishDate": "Dec 28, 2023",
+        "tags": ["baremetal", "satellite", "chocolate doom", "doomgeneric", "demo"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/satellite-ops-sat.png"
+      },
+      {
+        "id": "1042",
+        "title": "On a custom game engine that overlaps Bad Apple above Doom.",
+        "description": "",
+        "authors": [{
+          "name": "Dupletor",
+          "url": "https://youtube.com/@dupletor"
+        }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/w8AE_1wPJ7A?si=T9cRtYyaHCoJpUnZ"}],
+        "sourceCodeUrl": null,
+        "isFirstLevelComplete": true,
+        "publishDate": "Aug 27, 2024",
+        "tags": ["rendering", "custom-engine", "other", "fun"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/bad-apples-overlay.png"
       }
   ]
 }
