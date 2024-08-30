@@ -716,7 +716,7 @@
         "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/w8AE_1wPJ7A?si=T9cRtYyaHCoJpUnZ"}],
         "sourceCodeUrl": null,
         "isFirstLevelComplete": true,
-        "publishDate": "August 27, 2024",
+        "publishDate": "Aug 27, 2024",
         "tags": ["rendering", "custom-engine", "other", "fun"],
         "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/bad-apples-overlay.png"
       },
@@ -727,13 +727,47 @@
         "authors": [{
           "name": "Ólafur Waage",
           "url": "https://www.youtube.com/@olafurw"
+        },
+        {
+          "name": "Georges Labreche",
+          "url": ""
         }],
-        "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/w8AE_1wPJ7A?si=T9cRtYyaHCoJpUnZ"}],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=zthssUIFG6c"}],
         "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/olafurw/opssat-doom" }],
         "isFirstLevelComplete": true,
-        "publishDate": "August 27, 2024",
+        "publishDate": "Aug 27, 2024",
         "tags": ["baremetal", "satellite", "chocolate doom", "doomgeneric", "demo"],
         "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/satellite-ops-sat.png"
+      },
+      {
+        "id": "1043",
+        "title": "Doom as Neural Model",
+        "description": "GameNGen - the first game engine powered entirely by a neural model that enables real-time interaction with a complex environment over long trajectories at high quality. The engine can interactively simulate the classic game DOOM at over 20 frames per second on a single TPU.",
+        "authors": [{
+          "name": "Dani Valevski",
+          "url": "https://www.linkedin.com/in/dani-valevski-a3b5936/"
+        },
+        {
+          "name": "Yaniv Leviathan",
+          "url": "https://yanivle.github.io/"
+        },
+        {
+          "name": "Moab Arar",
+          "url": "https://moabarar.github.io/"
+        },
+        {
+          "name": "Shlomi Fruchter",
+          "url": "https://shlomifruchter.github.io/"
+        }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/O3616ZFGpqw?si=_tsgF8lAwEKNFdga"}],
+        "sourceCodeUrl": [
+          { "name": "Gamengen", "url": "https://gamengen.github.io/"},
+          { "name": "page", "url": "https://arxiv.org/pdf/2408.14837"}
+        ],
+        "isFirstLevelComplete": false,
+        "publishDate": "Aug 27A, 2024",
+        "tags": ["custom-engine", "machine-learning", "ml", "rendering"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/gamengen-rendering.png"
       }
   ]
 }

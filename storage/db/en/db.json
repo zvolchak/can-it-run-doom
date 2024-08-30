@@ -707,21 +707,6 @@
       },
       {
         "id": "1041",
-        "title": "Doom on a satellite (OPS-SAT)",
-        "description": "OPS-SAT is a satellite orbiting the Earth which purpose is to test and validate new techniques in mission control and on-board satellite systems. Since it doesn't have a graphics card and controlling its live would be problematic - instead, satellite ran a Doom demo within the game, while making periodical screenshots of the gameplay and sending them back to Earth.",
-        "authors": [{
-          "name": "Ólafur Waage",
-          "url": "https://www.youtube.com/@olafurw"
-        }],
-        "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/w8AE_1wPJ7A?si=T9cRtYyaHCoJpUnZ"}],
-        "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/olafurw/opssat-doom" }],
-        "isFirstLevelComplete": true,
-        "publishDate": "Dec 28, 2023",
-        "tags": ["baremetal", "satellite", "chocolate doom", "doomgeneric", "demo"],
-        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/satellite-ops-sat.png"
-      },
-      {
-        "id": "1042",
         "title": "On a custom game engine that overlaps Bad Apple above Doom.",
         "description": "",
         "authors": [{
@@ -734,6 +719,55 @@
         "publishDate": "Aug 27, 2024",
         "tags": ["rendering", "custom-engine", "other", "fun"],
         "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/bad-apples-overlay.png"
+      },
+      {
+        "id": "1042",
+        "title": "Doom on a satellite (OPS-SAT)",
+        "description": "OPS-SAT is a satellite orbiting the Earth which purpose is to test and validate new techniques in mission control and on-board satellite systems. Since it doesn't have a graphics card and controlling its live would be problematic - instead, satellite ran a Doom demo within the game, while making periodical screenshots of the gameplay and sending them back to Earth.",
+        "authors": [{
+          "name": "Ólafur Waage",
+          "url": "https://www.youtube.com/@olafurw"
+        },
+        {
+          "name": "Georges Labreche",
+          "url": ""
+        }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=zthssUIFG6c"}],
+        "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/olafurw/opssat-doom" }],
+        "isFirstLevelComplete": true,
+        "publishDate": "Aug 27, 2024",
+        "tags": ["baremetal", "satellite", "chocolate doom", "doomgeneric", "demo"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/satellite-ops-sat.png"
+      },
+      {
+        "id": "1043",
+        "title": "Doom as Neural Model",
+        "description": "GameNGen - the first game engine powered entirely by a neural model that enables real-time interaction with a complex environment over long trajectories at high quality. The engine can interactively simulate the classic game DOOM at over 20 frames per second on a single TPU.",
+        "authors": [{
+          "name": "Dani Valevski",
+          "url": "https://www.linkedin.com/in/dani-valevski-a3b5936/"
+        },
+        {
+          "name": "Yaniv Leviathan",
+          "url": "https://yanivle.github.io/"
+        },
+        {
+          "name": "Moab Arar",
+          "url": "https://moabarar.github.io/"
+        },
+        {
+          "name": "Shlomi Fruchter",
+          "url": "https://shlomifruchter.github.io/"
+        }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/O3616ZFGpqw?si=_tsgF8lAwEKNFdga"}],
+        "sourceCodeUrl": [
+          { "name": "Gamengen", "url": "https://gamengen.github.io/"},
+          { "name": "page", "url": "https://arxiv.org/pdf/2408.14837"}
+        ],
+        "isFirstLevelComplete": false,
+        "publishDate": "Aug 27A, 2024",
+        "tags": ["custom-engine", "machine-learning", "ml", "rendering"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/gamengen-rendering.png"
       }
   ]
 }
