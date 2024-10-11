@@ -68,21 +68,6 @@
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-calculator.png?raw=true"
     },
     {
-      "id": "1005",
-      "title": "A Toaster",
-      "description": "Three toasters used as controllers to play doom.",
-      "authors": [{
-        "name": "Vexal",
-        "url": "https://www.youtube.com/@vexal/about"
-      }],
-      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/vI7tWd7B3iI"}],
-      "sourceCodeUrl": null,
-      "isFirstLevelComplete": false,
-      "publishDate": "Jan 10, 2015",
-      "tags": ["controls", "brutal doom", "accessories"],
-      "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-on-toaster.png?raw=true"
-    },
-    {
       "id": "1006",
       "title": "Porsche 911: controls and display",
       "description": "Play doom on the car's screen. Honk to shoot and turn with the steering wheel.",
@@ -765,9 +750,40 @@
           { "name": "page", "url": "https://arxiv.org/pdf/2408.14837"}
         ],
         "isFirstLevelComplete": false,
-        "publishDate": "Aug 27A, 2024",
+        "publishDate": "Aug 27, 2024",
         "tags": ["custom-engine", "machine-learning", "ml", "rendering"],
         "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/gamengen-rendering.png"
+      },
+      {
+        "id": "1044",
+        "title": "Doom on a LED Billboard",
+        "description": "Doom on a truck mounted LED Billboard. This required lots of custom code to achieve, and a couple of custom Linux drivers, to be able to treat the sign as a large screen.",
+        "authors": [{
+          "name": "jgcertified",
+          "url": "https://www.youtube.com/@jgcertified"
+        }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=PxIGuMif1Nk"}],
+        "isFirstLevelComplete": false,
+        "publishDate": "July 28, 2014",
+        "tags": ["custom-drivers", "led-display"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-truck.png"
+      },
+      {
+        "id": "1045",
+        "title": "Doom on a building",
+        "description": "Playing Doom E1M1 on the Schönherz Mátrix - an annual event of showcasing mostly animations on a building. Doom is running on GZDoom and streamed through HDMI, but we only used the Mátrix as a display. It has a size of 22.5 x 28.5 meters, with a resolution of 26 x 32 pixels.",
+        "authors": [{
+            "name": "Zoltán Bugir",
+            "url": "https://github.com/zoli90/"
+          }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=eBSH0kA1RNQ&t=5287"}],
+        "sourceCodeUrl": [
+          { "name": "Mod and settings", "url": "https://github.com/zoli90/schonherz-doom"}
+        ],
+        "isFirstLevelComplete": true,
+        "publishDate": "Sept 29, 2024",
+        "tags": ["GZDoom", "led-display"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-building.png"
       }
   ]
 }
