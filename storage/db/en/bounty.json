@@ -57,6 +57,16 @@
       "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/toshiba3200.png?raw=true",
       "requestors": [{ "name": "N/A", "date": "Feb 22, 2024" }],
       "claimedBy": []
+    },
+    {
+      "id": "5007",
+      "title": "Can a lunii story telling box run doom?",
+      "model": "Lunii",
+        "description": "These devices are meant to tell stories but they have a screen to help select the story. Your mission, should you accept it, is to run doom on the device. This message will destroy itself in 5, 4, 3, ...",
+      "tags": ["baremetal", "gadget"],
+      "previewImage": "https://images.prismic.io/lunii/ZwU6SYF3NbkBXA32_Shop-Desktop-StorytellerBlue.jpg",
+      "requestors": [{ "name": "N/A", "date": "Oct 14, 2024" }],
+      "claimedBy": []
     }
   ]
 }
