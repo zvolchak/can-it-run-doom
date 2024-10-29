@@ -784,6 +784,23 @@
       "publishDate": "Sept 29, 2024",
       "tags": ["GZDoom", "led-display"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-building.png"
+      },
+      {
+        "id": "1046",
+        "title": "Using pharmacy cross led sign to render Doom.",
+        "description": "The game is running on a regular laptop, but the gameplay is rendered onto a pharmacy cross led sign.",
+        "authors": [{
+            "name": "Sylvqin",
+            "url": "https://www.youtube.com/@Sylvqin"
+          }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=ghh-28ln-z4&t=1961s"}],
+        "sourceCodeUrl": [
+          { "name": "Github", "url": "https://github.com/MathisHammel/CroixPharmacie"}
+        ],
+        "isFirstLevelComplete": false,
+        "publishDate": "Oct 20, 2024",
+        "tags": ["led-display", "display"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/pharmacy-cross-led-sign.png"
       }
   ]
 }
