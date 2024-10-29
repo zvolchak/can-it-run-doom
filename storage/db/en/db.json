@@ -572,235 +572,235 @@
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/arduino-nano.png"
     },
     {
-      "id": "1034",
-      "title": "Cisco Email Security Appliance device.",
-      "description": "The Cisco C195 role is to act as an SMTP gateway on network perimeter. The author jailbroke it to run unintended - such as Doom.",
-      "authors": [
-          {
-              "name": "Aaron Thacker",
-              "url": "https://github.com/thackeraaron"
-          }
-      ],
-      "sourcesUrl": [{ "name": "LRQA Nettitude", "url": "https://labs.nettitude.com/blog/cve-2024-20356-jailbreaking-a-cisco-appliance-to-run-doom/"}],
-      "sourceCodeUrl": [{ "name": "nettitude/CVE-2024-20356", "url": "https://github.com/nettitude/CVE-2024-20356"}],
-      "isFirstLevelComplete": false,
-      "publishDate": "April 18, 2024",
-      "tags": ["doom", "baremetal", "office", "appliance"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/cisco-smtp-C195.png"
-    },
-    {
-      "id": "1035",
-      "title": "Doom powered by BIO-Ethanol Stirling engine.",
-      "description": "A Stirling engine provides a portion of needed power to run a Raspberry Pi, with additional needed power supplied by a power bank.",
-      "authors": [
-          {
-              "name": "Kristof Kronenberg Zeidler",
-              "url": "http://the-nerd.org/"
-          }
-      ],
-      "sourcesUrl": [{ "name": "The-nerd.org", "url": "http://the-nerd.org/"}, { "name": "Youtube", "url": "https://youtu.be/xumymnzufhU?feature=shared"}],
-      "sourceCodeUrl": null,
-      "isFirstLevelComplete": false,
-      "publishDate": "April 21, 2024",
-      "tags": ["chocolate doom", "other", "power source"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/stirling-engine-power-source.png"
-    },
-    {
-      "id": "1036",
-      "title": "Candy of Doom",
-      "description": "Adafruit System that looks like Milky Way runing doom. Seems like a pre-recorded or a demo - since there are no buttons to control the game.",
-      "authors": [
-          {
-              "name": "Adafruit Industries",
-              "url": "https://www.youtube.com/@adafruit"
-          }
-      ],
-      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/6V_ofcX9cic?si=7fSfb3xL1pjnQzXq"}],
-      "sourceCodeUrl": null,
-      "isFirstLevelComplete": false,
-      "publishDate": "Oct 21, 2022",
-      "tags": ["demo", "recording", "other"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/candy-of-doom.png"
-    },
-    {
-      "id": "1037",
-      "title": "Doom on Desmos Graphing Calculator",
-      "description": "Using an image/video to Desmos graph converter written by Junfermo, author transpiled Doom gameplay frames into the Desmos graphs. A single frame would take up to 1 minute to render - so playing it real time would be at about 1 fps. To make a 1 minute gameplay video, it took 4 days to manually stiching the screenshots of each frame in video editor making it feel like a 30 fps gameplay.",
-      "authors": [
-          {
-              "name": "SairA10",
-              "url": "https://www.reddit.com/user/A1042/"
-          }
-      ],
-      "sourcesUrl": [{ "name": "TikTok", "url": "https://www.tiktok.com/@sairadies/video/7376450666522381573" }, { "name": "DesmosBezierRenderer", "url": "https://github.com/kevinjycui/DesmosBezierRenderer" }],
-      "sourceCodeUrl": null,
-      "isFirstLevelComplete": false,
-      "publishDate": "June 4, 2024",
-      "tags": ["calculator", "rendering", "other"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/desmos-doom.png"
-    },
-    {
-      "id": "1038",
-      "title": "Lego Mindstorms EV3 bricks",
-      "description": "It runs and shoots on the Lego EV3 screen.",
-      "authors": [
-          {
-              "name": "Seva167",
-              "url": "https://github.com/Seva167"
-          }
-      ],
-      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1csv9xw/doom_running_on_the_lego_mindstorms_ev3/#lightbox"}],
-      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/Seva167/ev3doom?tab=readme-ov-file"}],
-      "isFirstLevelComplete": false,
-      "publishDate": "May 15, 2024",
-      "tags": ["lego", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/lego-mindstorms-ev3.png"
-    },
-    {
-      "id": "1039",
-      "title": "Windows XP MS Paint",
-      "description": "The gameplay frames are painted into MS Paint at about 1-2.5 minutes per frame.",
-      "authors": [
-          {
-              "name": "wojtek-graj",
-              "url": "https://www.reddit.com/user/wojtek-graj/"
-          }
-      ],
-      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1cbi1b9/doom_is_playable_through_ms_paint/"}],
-      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/wojciech-graj/cydoomgeneric"}],
-      "isFirstLevelComplete": false,
-      "publishDate": "April 23, 2024",
-      "tags": ["rendering", "software"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/windows-xp-ms-paint.png"
-    },
-    {
-      "id": "1040",
-      "title": "Minecraft IRIS Redstone computer.",
-      "description": "Doom is running on the computer inside Minecraft. The screen uses retextured redstone dust and it runs at about 23fps.",
-      "authors": [
-          {
-              "name": "ModPunchtree",
-              "url": "https://www.reddit.com/user/ModPunchtree/"
-          }
-      ],
-      "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/_SvLXy74Jr4?si=T5vvC-p1QpxIrDU7"}],
-      "sourceCodeUrl": null,
-      "isFirstLevelComplete": false,
-      "publishDate": "April 7, 2024",
-      "tags": ["rendering", "software", "minecraft", "baremetal"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/minecraft-iris-redstone.png"
-    },
-    {
-      "id": "1041",
-      "title": "On a custom game engine that overlaps Bad Apple above Doom.",
-      "description": "",
-      "authors": [{
-        "name": "Dupletor",
-        "url": "https://youtube.com/@dupletor"
-      }],
-      "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/w8AE_1wPJ7A?si=T9cRtYyaHCoJpUnZ"}],
-      "sourceCodeUrl": null,
-      "isFirstLevelComplete": true,
-      "publishDate": "Aug 27, 2024",
-      "tags": ["rendering", "custom-engine", "other", "fun"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/bad-apples-overlay.png"
-    },
-    {
-      "id": "1042",
-      "title": "Doom on a satellite (OPS-SAT)",
-      "description": "OPS-SAT is a satellite orbiting the Earth which purpose is to test and validate new techniques in mission control and on-board satellite systems. Since it doesn't have a graphics card and controlling its live would be problematic - instead, satellite ran a Doom demo within the game, while making periodical screenshots of the gameplay and sending them back to Earth.",
-      "authors": [{
-        "name": "Ólafur Waage",
-        "url": "https://www.youtube.com/@olafurw"
+        "id": "1034",
+        "title": "Cisco Email Security Appliance device.",
+        "description": "The Cisco C195 role is to act as an SMTP gateway on network perimeter. The author jailbroke it to run unintended - such as Doom.",
+        "authors": [
+            {
+                "name": "Aaron Thacker",
+                "url": "https://github.com/thackeraaron"
+            }
+        ],
+        "sourcesUrl": [{ "name": "LRQA Nettitude", "url": "https://labs.nettitude.com/blog/cve-2024-20356-jailbreaking-a-cisco-appliance-to-run-doom/"}],
+        "sourceCodeUrl": [{ "name": "nettitude/CVE-2024-20356", "url": "https://github.com/nettitude/CVE-2024-20356"}],
+        "isFirstLevelComplete": false,
+        "publishDate": "April 18, 2024",
+        "tags": ["doom", "baremetal", "office", "appliance"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/cisco-smtp-C195.png"
       },
       {
-        "name": "Georges Labreche",
-        "url": ""
-      }],
-      "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=zthssUIFG6c"}],
-      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/olafurw/opssat-doom" }],
-      "isFirstLevelComplete": true,
-      "publishDate": "Aug 27, 2024",
-      "tags": ["baremetal", "satellite", "chocolate doom", "doomgeneric", "demo"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/satellite-ops-sat.png"
-    },
-    {
-      "id": "1043",
-      "title": "Doom as Neural Model",
-      "description": "GameNGen - the first game engine powered entirely by a neural model that enables real-time interaction with a complex environment over long trajectories at high quality. The engine can interactively simulate the classic game DOOM at over 20 frames per second on a single TPU.",
-      "authors": [{
-        "name": "Dani Valevski",
-        "url": "https://www.linkedin.com/in/dani-valevski-a3b5936/"
+        "id": "1035",
+        "title": "Doom powered by BIO-Ethanol Stirling engine.",
+        "description": "A Stirling engine provides a portion of needed power to run a Raspberry Pi, with additional needed power supplied by a power bank.",
+        "authors": [
+            {
+                "name": "Kristof Kronenberg Zeidler",
+                "url": "http://the-nerd.org/"
+            }
+        ],
+        "sourcesUrl": [{ "name": "The-nerd.org", "url": "http://the-nerd.org/"}, { "name": "Youtube", "url": "https://youtu.be/xumymnzufhU?feature=shared"}],
+        "sourceCodeUrl": null,
+        "isFirstLevelComplete": false,
+        "publishDate": "April 21, 2024",
+        "tags": ["chocolate doom", "other", "power source"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/stirling-engine-power-source.png"
       },
       {
-        "name": "Yaniv Leviathan",
-        "url": "https://yanivle.github.io/"
+        "id": "1036",
+        "title": "Candy of Doom",
+        "description": "Adafruit System that looks like Milky Way runing doom. Seems like a pre-recorded or a demo - since there are no buttons to control the game.",
+        "authors": [
+            {
+                "name": "Adafruit Industries",
+                "url": "https://www.youtube.com/@adafruit"
+            }
+        ],
+        "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/6V_ofcX9cic?si=7fSfb3xL1pjnQzXq"}],
+        "sourceCodeUrl": null,
+        "isFirstLevelComplete": false,
+        "publishDate": "Oct 21, 2022",
+        "tags": ["demo", "recording", "other"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/candy-of-doom.png"
       },
       {
-        "name": "Moab Arar",
-        "url": "https://moabarar.github.io/"
+        "id": "1037",
+        "title": "Doom on Desmos Graphing Calculator",
+        "description": "Using an image/video to Desmos graph converter written by Junfermo, author transpiled Doom gameplay frames into the Desmos graphs. A single frame would take up to 1 minute to render - so playing it real time would be at about 1 fps. To make a 1 minute gameplay video, it took 4 days to manually stiching the screenshots of each frame in video editor making it feel like a 30 fps gameplay.",
+        "authors": [
+            {
+                "name": "SairA10",
+                "url": "https://www.reddit.com/user/A1042/"
+            }
+        ],
+        "sourcesUrl": [{ "name": "TikTok", "url": "https://www.tiktok.com/@sairadies/video/7376450666522381573" }, { "name": "DesmosBezierRenderer", "url": "https://github.com/kevinjycui/DesmosBezierRenderer" }],
+        "sourceCodeUrl": null,
+        "isFirstLevelComplete": false,
+        "publishDate": "June 4, 2024",
+        "tags": ["calculator", "rendering", "other"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/desmos-doom.png"
       },
       {
-        "name": "Shlomi Fruchter",
-        "url": "https://shlomifruchter.github.io/"
-      }],
-      "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/O3616ZFGpqw?si=_tsgF8lAwEKNFdga"}],
-      "sourceCodeUrl": [
-        { "name": "Gamengen", "url": "https://gamengen.github.io/"},
-        { "name": "page", "url": "https://arxiv.org/pdf/2408.14837"}
-      ],
-      "isFirstLevelComplete": false,
-      "publishDate": "Aug 27, 2024",
-      "tags": ["custom-engine", "machine-learning", "ml", "rendering"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/gamengen-rendering.png"
-    },
-    {
-      "id": "1044",
-      "title": "Doom on a LED Billboard",
-      "description": "Doom on a truck mounted LED Billboard. This required lots of custom code to achieve, and a couple of custom Linux drivers, to be able to treat the sign as a large screen.",
-      "authors": [{
-        "name": "jgcertified",
-        "url": "https://www.youtube.com/@jgcertified"
-      }],
-      "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=PxIGuMif1Nk"}],
-      "isFirstLevelComplete": false,
-      "publishDate": "July 28, 2014",
-      "tags": ["custom-drivers", "led-display"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-truck.png"
-    },
-    {
-      "id": "1045",
-      "title": "Doom on a building",
-      "description": "Playing Doom E1M1 on the Schönherz Mátrix - an annual event of showcasing mostly animations on a building. Doom is running on GZDoom and streamed through HDMI, but we only used the Mátrix as a display. It has a size of 22.5 x 28.5 meters, with a resolution of 26 x 32 pixels.",
-      "authors": [{
-          "name": "Zoltán Bugir",
-          "url": "https://github.com/zoli90/"
+        "id": "1038",
+        "title": "Lego Mindstorms EV3 bricks",
+        "description": "It runs and shoots on the Lego EV3 screen.",
+        "authors": [
+            {
+                "name": "Seva167",
+                "url": "https://github.com/Seva167"
+            }
+        ],
+        "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1csv9xw/doom_running_on_the_lego_mindstorms_ev3/#lightbox"}],
+        "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/Seva167/ev3doom?tab=readme-ov-file"}],
+        "isFirstLevelComplete": false,
+        "publishDate": "May 15, 2024",
+        "tags": ["lego", "baremetal"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/lego-mindstorms-ev3.png"
+      },
+      {
+        "id": "1039",
+        "title": "Windows XP MS Paint",
+        "description": "The gameplay frames are painted into MS Paint at about 1-2.5 minutes per frame.",
+        "authors": [
+            {
+                "name": "wojtek-graj",
+                "url": "https://www.reddit.com/user/wojtek-graj/"
+            }
+        ],
+        "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1cbi1b9/doom_is_playable_through_ms_paint/"}],
+        "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/wojciech-graj/cydoomgeneric"}],
+        "isFirstLevelComplete": false,
+        "publishDate": "April 23, 2024",
+        "tags": ["rendering", "software"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/windows-xp-ms-paint.png"
+      },
+      {
+        "id": "1040",
+        "title": "Minecraft IRIS Redstone computer.",
+        "description": "Doom is running on the computer inside Minecraft. The screen uses retextured redstone dust and it runs at about 23fps.",
+        "authors": [
+            {
+                "name": "ModPunchtree",
+                "url": "https://www.reddit.com/user/ModPunchtree/"
+            }
+        ],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/_SvLXy74Jr4?si=T5vvC-p1QpxIrDU7"}],
+        "sourceCodeUrl": null,
+        "isFirstLevelComplete": false,
+        "publishDate": "April 7, 2024",
+        "tags": ["rendering", "software", "minecraft", "baremetal"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/minecraft-iris-redstone.png"
+      },
+      {
+        "id": "1041",
+        "title": "On a custom game engine that overlaps Bad Apple above Doom.",
+        "description": "",
+        "authors": [{
+          "name": "Dupletor",
+          "url": "https://youtube.com/@dupletor"
         }],
-      "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=eBSH0kA1RNQ&t=5287"}],
-      "sourceCodeUrl": [
-        { "name": "Mod and settings", "url": "https://github.com/zoli90/schonherz-doom"}
-      ],
-      "isFirstLevelComplete": true,
-      "publishDate": "Sept 29, 2024",
-      "tags": ["GZDoom", "led-display"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-building.png"
-    },
-    {
-      "id": "1046",
-      "title": "Using pharmacy cross led sign to render Doom.",
-      "description": "The game is running on a regular laptop, but the gameplay is rendered onto a pharmacy cross led sign.",
-      "authors": [{
-          "name": "Sylvqin",
-          "url": "https://www.youtube.com/@Sylvqin"
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/w8AE_1wPJ7A?si=T9cRtYyaHCoJpUnZ"}],
+        "sourceCodeUrl": null,
+        "isFirstLevelComplete": true,
+        "publishDate": "Aug 27, 2024",
+        "tags": ["rendering", "custom-engine", "other", "fun"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/bad-apples-overlay.png"
+      },
+      {
+        "id": "1042",
+        "title": "Doom on a satellite (OPS-SAT)",
+        "description": "OPS-SAT is a satellite orbiting the Earth which purpose is to test and validate new techniques in mission control and on-board satellite systems. Since it doesn't have a graphics card and controlling its live would be problematic - instead, satellite ran a Doom demo within the game, while making periodical screenshots of the gameplay and sending them back to Earth.",
+        "authors": [{
+          "name": "Ólafur Waage",
+          "url": "https://www.youtube.com/@olafurw"
+        },
+        {
+          "name": "Georges Labreche",
+          "url": ""
         }],
-      "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=ghh-28ln-z4&t=1961s"}],
-      "sourceCodeUrl": [
-        { "name": "Github", "url": "https://github.com/MathisHammel/CroixPharmacie"}
-      ],
-      "isFirstLevelComplete": false,
-      "publishDate": "Oct 20, 2024",
-      "tags": ["led-display", "display"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/pharmacy-cross-led-sign.png"
-    }
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=zthssUIFG6c"}],
+        "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/olafurw/opssat-doom" }],
+        "isFirstLevelComplete": true,
+        "publishDate": "Aug 27, 2024",
+        "tags": ["baremetal", "satellite", "chocolate doom", "doomgeneric", "demo"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/satellite-ops-sat.png"
+      },
+      {
+        "id": "1043",
+        "title": "Doom as Neural Model",
+        "description": "GameNGen - the first game engine powered entirely by a neural model that enables real-time interaction with a complex environment over long trajectories at high quality. The engine can interactively simulate the classic game DOOM at over 20 frames per second on a single TPU.",
+        "authors": [{
+          "name": "Dani Valevski",
+          "url": "https://www.linkedin.com/in/dani-valevski-a3b5936/"
+        },
+        {
+          "name": "Yaniv Leviathan",
+          "url": "https://yanivle.github.io/"
+        },
+        {
+          "name": "Moab Arar",
+          "url": "https://moabarar.github.io/"
+        },
+        {
+          "name": "Shlomi Fruchter",
+          "url": "https://shlomifruchter.github.io/"
+        }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://youtu.be/O3616ZFGpqw?si=_tsgF8lAwEKNFdga"}],
+        "sourceCodeUrl": [
+          { "name": "Gamengen", "url": "https://gamengen.github.io/"},
+          { "name": "page", "url": "https://arxiv.org/pdf/2408.14837"}
+        ],
+        "isFirstLevelComplete": false,
+        "publishDate": "Aug 27, 2024",
+        "tags": ["custom-engine", "machine-learning", "ml", "rendering"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/gamengen-rendering.png"
+      },
+      {
+        "id": "1044",
+        "title": "Doom on a LED Billboard",
+        "description": "Doom on a truck mounted LED Billboard. This required lots of custom code to achieve, and a couple of custom Linux drivers, to be able to treat the sign as a large screen.",
+        "authors": [{
+          "name": "jgcertified",
+          "url": "https://www.youtube.com/@jgcertified"
+        }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=PxIGuMif1Nk"}],
+        "isFirstLevelComplete": false,
+        "publishDate": "July 28, 2014",
+        "tags": ["custom-drivers", "led-display"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-truck.png"
+      },
+      {
+        "id": "1045",
+        "title": "Doom on a building",
+        "description": "Playing Doom E1M1 on the Schönherz Mátrix - an annual event of showcasing mostly animations on a building. Doom is running on GZDoom and streamed through HDMI, but we only used the Mátrix as a display. It has a size of 22.5 x 28.5 meters, with a resolution of 26 x 32 pixels.",
+        "authors": [{
+            "name": "Zoltán Bugir",
+            "url": "https://github.com/zoli90/"
+          }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=eBSH0kA1RNQ&t=5287"}],
+        "sourceCodeUrl": [
+          { "name": "Mod and settings", "url": "https://github.com/zoli90/schonherz-doom"}
+        ],
+        "isFirstLevelComplete": true,
+        "publishDate": "Sept 29, 2024",
+        "tags": ["GZDoom", "led-display"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-building.png"
+      },
+      {
+        "id": "1046",
+        "title": "Using pharmacy cross led sign to render Doom.",
+        "description": "The game is running on a regular laptop, but the gameplay is rendered onto a pharmacy cross led sign.",
+        "authors": [{
+            "name": "Sylvqin",
+            "url": "https://www.youtube.com/@Sylvqin"
+          }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=ghh-28ln-z4&t=1961s"}],
+        "sourceCodeUrl": [
+          { "name": "Github", "url": "https://github.com/MathisHammel/CroixPharmacie"}
+        ],
+        "isFirstLevelComplete": false,
+        "publishDate": "Oct 20, 2024",
+        "tags": ["led-display", "display"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/pharmacy-cross-led-sign.png"
+      }
   ]
 }

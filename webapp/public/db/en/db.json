@@ -754,36 +754,53 @@
         "tags": ["custom-engine", "machine-learning", "ml", "rendering"],
         "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/gamengen-rendering.png"
       },
-    {
-      "id": "1044",
-      "title": "Doom on a LED Billboard",
-      "description": "Doom on a truck mounted LED Billboard. This required lots of custom code to achieve, and a couple of custom Linux drivers, to be able to treat the sign as a large screen.",
-      "authors": [{
-        "name": "jgcertified",
-        "url": "https://www.youtube.com/@jgcertified"
-      }],
-      "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=PxIGuMif1Nk"}],
-      "isFirstLevelComplete": false,
-      "publishDate": "July 28, 2014",
-      "tags": ["custom-drivers", "led-display"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-truck.png"
-    },
-    {
-      "id": "1045",
-      "title": "Doom on a building",
-      "description": "Playing Doom E1M1 on the Schönherz Mátrix - an annual event of showcasing mostly animations on a building. Doom is running on GZDoom and streamed through HDMI, but we only used the Mátrix as a display. It has a size of 22.5 x 28.5 meters, with a resolution of 26 x 32 pixels.",
-      "authors": [{
-        "name": "Zoltán Bugir",
-        "url": "https://github.com/zoli90/"
-      }],
-      "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=eBSH0kA1RNQ&t=5287"}],
-      "sourceCodeUrl": [
-        { "name": "Mod and settings", "url": "https://github.com/zoli90/schonherz-doom"}
-      ],
-      "isFirstLevelComplete": true,
-      "publishDate": "Sept 29, 2024",
-      "tags": ["GZDoom", "led-display"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/bounty-lunii-story-telling-box.png"
+      {
+        "id": "1044",
+        "title": "Doom on a LED Billboard",
+        "description": "Doom on a truck mounted LED Billboard. This required lots of custom code to achieve, and a couple of custom Linux drivers, to be able to treat the sign as a large screen.",
+        "authors": [{
+          "name": "jgcertified",
+          "url": "https://www.youtube.com/@jgcertified"
+        }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=PxIGuMif1Nk"}],
+        "isFirstLevelComplete": false,
+        "publishDate": "July 28, 2014",
+        "tags": ["custom-drivers", "led-display"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-truck.png"
+      },
+      {
+        "id": "1045",
+        "title": "Doom on a building",
+        "description": "Playing Doom E1M1 on the Schönherz Mátrix - an annual event of showcasing mostly animations on a building. Doom is running on GZDoom and streamed through HDMI, but we only used the Mátrix as a display. It has a size of 22.5 x 28.5 meters, with a resolution of 26 x 32 pixels.",
+        "authors": [{
+            "name": "Zoltán Bugir",
+            "url": "https://github.com/zoli90/"
+          }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=eBSH0kA1RNQ&t=5287"}],
+        "sourceCodeUrl": [
+          { "name": "Mod and settings", "url": "https://github.com/zoli90/schonherz-doom"}
+        ],
+        "isFirstLevelComplete": true,
+        "publishDate": "Sept 29, 2024",
+        "tags": ["GZDoom", "led-display"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-building.png"
+      },
+      {
+        "id": "1046",
+        "title": "Using pharmacy cross led sign to render Doom.",
+        "description": "The game is running on a regular laptop, but the gameplay is rendered onto a pharmacy cross led sign.",
+        "authors": [{
+            "name": "Sylvqin",
+            "url": "https://www.youtube.com/@Sylvqin"
+          }],
+        "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=ghh-28ln-z4&t=1961s"}],
+        "sourceCodeUrl": [
+          { "name": "Github", "url": "https://github.com/MathisHammel/CroixPharmacie"}
+        ],
+        "isFirstLevelComplete": false,
+        "publishDate": "Oct 20, 2024",
+        "tags": ["led-display", "display"],
+        "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/pharmacy-cross-led-sign.png"
       }
   ]
 }
