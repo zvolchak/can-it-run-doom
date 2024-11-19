@@ -801,6 +801,22 @@
       "publishDate": "Oct 20, 2024",
       "tags": ["led-display", "display"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/pharmacy-cross-led-sign.png"
+    },
+    {
+      "id": "1047",
+      "title": "Using github contribution graph to render Doom. ",
+      "description": "The game is running on a regular laptop, but the gameplay is rendered onto the github contribution graph.",
+      "authors": [{
+          "name": "MathiasDPX",
+          "url": "https://github.com/MathiasDPX"
+        }],
+      "sourceCodeUrl": [
+        { "name": "GitHub", "url": "https://github.com/GH-DOOM/DOOM64"}
+      ],
+      "isFirstLevelComplete": true,
+      "publishDate": "Nov 04, 2024",
+      "tags": ["Doom64", "github"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-on-a-building.png"
     }
   ]
 }
