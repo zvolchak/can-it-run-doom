@@ -926,6 +926,22 @@
       "publishDate": "Sep 8, 2024",
       "tags": ["DoomGeneric", "rendering", "rimword", "fun", "mod"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/rimworld-tiles.png"
+    },
+    {
+      "id": "1053",
+      "title": "Doom on Ableton Push 3 Standalone",
+      "description": "Port of Doom to Push 3 Standalone, using the pads and buttons to control the game. Some of the button LEDs are used to show additional information about the game, namely health, armor, and ammunition. Sound playback via portable speaker connected to the device's headphone out.",
+      "authors": [{
+          "name": "lethalguitar128",
+          "url": "https://www.youtube.com/@lethal_guitar"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/Mk8t_wufi4k?si=qcmBspe6HFmA2Ih4"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": true,
+      "publishDate": "Nov 5, 2024",
+      "tags": ["baremetal", "media", "controls"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/ableton-push-3-standalone.png"
     }
   ]
 }
