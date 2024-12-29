@@ -24,15 +24,22 @@ jobs:
       run: npm install -g firebase-tools
 
     - name: Authenticate Google Cloud
-      uses: FirebaseExtended/action-hosting-deploy@v0
+      uses: google-github-actions/auth@v2
       with:
-        firebaseServiceAccount: ${{ secrets.GCLOUD_SERVICE_KEY }}
-        projectId: ${{ secrets.GCP_PROJECT_ID }}
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        credentials_json: ${{ secrets.GCLOUD_SERVICE_KEY }}
+
+    - name: Configure Firebase Authentication
+      run: |
+        gcloud config set project ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Install npm dependencies
       run: |
         cd ./webapp
         npm ci
+        cd -
 
     - name: Deploy to Firebase Hosting
-      run: firebase deploy --only hosting --project ${{ secrets.GCP_PROJECT_ID }}
+      run: |
+        cd firebase/
+        firebase deploy --only hosting --project ${{ secrets.GCP_PROJECT_ID }}
