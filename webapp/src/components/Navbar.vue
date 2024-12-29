@@ -57,7 +57,7 @@ const currentLocale = computed(() => uxStore.value.currentLocale)
 
 const routes = [
   { localeVar: 'buttons.routes.home',  name: 'Home', path: '/' },
-  { localeVar: 'buttons.routes.bounty',  name: 'Bounty', path: '/bounty' },
+  // { localeVar: 'buttons.routes.bounty',  name: 'Bounty', path: '/bounty' },
 ]
 
 const i18n = useI18n()
