@@ -23,9 +23,6 @@ jobs:
     - name: Install Firebase CLI
       run: npm install -g firebase-tools
 
-    - name: Verify Secrets
-      run: echo "${{ secrets.GCLOUD_SERVICE_KEY }}" | head -c 50
-
     - name: Authenticate Google Cloud
       uses: google-github-actions/auth@v2
       with:
@@ -40,6 +37,7 @@ jobs:
       run: |
         cd ./webapp
         npm ci
+        npm run build
         cd -
 
     - name: Deploy to Firebase Hosting
