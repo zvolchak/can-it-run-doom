@@ -10,11 +10,11 @@ const router = createRouter({
       name: 'home',
       component: HomeView
     },
-    {
-      path: '/bounty',
-      name: 'bounty',
-      component: BountyView
-    },
+    // {
+    //   path: '/bounty',
+    //   name: 'bounty',
+    //   component: BountyView
+    // },
   ]
 })
 
