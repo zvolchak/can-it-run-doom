@@ -942,6 +942,22 @@
       "publishDate": "Nov 5, 2024",
       "tags": ["baremetal", "media", "controls"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/ableton-push-3-standalone.png"
+    },
+    {
+      "id": "1054",
+      "title": "AQ-G257 generator protection",
+      "description": "This device is suited for large machines that reqiore complete generator protection and differential protection. It can also run Doom.",
+      "authors": [{
+          "name": "LaggyLuke",
+          "url": "https://www.youtube.com/@LaggyLuke"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://www.youtube.com/watch?v=rYS9ZOUUyFU"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Dec 31, 2024",
+      "tags": ["baremetal", "doom"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/aq-g257-generator-protection.png"
     }
   ]
 }
