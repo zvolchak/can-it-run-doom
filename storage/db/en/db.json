@@ -958,6 +958,22 @@
       "publishDate": "Dec 31, 2024",
       "tags": ["baremetal", "doom"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/aq-g257-generator-protection.png"
+    },
+    {
+      "id": "1055",
+      "title": "Visual Studio Code",
+      "description": "Doom inside a Visual Studio Code IDE rendered as alphabet characters in an open tab.",
+      "authors": [{
+          "name": "Pedro Webber",
+          "url": "https://www.youtube.com/@PeddroWebber"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/dJiUVZT9fxs?si=ZjWal-T5pmrKOfd4"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Jan 3, 2025",
+      "tags": ["rendering", "doom", "ide", "text"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/visual-studio-code.png"
     }
   ]
 }
