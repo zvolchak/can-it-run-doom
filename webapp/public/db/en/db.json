@@ -974,6 +974,166 @@
       "publishDate": "Jan 3, 2025",
       "tags": ["rendering", "doom", "ide", "text"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/visual-studio-code.png"
+    },
+    {
+      "id": "1056",
+      "title": "Doom Bookmarklet",
+      "description": "DOOM original C (1997) wrapped in Rust, compiled to Wasm, embedded in TypeScript which is transpired to JS, polyfilled, minified, wrapped in some scaffolding, and saved to the bookmarks/favourites bar of a browser.",
+      "authors": [{
+          "name": "Ashton Meuser",
+          "url": "https://github.com/ashtonmeuser"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Bookmarkl.ink", "url": "https://bookmarkl.ink/ashtonmeuser/04710d3befc446e849108a58755163ea"}],
+      "sourceCodeUrl": [{ "name": "Github gist", "url": "https://gist.github.com/ashtonmeuser/04710d3befc446e849108a58755163ea" }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Jan 7, 2025",
+      "tags": ["browser", "doom"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/bookmarklet.png"
+    },
+    {
+      "id": "1057",
+      "title": "Captcha Doom",
+      "description": "Verify you are human by playing Doom and killing at least 3 enemies (on a nightmare difficulty).",
+      "authors": [{
+          "name": "Guillermo Rauch",
+          "url": "https://x.com/rauchg"
+        }
+      ],
+      "sourcesUrl": [{ "name": "X", "url": "https://x.com/rauchg/status/1874130110120706556"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Dec 31, 2024",
+      "tags": ["browser", "doom"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/captcha.png"
+    },
+    {
+      "id": "1058",
+      "title": "PTC Camera streaming Doom",
+      "description": "Exploited security vulnerabilities in a cheap PTZ camera to run Doom natively on the camera, which streams the video to its app.",
+      "authors": [{
+          "name": "luke_tnr",
+          "url": "https://www.reddit.com/user/luke_tnr/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1gjtcjs/if_it_has_a_stream_it_can_play_doom/"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Nov 5, 2024",
+      "tags": ["camera", "doom", "baremetal"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/ptz-camera.png"
+    },
+    {
+      "id": "1059",
+      "title": "Doom in Stardew Valley",
+      "description": "A mod that adds a playable Doom arcade cabinate.",
+      "authors": [{
+          "name": "wojciech-graj",
+          "url": "https://github.com/wojciech-graj"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1h6jhrb/doom_in_stardew_valley/" }, { "name": "Youtube", "url": "https://www.youtube.com/watch?v=cm0XKAgUfPw" }],
+      "sourceCodeUrl": [{ "name": "GitHub", "url": "https://github.com/wojciech-graj/DoomValley" }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Dec 4, 2024",
+      "tags": ["rendering", "doom", "baremetal", "mod"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/stardew-valley-doom-arcade.png"
+    },
+    {
+      "id": "1060",
+      "title": "Diebold Nixdorf Beetle iPOS Plus POS System",
+      "description": "",
+      "authors": [{
+          "name": "tamay-idk",
+          "url": "https://www.reddit.com/user/tamay-idk/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1hh4880/doom_on_diebold_nixdorf_beetle_ipos_plus_pos/" }],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Dec 18, 2024",
+      "tags": ["doom", "baremetal", "windows"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/diebold-nixdorf-pos-system.png"
+    },
+    {
+      "id": "1061",
+      "title": "School smart board TV with PSVita as a controller",
+      "description": "",
+      "authors": [{
+          "name": "superfast598",
+          "url": "https://www.reddit.com/user/superfast598/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1hhop4u/not_really_odd_hardware_but_i_played_doom_with/" }],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Dec 19, 2024",
+      "tags": ["doom", "emulator", "android"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/school-smart-board.png"
+    },
+    {
+      "id": "1062",
+      "title": "Motorola WT4090",
+      "description": "",
+      "authors": [{
+          "name": "dragonzoom",
+          "url": "https://www.reddit.com/user/dragonzoom/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1hhqara/motorola_wt4090_running_doom/" }],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Dec 19, 2024",
+      "tags": ["doom", "emulator", "handheld-computer"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/motorola-wt4090.png"
+    },
+    {
+      "id": "1063",
+      "title": "Business Card Doom - a custom made PCB board.",
+      "description": "A custom made hardware powered by Raspberry Pi RP2040 CPU.",
+      "authors": [{
+          "name": "Rsheldiii",
+          "url": "https://github.com/rsheldiii"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1hox9gu/i_made_a_business_card_run_doom_and_you_can_too/" }, { "name": "Youtube", "url": "https://www.youtube.com/watch?v=YhjtOR5cU4k" }, { "name": "Rsheldiii Blog", "url": "https://rsheldiii.github.io/rp2040-business-card/" }],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": true,
+      "publishDate": "Dec 29, 2024",
+      "tags": ["baremetal", "emulator", "custom hardware", "Raspberry Pi RP2040"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/business-card-pcb.png"
+    },
+    {
+      "id": "1064",
+      "title": "Doom in a PDF file",
+      "description": "The output for DoomPDF is achieved by creating a text field for each row of pixels in the screen, then setting their contents to various ASCII characters.",
+      "authors": [{
+          "name": "vk6_",
+          "url": "https://www.reddit.com/user/vk6_/"
+        }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1i02c6b/doom_in_a_pdf_file/" }, { "name": "Youtube", "url": "https://youtu.be/g6ygXHmtHzs?si=a5S3vsRM9TV-pWVn" }, { "name": "DoomPdf", "url": "https://doompdf.pages.dev/doom.pdf" }],
+      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/ading2210/doompdf" }],
+      "isFirstLevelComplete": true,
+      "publishDate": "Jan 12, 2025",
+      "tags": ["browser", "pdf", "text"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doomPdf.png"
+    },
+    {
+      "id": "1065",
+      "title": "Custom keyboard keycap with 1.14 inch display.",
+      "description": "",
+      "authors": [{
+          "name": "Rsheldiii",
+          "url": "https://github.com/rsheldiii"
+        }
+      ],
+      "sourcesUrl": [],
+      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/rsheldiii/doom-keycap-hardware" }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Jan 12, 2025",
+      "tags": ["keyboard", "baremetal", "display"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/custom-keyboard-keycap.png"
     }
   ]
 }
