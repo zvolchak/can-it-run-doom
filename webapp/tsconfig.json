@@ -1,17 +1,44 @@
 {
-  "extends": "@vue/tsconfig/tsconfig.web.json",
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
   "compilerOptions": {
-    "lib": ["ES2017", "DOM"],
-    "baseUrl": ".",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "noImplicitAny": false,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "target": "esnext",
+    "moduleResolution": "bundler",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
     "paths": {
-      "@/*": ["./src/*"]
-    }
+      "@/*": [
+        "./*"
+      ],
+      "@/src/*": [
+        "./src/*"
+      ]
+    },
+    "noEmit": false
   },
-
-  "references": [
-    {
-      "path": "./tsconfig.config.json"
-    }
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "server/**/*", 
+    "src/**/*" 
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }
