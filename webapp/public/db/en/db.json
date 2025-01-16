@@ -1009,7 +1009,7 @@
     },
     {
       "id": "1058",
-      "title": "PTC Camera streaming Doom",
+      "title": "PTZ Camera streaming Doom",
       "description": "Exploited security vulnerabilities in a cheap PTZ camera to run Doom natively on the camera, which streams the video to its app.",
       "authors": [{
           "name": "luke_tnr",
