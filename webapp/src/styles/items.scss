@@ -1,0 +1,77 @@
+@use './doom.scss' as doom;
+
+a {
+  transition: 0.1s linear;
+
+  &:hover {
+    color: doom.$doomColorDanger;
+  }
+}
+
+
+.item {
+  max-width: 50rem;
+}
+
+
+.item-container {
+  height: 16rem;
+  transition: 0.1s ease-in-out;
+
+  &:hover > .doom-card, &:hover > .image-preview > img {
+    box-shadow: doom.$doomBoxShadowDanger;
+  }
+
+  &:hover > .image-preview {
+    position: relative;
+    transform: scale(1.04);
+    margin-right: 8px;
+  }
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 800;
+  -webkit-text-stroke: 1.4px #410001;
+}
+
+.description {
+  font-size: 16px;
+  font-weight: 400;
+  font-variant: normal;
+  letter-spacing: 2px;
+  line-height: 18px;
+  color: doom.$colorSlate;
+}
+
+
+.doom-card {
+  overflow-y: scroll;
+  background-color: doom.$doomColorAlt;
+  border: 1px solid gray;
+  transition: 0.1s ease-in, 0.4s ease-out;
+}
+
+
+.image-preview {
+  img {
+    transition: 0.1s ease-in, 0.4s ease-out;
+    height: 100%;
+    width: 100%;
+  }
+
+  width: 24rem;
+  transition: 0.1s ease-in, 0.4s ease-out;
+}
+
+
+.icon {
+  position: absolute;
+  width: 24px;
+  height: 28px;
+  z-index: 10;
+  right: -28px;
+  top: -2px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in, opacity 0.4s ease-out;
+}

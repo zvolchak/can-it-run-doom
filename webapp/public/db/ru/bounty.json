@@ -1,0 +1,22 @@
+{
+  "bounty": [
+    {
+      "id": "5001",
+      "title": "Холодильник с экраном",
+      "model": "Любой",
+      "description": "Возможно ли запустить классический Дум на холодильнике (без облачных технологий).",
+      "tags": ["бытовой прибор", "холодильник"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/fridge-with-screen.webp?raw=true",
+      "claimedBy": []
+    },
+    {
+      "id": "5002",
+      "title": "Управление бананами",
+      "model": "Органик бананы",
+      "description": "Были случаи, когда энтузиасты управляли другими играми с помощью бананов. Doom тоже должен быть совместим.",
+      "tags": ["фрукты", "управление", "аксессуары"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/banana-controls.png?raw=true",
+      "claimedBy": []
+    }
+  ]
+}

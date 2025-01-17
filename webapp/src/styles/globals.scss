@@ -1,3 +1,17 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@import "./doom.scss";
+@import "./items.scss";
+@import "./buttons.scss";
+
+@font-face {
+    font-family: "editundo";
+    src: local("editundo"), url("/fonts/editundo.ttf") format("truetype");
+}
+
+body {
+    background-color: #181818;
+    font-family: 'Roboto', sans-serif;
+}

@@ -35,7 +35,6 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "server/**/*", 
     "src/**/*" 
   ],
   "exclude": [

@@ -1,0 +1,72 @@
+{
+  "bounty": [
+    {
+      "id": "5001",
+      "title": "A Fridge with a screen",
+      "model": "any",
+      "description": "Is it possible to run Classic Doom natively (no cloud gaming) on any smart fridge?",
+      "tags": ["appliance", "fridge"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/fridge-with-screen.webp?raw=true",
+      "claimedBy": []
+    },
+    {
+      "id": "5002",
+      "title": "Control Doom with bananas",
+      "model": "Only organic bananas",
+      "description": "There were instances of people controlling other games with bananas. Doom should be compatible too.",
+      "tags": ["fruit", "controls", "accessories"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/banana-controller.png?raw=true",
+      "claimedBy": []
+    },
+    {
+      "id": "5003",
+      "title": "All-In-One printer Brother MFC-L2710DW",
+      "model": "MFC-L2710DW",
+      "description": "",
+      "tags": ["appliance", "printer"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/brother-mfc-l2710dw.png?raw=true",
+      "requestors": [{ "name": "Willquantique", "date": "May 12, 2023" }],
+      "claimedBy": []
+    },
+    {
+      "id": "5004",
+      "title": "VTech KidiBuzz - a kids toy that runs on Android. It has a set of preinstalled games on it and an expendable storage with microSD. It might as well has Doom on it - for learning...",
+      "model": "80-541100",
+      "description": "",
+      "tags": ["toys", "Android"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/vtech-kidibuzz-80-541100.png?raw=true",
+      "requestors": [{ "name": "N/A", "date": "Sep 12, 2023" }],
+      "claimedBy": []
+    },
+    {
+      "id": "5005",
+      "title": "Guitar amplifier with a small digital screen.",
+      "model": "Fender Mustang LT25 (or similar with a screen)",
+      "description": "A guitar amplifier with the ability to be plugged into a computer via usb with a small screen and knob dedicated to browsing/interacting with the screen.",
+      "tags": ["music", "instrument", "other"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/fender-mustang-lt25.png?raw=true",
+      "requestors": [{ "name": "N/A", "date": "Sep 12, 2023" }],
+      "claimedBy": []
+    },
+    {
+      "id": "5006",
+      "title": "Can a 1987 Toshiba3200 laptop run doom?",
+      "model": "Toshiba 3200",
+      "description": "",
+      "tags": ["baremetal", "laptop"],
+      "previewImage": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/toshiba3200.png?raw=true",
+      "requestors": [{ "name": "N/A", "date": "Feb 22, 2024" }],
+      "claimedBy": []
+    },
+    {
+      "id": "5007",
+      "title": "Can a lunii story telling box run doom?",
+      "model": "Lunii",
+        "description": "These devices are meant to tell stories but they have a screen to help select the story. Your mission, should you accept it, is to run doom on the device. This message will destroy itself in 5, 4, 3, ...",
+      "tags": ["baremetal", "gadget"],
+      "previewImage": "https://images.prismic.io/lunii/ZwU6SYF3NbkBXA32_Shop-Desktop-StorytellerBlue.jpg",
+      "requestors": [{ "name": "N/A", "date": "Oct 14, 2024" }],
+      "claimedBy": []
+    }
+  ]
+}
