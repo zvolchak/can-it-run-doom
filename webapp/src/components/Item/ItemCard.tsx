@@ -30,7 +30,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             </div>
 
             <div className="item-container flex flex-row gap-1">
-                <div className="image-preview">
+                <div className="image-preview hidden sm:block">
                     <ImageLoader src={item.previewImgUrl} />
                 </div>
 
@@ -62,7 +62,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                     <div className="flex flex-wrap flex-row gap-1 mt-3 p-4">
                         {
                             item.tags.map((tag: string) => {
-                                return <Tag key={`tag_${tag}`} text={tag} active={false} />
+                                return <Tag key={`tag_${tag}`} text={tag} />
                             })
                         }
                     </div>

@@ -3,12 +3,15 @@ import { useRouter } from "next/router"
 
 interface ITagProps {
     text: string
-    active: boolean
+    className?: string
     onClick?: (text: string) => {}
 }
 
 
-export const Tag = ({ text, active, onClick }: ITagProps) => {
+export const Tag = ({ 
+    text, 
+    className = "", 
+    onClick }: ITagProps) => {
     const router = useRouter()
  
     function onTagClick(e, text: string) {
@@ -21,7 +24,6 @@ export const Tag = ({ text, active, onClick }: ITagProps) => {
         else
             queryTags.push(text)
 
-        console.debug(queryTags)
         if (queryTags.length > 0) {
             router.push(`?tag=${encodeURIComponent(queryTags.join(","))}`)
         } else {
@@ -35,10 +37,10 @@ export const Tag = ({ text, active, onClick }: ITagProps) => {
     return (
         <p
             key={`tag_${text}`}
-            className={`p-1 tag bg-gray-700 ${active ? "active" : ""}`}
+            className={`p-1 tag bg-gray-700 ${className}`}
             onClick={(e) => onTagClick(e, text)}
         >
-            # {text}
+            #{text}
         </p>
     )
 }

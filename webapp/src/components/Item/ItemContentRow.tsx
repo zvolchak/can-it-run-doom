@@ -16,7 +16,7 @@ export const ItemContentRow = ({ title, value, children, }: IItemConentRow) => {
         <div className="grid grid-cols-12 gap-2 tracking-wider">
             {/* Title Column */}
             {title && (
-                <div className="col-span-5 justify-self-end py-1">
+                <div className="col-span-5 justify-self-end py-1 text-right">
                     <p className="doom-gradient-light doom-text-shadow-light">
                         {title}
                     </p>
@@ -25,7 +25,7 @@ export const ItemContentRow = ({ title, value, children, }: IItemConentRow) => {
             {/* Value Column */}
             <div
                 className={`${childrenParentClass} 
-                    py-1 pl-3 bg-gray-700 justify-content-end ${titleClassSpan}`
+                    py-1 pl-3 bg-gray-700 justify-content-end text-left ${titleClassSpan}`
                 }
             >
                 {children ? (
