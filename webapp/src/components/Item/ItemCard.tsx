@@ -13,13 +13,14 @@ import {
 
 interface IItemCardProps {
     item: IArchiveItem
+    className?: string
 }
 
 
-export const ItemCard = ({ item }: IItemCardProps) => {
+export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
 
     return (
-        <div className="item flex flex-col text-slate-50 gap-1">
+        <div className={`item flex flex-col text-slate-50 gap-1 ${className}`}>
             <div className="flex flex-row title">
                 {item.title}
             </div>

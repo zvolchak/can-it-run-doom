@@ -1,3 +1,4 @@
+import { useRouter } from "next/router"
 import type { GetServerSideProps } from 'next'
 import { IArchiveItem } from "@/src/types"
 import {
@@ -14,32 +15,48 @@ interface IMainPageProps {
 }
 
 function MainPage({ items }: IMainPageProps) {
+    const router = useRouter()
 
     const tags = Array.from(new Set(items.flatMap(item => item.tags)))
-    // function getAllTags() {
-    //     // FIXME: When switching pages, tags change according to current page items.
-    //     // This solution is dumb. Won't work for filtered items with more than 1 page.
-    //     // But good enough for now.
-    //     const target = currentSearch.value ? filtered.value : items.value
-    //     const tags = getAllTagsFromItems(target).splice(0, numberOfTagsPreview.value)
-    //     return getTagsFromString(tags, currentSearch.value)
-    //   } // getAllTags
+    const filterQuery = router.query
+    const queryTags = (decodeURIComponent(filterQuery.tag as string)).split(",")
+
+    function filterItems() {
+        let filtered = [ ...items ]
+        if (filterQuery.tag) {
+            // filtered = filtered.filter((item) => item.tags.indexOf(filterQuery.tag as string) >= 0)
+            filtered = filtered.filter(item =>
+                item.tags.some(tag => queryTags.includes(tag)))
+        }
+        return filtered
+    }
+    
+    const filteredItems = filterItems()
 
     return (
         <div className="">
             <Navbar />
             <div className="flex flex-wrap flex-row gap-1 mt-3 p-4">
                 {
-                    tags.map((tag: string) => {
-                        return <Tag key={`tag_${tag}`} text={tag} active={false} />
-                    })
+                    tags.map((tag: string) =>
+                        <Tag 
+                            key={`tag_${tag}`} 
+                            text={tag} 
+                            active={queryTags.indexOf(tag) >= 0} 
+                        />
+                    )
                 }
             </div>
 
-            <div className="flex flex-col gap-6 justify-items-center mt-5">
+            <div className="grid content-center justify-center gap-6 mt-5">
+                {/* <div className="flex flex-col bg-slate-400"> hello </div>
+                <div className="flex flex-col bg-slate-400 w-full"> hello </div> */}
                 {
-                    items.map((item: IArchiveItem) => 
-                        <ItemCard key={`doom port item for ${item.title}`} item={item} />
+                    filteredItems.map((item: IArchiveItem) => 
+                        <ItemCard 
+                            key={`doom port item for ${item.title}`} item={item} 
+                            className="justify-self-center"
+                        />
                     )
                 }
             </div>

@@ -15,7 +15,7 @@ a {
 
 
 .item-container {
-  height: 16rem;
+  // height: 16rem;
   transition: 0.1s ease-in-out;
 
   &:hover > .doom-card, &:hover > .image-preview > img {
@@ -46,7 +46,7 @@ a {
 
 
 .doom-card {
-  overflow-y: scroll;
+  overflow-y: auto;
   background-color: doom.$doomColorAlt;
   border: 1px solid gray;
   transition: 0.1s ease-in, 0.4s ease-out;
