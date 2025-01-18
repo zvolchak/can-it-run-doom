@@ -1026,7 +1026,7 @@
     {
       "id": "1059",
       "title": "Doom in Stardew Valley",
-      "description": "A mod that adds a playable Doom arcade cabinet.",
+      "description": "A mod that adds a playable Doom arcade cabinate.",
       "authors": [{
           "name": "wojciech-graj",
           "url": "https://github.com/wojciech-graj"
@@ -1080,7 +1080,7 @@
           "url": "https://www.reddit.com/user/dragonzoom/"
         }
       ],
-      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1hhqara/motorola_wt4090_running_doom/" }],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://www.youtube.com/watch?v=iZUkRuTaosM" }, { "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1hhqara/motorola_wt4090_running_doom/" }],
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Dec 19, 2024",
