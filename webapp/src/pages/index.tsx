@@ -1,6 +1,11 @@
+import { useEffect } from "react"
+import { useDispatch } from "react-redux"
 import { useRouter } from "next/router"
 import type { GetServerSideProps } from 'next'
 import { IArchiveItem } from "@/src/types"
+import {
+    setItems,
+} from "@/src/store"
 import {
     Navbar,
     Tag,
@@ -10,6 +15,9 @@ import {
 import {
     fetchArchiveData,
 } from "@/src/api"
+import {
+    onSearch,
+} from "@/src/utils"
 
 interface IMainPageProps {
     items: IArchiveItem[]
@@ -17,11 +25,16 @@ interface IMainPageProps {
 
 function MainPage({ items }: IMainPageProps) {
     const router = useRouter()
-
+    const dispatch = useDispatch()
     const tags = flattenAndSortTags(items)
+    const queryTags = (decodeURIComponent(router.query?.tag as string || "")).split(",")
+            .filter(q => q || q !== "")
+    const searchQuery = (decodeURIComponent(router.query?.search as string || ""))
 
-    const filterQuery = router.query
-    const queryTags = (decodeURIComponent(filterQuery.tag as string)).split(",")
+    useEffect(() => {
+        dispatch(setItems(items))
+    }, [dispatch, items, setItems])
+
 
     function flattenAndSortTags(targetItems: IArchiveItem[]): string[] {
         const flattened = targetItems.flatMap(item => item.tags)
@@ -37,12 +50,19 @@ function MainPage({ items }: IMainPageProps) {
     } // flattenAndSortTags
 
 
-    function filterItems(itemsToFilter: IArchiveItem[], query) {
-        if (!query.tag)
-            return itemsToFilter;
+    function filterBySearch(itemsToFilter: IArchiveItem[], query) {
+        if (!query || query === "")
+            return itemsToFilter
+        return onSearch(query, itemsToFilter)
+    }
+
+
+    function filterItemsByTags(itemsToFilter: IArchiveItem[], query) {
+        if (!query || query.length == 0)
+            return itemsToFilter
 
         return itemsToFilter.filter(item =>
-            item.tags.some(tag => query.tag.includes(tag)))
+            item.tags.some(tag => query.includes(tag)))
     } // filterItems
     
 
@@ -54,7 +74,9 @@ function MainPage({ items }: IMainPageProps) {
     } // tagsInFilteredItems
 
 
-    const filteredItems = filterItems([...items], filterQuery)
+    let filteredItems = filterBySearch([...items], searchQuery)
+    filteredItems = filterItemsByTags(filteredItems, queryTags)
+
     const activeTags = filteredItems.length !== items.length ? getTagsInFilteredItems(filteredItems) : []
 
     return (

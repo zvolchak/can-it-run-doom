@@ -9,7 +9,7 @@ interface IBtnScrollTopProps {
 
 export function BtnScrollTop({ className = "", }: IBtnScrollTopProps) {
     const [isShowBackToTop, setIsShowBackToTop] = useState(false)
- 
+
     useEffect(() => {
         if (typeof window === "undefined")
             return
