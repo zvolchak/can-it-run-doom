@@ -11,17 +11,21 @@ import {
     Tag,
     ItemCard,
     BtnScrollTop,
+    Pagination,
 } from "@/src/components"
 import {
     fetchArchiveData,
 } from "@/src/api"
 import {
     onSearch,
+    paginate,
 } from "@/src/utils"
+
 
 interface IMainPageProps {
     items: IArchiveItem[]
 }
+
 
 function MainPage({ items }: IMainPageProps) {
     const router = useRouter()
@@ -30,6 +34,9 @@ function MainPage({ items }: IMainPageProps) {
     const queryTags = (decodeURIComponent(router.query?.tag as string || "")).split(",")
             .filter(q => q || q !== "")
     const searchQuery = (decodeURIComponent(router.query?.search as string || ""))
+    const currentPage = Number(router.query?.page || 0)
+    const itemsPerPage = 15
+
 
     useEffect(() => {
         dispatch(setItems(items))
@@ -78,6 +85,8 @@ function MainPage({ items }: IMainPageProps) {
     filteredItems = filterItemsByTags(filteredItems, queryTags)
 
     const activeTags = filteredItems.length !== items.length ? getTagsInFilteredItems(filteredItems) : []
+    const numberOfPages = Math.ceil(filteredItems.length / itemsPerPage)
+    const paginatedItems = paginate(filteredItems, currentPage, numberOfPages)
 
     return (
         <div className="min-h-screen">
@@ -98,9 +107,18 @@ function MainPage({ items }: IMainPageProps) {
                 }
             </div>
 
-            <div className="grid content-center justify-center gap-14 sm:gap-6 mt-5">
+            <Pagination 
+                currentPage={currentPage} 
+                numberOfPages={numberOfPages} 
+                className="my-4"
+            />
+
+            <div className="
+                grid content-center justify-center gap-14 mt-5
+                sm:gap-6"
+            >
                 {
-                    filteredItems.map((item: IArchiveItem) => 
+                    paginatedItems.map((item: IArchiveItem) => 
                         <ItemCard 
                             key={`doom port item for ${item.title}`} item={item} 
                             className="justify-self-center px-4"
@@ -109,6 +127,14 @@ function MainPage({ items }: IMainPageProps) {
                 }
             </div>
 
+            <Pagination 
+                currentPage={currentPage} 
+                numberOfPages={numberOfPages} 
+                className="my-8"
+            />
+
+
+            <div className="h-56"></div>
             <BtnScrollTop className="bottom-10 right-10 fixed" />
         </div>
     )

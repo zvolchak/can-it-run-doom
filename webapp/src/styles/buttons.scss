@@ -69,3 +69,26 @@
     color: doom.$doomColorDanger;
   }
 }
+
+
+.page-link {
+  cursor: pointer;
+  position: relative;
+  text-shadow: $doomTextShadowDanger;
+  color: $doomColorSecondary;
+  transition: 0.1s linear;
+
+  &.active, &:hover {
+    color: $doomColorSecondary;
+    font-weight: 700;
+    text-shadow: none;
+    color: $doomColorDanger;
+  }
+
+  &.active {
+    cursor: default;
+    color: $doomColorDanger;
+    font-weight: 700;
+  }
+
+}

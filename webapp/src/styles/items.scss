@@ -10,24 +10,21 @@ a {
 
 
 .item {
-  max-width: 50rem;
-}
-
-
-.item-container {
-  // height: 16rem;
+  background-color: doom.$doomColorAlt;
+  border: 1px solid gray;
   transition: 0.1s ease-in-out;
 
-  &:hover > .doom-card, &:hover > .image-preview > img {
+  &:hover {
     box-shadow: doom.$doomBoxShadowDanger;
   }
 
-  &:hover > .image-preview {
+  &:hover > .item-container > .image-preview {
     position: relative;
     transform: scale(1.04);
-    margin-right: 8px;
+    margin-top: 3px;
   }
 }
+
 
 .title {
   font-size: 24px;
@@ -47,8 +44,8 @@ a {
 
 .doom-card {
   overflow-y: auto;
-  background-color: doom.$doomColorAlt;
-  border: 1px solid gray;
+  // background-color: doom.$doomColorAlt;
+  // border: 1px solid gray;
   transition: 0.1s ease-in, 0.4s ease-out;
 }
 
