@@ -1,7 +1,5 @@
 import { useState, useCallback } from "react"
 import { useRouter } from "next/router"
-import { useSelector } from "react-redux"
-import { RootState } from "@/src/store"
 import debounce from "lodash/debounce"
 
 interface ISearchbarProps {
@@ -9,14 +7,12 @@ interface ISearchbarProps {
 }
 
 
-export const Searchbar = ({ className = "" }) => {
+export const Searchbar = ({ className = "" }: ISearchbarProps) => {
     const router = useRouter()
     const [searchQuery, setSearchQuery] = useState("")
     const [hasSubmitted, setHasSubmitted] = useState(false)
-    const items = useSelector((state: RootState) => state.submissions.items)
 
-
-    const debouncedSearch = useCallback(
+    useCallback(
         debounce((e) => {
             onSearchSubmit(e); // This will be called after debounce delay
         }, 2000), // 1000 ms (1 second) delay

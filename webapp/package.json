@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "build:prod": "DOTENV_KEY=$(npx dotenv-vault keys production) next build && mkdir .next/_next/ && cp -r .next/static .next/_next/ && cp -r .next/static/ .next/standalone/",
     "build": "next build",
     "start": "next start",
     "start:dev": "nodemon",

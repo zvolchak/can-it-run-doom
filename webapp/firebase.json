@@ -1,0 +1,42 @@
+{
+  "functions": [
+  ],
+  "hosting": {
+    "public": ".next/standalone",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "**",
+        "function": "nextServer"
+      },
+      {
+          "source": "/_next/**",
+          "destination": "/_next/*"
+      },
+      {
+          "source": "/static/**",
+          "destination": "/static/*"
+      }
+    ],
+    "predeploy": [
+      "npm run build"
+    ]
+  },
+  "emulators": {
+    "functions": {
+      "port": 8080
+    },
+    "hosting": {
+      "port": 3000
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  }
+}

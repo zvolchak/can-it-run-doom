@@ -1,6 +1,3 @@
-import Image from "next/image"
-
-
 interface IFooterProps {
     className?: string
 }
@@ -16,7 +13,7 @@ export function Footer({ className = "", }: IFooterProps) {
 
                 {/* Middle Section */}
                 <div className="mt-4 md:mt-0 text-center">
-                    <p className="text-sm italic">"Everything can run DOOM, but can it run you?"</p>
+                    <p className="text-sm italic">&quot;Everything can run DOOM, but can it run you?&quot;</p>
                 </div>
 
                 {/* Right Section */}

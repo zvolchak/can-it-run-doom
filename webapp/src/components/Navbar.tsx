@@ -1,27 +1,27 @@
-import { useState, useEffect } from "react"
+// import { useState, useEffect } from "react"
 import Image from "next/image"
-import { useRouter } from "next/router"
-import { Searchbar } from "@/src/components"
+// import { useRouter } from "next/router"
+import { Searchbar, } from "@/src/components"
 
 
 export const Navbar = () => {
-    const [locale, setLocale] = useState("en")
-    const router = useRouter()
+    // const [locale, setLocale] = useState("en")
+    // const router = useRouter()
 
-    const routes = [
-        { localeVar: "Home", name: "Home", path: "/" },
-    ]
+    // const routes = [
+    //     { localeVar: "Home", name: "Home", path: "/" },
+    // ]
 
-    useEffect(() => {
-        const sysLang = document.cookie.split("; ")
-            .find((row) => row.startsWith("lang="))?.split("=")[1] || "en"
-        setLocale(sysLang)
-    }, [])
+    // useEffect(() => {
+    //     const sysLang = document.cookie.split("; ")
+    //         .find((row) => row.startsWith("lang="))?.split("=")[1] || "en"
+    //     setLocale(sysLang)
+    // }, [])
 
-    const handleLocaleChange = (target) => {
-        document.cookie = `lang=${target}`
-        setLocale(target)
-    }
+    // const handleLocaleChange = (target) => {
+    //     document.cookie = `lang=${target}`
+    //     setLocale(target)
+    // }
 
     const handleSourceCodeClick = () => {
         const url = process.env.NEXT_PUBLIC_SOURCE_CODE_URL

@@ -4,14 +4,13 @@ import { useRouter } from "next/router"
 interface ITagProps {
     text: string
     className?: string
-    onClick?: (text: string) => {}
 }
 
 
 export const Tag = ({ 
     text, 
     className = "", 
-    onClick }: ITagProps) => {
+}: ITagProps) => {
     const router = useRouter()
  
     function onTagClick(e, text: string) {

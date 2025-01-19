@@ -1,6 +1,3 @@
-import { ReactNode } from "react"
-
-
 interface IItemConentRow {
     title: string
     value?: any

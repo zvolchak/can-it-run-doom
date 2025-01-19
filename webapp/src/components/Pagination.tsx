@@ -27,7 +27,7 @@ export function Pagination({ numberOfPages, currentPage, className = "" }: IPagi
         if (currentPage > 2) maxRange = 1
         if (currentPage >= numberOfPages - 1) maxRange = 2
 
-        let range: Array<string | number> = []
+        const range: Array<string | number> = []
 
         for (let i = -maxRange; i <= maxRange; i++) {
             const page = currentPage + i
@@ -39,7 +39,6 @@ export function Pagination({ numberOfPages, currentPage, className = "" }: IPagi
         if (currentPage - maxRange > 2) range.splice(0, 0, '...')
         if (currentPage + maxRange < numberOfPages - 1) range.splice(range.length, 0, '...')
 
-        console.debug(range)
         return [1, ...range, numberOfPages]
     }
 

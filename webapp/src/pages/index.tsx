@@ -13,6 +13,7 @@ import {
     BtnScrollTop,
     Pagination,
     Footer,
+    BtnClearFilters,
 } from "@/src/components"
 import {
     fetchArchiveData,
@@ -41,7 +42,7 @@ function MainPage({ items }: IMainPageProps) {
 
     useEffect(() => {
         dispatch(setItems(items))
-    }, [dispatch, items, setItems])
+    }, [dispatch, items])
 
 
     function flattenAndSortTags(targetItems: IArchiveItem[]): string[] {
@@ -113,11 +114,19 @@ function MainPage({ items }: IMainPageProps) {
                 }
             </div>
 
-            <Pagination 
-                currentPage={currentPage} 
-                numberOfPages={numberOfPages} 
-                className="my-4"
-            />
+            {Object.keys(router.query).length > 0 &&
+                <div className="h-2 px-4">
+                    <BtnClearFilters />
+                </div>
+            }
+
+            <div className="h-10">
+                <Pagination 
+                    currentPage={currentPage} 
+                    numberOfPages={numberOfPages} 
+                    className="my-4"
+                />
+            </div>
 
             <div className="
                 grid content-center justify-center gap-14 mt-5
