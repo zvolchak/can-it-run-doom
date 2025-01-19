@@ -59,6 +59,8 @@
   opacity: 0;
   transition: 0.2s ease-in, 0.2s ease-out;
   color: doom.$colorSlate;
+  // bottom: 5rem;
+  // right: 5rem;
 
   &.active {
     opacity: 1;

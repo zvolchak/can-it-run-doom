@@ -22,22 +22,19 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
     return (
         <div className={`
             item flex flex-col text-slate-50 gap-1
-            sm:w-full
-            md:w-3/4
-            lg:w-3/5
-            2xl:w-5/12
-            w-full
             ${className}`}
         >
-            <div className="flex flex-row title">
+            <div className="flex flex-row title p-2">
                 {item.title}
             </div>
 
-            <div className="description flex flex-row">
-                {item.description}
-            </div>
+            {item.description && item.description.length > 0 &&
+                <div className="description flex flex-row p-2">
+                    {item.description}
+                </div>
+            }
 
-            <div className="item-container flex flex-row gap-1 items-start mt-5">
+            <div className="item-container flex flex-row gap-1 items-start mt-1">
                 <div className="image-preview">
                     <ImageLoader className="justify-self-start" src={item.previewImgUrl} />
                 </div>

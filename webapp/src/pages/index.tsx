@@ -12,6 +12,7 @@ import {
     ItemCard,
     BtnScrollTop,
     Pagination,
+    Footer,
 } from "@/src/components"
 import {
     fetchArchiveData,
@@ -86,7 +87,12 @@ function MainPage({ items }: IMainPageProps) {
 
     const activeTags = filteredItems.length !== items.length ? getTagsInFilteredItems(filteredItems) : []
     const numberOfPages = Math.ceil(filteredItems.length / itemsPerPage)
-    const paginatedItems = paginate(filteredItems, currentPage, numberOfPages)
+
+    // FIXME: move sorting to backend
+    filteredItems.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
+
+    const paginatedItems = paginate(filteredItems, currentPage, itemsPerPage)
+
 
     return (
         <div className="min-h-screen">
@@ -134,8 +140,8 @@ function MainPage({ items }: IMainPageProps) {
             />
 
 
-            <div className="h-56"></div>
-            <BtnScrollTop className="bottom-10 right-10 fixed" />
+            <Footer className="mt-20" />
+            <BtnScrollTop className="bottom-5 sm:bottom-10 right-10 fixed" />
         </div>
     )
 } // MainPage

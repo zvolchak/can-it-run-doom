@@ -13,6 +13,19 @@ a {
   background-color: doom.$doomColorAlt;
   border: 1px solid gray;
   transition: 0.1s ease-in-out;
+  width: 100%;
+  
+  @media (min-width: 640px) { // sm
+    width: 100%;
+  }
+
+  @media (min-width: 768px) { // md
+      width: 75%;
+  }
+
+  @media (min-width: 1536px) { // 2xl
+      width: 50rem;
+  }
 
   &:hover {
     box-shadow: doom.$doomBoxShadowDanger;
@@ -28,8 +41,9 @@ a {
 
 .title {
   font-size: 24px;
-  font-weight: 800;
-  -webkit-text-stroke: 1.4px #410001;
+  font-weight: 600;
+  color: doom.$colorSlate;
+  // -webkit-text-stroke: 1.4px #410001;
 }
 
 .description {

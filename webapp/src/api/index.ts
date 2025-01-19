@@ -3,7 +3,7 @@ import { IArchiveItem } from "@/src/types"
 
 
 const apiClient = axios.create({
-    baseURL: "http://localhost:3000",
+    baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     headers: {
         "Content-Type": "application/json",
         "Accept": "application/json",

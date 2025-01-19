@@ -49,7 +49,7 @@ export const Navbar = () => {
                 <Image src="/favicon.ico" alt="can it run doom?" width={40} height={40} />
 
                 <div className="flex order-1 ml-10">
-                    <select
+                    {/* <select
                         className="dropdown nav-btn mr-10"
                         value={locale}
                         onChange={(e) => handleLocaleChange(e.target.value)}
@@ -59,18 +59,18 @@ export const Navbar = () => {
                                 {loc.toUpperCase()}
                             </option>
                         ))}
-                    </select>
+                    </select> */}
 
-                    <div className="w-12 nav-icon" onClick={handleSourceCodeClick}>
+                    <div className="nav-icon" onClick={handleSourceCodeClick}>
                         <Image
                             src="/icons/github-mark-white.png"
-                            alt="source code?"
+                            alt="source code"
                             width={24}
                             height={24}
                             className="rounded-full sm:ml-4 cursor-pointer"
                         />
                     </div>
-                    <div className="w-12 nav-icon" onClick={handleJoinDiscordClick}>
+                    <div className="nav-icon ml-5" onClick={handleJoinDiscordClick}>
                         <Image
                             src="/icons/discord-48.png"
                             alt="discord server"
@@ -86,5 +86,3 @@ export const Navbar = () => {
         </nav>
     )
 }
-
-export default Navbar
