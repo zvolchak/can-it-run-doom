@@ -1,0 +1,42 @@
+$doomColorDanger: #ad0101;
+$doomColorDangerDark: #3d0106;
+$doomColorSecondary: #FCFD85;
+$doomColorAlt: #373737;
+$doomColorAltDark: #414141;
+$colorSlate: #cbd5e1;
+
+$doomTextShadowDanger: 3px 3px 0px $doomColorDangerDark;
+$doomBoxShadowDanger: 0px 2px 10px -3px $doomColorDanger;
+$doomShadowShort: 2px 2px #242424;
+
+.doom-font {
+  letter-spacing: 2px;
+  word-spacing: 2px;
+  font-style: normal;
+  font-variant: small-caps;
+}
+
+.doom-color-danger {
+  // color: $doomColorDanger;
+  color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+}
+
+.doom-color-secondary {
+  color: $doomColorSecondary;
+}
+
+.doom-text-shadow-danger {
+  text-shadow: $doomTextShadowDanger;
+}
+
+.doom-text-shadow-light {
+  text-shadow: none;
+  filter: drop-shadow($doomShadowShort);
+}
+
+.doom-gradient-light {
+  background: linear-gradient(to top,#B5B5B5 40%,#818181 65%);
+  background-clip: border-box;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}

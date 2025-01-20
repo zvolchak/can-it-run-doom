@@ -1,5 +1,8 @@
-export { default as Navbar } from './Navbar.vue'
-export { default as Pagination } from './Pagination.vue'
-export { default as SimpleModal } from './SimpleModal.vue'
-export { default as ContactEmailLink } from './ContactEmailLink.vue'
-export { default as TagsList } from './TagsList.vue'
+export * from "./Navbar"
+export * from "./Searchbar"
+export * from "./Tag"
+export * from "./Item"
+export * from "./ImageLoader"
+export * from "./Buttons"
+export * from "./Pagination"
+export * from "./Footer"

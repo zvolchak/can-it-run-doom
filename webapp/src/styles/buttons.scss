@@ -1,0 +1,124 @@
+@use './doom' as doom;
+
+
+@mixin tag-active-style {
+  color: doom.$doomColorSecondary;
+  border: 1px solid doom.$doomColorDanger;
+  box-shadow: 0px 5px 7px -5px rgb(173, 1, 1, 0.9);
+  text-shadow: 3px 3px 0px rgba(61, 1, 6, 255);
+}
+
+
+@mixin doom-btn-default-hover {
+  color: doom.$doomColorDanger;
+}
+
+
+.doom-btn {
+  color: doom.$colorSlate;
+  cursor: pointer;
+  transition: 0.1s linear;
+
+  &:hover {
+    @include doom-btn-default-hover;
+  }
+}
+
+
+.d-btn {
+  color: doom.$doomColorSecondary;
+  text-shadow: doom.$doomTextShadowDanger;
+  // blended border color with bg for smoother hover effect
+  border: 1px solid doom.$doomColorAltDark;
+  background-color: doom.$doomColorAltDark;
+  padding: 7px 8px 9px 8px;
+
+  box-shadow: 7px 7px 4px -6px #898989 inset, 4px 5px 2px -3px black;
+  transition: 0.1s ease-in, 0.4s ease-out;
+
+  &:hover {
+    border-color: doom.$doomColorDangerDark;
+    box-shadow: none;
+    text-shadow: none;
+    font-weight: 600;
+    padding: 7px 10px 9px 10px;
+  }
+}
+
+
+.tag {
+  cursor: pointer;
+  color: #ebebeba3;
+  font-size: 12px;
+  border: 1px solid #1a1a1a;
+  font-weight: 600;
+  border-radius: 2px;
+  // padding: 4px 6px 4px 6px;
+  transition: 0.2s ease-in, 0.3s ease-out;
+
+  &:hover, &.active, &.highlight {
+    @include tag-active-style;
+  }
+
+  &.highlight {
+    border-color: gray;
+    box-shadow: 0px 5px 7px -5px doom.$doomColorAltDark;
+    text-shadow: none;
+    
+    &:hover {
+      @include tag-active-style;
+    }
+  }
+}
+
+
+.back-to-top-btn {
+  opacity: 0;
+  transition: 0.2s ease-in, 0.2s ease-out;
+  color: doom.$colorSlate;
+  // bottom: 5rem;
+  // right: 5rem;
+
+  &.active {
+    opacity: 1;
+  }
+
+  &:hover {
+    @include tag-active-style;
+  }
+}
+
+
+.page-link {
+  cursor: pointer;
+  position: relative;
+  text-shadow: $doomTextShadowDanger;
+  color: $doomColorSecondary;
+  transition: 0.1s linear;
+
+  &.active, &:hover {
+    color: $doomColorSecondary;
+    font-weight: 700;
+    text-shadow: none;
+    color: $doomColorDanger;
+  }
+
+  &.active {
+    cursor: default;
+    color: $doomColorDanger;
+    font-weight: 700;
+  }
+
+}
+
+.btn-remove-filters {
+  @extend .doom-btn;
+
+  & > svg {
+    transition: 0.1s linear;
+  }
+
+  &:hover > svg {
+    color: doom.$doomColorDanger;
+  }
+}

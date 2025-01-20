@@ -1,0 +1,57 @@
+{
+  "functions": [
+    {
+      "codebase": "webapp",
+      "source": "./webapp",
+      "predeploy": ["cd webapp && npm run build:prod"],
+      "ignore": [
+        "**/node_modules/**",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local",
+        "public/**"
+      ]
+    }
+  ],
+  "hosting": {
+    "public": "./webapp/.next",
+    "predeploy": ["cd webapp && npm run build:prod"],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "cleanUrls": true,
+    "rewrites": [
+      {
+        "source": "**",
+        "function": "nextServer"
+      },
+      {
+          "source": "/_next/static/**",
+          "destination": "/_next/static/*"
+      },
+      {
+          "source": "/static/**",
+          "destination": "/static/*"
+      },
+      {
+        "source": "/favicon.ico",
+        "destination": "/favicon.ico"
+      }
+    ]
+  },
+  "emulators": {
+    "functions": {
+      "port": 8080
+    },
+    "hosting": {
+      "port": 3000
+    },
+    "ui": {
+      "enabled": true
+    },
+    "singleProjectMode": true
+  }
+}

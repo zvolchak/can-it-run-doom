@@ -42,5 +42,4 @@ jobs:
 
     - name: Deploy to Firebase Hosting
       run: |
-        cd firebase/
-        firebase deploy --only hosting --project ${{ secrets.GCP_PROJECT_ID }}
+        firebase deploy --project ${{ secrets.GCP_PROJECT_ID }}

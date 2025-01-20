@@ -1,0 +1,6 @@
+@use './doom' as doom;
+
+.footer {
+    background-color: doom.$doomColorAlt;
+    color: doom.$colorSlate;
+}

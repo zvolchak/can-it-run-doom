@@ -1,0 +1,89 @@
+@use './doom.scss' as doom;
+
+a {
+  transition: 0.1s linear;
+
+  &:hover {
+    color: doom.$doomColorDanger;
+    cursor: pointer;
+  }
+}
+
+
+.item {
+  background-color: doom.$doomColorAlt;
+  border: 1px solid gray;
+  transition: 0.1s ease-in-out;
+  width: 100%;
+  
+  @media (min-width: 640px) { // sm
+    width: 100%;
+  }
+
+  @media (min-width: 768px) { // md
+      width: 75%;
+  }
+
+  @media (min-width: 1536px) { // 2xl
+      width: 50rem;
+  }
+
+  &:hover {
+    box-shadow: doom.$doomBoxShadowDanger;
+  }
+
+  &:hover > .item-container > .image-preview {
+    position: relative;
+    transform: scale(1.04);
+    margin-top: 3px;
+  }
+}
+
+
+.title {
+  font-size: 24px;
+  font-weight: 600;
+  color: doom.$colorSlate;
+  // -webkit-text-stroke: 1.4px #410001;
+}
+
+.description {
+  font-size: 16px;
+  font-weight: 400;
+  font-variant: normal;
+  letter-spacing: 2px;
+  line-height: 18px;
+  color: doom.$colorSlate;
+}
+
+
+.doom-card {
+  overflow-y: auto;
+  // background-color: doom.$doomColorAlt;
+  // border: 1px solid gray;
+  transition: 0.1s ease-in, 0.4s ease-out;
+}
+
+
+.image-preview {
+  img {
+    transition: 0.1s ease-in, 0.4s ease-out;
+    height: 100%;
+    width: 100%;
+  }
+
+  // width: 24rem;
+  transition: 0.1s ease-in, 0.4s ease-out;
+}
+
+
+.icon {
+  position: absolute;
+  width: 24px;
+  height: 28px;
+  z-index: 10;
+  right: -28px;
+  top: -2px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in, opacity 0.4s ease-out;
+}
