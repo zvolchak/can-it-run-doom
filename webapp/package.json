@@ -2,6 +2,11 @@
   "name": "can-it-run-doom",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
+  "engines": {
+    "node": "18"
+  },
+  "main": "ssr.js",
   "scripts": {
     "dev": "next dev --turbopack",
     "build:prod": "DOTENV_KEY=$(npx dotenv-vault keys production) next build && mkdir .next/_next/ && cp -r .next/static .next/_next/ && cp -r .next/static/ .next/standalone/",
@@ -15,6 +20,8 @@
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
     "dotenv": "^16.4.7",
+    "firebase-admin": "^13.0.2",
+    "firebase-functions": "^6.2.0",
     "lodash": "^4.17.21",
     "next": "15.1.4",
     "react": "^19.0.0",

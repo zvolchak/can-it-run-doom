@@ -45,7 +45,18 @@ function MainPage({ items }: IMainPageProps) {
     }, [dispatch, items])
 
 
+    if (!items) {
+        return (
+            <div>Not items found. If this error persists, please contact support 
+            through Discord channel or email.</div>
+        )
+    }
+
+
     function flattenAndSortTags(targetItems: IArchiveItem[]): string[] {
+        if (!targetItems)
+            return []
+
         const flattened = targetItems.flatMap(item => item.tags)
     
         const frequency = flattened.reduce((map, tag) => {
