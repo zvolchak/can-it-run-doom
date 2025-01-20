@@ -109,3 +109,8 @@ dist
 .firebase
 firebase/public/
 .firebaserc
+
+.env*
+.flaskenv*
+!.env.project
+!.env.vault
