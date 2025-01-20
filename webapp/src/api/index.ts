@@ -20,7 +20,7 @@ interface IGetArchiveDataProps {
 
 export async function fetchArchiveData({
     lang = "en",
-}: IGetArchiveDataProps): Promise<IArchiveItem | null> {
+}: IGetArchiveDataProps): Promise<IArchiveItem[] | null> {
     try {
         const url = `/db/${lang}/db.json`
         const response = await apiClient.get(url)

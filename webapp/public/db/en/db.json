@@ -1009,7 +1009,7 @@
     },
     {
       "id": "1058",
-      "title": "PTC Camera streaming Doom",
+      "title": "PTZ Camera streaming Doom",
       "description": "Exploited security vulnerabilities in a cheap PTZ camera to run Doom natively on the camera, which streams the video to its app.",
       "authors": [{
           "name": "luke_tnr",
@@ -1080,7 +1080,7 @@
           "url": "https://www.reddit.com/user/dragonzoom/"
         }
       ],
-      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1hhqara/motorola_wt4090_running_doom/" }],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://www.youtube.com/watch?v=iZUkRuTaosM" }, { "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1hhqara/motorola_wt4090_running_doom/" }],
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Dec 19, 2024",
@@ -1133,7 +1133,7 @@
       "isFirstLevelComplete": false,
       "publishDate": "Jan 12, 2025",
       "tags": ["keyboard", "baremetal", "display"],
-      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/custom-keyboard-keycap.png"
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/custom-keyboard-keycap.jpg"
     }
   ]
 }

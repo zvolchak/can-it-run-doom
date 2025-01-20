@@ -35,7 +35,9 @@ function MainPage({ items }: IMainPageProps) {
     const tags = flattenAndSortTags(items)
     const queryTags = (decodeURIComponent(router.query?.tag as string || "")).split(",")
             .filter(q => q || q !== "")
-    const searchQuery = (decodeURIComponent(router.query?.search as string || ""))
+    const searchQuery = decodeURIComponent(router.query?.search as string || "")
+    const idQuery = decodeURIComponent(router.query?.id as string || "").split(",")
+            .filter(q => q || q !== "")
     const currentPage = Number(router.query?.page || 0)
     const itemsPerPage = 15
 
@@ -94,20 +96,24 @@ function MainPage({ items }: IMainPageProps) {
     } // tagsInFilteredItems
 
 
-    let filteredItems = filterBySearch([...items], searchQuery)
-    filteredItems = filterItemsByTags(filteredItems, queryTags)
+    function filterById(targetItems: IArchiveItem[], ids: string[]) {
+        return targetItems.filter((item: IArchiveItem) => ids.indexOf(item.id) >= 0)
+    }
+
+    let filteredItems = [...items]
+    if (idQuery && idQuery.length > 0)
+        filteredItems = filterById([...items], idQuery)
+    else {
+        filteredItems = filterBySearch([...items], searchQuery)
+        filteredItems = filterItemsByTags(filteredItems, queryTags)
+    }
 
     const activeTags = filteredItems.length !== items.length ? getTagsInFilteredItems(filteredItems) : []
     const numberOfPages = Math.ceil(filteredItems.length / itemsPerPage)
-
-    // FIXME: move sorting to backend
-    filteredItems.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
-
-    const paginatedItems = paginate(filteredItems, currentPage, itemsPerPage)
-
+    filteredItems = paginate(filteredItems, currentPage, itemsPerPage)
 
     return (
-        <div className="min-h-screen">
+        <div className="">
             <Navbar />
 
             <div className="flex flex-wrap flex-row gap-2 mt-3 p-4">
@@ -140,11 +146,12 @@ function MainPage({ items }: IMainPageProps) {
             </div>
 
             <div className="
-                grid content-center justify-center gap-14 mt-5
+                min-h-screen
+                grid content-start justify-center gap-14 mt-5
                 sm:gap-6"
             >
                 {
-                    paginatedItems.map((item: IArchiveItem) => 
+                    filteredItems.map((item: IArchiveItem) => 
                         <ItemCard 
                             key={`doom port item for ${item.title}`} item={item} 
                             className="justify-self-center px-4"
@@ -160,15 +167,17 @@ function MainPage({ items }: IMainPageProps) {
             />
 
 
+            <BtnScrollTop className="bottom-5 sm:bottom-10 right-10 fixed z-10" />
             <Footer className="mt-20" />
-            <BtnScrollTop className="bottom-5 sm:bottom-10 right-10 fixed" />
         </div>
     )
 } // MainPage
 
 
 export const getServerSideProps: GetServerSideProps = async () => {
-    const items: IArchiveItem = await fetchArchiveData({})
+    const items: IArchiveItem[] = await fetchArchiveData({})
+    // FIXME: move sorting to backend
+    items.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
     return {
       props: {
         items,

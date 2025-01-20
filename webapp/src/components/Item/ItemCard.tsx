@@ -1,3 +1,4 @@
+import { useRouter } from "next/router"
 import { ImCheckmark2 } from "react-icons/im"
 import { GiCrossMark } from "react-icons/gi"
 import { 
@@ -18,6 +19,14 @@ interface IItemCardProps {
 
 
 export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
+    const router = useRouter()
+
+    function onIdClick(id: string) {
+        router.replace({
+            pathname: router.pathname,
+            query: { id },
+        })
+    }
 
     return (
         <div className={`
@@ -65,7 +74,11 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                         }
                     </ItemContentRow>
 
-                    <ItemContentRow title="ID:" value={item.id} />
+                    <ItemContentRow title="ID:">
+                        <a onClick={() => onIdClick(item.id)}>
+                            {item.id}
+                        </a>
+                    </ItemContentRow>
 
                     <div className="flex flex-wrap flex-row gap-1 mt-3 p-4">
                         {
