@@ -50,9 +50,11 @@ export function trackPageView(analyticsApp: Analytics, page: string, sessionId: 
         return
     if (!page || page === "")
         return
-
+    
     logEvent(analyticsApp, "page_view", { page_path: page, sessionId })
 } // trackPageView
 
+
+initFbApp()
 
 export { fbApp, analyticsApp }

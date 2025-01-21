@@ -30,20 +30,28 @@ function UserSessionInit() {
 function PageViewAnalytics() {
     const router = useRouter()
     const userSessionId: string = useSelector((state: RootState) => state.user?.data?.sessionId) || ""
+    const [isInitPageLoad, setIsInitPageLoad] = useState(false)
 
     useEffect(() => {
+        if (!userSessionId)
+            return
+
         const handleRouteChange = (url) => {
             trackPageView(analyticsApp, url, userSessionId)
         }
 
+        if (!isInitPageLoad) {
+            handleRouteChange(router.asPath)
+            setIsInitPageLoad(true)
+        }
         router.events.on("routeChangeComplete", handleRouteChange)
 
         return () => {
             router.events.off("routeChangeComplete", handleRouteChange)
         }
-    }, [router, userSessionId])
+    }, [router, userSessionId, isInitPageLoad, setIsInitPageLoad])
 
-    return <div></div>
+    return null
 } // PageViewAnalytics
 
 
