@@ -16,7 +16,7 @@
   ],
   "hosting": {
     "public": "./webapp/.next",
-    "predeploy": ["cd webapp && npm run build:prod"],
+    "predeploy": ["cd webapp && npm run build:sitemap && npm run build:prod"],
     "ignore": [
       "firebase.json",
       "**/.*",

@@ -1,3 +1,4 @@
+import Head from 'next/head'
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
 import { useRouter } from "next/router"
@@ -113,68 +114,76 @@ function MainPage({ items }: IMainPageProps) {
     filteredItems = paginate(filteredItems, currentPage, itemsPerPage)
 
     return (
-        <div className="">
-            <Navbar />
+        <>
+            <Head>
+                <title>Can it run DOOM?</title>
+            </Head>
 
-            <div className="flex flex-wrap flex-row gap-2 mt-3 p-4">
-                {
-                    tags.map((tag: string) =>
-                        <Tag 
-                            key={`tag_${tag}`} 
-                            text={tag} 
-                            className={`
-                                ${queryTags.indexOf(tag) >= 0 ? "active" : ""}
-                                ${queryTags.indexOf(tag) < 0 && activeTags.indexOf(tag) >= 0 ? "highlight" : ""}
-                            `}
-                        />
-                    )
-                }
-            </div>
+            <div className="">
+                <Navbar />
 
-            {Object.keys(router.query).length > 0 &&
-                <div className="h-2 px-4">
-                    <BtnClearFilters />
+                <div className="flex flex-wrap flex-row gap-2 mt-3 p-4">
+                    {
+                        tags.map((tag: string) =>
+                            <Tag 
+                                key={`tag_${tag}`} 
+                                text={tag} 
+                                className={`
+                                    ${queryTags.indexOf(tag) >= 0 ? "active" : ""}
+                                    ${queryTags.indexOf(tag) < 0 && activeTags.indexOf(tag) >= 0 ? "highlight" : ""}
+                                `}
+                            />
+                        )
+                    }
                 </div>
-            }
 
-            <div className="h-10">
+                {Object.keys(router.query).length > 0 &&
+                    <div className="h-2 px-4">
+                        <BtnClearFilters />
+                    </div>
+                }
+
+                <div className="h-10">
+                    <Pagination 
+                        currentPage={currentPage} 
+                        numberOfPages={numberOfPages} 
+                        className="my-4"
+                    />
+                </div>
+
+                <div className="
+                    min-h-screen
+                    grid content-start justify-center gap-14 mt-5
+                    sm:gap-6"
+                >
+                    {
+                        filteredItems.map((item: IArchiveItem) => 
+                            <ItemCard 
+                                key={`doom port item for ${item.title}`} item={item} 
+                                className="justify-self-center px-4"
+                            />
+                        )
+                    }
+                </div>
+
                 <Pagination 
                     currentPage={currentPage} 
                     numberOfPages={numberOfPages} 
-                    className="my-4"
+                    className="my-8"
                 />
+
+
+                <BtnScrollTop className="bottom-5 sm:bottom-10 right-10 fixed z-10" />
+                <Footer className="mt-20" />
             </div>
-
-            <div className="
-                min-h-screen
-                grid content-start justify-center gap-14 mt-5
-                sm:gap-6"
-            >
-                {
-                    filteredItems.map((item: IArchiveItem) => 
-                        <ItemCard 
-                            key={`doom port item for ${item.title}`} item={item} 
-                            className="justify-self-center px-4"
-                        />
-                    )
-                }
-            </div>
-
-            <Pagination 
-                currentPage={currentPage} 
-                numberOfPages={numberOfPages} 
-                className="my-8"
-            />
-
-
-            <BtnScrollTop className="bottom-5 sm:bottom-10 right-10 fixed z-10" />
-            <Footer className="mt-20" />
-        </div>
+        </>
     )
 } // MainPage
 
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    context.res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=30");
+
     const items: IArchiveItem[] = await fetchArchiveData({})
     // FIXME: move sorting to backend
     items.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
