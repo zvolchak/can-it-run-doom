@@ -2,6 +2,7 @@
 import Image from "next/image"
 // import { useRouter } from "next/router"
 import { Searchbar, } from "@/src/components"
+import Link from "next/link"
 
 
 export const Navbar = () => {
@@ -46,7 +47,9 @@ export const Navbar = () => {
             "
         >
             <div className="flex items-center py-2 sm:py-0">
-                <Image src="/favicon.ico" alt="can it run doom?" width={40} height={40} />
+                <Link href="/"> 
+                    <Image src="/favicon.ico" alt="can it run doom?" width={40} height={40} />
+                </Link>
 
                 <div className="flex order-1 ml-10">
                     {/* <select

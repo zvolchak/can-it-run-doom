@@ -10,7 +10,7 @@ export function BtnClearFilters({ className = "",}: IBtnClearFiltersProps) {
     const router = useRouter()
 
     function onBtnClick() {
-        router.replace({
+        router.push({
             pathname: router.pathname,
             query: {},
         })   

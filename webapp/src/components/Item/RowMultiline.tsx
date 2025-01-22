@@ -29,6 +29,7 @@ export const RowMultiline = ({
                     key={`author_name: ${item.name}`} 
                     className="relative"
                     href={item.url}
+                    target="_blank"
                 >
                     {item.name}
                     {isUseComma(items, index) && <br className="my-1" />}

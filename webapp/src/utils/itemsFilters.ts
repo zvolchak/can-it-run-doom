@@ -1,4 +1,5 @@
 import dayjs from 'dayjs'
+import { IArchiveItem } from "@/src/types"
 
 
 export const findTag = (tags: Array<any>, wordToFind: string) => {
@@ -31,7 +32,10 @@ export const findWordInTitle = (title: string, wordToFind: string) => {
 } // findWordInTitle
 
 
-export const onSearch = (searching: string, items: Array<any>): any => {
+export const onSearch = (items: Array<any>, searching: string): any => {
+  if (!searching || searching === "")
+    return items
+
   let keywords = searching?.split(' ').filter(i => !!i)
   const isSearchByTag = searching.startsWith('#')
   if (isSearchByTag)
@@ -54,20 +58,62 @@ export const onSearch = (searching: string, items: Array<any>): any => {
       }
 
       const foundAuthor = findAuthor(item.authors, word)
-      if (foundAuthor) return foundAuthor
+      if (foundAuthor)
+        return foundAuthor
 
       const foundTitleWord = findWordInTitle(item.title, word)
-      if (foundTitleWord) return foundTitleWord
+      if (foundTitleWord)
+        return foundTitleWord
 
       const foundId = `${item.id}`.startsWith(word)
-      if (foundId) return word
+      if (foundId)
+        return word
 
       return findDate(item.publishDate, word)
     }) // keywords
   }) as any // items
-
   return items
 } // onSearch
+
+
+export function flattenByTagAndSort(itemsToFilter: IArchiveItem[]): string[] {
+  if (!itemsToFilter)
+    return []
+
+  const flattened = itemsToFilter.flatMap(item => item.tags)
+
+  const frequency = flattened.reduce((map, tag) => {
+    map.set(tag, (map.get(tag) || 0) + 1)
+    return map
+  }, new Map<string, number>())
+
+  const sorted = Array.from(frequency.entries()).sort((a, b) => b[1] - a[1])
+
+  return sorted.map(([tag]) => tag)
+} // flattenAndSortTags
+
+
+export function filterItemsByTags(itemsToFilter: IArchiveItem[], query: string[]) {
+  if (!query || query.length == 0)
+    return itemsToFilter
+
+  return itemsToFilter.filter(item =>
+    item.tags.some(tag => query.includes(tag)))
+} // filterItems
+
+
+export function getTagsFromItems(itemsToFilter: IArchiveItem[]) {
+  const uniqueTags = Array.from(
+    new Set(itemsToFilter.flatMap(item => item.tags))
+  )
+  return uniqueTags
+} // tagsInFilteredItems
+
+
+
+export function filterById(items: IArchiveItem[], ids: string[]) {
+  return items.filter((item: IArchiveItem) => ids.indexOf(item.id) >= 0)
+}
 
 
 export const proxyToArray = (target: any): any => {
