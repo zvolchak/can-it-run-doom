@@ -12,7 +12,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": true,
       "publishDate": "Aug 8, 2014",
-      "tags": ["medical", "equipment", "baremetal", "doom"],
+      "tags": ["medical", "equipment", "baremetal", "classic-doom"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/ge-vivid-s5-ultrasound-machine.jpg?raw=true"
     },
     {
@@ -28,7 +28,7 @@
       "isFirstLevelComplete": false,
       "publishDate": "Nov 20, 2016",
 
-      "tags": ["computer", "device", "doom"],
+      "tags": ["computer", "device", "classic-doom"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-touch-bar-macbook.jpg?raw=true"
     },
     {
@@ -43,7 +43,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Sep 17, 2013",
-      "tags": ["controls", "doom", "accessories"],
+      "tags": ["controls", "classic-doom", "accessories"],
       "previewImgUrl": "https://github.com/zvolchak/can-it-run-doom/blob/main/storage/images/doom-piano.png?raw=true"
     },
     {
@@ -100,7 +100,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Jul 26, 2014",
-      "tags": ["banking", "doom", "baremetal"],
+      "tags": ["banking", "classic-doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-atm.png"
     },
     {
@@ -120,7 +120,7 @@
       }],
       "isFirstLevelComplete": true,
       "publishDate": "Aug 28, 2021",
-      "tags": ["office", "doom", "baremetal"],
+      "tags": ["office", "classic-doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-polycom-office-phone.png"
     },
     {
@@ -145,7 +145,7 @@
       }],
       "isFirstLevelComplete": true,
       "publishDate": "Jul 7, 2000",
-      "tags": ["digital camera", "doom", "baremetal"],
+      "tags": ["digital camera", "classic-doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-camera-kodak-dc210.png"
     },
     {
@@ -165,7 +165,7 @@
       }],
       "isFirstLevelComplete": false,
       "publishDate": "May 07, 2020",
-      "tags": ["other", "doom", "baremetal"],
+      "tags": ["other", "classic-doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-myki.png"
     },
     {
@@ -202,7 +202,7 @@
       }],
       "isFirstLevelComplete": false,
       "publishDate": "Nov 4, 2022",
-      "tags": ["other", "doom", "baremetal"],
+      "tags": ["other", "classic-doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-lego-brick.png"
     },
     {
@@ -219,7 +219,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Nov 4, 2022",
-      "tags": ["kitchen", "doom", "appliance", "baremetal"],
+      "tags": ["kitchen", "classic-doom", "appliance", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-kitchen-appliance.png"
     },
     {
@@ -239,7 +239,7 @@
       }],
       "isFirstLevelComplete": true,
       "publishDate": "Nov 4, 2022",
-      "tags": ["console", "doom", "baremetal"],
+      "tags": ["console", "classic-doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/commodore64_baremetal.png"
     },
     {
@@ -256,7 +256,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "14 Мар, 2016",
-      "tags": ["mp3 player", "doom", "device", "baremetal"],
+      "tags": ["mp3 player", "classic-doom", "device", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mp3-sansa-e270.png"
     },
     {
@@ -273,7 +273,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Mar 1, 2010",
-      "tags": ["digital camera", "doom", "baremetal"],
+      "tags": ["digital camera", "classic-doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-custom-kodak-camera.png"
     },
     {
@@ -307,7 +307,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "May 24, 2013",
-      "tags": ["other", "doom", "baremetal", "device"],
+      "tags": ["other", "classic-doom", "baremetal", "device"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-oscilloscope.png"
     },
     {
@@ -324,7 +324,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Sep 15, 2014",
-      "tags": ["office", "doom", "printer", "baremetal"],
+      "tags": ["office", "classic-doom", "printer", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-printer-canon.png"
     },
     {
@@ -341,7 +341,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": true,
       "publishDate": "Sep 6, 2020",
-      "tags": ["doom", "other", "hygiene", "display"],
+      "tags": ["classic-doom", "other", "hygiene", "display"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-pregnancy-test.png"
     },
     {
@@ -395,7 +395,7 @@
       }],
       "isFirstLevelComplete": false,
       "publishDate": "Nov 22, 2020",
-      "tags": ["doom", "portable", "console", "baremetal"],
+      "tags": ["classic-doom", "portable", "console", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-game-and-watch.png"
     },
     {
@@ -415,7 +415,7 @@
       }],
       "isFirstLevelComplete": false,
       "publishDate": "Mar 11, 2022",
-      "tags": ["doom", "other"],
+      "tags": ["classic-doom", "other"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-ascii-terminal.png"
     },
     {
@@ -432,7 +432,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Jan 15, 2023",
-      "tags": ["doom", "smart home", "baremetal"],
+      "tags": ["classic-doom", "smart home", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-lenovo-smart-clock-2.png"
     },
     {
@@ -449,7 +449,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Feb 4, 2023",
-      "tags": ["doom", "price tag", "appliance", "display"],
+      "tags": ["classic-doom", "price tag", "appliance", "display"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-digital-pricetag.png"
     },
     {
@@ -466,7 +466,7 @@
       "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/DavBfr/edgetx-doom" }],
       "isFirstLevelComplete": false,
       "publishDate": "Feb 4, 2023",
-      "tags": ["doom", "baremetal", "drone"],
+      "tags": ["classic-doom", "baremetal", "drone"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-drone-radio-controller.png"
     },
     {
@@ -483,7 +483,7 @@
       "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/wojciech-graj/doom-audio" }],
       "isFirstLevelComplete": false,
       "publishDate": "Feb 11, 2024",
-      "tags": ["doom", "audio", "other"],
+      "tags": ["classic-doom", "audio", "other"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-spectogram.png"
     },
     {
@@ -500,7 +500,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Feb 28, 2024",
-      "tags": ["doom", "toothbrush", "medical", "wifi", "display"],
+      "tags": ["classic-doom", "toothbrush", "medical", "wifi", "display"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/toothbrush.png"
     },
     {
@@ -517,7 +517,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Feb 29, 2024",
-      "tags": ["doom", "baremetal", "accessories"],
+      "tags": ["classic-doom", "baremetal", "accessories"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/commodore_via_rad.png"
     },
     {
@@ -534,7 +534,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Mar 21, 2024",
-      "tags": ["doom", "demo", "console"],
+      "tags": ["classic-doom", "demo", "console"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/hyperscan-console.png"
     },
     {
@@ -568,7 +568,7 @@
       "sourceCodeUrl": [{ "name": "doom-nano", "url": "https://github.com/daveruiz/doom-nano/"}],
       "isFirstLevelComplete": false,
       "publishDate": "Apr 29, 2022",
-      "tags": ["doom", "baremetal", "custom-engine", "device", "other"],
+      "tags": ["classic-doom", "baremetal", "custom-engine", "device", "other"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/arduino-nano.png"
     },
     {
@@ -585,7 +585,7 @@
       "sourceCodeUrl": [{ "name": "nettitude/CVE-2024-20356", "url": "https://github.com/nettitude/CVE-2024-20356"}],
       "isFirstLevelComplete": false,
       "publishDate": "April 18, 2024",
-      "tags": ["doom", "baremetal", "office", "appliance"],
+      "tags": ["classic-doom", "baremetal", "office", "appliance"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/cisco-smtp-C195.png"
     },
     {
@@ -837,7 +837,7 @@
       ],
       "isFirstLevelComplete": true,
       "publishDate": "Nov 02, 2024",
-      "tags": ["doom", "baremetal", "clock"],
+      "tags": ["classic-doom", "baremetal", "clock"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/nintendo-alarmo.png"
     },
     {
@@ -853,7 +853,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": true,
       "publishDate": "Oct 28, 2024",
-      "tags": ["doom", "mod", "minecraft", "vm", "prboom", "fun"],
+      "tags": ["classic-doom", "mod", "minecraft", "vm", "prboom", "fun"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/minecraft-vm.png"
     },
     {
@@ -908,7 +908,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": true,
       "publishDate": "Oct 17, 2024",
-      "tags": ["doom", "baremetal", "sega", "console"],
+      "tags": ["classic-doom", "baremetal", "sega", "console"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/sega-cd-32x.png"
     },
     {
@@ -956,7 +956,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Dec 31, 2024",
-      "tags": ["baremetal", "doom"],
+      "tags": ["baremetal", "classic-doom"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/aq-g257-generator-protection.png"
     },
     {
@@ -972,7 +972,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Jan 3, 2025",
-      "tags": ["rendering", "doom", "ide", "text"],
+      "tags": ["rendering", "classic-doom", "ide", "text"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/visual-studio-code.png"
     },
     {
@@ -988,7 +988,7 @@
       "sourceCodeUrl": [{ "name": "Github gist", "url": "https://gist.github.com/ashtonmeuser/04710d3befc446e849108a58755163ea" }],
       "isFirstLevelComplete": false,
       "publishDate": "Jan 7, 2025",
-      "tags": ["browser", "doom"],
+      "tags": ["browser", "classic-doom"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/bookmarklet.png"
     },
     {
@@ -1004,7 +1004,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Dec 31, 2024",
-      "tags": ["browser", "doom"],
+      "tags": ["browser", "classic-doom"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/captcha.png"
     },
     {
@@ -1020,7 +1020,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Nov 5, 2024",
-      "tags": ["camera", "doom", "baremetal"],
+      "tags": ["camera", "classic-doom", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/ptz-camera.png"
     },
     {
@@ -1036,7 +1036,7 @@
       "sourceCodeUrl": [{ "name": "GitHub", "url": "https://github.com/wojciech-graj/DoomValley" }],
       "isFirstLevelComplete": false,
       "publishDate": "Dec 4, 2024",
-      "tags": ["rendering", "doom", "baremetal", "mod"],
+      "tags": ["rendering", "classic-doom", "baremetal", "mod"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/stardew-valley-doom-arcade.png"
     },
     {
@@ -1052,7 +1052,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Dec 18, 2024",
-      "tags": ["doom", "baremetal", "windows"],
+      "tags": ["classic-doom", "baremetal", "windows"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/diebold-nixdorf-pos-system.png"
     },
     {
@@ -1068,7 +1068,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Dec 19, 2024",
-      "tags": ["doom", "emulator", "android"],
+      "tags": ["classic-doom", "emulator", "android"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/school-smart-board.png"
     },
     {
@@ -1084,7 +1084,7 @@
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
       "publishDate": "Dec 19, 2024",
-      "tags": ["doom", "emulator", "handheld-computer"],
+      "tags": ["classic-doom", "emulator", "handheld-computer"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/motorola-wt4090.png"
     },
     {
@@ -1134,6 +1134,39 @@
       "publishDate": "Jan 12, 2025",
       "tags": ["keyboard", "baremetal", "display"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/custom-keyboard-keycap.jpg"
+    },
+    {
+      "id": "1066",
+      "title": "DOOM on E. coli cells.",
+      "description": "E. coli cells must function as traditional pixels capable of being either “on” or “off.” They also need to collectively light up to form images like a computer monitor or TV screen. It takes roughly 70 minutes to fully illuminate, then another 8 hours and 20 minutes to dim back to its original state - aka, roughly 1 frame per 8.5 hours.",
+      "authors": [{
+          "name": "Ren Ramlan",
+          "url": "https://www.youtube.com/@laurenramlan990"
+        }
+      ],
+      "sourcesUrl": [{ "name": "YouTube", "url": "https://www.youtube.com/watch?v=8DnoOOgYxck&t=298s" }, { "name": "Ren Ramlan Report Paper", "url": "https://docs.google.com/document/d/1SFm1dS6myqq7psBKttP7CVYN4jO66lOp7ZMA829c_hc/preview?tab=t.0#" }, { "name": "Popular Science", "url": "https://www.popsci.com/science/doom-e-coli-cells/" }],
+      "sourceCodeUrl": [{ "name": "Colab", "url": "https://colab.research.google.com/drive/1ZnWzeqKxjQSK2VTnfFzna0mFfseVMsZR?usp=sharing" }],
+      "isFirstLevelComplete": false,
+      "publishDate": "Dec 7, 2023",
+      "tags": ["baremetal", "display", "biology", "classic-doom"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/e-coli-display.png"
+    },
+    {
+      "id": "1067",
+      "title": "Microsoft Word",
+      "description": "Every game tick, doomgeneric_docm.dll creates a bmp image containing the current frame and uses GetAsyncKeyState to read the keyboard state. The main VBA macro's game loop runs a tick in doom, then replaces the image in the document with the latest frame.",
+      "authors": [
+          {
+              "name": "wojtek-graj",
+              "url": "https://www.reddit.com/user/wojtek-graj/"
+          }
+      ],
+      "sourcesUrl": [{ "name": "Reddit", "url": "https://www.reddit.com/r/itrunsdoom/comments/1i3ytwc/doom_in_a_ms_word_document/"}],
+      "sourceCodeUrl": [{ "name": "Github", "url": "https://github.com/wojciech-graj/doom-docm"}],
+      "isFirstLevelComplete": false,
+      "publishDate": "Jan 17, 2025",
+      "tags": ["baremetal", "rendering", "software", "text"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/microsoft-word.png"
     }
   ]
 }

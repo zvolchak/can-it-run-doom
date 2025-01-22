@@ -22,7 +22,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
     const router = useRouter()
 
     function onIdClick(id: string) {
-        router.replace({
+        router.push({
             pathname: router.pathname,
             query: { id },
         })
