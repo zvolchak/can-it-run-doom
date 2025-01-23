@@ -19,7 +19,9 @@ export function BtnClearFilters({ className = "",}: IBtnClearFiltersProps) {
 
     return (
         <div className={`${className}`}>
-            <button className={`flex items-center btn-remove-filters`}
+            <button
+                aria-label="Clear Filters" 
+                className={`flex items-center btn-remove-filters`}
                 onClick={onBtnClick}
             >
                 Clear Filters

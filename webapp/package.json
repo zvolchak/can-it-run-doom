@@ -9,7 +9,7 @@
   "main": "ssr.js",
   "scripts": {
     "dev": "next dev --turbopack",
-    "build:prod": "DOTENV_KEY=$(npx dotenv-vault keys production) next build && mkdir .next/_next/ && cp -r .next/static .next/_next/ && cp -r .next/static/ .next/standalone/",
+    "build:prod": "DOTENV_KEY=$(npx dotenv-vault keys production) ./scripts/build_prod.sh",
     "build": "next build",
     "start": "next start",
     "start:dev": "nodemon",
