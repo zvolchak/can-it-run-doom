@@ -30,7 +30,9 @@ export function BtnScrollTop({ className = "", }: IBtnScrollTopProps) {
 
     return (
         <div className={`${className}`}>
-            <button className={`
+            <button 
+                aria-label="Back to top"
+                className={`
                     ${isShowBackToTop ? "active" : ""}
                     back-to-top-btn
                 `}

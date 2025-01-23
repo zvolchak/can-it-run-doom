@@ -18,10 +18,10 @@ export function Footer({ className = "", }: IFooterProps) {
 
                 {/* Right Section */}
                 <div className="mt-4 md:mt-0 flex space-x-4">
-                    <a href="https://github.com" target="_blank" className="">
+                    <a href="https://github.com" target="_blank" className="" rel="noopener noreferrer">
                         Github
                     </a>
-                    <a href="https://discord.com" target="_blank" className="">
+                    <a href="https://discord.com" target="_blank" className="" rel="noopener noreferrer">
                         Discord
                     </a>
                 </div>

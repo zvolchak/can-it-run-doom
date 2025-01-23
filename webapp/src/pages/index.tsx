@@ -37,17 +37,22 @@ export default function MainPage({ items, tags }: IMainPageProps) {
     return (
         <>
             <Head>
-                <title>Can it run DOOM?</title>
+                <title>Can It Run Doom? An Archive of All Known Ports</title>
                 {items.length === 1 && (
                     <>
                         <meta property="og:title" content={items[0].title} />
                         <meta property="og:image" content={items[0].previewImgUrl} />
+
+                        <meta name="twitter:title" content={items[0].title} />
+                        <meta name="twitter:image" content={items[0].previewImgUrl} />
                     </>
                 )}
                 {items.length === 1 && items[0].description.length > 0 && (
                     <>
                         <meta name="description" content={`${items[0].description.slice(0, 150)}...`} />
                         <meta property="og:description" content={`${items[0].description.slice(0, 150)}...`} />
+
+                        <meta name="twitter:description" content={items[0].description.slice(0, 150)} />
                     </>
                 )}
                 

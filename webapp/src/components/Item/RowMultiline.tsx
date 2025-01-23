@@ -30,6 +30,7 @@ export const RowMultiline = ({
                     className="relative"
                     href={item.url}
                     target="_blank"
+                    rel="noopener noreferrer"
                 >
                     {item.name}
                     {isUseComma(items, index) && <br className="my-1" />}
