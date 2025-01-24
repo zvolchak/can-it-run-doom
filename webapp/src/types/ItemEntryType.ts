@@ -15,3 +15,9 @@ export interface IArchiveItem {
     tags: string[]
     previewImgUrl: string
 }
+
+
+export interface ISubmissionsStoreState {
+    items: IArchiveItem[]
+    allTags: string[]
+}

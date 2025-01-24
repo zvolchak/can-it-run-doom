@@ -1,13 +1,11 @@
 import { useRouter } from "next/router"
 import { IArchiveItem } from "@/src/types"
 import {
-    Navbar,
     Tag,
     ItemCard,
     BtnScrollTop,
     Pagination,
     Footer,
-    BtnClearFilters,
 } from "@/src/components"
 import {
     paginate,
@@ -43,8 +41,6 @@ export function ArchiveDataView({ items, tags }: IMainPageProps) {
 
     return (
         <div className="">
-            <Navbar />
-
             <div className="flex flex-wrap flex-row gap-2 mt-3 p-4">
                 {
                     tags.map((tag: string) =>
@@ -60,11 +56,11 @@ export function ArchiveDataView({ items, tags }: IMainPageProps) {
                 }
             </div>
 
-            {Object.keys(router.query).length > 0 &&
+            {/* {Object.keys(router.query).length > 0 &&
                 <div className="h-2 px-4">
                     <BtnClearFilters />
                 </div>
-            }
+            } */}
 
             <div className="h-10">
                 <Pagination 

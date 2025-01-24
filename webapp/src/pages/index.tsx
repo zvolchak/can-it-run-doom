@@ -5,9 +5,12 @@ import type { GetServerSideProps } from 'next'
 import { IArchiveItem } from "@/src/types"
 import {
     setItems,
+    setAllTags,
 } from "@/src/store"
 import {
     ArchiveDataView,
+    Navbar,
+    SubNavbar,
 } from "@/src/components"
 import {
     fetchArchiveData,
@@ -31,7 +34,8 @@ export default function MainPage({ items, tags }: IMainPageProps) {
 
     useEffect(() => {
         dispatch(setItems(items))
-    }, [dispatch, items])
+        dispatch(setAllTags(tags))
+    }, [dispatch, items, tags])
 
 
     return (
@@ -58,6 +62,8 @@ export default function MainPage({ items, tags }: IMainPageProps) {
                 
             </Head>
 
+            <Navbar />
+            <SubNavbar />
             <ArchiveDataView items={items} tags={tags} />
         </>
     )

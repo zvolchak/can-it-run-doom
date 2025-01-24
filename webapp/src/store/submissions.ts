@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { ISubmissionsStoreState } from "@/src/types"
 
-const initialState = {
+const initialState: ISubmissionsStoreState = {
     items: [],
-    selectedItem: null
+    allTags: [],
 }
 
 const submissionsSlice = createSlice({
@@ -12,11 +13,16 @@ const submissionsSlice = createSlice({
         setItems: (state, action) => {
             state.items = action.payload
         },
+
+        setAllTags: (state, action) => {
+            state.allTags = action.payload
+        }
     }
 })
 
 export const { 
     setItems, 
+    setAllTags,
 } = submissionsSlice.actions
 
 
