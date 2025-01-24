@@ -33,7 +33,7 @@ export const SubNavbar = () => {
                     active={isSidebarOpen}
                     onToggle={(state: boolean) => setIsSidebarOpen(state)}
                 >
-                    <div className="flex flex-wrap flex-row gap-2 mt-3 p-4 max-h-64 border-2">
+                    <div className="flex flex-wrap flex-row gap-2 mt-3 p-4 max-h-96 border-2">
                         {
                             tags.map((tag: string) =>
                                 <Tag 
