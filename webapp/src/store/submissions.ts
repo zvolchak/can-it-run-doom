@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit"
+import { ISubmissionsStoreState } from "@/src/types"
 
-const initialState = {
+const initialState: ISubmissionsStoreState = {
     items: [],
-    selectedItem: null
 }
 
 const submissionsSlice = createSlice({

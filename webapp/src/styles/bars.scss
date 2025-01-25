@@ -1,0 +1,32 @@
+@use "./doom.scss" as doom;
+
+.sidebar {
+    position: fixed;
+    left: -10px;
+    top: 0;
+    height: 100%;
+    max-width: 24rem;
+    width: 80%;
+    background-color: #2d3748;
+    color: #ffffff;
+    transform: translateX(-100%);
+    transition: all 0.3s ease-in-out;
+    z-index: 20;
+
+    &.open {
+        transform: translateX(0);
+    }
+}
+
+.tags-container {
+    min-height: 10rem;
+    max-height: 30rem;
+    max-width: 100%;
+    overflow-y: auto;
+}
+
+.scroll-slate {
+    scrollbar-color: doom.$doomColorAltDark rgb(75 85 99 / var(--tw-bg-opacity, 1));
+    scrollbar-width: thin;
+  }
+  

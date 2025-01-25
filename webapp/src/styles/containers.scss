@@ -1,0 +1,22 @@
+.archive-data-view {
+    min-height: 90rem;
+}
+
+.input-with-button {
+    transition: 0.1s ease-in, 0.4s ease-out;
+
+    position: relative;
+
+    input {
+        padding-right: 60px;
+        width: 100%;
+        z-index: 1;
+    }
+
+    button {
+        transition: 0.1s ease-in, 0.2s ease-out;
+        position: absolute;
+        right: 0px;
+        z-index: 2;
+    }
+}

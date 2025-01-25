@@ -19,3 +19,11 @@ export const paginate = (target: Array<any>, currentPage: number, itemsPerPage: 
     return result.splice(start, itemsPerPage)
   } // paginate
   
+
+export function getValueFromQuery(query, targetKey: string) {
+    if (!query || !query[targetKey])
+        return []
+
+    return decodeURIComponent(query[targetKey] as string || "").split(",")
+            .filter(q => q || q !== "")
+} // getValueFromQuery
