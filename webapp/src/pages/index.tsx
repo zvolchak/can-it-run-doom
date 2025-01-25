@@ -1,16 +1,18 @@
 import Head from 'next/head'
 import { useEffect } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, } from "react-redux"
 import type { GetServerSideProps } from 'next'
 import { IArchiveItem } from "@/src/types"
 import {
     setItems,
-    setAllTags,
+    setAvailableTags,
+    setAvailableYears,
+    setAvailableAuthors,
 } from "@/src/store"
 import {
     ArchiveDataView,
     Navbar,
-    SubNavbar,
+    Footer,
 } from "@/src/components"
 import {
     fetchArchiveData,
@@ -19,23 +21,32 @@ import {
     onSearch,
     filterById,
     filterItemsByTags,
+    filterItemsByAuthors,
     getTagsFromItems,
+    getAuthorsFromItems,
+    getValueFromQuery,
+    getYearsFromItems,
 } from "@/src/utils"
 
 
 interface IMainPageProps {
     items: IArchiveItem[]
     tags: string[]
+    years: number[]
+    authors: string[]
 }
 
 
-export default function MainPage({ items, tags }: IMainPageProps) {
+export default function MainPage({ items, tags, years, authors }: IMainPageProps) {
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(setItems(items))
-        dispatch(setAllTags(tags))
-    }, [dispatch, items, tags])
+
+        dispatch(setAvailableTags(tags)) 
+        dispatch(setAvailableYears(years)) 
+        dispatch(setAvailableAuthors(authors))
+    }, [dispatch, items, tags, years, authors])
 
 
     return (
@@ -63,8 +74,8 @@ export default function MainPage({ items, tags }: IMainPageProps) {
             </Head>
 
             <Navbar />
-            <SubNavbar />
-            <ArchiveDataView items={items} tags={tags} />
+            <ArchiveDataView items={items} />
+            <Footer className="mt-20" />
         </>
     )
 } // MainPage
@@ -72,29 +83,48 @@ export default function MainPage({ items, tags }: IMainPageProps) {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
     context.res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=30")
+    const yearNow = new Date().getFullYear()
 
     const searchQuery = decodeURIComponent(context.query?.search as string || "")
-    const queryTags = (decodeURIComponent(context.query?.tag as string || "")).split(",")
-            .filter(q => q || q !== "")
-    const idQuery = decodeURIComponent(context.query?.id as string || "").split(",")
-            .filter(q => q || q !== "")
+    const queryTags = getValueFromQuery(context.query, "tag")
+    const idQuery = getValueFromQuery(context.query, "id")
+    const authorQuery = getValueFromQuery(context.query, "author")
+    const yearQuery = {
+        lowest: getValueFromQuery(context.query, "yearlowest")[0] || 1996, 
+        highest: getValueFromQuery(context.query, "yearhighest")[0] || yearNow,
+    }
 
     let items: IArchiveItem[] = await fetchArchiveData({})
+
     const tags = getTagsFromItems(items)
+    const authors = getAuthorsFromItems(items).sort()
 
     if (searchQuery && searchQuery !== "")
         items = onSearch(items, searchQuery)
+    if (authorQuery && authorQuery.length > 0)
+        items = filterItemsByAuthors(items, authorQuery)
     if (idQuery && idQuery.length > 0)
         items = filterById(items, idQuery)
     if (queryTags && queryTags.length > 0)
         items = filterItemsByTags(items, queryTags)
 
+    if (yearQuery.lowest || yearQuery.highest) {
+        items = items.filter((item: IArchiveItem) => {
+            const itemYear = new Date(item.publishDate).getFullYear()
+            return itemYear >= Number(yearQuery.lowest) && itemYear <= Number(yearQuery.highest)
+        })
+    }
+
     // FIXME: move sorting to api endpoint
     items.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
+    const submissionYears = getYearsFromItems(items)
+
     return {
       props: {
         items,
-        tags
+        tags,
+        years: submissionYears.sort(),
+        authors,
       },
     }
 } // getServerSideProps

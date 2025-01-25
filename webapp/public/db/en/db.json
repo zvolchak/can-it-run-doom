@@ -109,7 +109,7 @@
       "description": "doom on the office phone made by Polycom.",
       "authors": [
         {
-          "name": "@NeilBostian",
+          "name": "NeilBostian",
           "url": "https://twitter.com/NeilBostian"
         }
       ],
@@ -333,7 +333,7 @@
       "description": "As mentioned by the author, this is a replacement display and a replacement microcontroller. @Foone is not using any of the original tester other than the shell.",
       "authors": [
         {
-          "name": "@Foone",
+          "name": "Foone",
           "url": "https://twitter.com/Foone"
         }
       ],
@@ -384,7 +384,7 @@
       "description": "Game & Watch is a portable console released by Nintendo in 1980 can now run Doom.",
       "authors": [
         {
-          "name": "@ghidraninja",
+          "name": "ghidraninja",
           "url": "https://twitter.com/ghidraninja"
         }
       ],
@@ -404,7 +404,7 @@
       "description": "Rendering doom with the ASCII character on the linux terminal.",
       "authors": [
         {
-          "name": "@ghidraninja",
+          "name": "ghidraninja",
           "url": "https://twitter.com/ghidraninja"
         }
       ],

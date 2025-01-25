@@ -19,5 +19,4 @@ export interface IArchiveItem {
 
 export interface ISubmissionsStoreState {
     items: IArchiveItem[]
-    allTags: string[]
 }

@@ -102,6 +102,15 @@ export function filterItemsByTags(itemsToFilter: IArchiveItem[], query: string[]
 } // filterItems
 
 
+export function filterItemsByAuthors(itemsToFilter: IArchiveItem[], query: string[]) {
+  if (!query || query.length == 0)
+    return itemsToFilter
+
+  return itemsToFilter.filter(item =>
+    item.authors.some(author => query.includes(author.name)))
+}
+
+
 export function getTagsFromItems(itemsToFilter: IArchiveItem[]) {
   const uniqueTags = Array.from(
     new Set(itemsToFilter.flatMap(item => item.tags))
@@ -110,13 +119,13 @@ export function getTagsFromItems(itemsToFilter: IArchiveItem[]) {
 } // tagsInFilteredItems
 
 
-
 export function filterById(items: IArchiveItem[], ids: string[]) {
   return items.filter((item: IArchiveItem) => ids.indexOf(item.id) >= 0)
 }
 
 
-export const proxyToArray = (target: any): any => {
+
+export function proxyToArray(target: any): any {
   // idk WTF this is and why. Cause Proxy... but still.
   const values = Object.values(JSON.parse(JSON.stringify(target)))
   // @ts-ignore
@@ -126,11 +135,32 @@ export const proxyToArray = (target: any): any => {
 } // proxyToArray
 
 
-export const proxyToObject = (target: any): any => {
+
+export function proxyToObject(target: any): any {
   return JSON.parse(JSON.stringify(target))
 }
 
 
-export const extractTagsFromString = (target: string) => {
+
+export function extractTagsFromString (target: string) {
   return target.split('#').filter(i => i.trim()).map(i => `#${i}`.trim())
+}
+
+
+export const getAuthorsFromItems = (items: IArchiveItem[]) => {
+  return Array.from(new Set(items.flatMap((item) => item.authors.map((author) => author.name))))
+}
+
+
+export const getYearsFromItems = (items: IArchiveItem[]) => {
+  return Array.from(new Set(items.flatMap((item) => new Date(item.publishDate).getFullYear())))
+}
+
+export function findMinYear(archiveItems: IArchiveItem[]): number | null {
+  if (archiveItems.length === 0) return null;
+
+  return archiveItems.reduce((minYear, item) => {
+      const itemYear = new Date(item.publishDate).getFullYear();
+      return itemYear < minYear ? itemYear : minYear;
+  }, Infinity);
 }

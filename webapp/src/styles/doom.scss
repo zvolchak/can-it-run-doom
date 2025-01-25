@@ -25,8 +25,16 @@ $doomShadowShort: 2px 2px #242424;
   color: $doomColorSecondary;
 }
 
+.doom-color-slate {
+  color: $colorSlate;
+}
+
 .doom-text-shadow-danger {
   text-shadow: $doomTextShadowDanger;
+}
+
+.doom-bg-dark {
+  background-color: $doomColorAltDark;
 }
 
 .doom-text-shadow-light {
@@ -39,4 +47,11 @@ $doomShadowShort: 2px 2px #242424;
   background-clip: border-box;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+
+.doom-select {
+  background-color: transparent;
+  border: 1px solid $colorSlate;
+  color: $colorSlate;
 }
