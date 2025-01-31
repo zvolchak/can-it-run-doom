@@ -83,7 +83,11 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                     <div className="flex flex-wrap flex-row gap-1 mt-3 p-4">
                         {
                             item.tags.map((tag: string) => {
-                                return <Tag key={`tag_${tag}`} text={tag} />
+                                return <Tag 
+                                    key={`tag_${tag}`} 
+                                    text={tag} 
+                                    queryKey="tag"
+                                />
                             })
                         }
                     </div>
