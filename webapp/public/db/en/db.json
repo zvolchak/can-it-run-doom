@@ -1167,6 +1167,23 @@
       "publishDate": "Jan 17, 2025",
       "tags": ["baremetal", "rendering", "software", "text"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/microsoft-word.png"
+    },
+    {
+      "id": "1068",
+      "title": "Google search bar",
+      "description": "",
+      "authors": [
+          {
+            "name": "Pedro Webber",
+            "url": "https://www.youtube.com/@PeddroWebber"
+          }
+      ],
+      "sourcesUrl": [{ "name": "Youtube", "url": "https://www.youtube.com/watch?v=UpLx6FTo9ew"}],
+      "sourceCodeUrl": null,
+      "isFirstLevelComplete": false,
+      "publishDate": "Jan 30, 2025",
+      "tags": ["browser", "rendering", "text"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/google-search-bar.png"
     }
   ]
 }
