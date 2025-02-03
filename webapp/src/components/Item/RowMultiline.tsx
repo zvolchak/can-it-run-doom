@@ -1,3 +1,4 @@
+import { useState } from "react"
 import Image from 'next/image'
 import { 
     ISource, 
@@ -20,6 +21,9 @@ export const RowMultiline = ({
     items, 
     hoverIconSrc, 
 }: IRowMultilineProps) => {
+    const [isShowIcon, setIsShowIcon] = useState(false)
+    
+
     return (
         <ItemContentRow 
             title={title}
@@ -28,6 +32,8 @@ export const RowMultiline = ({
                 <a 
                     key={`author_name: ${item.name}`} 
                     className="relative"
+                    onMouseOver={() => setIsShowIcon(true)}
+                    onMouseOut={() => setIsShowIcon(false)}
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -38,9 +44,10 @@ export const RowMultiline = ({
                     <Image
                         src={hoverIconSrc}
                         alt={`Icon ${hoverIconSrc}`}
-                        className="icon"
-                        width={16}
-                        height={16}
+                        className={`icon ${isShowIcon ? "opacity-100" : "opacity-0"}`}
+                        quality={100}
+                        width={20}
+                        height={20}
                     />
                 </a>
             )}
