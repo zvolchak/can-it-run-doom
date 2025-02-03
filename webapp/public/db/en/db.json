@@ -1184,6 +1184,23 @@
       "publishDate": "Jan 30, 2025",
       "tags": ["browser", "rendering", "text"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/google-search-bar.png"
+    },
+    {
+      "id": "1069",
+      "title": "Robot Operating System (ROS) running Doom",
+      "description": "",
+      "authors": [
+          {
+            "name": "George Stavrinos",
+            "url": "https://github.com/gstavrinos"
+          }
+      ],
+      "sourcesUrl": [{ "name": "Github", "url": "https://github.com/gstavrinos/doom_ros/blob/master/data/doom_lvl1.gif"}],
+      "sourceCodeUrl": [ { "name": "Github", "url": "https://github.com/gstavrinos/doom_ros" }],
+      "isFirstLevelComplete": true,
+      "publishDate": "Jan 31, 2025",
+      "tags": ["software", "robot", "os"],
+      "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/robot-operating-system.png"
     }
   ]
 }
