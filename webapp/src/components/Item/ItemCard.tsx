@@ -63,8 +63,15 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                     <RowMultiline 
                         title="Sources:"
                         items={item.sourcesUrl} 
-                        hoverIconSrc="/icons/doom-guy-grin.png" 
+                        hoverIconSrc="/icons/doom-guy-scream.png" 
                     />
+
+                    <RowMultiline 
+                        title="Code"
+                        items={item.sourcesUrl} 
+                        hoverIconSrc="/icons/doom-guy-look-left.png" 
+                    />
+
 
                     <ItemContentRow title="First Level Completed">
                         {item.isFirstLevelComplete ?
@@ -74,7 +81,10 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                         }
                     </ItemContentRow>
 
-                    <ItemContentRow title="ID:">
+
+                    <ItemContentRow 
+                        title="ID:"
+                    >
                         <a onClick={() => onIdClick(item.id)}>
                             {item.id}
                         </a>

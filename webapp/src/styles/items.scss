@@ -79,11 +79,9 @@ a {
 
 .icon {
   position: absolute;
-  width: 24px;
-  height: 28px;
   z-index: 10;
-  right: -28px;
-  top: -2px;
-  opacity: 0;
+  right: -30px;
+  top: -5px;
+  image-rendering: crisp-edges;
   transition: opacity 0.2s ease-in, opacity 0.4s ease-out;
 }
