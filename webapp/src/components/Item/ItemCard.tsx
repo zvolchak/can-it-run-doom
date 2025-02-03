@@ -68,11 +68,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
 
                     <RowMultiline 
                         title="Code"
-<<<<<<< HEAD
                         items={item.sourceCodeUrl} 
-=======
-                        items={item.sourcesUrl} 
->>>>>>> origin/main
                         hoverIconSrc="/icons/doom-guy-look-left.png" 
                     />
 
