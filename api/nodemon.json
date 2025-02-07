@@ -1,0 +1,6 @@
+{
+    "watch": ["server.ts", "routes/**/*", "config/**/*", "database/**/*", "utils/**/*"],
+    "ext": "ts,js",
+    "ignore": ["node_modules/"],
+    "exec": "tsx server.ts"
+}

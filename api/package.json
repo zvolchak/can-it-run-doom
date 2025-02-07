@@ -1,0 +1,46 @@
+{
+  "name": "can-it-run-doom-api",
+  "version": "1.0.0",
+  "description": "API for CanItRunDoom webapp",
+  "engines": {
+    "node": "18"
+  },
+  "main": "dist/index.js",
+  "_moduleAliases": {
+    "@": "dist"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build:prod": "DOTENV_PATH=.env.production tsc",
+    "dev": "DOTENV_PATH=.env nodemon",
+    "prod": "tsx server.ts",
+    "migration": "npx sequalize-cli db:migration"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0",
+    "firebase": "^11.3.0",
+    "firebase-functions": "^6.1.1",
+    "sequelize": "^6.37.4",
+    "sequelize-cli": "^6.6.2",
+    "sqlite3": "^5.1.7",
+    "winston": "^3.17.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^20.16.11",
+    "@types/sequelize": "^4.28.20",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "dotenv-vault": "^1.26.2",
+    "eslint": "^8",
+    "eslint-config-next": "14.2.13",
+    "eslint-plugin-next": "^0.0.0",
+    "module-alias": "^2.2.3",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.19.1",
+    "typescript": "^5"
+  }
+}

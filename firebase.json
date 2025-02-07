@@ -1,6 +1,23 @@
 {
   "functions": [
     {
+      "codebase": "api",
+      "source": "./api",
+      "predeploy": ["cd api && npm run build:prod"],
+      "ignore": [
+        "**/node_modules/**",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local",
+        "public/**",
+        "**/.*"
+      ],
+      "include": [
+        "api/dist/**"
+      ]
+    },
+    {
       "codebase": "webapp",
       "source": "./webapp",
       "predeploy": ["cd webapp && npm run build:prod"],
@@ -50,6 +67,9 @@
     },
     "ui": {
       "enabled": true
+    },
+    "firestore": {
+      "port": 8081
     },
     "singleProjectMode": true
   }
