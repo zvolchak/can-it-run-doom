@@ -2,13 +2,15 @@ import dotenv from "dotenv"
 dotenv.config({ path: process.env.DOTENV_PATH || ".env" })
 
 import express from "express"
-import cors from "cors"
 import { https } from "firebase-functions"
+import cors from "cors"
+import cookieParser from 'cookie-parser'
 import winston from "winston"
 import { 
     DoomProtsRouter,
     AuthorsRouter,
     TagsRouter,
+    UserRouter,
 } from "./routes"
 
 const isDev = process.env.NODE_ENV === "development" || true
@@ -39,6 +41,7 @@ app.use(cors({
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],   
     allowedHeaders: ["Content-Type", "Authorization"]
 }))
+app.use(cookieParser())
 
 app.options("*", (req, res) => {
     res.set({
@@ -46,13 +49,14 @@ app.options("*", (req, res) => {
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Authorization, Content-Type",
         "Access-Control-Max-Age": "86400", // Optional: Cache preflight response
-    });
-    res.sendStatus(204); // No Content
-});
+    })
+    res.sendStatus(204) // No Content
+})
 
 app.use(BASE_URL, DoomProtsRouter)
 app.use(BASE_URL, AuthorsRouter)
 app.use(BASE_URL, TagsRouter)
+app.use(BASE_URL, UserRouter)
 
 export const api = https.onRequest(app)
 export default app

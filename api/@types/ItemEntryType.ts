@@ -6,6 +6,7 @@ export interface ISource {
 }
 
 export interface IArchiveItem {
+    id?: string
     title?: string
     description?: string
     authors?: ISource[]

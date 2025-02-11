@@ -6,14 +6,15 @@ import {
     addDoc,
     updateDoc,
     doc,
+    setDoc,
 } from "firebase/firestore"
 import { 
     authorsCollection,
     doomPortsCollection,
     COLLECTION_NAME,
-    db,
-} from "./db"
-import { IAuthorDocument, IArchiveItem, } from "../types"
+    fbDb,
+} from "./firebaseApp"
+import { IAuthorDocument, IArchiveItem, } from "../@types"
 
 
 export async function getAuthorsByName(name: string) { 
@@ -46,7 +47,7 @@ export async function addAuthor(author: IAuthorDocument) {
 
 
 export async function updateAuthor(id: string, entry: IAuthorDocument) {
-    const docRef = doc(db, COLLECTION_NAME.authors, id)
+    const docRef = doc(fbDb, COLLECTION_NAME.authors, id)
     return await updateDoc(
         docRef, 
         { 
@@ -58,19 +59,26 @@ export async function updateAuthor(id: string, entry: IAuthorDocument) {
 
 
 export async function addDoomPort(newEntry: IArchiveItem) {
-    return await addDoc(
-        doomPortsCollection, 
-        { 
-            ...newEntry,
-            createdAt: Timestamp.now(), // UTC timezone
-            updatedAt: Timestamp.now(), // UTC timezone
-        }
-    )
+    const data = { 
+        ...newEntry,
+        createdAt: Timestamp.now(), // UTC timezone
+        updatedAt: Timestamp.now(), // UTC timezone
+    }
+    // delete ID from explicitly adding it to the document, sinc doc id itself serves its purpose
+    delete data["id"]
+
+    if (!newEntry.id)
+        return await addDoc(doomPortsCollection, data)
+    else {
+        // add document using custom ID value to support legacy entry identification
+        const itemRef = doc(doomPortsCollection, newEntry.id)
+        return await setDoc(itemRef, data)
+    }
 } // addDoomPort
 
 
 export async function updateDoomPort(id: string, entry: IArchiveItem) {
-    const docRef = doc(db, COLLECTION_NAME.doomPorts, id)
+    const docRef = doc(fbDb, COLLECTION_NAME.doomPorts, id)
     return await updateDoc(
         docRef, 
         { 

@@ -1,5 +1,5 @@
 import { Request, Response, Router } from "express"
-import { IAuthorDocument } from "../../types"
+import { IAuthorDocument } from "../../@types"
 import {
     getAuthorsByName,
     addAuthor,

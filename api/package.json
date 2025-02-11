@@ -18,6 +18,7 @@
   },
   "dependencies": {
     "axios": "^1.7.7",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
@@ -26,6 +27,7 @@
     "sequelize": "^6.37.4",
     "sequelize-cli": "^6.6.2",
     "sqlite3": "^5.1.7",
+    "uuid": "^11.0.5",
     "winston": "^3.17.0"
   },
   "devDependencies": {

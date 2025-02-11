@@ -1,13 +1,14 @@
 import { Request, Response, Router } from "express"
-import { IArchiveItem } from "../../types"
+import { IArchiveItem } from "../../@types"
 import {
-    updateDoomPort
- } from "../../utils/queries"
+    updateDoomPort,
+    authenticate,
+ } from "../../utils"
 
 const router = Router()
 
 
-router.patch("/:id", async (req: Request, res: Response): Promise<any> => {
+router.patch("/:id", authenticate, async (req: Request, res: Response): Promise<any> => {
     const { id } = req.params
     const newEntry: IArchiveItem = req.body
 

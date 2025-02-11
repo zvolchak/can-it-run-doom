@@ -16,6 +16,7 @@
     "outDir": "./dist",
     "rootDir": "./",
     "baseUrl": "./",
+    "typeRoots": ["node_modules/@types", "@types"],
     "plugins": [
       {
         "name": "next"

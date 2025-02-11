@@ -1,1 +1,2 @@
-export * from "./db"
+export * from "./firebaseApp"
+export * from "./queries"

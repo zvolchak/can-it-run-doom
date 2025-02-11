@@ -1,14 +1,15 @@
 import { Request, Response, Router } from "express"
 import { Timestamp } from "firebase/firestore"
-import { IArchiveItem } from "../../types"
+import { IArchiveItem } from "../../@types"
 import {
+    authenticate,
     addDoomPort,
- } from "../../utils/queries"
+ } from "../../utils"
 
 const router = Router()
 
 
-router.post("/add", async (req: Request, res: Response): Promise<any> => {
+router.post("/add", authenticate, async (req: Request, res: Response): Promise<any> => {
     const newEntry: IArchiveItem = req.body[0]
 
     if (!newEntry.title || !newEntry.description) {
