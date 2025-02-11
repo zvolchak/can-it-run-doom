@@ -14,7 +14,7 @@ const ROUTE_NAMESPACE = "/login"
 
 
 /* Refresh user"s token from its session token. */
-router.post(`${ROUTE_NAMESPACE}/`, async (req: Request, res: Response):  Promise<IUserAuthResponse | any> => {
+router.post(`${ROUTE_NAMESPACE}/refresh`, async (req: Request, res: Response):  Promise<IUserAuthResponse | any> => {
     const sessionCookie = req.cookies?.session
     if (!sessionCookie) {
         return res.status(400).json({ error: "No refresh token found!" })
