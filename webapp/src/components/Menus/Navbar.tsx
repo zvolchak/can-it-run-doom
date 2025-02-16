@@ -1,13 +1,15 @@
 // import { useState, useEffect } from "react"
 import Image from "next/image"
-// import { useRouter } from "next/router"
-import { Searchbar, } from "@/src/components"
+import { useRouter } from "next/router"
 import Link from "next/link"
+import { 
+    Searchbar, 
+} from "@/src/components"
 
 
-export const Navbar = () => {
+export const Navbar = () => {    
     // const [locale, setLocale] = useState("en")
-    // const router = useRouter()
+    const router = useRouter()
 
     // const routes = [
     //     { localeVar: "Home", name: "Home", path: "/" },
@@ -86,6 +88,20 @@ export const Navbar = () => {
             </div>
 
             <Searchbar className="order-2" />
+
+            <div className="flex items-end order-3 gap-3">
+                { router.pathname !== "/" &&
+                    <Link href="/" className="doom-btn">
+                            Home
+                    </Link>
+                }
+                <Link 
+                    href="/manage-entries"
+                    className="doom-btn"
+                >
+                        Add New
+                </Link>
+            </div>
         </nav>
     )
 }

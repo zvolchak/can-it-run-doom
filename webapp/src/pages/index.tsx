@@ -11,8 +11,6 @@ import {
 } from "@/src/store"
 import {
     ArchiveDataView,
-    Navbar,
-    Footer,
 } from "@/src/components"
 import {
     fetchArchiveData,
@@ -73,16 +71,19 @@ export default function MainPage({ items, tags, years, authors }: IMainPageProps
                 
             </Head>
 
-            <Navbar />
             <ArchiveDataView items={items} />
-            <Footer className="mt-20" />
         </>
     )
 } // MainPage
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    context.res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=30")
+    // 1 hour
+    const cacheTime = 60 * 60
+    context.res.setHeader(
+        "Cache-Control", 
+        `public, s-maxage=${cacheTime}, stale-while-revalidate=30`
+    )
     const yearNow = new Date().getFullYear()
 
     const searchQuery = decodeURIComponent(context.query?.search as string || "")
@@ -109,10 +110,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         items = filterItemsByTags(items, queryTags)
 
     if (yearQuery.lowest || yearQuery.highest) {
-        items = items.filter((item: IArchiveItem) => {
+        items = items?.filter((item: IArchiveItem) => {
             const itemYear = new Date(item.publishDate).getFullYear()
             return itemYear >= Number(yearQuery.lowest) && itemYear <= Number(yearQuery.highest)
-        })
+        }) || []
     }
 
     // FIXME: move sorting to api endpoint

@@ -1,6 +1,7 @@
 import axios from "axios"
 import { 
     IArchiveItem,
+    IUserAuthResponse,
 } from "@/src/types"
 
 
@@ -49,28 +50,51 @@ export async function fetchArchiveData({
         return response?.data?.items
     } catch (error) {
         console.error("Failed to get archive data", error)
+        return []
     }
 } // getArchiveData
 
 
 export async function refreshSession() {
-    try {
-        const url = "/user/login/refresh"
-        // Session cookie should be in the apiClient request already - if previously
-        // authenticated.
-        await apiClient.post(url)
-    } catch(error) {
-        console.error("Failed to login!", error)
-    }
+    const url = "/user/login/refresh"
+    // Session cookie should be in the apiClient request already - if previously
+    // authenticated.
+    await apiClient.post(url)
 } // refreshSession
 
 
-export async function loginEmailAndPassword(email: string, password: string) {
+export async function validateSession(): Promise<IUserAuthResponse> {
+    const url = "/user/login/validate"
     try {
-        const url = "/user/login/email_and_password"
-        // Session cookie will be set in the response on successfull authentication
-        await apiClient.post(url, { email, password })
+        const response = await apiClient.post(url)
+        return response.data
+    } catch {
+        return { message: "Failed to validate session", user: null }
+    }
+}
+
+
+export async function signOut(): Promise<boolean> {
+    const url = "/user/signout"
+    try {
+        await apiClient.post(url)
+        return true
     } catch(error) {
-        console.error("Failed to login!", error)
+        console.error("Failed to sign out", error)
+        return false
+    }
+} // signOut
+
+
+export async function loginWithEmailAndPassword(email: string, password: string): 
+    Promise<IUserAuthResponse> 
+{
+    const url = "/user/login/email_and_password"
+    try {
+        // Session cookie will be set in the response on successfull authentication
+        const response = await apiClient.post(url, { email, password })
+        return response.data
+    } catch (error) {
+        console.error(error)
     }
 } // loginEmailAndPassword

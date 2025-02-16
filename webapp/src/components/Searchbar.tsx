@@ -25,7 +25,6 @@ export const Searchbar = ({ className = "" }: ISearchbarProps) => {
         if (!searchQuery.trim() && !router.query.search)
             return
 
-        console.debug(`-> ${searchQuery.trim()} :: ${router.query.search}`)
         setHasSubmitted(true)
         e.preventDefault()
         if (!searchQuery || searchQuery === "") {

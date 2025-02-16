@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 dotenv.config({ path: process.env.DOTENV_PATH || ".env" })
 
 import express from "express"
+import { rateLimit } from 'express-rate-limit'
 import { https } from "firebase-functions"
 import cors from "cors"
 import cookieParser from 'cookie-parser'
@@ -24,7 +25,13 @@ const logger = winston.createLogger({
     transports: [new winston.transports.Console()],
 })
 
+const limiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+    message: "Too many requests. Try again in 15 minutes."
+})
 
+app.use(limiter)
 app.use(express.json())
 app.use((req, res, next) => {
     logger.info({
@@ -35,9 +42,10 @@ app.use((req, res, next) => {
     next()
 })
 
-const CORS_ORIGIN = (process.env.CORS_ORIGIN || "").split(",") || []
+const CORS_ORIGIN = (process.env.CORS_ORIGIN || "http://localhost:3000").split(",") || []
 app.use(cors({
-    origin: "*",              
+    origin: CORS_ORIGIN,              
+    credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],   
     allowedHeaders: ["Content-Type", "Authorization"]
 }))

@@ -15,9 +15,10 @@
 
 
 .doom-btn {
-  color: doom.$colorSlate;
   cursor: pointer;
   transition: 0.1s linear;
+  color: doom.$doomColorSecondary;
+  text-shadow: doom.$doomTextShadowDanger;
 
   &:hover {
     @include doom-btn-default-hover;
@@ -92,20 +93,20 @@
 .page-link {
   cursor: pointer;
   position: relative;
-  text-shadow: $doomTextShadowDanger;
-  color: $doomColorSecondary;
+  text-shadow: doom.$doomTextShadowDanger;
+  color: doom.$doomColorSecondary;
   transition: 0.1s linear;
 
   &.active, &:hover {
-    color: $doomColorSecondary;
+    color: doom.$doomColorSecondary;
     font-weight: 700;
     text-shadow: none;
-    color: $doomColorDanger;
+    color: doom.$doomColorDanger;
   }
 
   &.active {
     cursor: default;
-    color: $doomColorDanger;
+    color: doom.$doomColorDanger;
     font-weight: 700;
   }
 

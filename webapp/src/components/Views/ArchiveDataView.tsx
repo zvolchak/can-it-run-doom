@@ -9,6 +9,7 @@ import {
 import {
     paginate,
 } from "@/src/utils"
+import { getMainLayout } from "@/src/layouts"
 
 
 interface IMainPageProps {
@@ -70,3 +71,6 @@ export function ArchiveDataView({ items }: IMainPageProps) {
         </div>
     )
 } // MainPage
+
+
+ArchiveDataView.getLayout = getMainLayout

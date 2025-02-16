@@ -62,15 +62,25 @@ export async function createSessionToken(res: Response, token: string) {
     const expiresIn = 60 * 60 * 24 * 14 * 1000
     const sessionCookie = await fbAuthAdmin.createSessionCookie(token, { expiresIn })
 
-    res.cookie('session', sessionCookie, {
+    res.cookie("session", sessionCookie, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-        maxAge: 60 * 60 * 24 * 30 * 1000,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+        maxAge: expiresIn,
     })
 
     return sessionCookie
 } // createSessionToken
+
+
+export async function clearSessionToken(res: Response) {
+    res.clearCookie("session", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+    })
+    return res
+} // clearSessionToken
 
 
 export async function verifySessionCookie(session: string): Promise<DecodedIdToken> {
@@ -112,7 +122,7 @@ export async function createToken(uid: string, claims: object = {}) {
 export async function authenticate(req: Request, res: Response, next: NextFunction) {
     const sessionCookie = req.cookies.session || null
     if (!sessionCookie) {
-        return res.status(401).json({ error: 'Unauthorized: No session cookie found' })
+        return res.status(401).json({ error: "Unauthorized: No session cookie found" })
     }
 
     try {
@@ -120,8 +130,8 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
         req.user = decodedClaims
         next()
     } catch (error) {
-        console.error('Session cookie verification failed:', error)
-        return res.status(401).json({ error: 'Unauthorized: Invalid or expired session cookie' })
+        console.error("Session cookie verification failed:", error)
+        return res.status(401).json({ error: "Unauthorized: Invalid or expired session cookie" })
     }
 } // authenticate
 
