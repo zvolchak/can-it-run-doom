@@ -50,7 +50,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
 
                 <div className="
                     flex flex-col doom-card w-full gap-2
-                    overflow-y-scroll scrollbar-hidden"
+                    overflow-y-auto scrollbar-hidden"
                 >
                     <RowMultiline 
                         title="Author:"
@@ -67,7 +67,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                     />
 
                     <RowMultiline 
-                        title="Code"
+                        title="Source Code"
                         items={item.sourceCodeUrl} 
                         hoverIconSrc="/icons/doom-guy-look-left.png" 
                     />
@@ -85,7 +85,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                     <ItemContentRow 
                         title="ID:"
                     >
-                        <a onClick={() => onIdClick(item.id)}>
+                        <a className="doom-btn" onClick={() => onIdClick(item.id)}>
                             {item.id}
                         </a>
                     </ItemContentRow>

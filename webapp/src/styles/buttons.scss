@@ -15,14 +15,14 @@
 
 
 .doom-btn {
-  cursor: pointer;
-  transition: 0.1s linear;
-  color: doom.$doomColorSecondary;
-  text-shadow: doom.$doomTextShadowDanger;
+    cursor: pointer;
+    transition: 0.1s linear;
+    color: doom.$doomColorSecondary;
+    text-shadow: doom.$doomTextShadowDanger;
 
-  &:hover {
-    @include doom-btn-default-hover;
-  }
+    &:hover {
+        @include doom-btn-default-hover;
+    }
 }
 
 

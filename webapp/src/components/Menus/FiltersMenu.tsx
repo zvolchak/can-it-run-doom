@@ -1,12 +1,17 @@
 "use client"
-import React from 'react'
-import { useRouter } from "next/router"
-import { useSelector, } from "react-redux"
+import React, { useRef, } from 'react'
+import { useRouter, } from "next/router"
+import { useSelector, useDispatch, } from "react-redux"
+import { FaRegWindowClose } from "react-icons/fa"
 import {
     IArchiveItem,
     IFiltersStoreState,
+    ISettingsStoreState,
 } from "@/src/types"
-import { RootState } from "@/src/store"
+import { 
+    RootState,
+    setIsFiltersMenu,
+} from "@/src/store"
 import {
     Tag,
     RangePicker,
@@ -20,9 +25,13 @@ import {
 
 
 export const FiltersMenu = () => {
+    const dispatch = useDispatch()
     const router = useRouter()
     const filters: IFiltersStoreState = useSelector((state: RootState) => state.availableFilters)
     const items: IArchiveItem[] = useSelector((state: RootState) => state.submissions.items)
+    const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
+    const menuRef = useRef(null)
+
     const queryTags = getValueFromQuery(router.query, "tag")
     const queryAuthors = getValueFromQuery(router.query, "author")
     const yearQuery = {
@@ -55,15 +64,38 @@ export const FiltersMenu = () => {
         return result
     } // createSequenceValues
 
-    return (
-        <nav className="h-full absolute w-80">
-            <div className="flex flex-col justify-between items-center w-80">
 
+    function onClose() {
+        dispatch(setIsFiltersMenu(false))
+    } // onClose
+
+
+    return (
+        <nav 
+            className={
+                `h-full absolute sidebar 
+                sm:top-20
+                top-40
+                pl-2
+                z-1 
+                ${settings.isFiltersMenu ? "open" : ""}`
+            }
+            ref={menuRef}
+        >
+            <div className="flex justify-end w-full p-2 bg-gray-700">
+                <button onClick={onClose}>
+                    <FaRegWindowClose size="24px" />
+                </button>
+            </div>
+            
+            <hr className="border-1"/>
+
+            <div className="flex flex-col justify-between items-center w-80">
                 <div className="flex flex-row doom-color-slate bg-gray-700
                     w-full justify-between p-2 py-4 pl-5"
                 >
                     <p className="font-semibold text-l">
-                        {items.length} Items
+                        {items.length} Item{items.length > 1 ? "s" : ""}
                     </p>
                 </div>
 

@@ -13,7 +13,7 @@ import {
     ArchiveDataView,
 } from "@/src/components"
 import {
-    fetchArchiveData,
+    fetchDoomPorts,
 } from "@/src/api"
 import {
     onSearch,
@@ -95,7 +95,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         highest: getValueFromQuery(context.query, "yearhighest")[0] || yearNow,
     }
 
-    let items: IArchiveItem[] = await fetchArchiveData({})
+    let items: IArchiveItem[] = await fetchDoomPorts({})
 
     const tags = getTagsFromItems(items)
     const authors = getAuthorsFromItems(items).sort()

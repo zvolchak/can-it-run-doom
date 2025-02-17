@@ -1,39 +1,39 @@
-// import { useState, useEffect } from "react"
 import Image from "next/image"
 import { useRouter } from "next/router"
+import { useSelector, useDispatch, } from "react-redux"
 import Link from "next/link"
+import { FaCaretDown } from "react-icons/fa"
+import { FaCaretUp } from "react-icons/fa"
 import { 
     Searchbar, 
 } from "@/src/components"
+import {
+    RootState,
+    setIsFiltersMenu,
+} from "@/src/store"
+import {
+    ISettingsStoreState,
+} from "@/src/types"
 
 
 export const Navbar = () => {    
-    // const [locale, setLocale] = useState("en")
     const router = useRouter()
+    const dispatch = useDispatch()
+    const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
 
-    // const routes = [
-    //     { localeVar: "Home", name: "Home", path: "/" },
-    // ]
-
-    // useEffect(() => {
-    //     const sysLang = document.cookie.split("; ")
-    //         .find((row) => row.startsWith("lang="))?.split("=")[1] || "en"
-    //     setLocale(sysLang)
-    // }, [])
-
-    // const handleLocaleChange = (target) => {
-    //     document.cookie = `lang=${target}`
-    //     setLocale(target)
-    // }
-
-    const handleSourceCodeClick = () => {
+    function handleSourceCodeClick() {
         const url = process.env.NEXT_PUBLIC_SOURCE_CODE_URL
         window.open(url, "_blank")
     }
 
-    const handleJoinDiscordClick = () => {
+    function handleJoinDiscordClick() {
         const url = process.env.NEXT_PUBLIC_DISCORD_URL
         window.open(url, "_blank")
+    }
+
+
+    function onFiltersBtnClicked() {
+        dispatch(setIsFiltersMenu(!settings.isFiltersMenu))
     }
 
 
@@ -42,9 +42,10 @@ export const Navbar = () => {
             sm:flex sm:flex-row sm:items-center sm:px-6 lg:px-8 sm:pb-0
             relative
             flex flex-col 
-            px-2 min-h-16 w-full
+            px-2 w-full
+            min-h-16
             bg-gray-800
-            sticky top-0 z-10
+            sm:sticky top-0 z-10
             pb-3
             "
         >
@@ -54,18 +55,6 @@ export const Navbar = () => {
                 </Link>
 
                 <div className="flex order-1 ml-10">
-                    {/* <select
-                        className="dropdown nav-btn mr-10"
-                        value={locale}
-                        onChange={(e) => handleLocaleChange(e.target.value)}
-                    >
-                        {["en", "fr", "es"].map((loc) => (
-                            <option key={`locale-${loc}`} value={loc}>
-                                {loc.toUpperCase()}
-                            </option>
-                        ))}
-                    </select> */}
-
                     <div className="nav-icon" onClick={handleSourceCodeClick}>
                         <Image
                             src="/icons/github-mark-white.png"
@@ -87,9 +76,35 @@ export const Navbar = () => {
                 </div>
             </div>
 
-            <Searchbar className="order-2" />
+            <div className="
+                    flex sm:justify-center items-center flex-1 order-2
+                    sm:py-0
+                    py-2
+                "
+            >
+                <button
+                    className="doom-btn flex flex-row gap-1 mr-3 doom-color-slate"
+                    onClick={onFiltersBtnClicked}
+                >
+                    {   settings?.isFiltersMenu &&
+                        <FaCaretUp size="20px" />
+                    }
+                    {   !settings?.isFiltersMenu &&
+                        <FaCaretDown size="20px" />
+                    }
 
-            <div className="flex items-end order-3 gap-3">
+                    Filter
+                </button>
+                <Searchbar className="sm:w-2/6 w-full" />
+            </div>
+
+
+            <div className="
+                    flex items-end order-3 gap-3
+                    sm:py-0
+                    mt-3
+                "
+            >
                 { router.pathname !== "/" &&
                     <Link href="/" className="doom-btn">
                             Home

@@ -17,6 +17,11 @@ import {
 import { IAuthorDocument, IArchiveItem, } from "../@types"
 
 
+export async function getAllEntries() {
+    return await getDocs(query(doomPortsCollection))
+} // getAllEntries
+
+
 export async function getAuthorsByName(name: string) { 
     return await getDocs(query(
         authorsCollection, 

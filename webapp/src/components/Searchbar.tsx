@@ -50,8 +50,8 @@ export const Searchbar = ({ className = "" }: ISearchbarProps) => {
 
 
     return (
-        <div className={`flex justify-center items-center flex-1 ${className}`}>
-            <form className="input-with-button flex flex-flow w-full max-w-lg z-20" 
+        <div className={`flex justify-center items-center ${className}`}>
+            <form className="input-with-button flex flex-flow w-full z-20" 
                 onSubmit={onSearchSubmit}
             >
                 <input

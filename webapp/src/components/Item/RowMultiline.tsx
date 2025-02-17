@@ -31,7 +31,7 @@ export const RowMultiline = ({
             {items && items.map((item: ISource, index: number) =>
                 <a 
                     key={`author_name: ${item.name}`} 
-                    className="relative"
+                    className="doom-btn"
                     onMouseOver={() => setIsShowIcon(true)}
                     onMouseOut={() => setIsShowIcon(false)}
                     href={item.url}
@@ -51,6 +51,10 @@ export const RowMultiline = ({
                     />
                 </a>
             )}
+
+            { (!items || items?.length === 0) && 
+                <div>N/A</div>
+            }
         </ItemContentRow>
     )
 }

@@ -41,13 +41,13 @@ interface IGetArchiveDataProps {
 }
 
 
-export async function fetchArchiveData({
+export async function fetchDoomPorts({
     lang = "en",
 }: IGetArchiveDataProps): Promise<IArchiveItem[] | null> {
     try {
-        const url = `/db/${lang}/db.json`
+        const url = "/doom_ports"
         const response = await apiClient.get(url)
-        return response?.data?.items
+        return response?.data
     } catch (error) {
         console.error("Failed to get archive data", error)
         return []
