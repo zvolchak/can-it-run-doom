@@ -21,11 +21,15 @@ export function ArchiveDataView({ items }: IMainPageProps) {
     const router = useRouter()
     const currentPage = Number(router.query?.page || 0)
     const itemsPerPage = 10
-
-    if (!items) {
+    if (!items || items?.length === 0) {
         return (
-            <div>Not items found. If this error persists, please contact support 
-            through Discord channel or email.</div>
+            <div className="
+                h-screen w-full justify-center mt-10 flex flex-row text-center text-white
+                "
+            >
+                Not items found. If this error persists, please contact support 
+            through Discord channel or email.
+            </div>
         )
     }
 

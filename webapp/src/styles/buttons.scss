@@ -26,24 +26,17 @@
 }
 
 
-.d-btn {
-  color: doom.$doomColorSecondary;
-  text-shadow: doom.$doomTextShadowDanger;
-  // blended border color with bg for smoother hover effect
-  border: 1px solid doom.$doomColorAltDark;
-  background-color: doom.$doomColorAltDark;
-  padding: 7px 8px 9px 8px;
+.doom-btn-default {
+    cursor: pointer;
+    background-color: white;
+    color: black;
+    border-radius: 0.375rem;
+    transition: 0.1s linear;
 
-  box-shadow: 7px 7px 4px -6px #898989 inset, 4px 5px 2px -3px black;
-  transition: 0.1s ease-in, 0.4s ease-out;
-
-  &:hover {
-    border-color: doom.$doomColorDangerDark;
-    box-shadow: none;
-    text-shadow: none;
-    font-weight: 600;
-    padding: 7px 10px 9px 10px;
-  }
+    &:hover {
+        @include doom-btn-default-hover;
+        letter-spacing: 2px;
+    }
 }
 
 
@@ -122,4 +115,19 @@
   &:hover > svg {
     color: doom.$doomColorDanger;
   }
+}
+
+.doom-action-btn {
+    background-color: doom.$doomColorDanger !important;
+    color: doom.$colorSlate;
+    padding: 0.5rem 0;
+    border-radius: 0.375rem;
+    transition: all 250ms ease-in-out;
+    font-weight: 600;
+
+    &:hover {
+        background-color: doom.$doomColorDangerDarker !important;
+        color: doom.$doomColorSecondary;
+        letter-spacing: 2px;
+    }
 }

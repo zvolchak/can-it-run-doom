@@ -111,7 +111,7 @@ export const Navbar = () => {
                     </Link>
                 }
                 <Link 
-                    href="/manage-entries"
+                    href="/manage-entries/add"
                     className="doom-btn"
                 >
                         Add New

@@ -98,3 +98,17 @@ export async function loginWithEmailAndPassword(email: string, password: string)
         console.error(error)
     }
 } // loginEmailAndPassword
+
+
+export async function addNewEntry(formData) {
+    const url = "/doom_ports/add"
+    const headers = {
+        "Content-Type": "multipart/form-data"
+    }
+    try {
+        const response = await apiClient.post(url, formData, { headers })
+        return response.data
+    } catch (error) {
+        console.error(error)
+    }
+} // addNewEntry

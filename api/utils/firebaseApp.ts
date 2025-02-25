@@ -29,6 +29,7 @@ if (isDev) {
     const credentials = JSON.parse(readFileSync(filePath, "utf8"))
     admin.initializeApp({
         credential: admin.credential.cert(credentials),
+        storageBucket: process.env.FIREBASE_STORAGE_BUCKET
     })
 } else {
     admin.initializeApp({
@@ -40,12 +41,12 @@ if (isDev) {
 const fbApp = initializeApp(firebaseConfig)
 const fbDb = getFirestore(fbApp)
 const fbAuth = getAuth(fbApp)
+const fbStorage = admin.storage().bucket()
 
 const fbAuthAdmin = admin.auth()
 
 if (isDev) {
     connectFirestoreEmulator(fbDb, "localhost", 8081)
-    // connectAuthEmulator(fbAuth, "http://127.0.0.1:9099")
 }
 
 export const COLLECTION_NAME = {
@@ -136,4 +137,4 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
 } // authenticate
 
 
-export { fbApp, fbAuth, fbDb, fbAuthAdmin, }
+export { fbApp, fbAuth, fbDb, fbAuthAdmin, fbStorage, }

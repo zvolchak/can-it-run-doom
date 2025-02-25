@@ -13,6 +13,7 @@ import {
     doomPortsCollection,
     COLLECTION_NAME,
     fbDb,
+    fbStorage,
 } from "./firebaseApp"
 import { IAuthorDocument, IArchiveItem, } from "../@types"
 
@@ -99,3 +100,24 @@ export async function getAllDoomPorts() {
         query(doomPortsCollection)
     )
 } // getTags
+
+
+/* 
+ * Return a base64 image from firebase storage.
+ * param imgPath: relative path to firbase storage root.
+ */
+export async function getImageFromStorage(imgPath: string): Promise<string | null>{
+    try {
+        const file = fbStorage.file(imgPath)
+        const [exists] = await file.exists()
+        if (!exists) {
+            return null
+        }
+
+        const [buffer] = await file.download()
+        const fileBase64 = `data:image/png;base64,${buffer.toString("base64")}`
+        return fileBase64
+    } catch {
+        return null
+    }
+} // getImageFromStorage

@@ -20,7 +20,6 @@ interface IItemCardProps {
 
 export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
     const router = useRouter()
-
     function onIdClick(id: string) {
         router.push({
             pathname: router.pathname,
@@ -45,7 +44,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
 
             <div className="item-container flex flex-row gap-1 items-start mt-1">
                 <div className="image-preview">
-                    <ImageLoader className="justify-self-start" src={item.previewImgUrl} />
+                    <ImageLoader className="justify-self-start" src={item.previewImg} />
                 </div>
 
                 <div className="

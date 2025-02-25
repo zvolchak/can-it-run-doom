@@ -13,9 +13,9 @@ export interface IArchiveItem {
     sourcesUrl?: ISource[]
     sourceCodeUrl?: ISource[]
     isFirstLevelComplete?: boolean
-    publishDate?: string // date of the port published somewhere on the internet (source code or a video)
+    publishDate?: string | Timestamp // date of the port published somewhere on the internet (source code or a video)
     tags?: string[]
-    previewImgUrl?: string
+    previewImg?: string
     isPublished?: boolean
 
     createdAt?: Timestamp // when was this entry created

@@ -1,4 +1,5 @@
 $doomColorDanger: #ad0101;
+$doomColorDangerDarker: #960101;
 $doomColorDangerDark: #3d0106;
 $doomColorSecondary: #FCFD85;
 $doomColorAlt: #373737;
@@ -17,8 +18,7 @@ $doomShadowShort: 2px 2px #242424;
 }
 
 .doom-color-danger {
-  // color: $doomColorDanger;
-  color: rgb(255 255 255 / var(--tw-text-opacity, 1)) !important;
+  color: $doomColorDanger;
 }
 
 .doom-color-secondary {
@@ -54,4 +54,17 @@ $doomShadowShort: 2px 2px #242424;
   background-color: transparent;
   border: 1px solid $colorSlate;
   color: $colorSlate;
+}
+
+input, textarea {
+    border: none;
+    border-radius: 0px;
+    color: black !important;
+    caret-color: $doomColorDanger;
+    padding: 5px !important;
+
+    &:focus {
+        outline: none;
+        box-shadow: $doomBoxShadowDanger;
+    }
 }

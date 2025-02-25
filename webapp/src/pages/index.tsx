@@ -54,10 +54,10 @@ export default function MainPage({ items, tags, years, authors }: IMainPageProps
                 {items.length === 1 && (
                     <>
                         <meta property="og:title" content={items[0].title} />
-                        <meta property="og:image" content={items[0].previewImgUrl} />
+                        <meta property="og:image" content={items[0].previewImg} />
 
                         <meta name="twitter:title" content={items[0].title} />
-                        <meta name="twitter:image" content={items[0].previewImgUrl} />
+                        <meta name="twitter:image" content={items[0].previewImg} />
                     </>
                 )}
                 {items.length === 1 && items[0].description.length > 0 && (
@@ -96,7 +96,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     }
 
     let items: IArchiveItem[] = await fetchDoomPorts({})
-
     const tags = getTagsFromItems(items)
     const authors = getAuthorsFromItems(items).sort()
 
@@ -108,6 +107,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         items = filterById(items, idQuery)
     if (queryTags && queryTags.length > 0)
         items = filterItemsByTags(items, queryTags)
+
 
     if (yearQuery.lowest || yearQuery.highest) {
         items = items?.filter((item: IArchiveItem) => {

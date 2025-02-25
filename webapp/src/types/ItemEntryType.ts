@@ -13,7 +13,7 @@ export interface IArchiveItem {
     isFirstLevelComplete: boolean
     publishDate: string
     tags: string[]
-    previewImgUrl: string
+    previewImg: string
 }
 
 
