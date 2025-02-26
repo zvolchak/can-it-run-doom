@@ -23,11 +23,15 @@ export function jsonParseString(incoming: string | any) {
 
 export function normalizeTagsValues(incomingTags: string | string[]) {
     let result = []
-    if (typeof(incomingTags) === "string")
-        result = incomingTags.split(",")
-    else
-        result = [...incomingTags]
-
+    try {
+        if (typeof(incomingTags) === "string")
+            result = incomingTags.split(",")
+        else
+            result = [...incomingTags]
+    } catch (error) {
+        console.error(`Failed to parse tags: ${incomingTags}`, error)
+        return []
+    }
     return result.map(i => i.trim())
 } // normalizeTagsValues
 
@@ -38,6 +42,7 @@ export async function buildArchiveItem(incoming: any[]): Promise<IArchiveItem[]>
 
     const items = await Promise.all(incoming.map(async (item) => {
         return {
+            id: item.id,
             title: item.title || "",
             description: item.description || "",
             authors: jsonParseString(item.authors) || null,

@@ -13,6 +13,7 @@ import { initializeApp } from "firebase/app"
 import * as admin from "firebase-admin"
 import { readFileSync } from "fs"
 import { join } from "path"
+import { v4 as uuidv4 } from "uuid"
 
 const isDev = process.env.NODE_ENV === "development" || true
 
@@ -135,6 +136,13 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
         return res.status(401).json({ error: "Unauthorized: Invalid or expired session cookie" })
     }
 } // authenticate
+
+
+export function generateFirestoreId() {
+    const timestamp = Date.now().toString(36)
+    const randomPart = uuidv4().replace(/-/g, "").substring(0, 10)
+    return timestamp + randomPart
+}
 
 
 export { fbApp, fbAuth, fbDb, fbAuthAdmin, fbStorage, }
