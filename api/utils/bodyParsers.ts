@@ -32,26 +32,26 @@ export function normalizeTagsValues(incomingTags: string | string[]) {
 } // normalizeTagsValues
 
 
-export function buildArchiveItem(incoming: any): IArchiveItem {
+export async function buildArchiveItem(incoming: any[]): Promise<IArchiveItem[]> {
     if (!incoming)
-        return {}
+        return []
 
-    const item: IArchiveItem = {
-        title: incoming.title || "",
-        description: incoming.description || "",
-        authors: jsonParseString(incoming.authors) || null,
-        sourcesUrl: jsonParseString(incoming.sourcesUrl) || null,
-        sourceCodeUrl: jsonParseString(incoming.sourceCodeUrl) || null,
-        isFirstLevelComplete: Boolean(incoming.isFirstLevelComplete || false),
-        publishDate: incoming.publishDate ? Timestamp.fromDate(new Date(incoming.publishDate)) : null,
-        tags: normalizeTagsValues(incoming.tags) || null,
-        previewImg: incoming.previewImg || null,
-
-        isPublished: Boolean(incoming.isPublished || false),
-        createdAt: Timestamp.now(),
-        updatedAt: Timestamp.now(),
-        submittedBy: incoming.uid || null,
-    }
-
-    return item
+    const items = await Promise.all(incoming.map(async (item) => {
+        return {
+            title: item.title || "",
+            description: item.description || "",
+            authors: jsonParseString(item.authors) || null,
+            sourcesUrl: jsonParseString(item.sourcesUrl) || null,
+            sourceCodeUrl: jsonParseString(item.sourceCodeUrl) || null,
+            isFirstLevelComplete: Boolean(item.isFirstLevelComplete || false),
+            publishDate: item.publishDate ? Timestamp.fromDate(new Date(item.publishDate)) : null,
+            tags: normalizeTagsValues(item.tags) || null,
+            previewImg: item.previewImg || null,
+            isPublished: Boolean(item.isPublished || false),
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
+            submittedBy: item.uid || null,
+        } as IArchiveItem
+    }))
+    return items
 } // buildArchiveItem
