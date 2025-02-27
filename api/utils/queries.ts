@@ -7,6 +7,7 @@ import {
     updateDoc,
     doc,
     setDoc,
+    limit,
 } from "firebase/firestore"
 import { 
     authorsCollection,
@@ -19,7 +20,7 @@ import { IAuthorDocument, IArchiveItem, } from "../@types"
 
 
 export async function getAllEntries() {
-    return await getDocs(query(doomPortsCollection))
+    return await getDocs(query(doomPortsCollection, limit(200)))
 } // getAllEntries
 
 

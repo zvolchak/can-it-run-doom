@@ -1,8 +1,13 @@
 import axios from "axios"
+import Cookies from "js-cookie"
 import { 
     IArchiveItem,
     IUserAuthResponse,
+    IUserAuth,
 } from "@/src/types"
+import {
+    IsSessionExpired,
+} from "@/src/utils"
 
 
 const apiClient = axios.create({
@@ -55,16 +60,12 @@ export async function fetchDoomPorts({
 } // getArchiveData
 
 
-export async function refreshSession() {
-    const url = "/user/login/refresh"
-    // Session cookie should be in the apiClient request already - if previously
-    // authenticated.
-    await apiClient.post(url)
-} // refreshSession
-
-
 export async function validateSession(): Promise<IUserAuthResponse> {
     const url = "/user/login/validate"
+    const user = JSON.parse(Cookies.get("user") || null) as IUserAuth
+    if (user && !IsSessionExpired())
+        return { message: "", user }
+
     try {
         const response = await apiClient.post(url)
         return response.data
@@ -78,6 +79,8 @@ export async function signOut(): Promise<boolean> {
     const url = "/user/signout"
     try {
         await apiClient.post(url)
+        localStorage.removeItem("sessionExpiresOn")
+
         return true
     } catch(error) {
         console.error("Failed to sign out", error)
@@ -93,6 +96,11 @@ export async function loginWithEmailAndPassword(email: string, password: string)
     try {
         // Session cookie will be set in the response on successfull authentication
         const response = await apiClient.post(url, { email, password })
+
+        if (response.data?.user?.sessionExpiresOn) {
+            localStorage.setItem("sessionExpiresOn", response.data.user.sessionExpiresOn)
+        }
+
         return response.data
     } catch (error) {
         console.error(error)

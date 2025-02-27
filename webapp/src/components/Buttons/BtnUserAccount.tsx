@@ -4,6 +4,7 @@ import Link from "next/link"
 import { useSelector, useDispatch, } from "react-redux"
 import { RootState } from "@/src/store"
 import { IUserData } from "@/src/types"
+import Cookies from "js-cookie"
 import {
     signOut,
 } from "@/src/api"
@@ -37,8 +38,11 @@ export function BtnUserAccount() {
 
     async function onSignOutClicked() {
         const hasSignedOut = await signOut()
-        if (hasSignedOut)
-            dispatch(setUserData(null))
+        if (!hasSignedOut)
+            return
+
+        dispatch(setUserData(null))
+        Cookies.remove("user")
     } // onSignOutClicked
 
 

@@ -1,8 +1,8 @@
 export interface IUserAuth {
     id: string
-    accessToken: string
     email?: string
     isVerified?: boolean
+    sessionExpiresOn?: Date
 }
 
 export interface IUserAuthResponse {

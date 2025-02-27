@@ -10,6 +10,8 @@ const router = Router()
 
 
 router.get('/', async (req: Request, res: Response): Promise<any> => {
+    res.setHeader("Cache-Control", "public, max-age=300, stale-while-revalidate=600")
+    
     try {
         const snapshot = await getAllEntries()
         

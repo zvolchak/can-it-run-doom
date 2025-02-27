@@ -8,4 +8,5 @@ export interface IUserData {
     email?: string
     isVerified?: boolean
     sessionId?: string
+    sessionExpiresOn?: Date,
 }

@@ -7,10 +7,10 @@ import {
     RootState,
     store,
     setUserSessionId,
-    setUserData,
+    // setUserData,
 } from "@/src/store"
 import { analyticsApp, trackPageView } from "@/src/utils/analytics"
-import { validateSession } from "@/src/api"
+// import { validateSession } from "@/src/api"
 import {
     Navbar,
     Footer,
@@ -31,28 +31,6 @@ function UserSessionInit() {
 
     return null
 } // UserSessionInit
-
-
-function SessionValidator() {
-    const dispatch = useDispatch()
-    const router = useRouter()
-  
-    useEffect(() => {
-        async function validateUserSession() {
-            try {
-                const response = await validateSession()
-                if (response?.user) {
-                    dispatch(setUserData(response.user))
-                }
-            } catch (error) {
-                console.error("Session validation failed:", error)
-            }
-        }
-        validateUserSession()
-    }, [dispatch, router])
-  
-    return null
-} // SessionValidator
 
 
 function PageViewAnalytics() {
@@ -88,7 +66,6 @@ function App({ Component, pageProps }) {
 
     return (
         <Provider store={store}>
-            <SessionValidator />
             <UserSessionInit />
             <PageViewAnalytics />
             <Navbar />

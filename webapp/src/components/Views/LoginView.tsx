@@ -4,12 +4,16 @@ import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { useDispatch, } from "react-redux"
 import { useRouter } from "next/navigation"
+import Cookies from "js-cookie"
 import {
     loginWithEmailAndPassword,
 } from "@/src/api"
 import {
     setUserData,
 } from "@/src/store"
+import {
+    IsSessionExpired,
+} from "@/src/utils"
 
 
 export function LoginView() {
@@ -20,18 +24,29 @@ export function LoginView() {
 
 
     async function onSubmit(data) {
-        const userData = await loginWithEmailAndPassword(data.email, data.password)
-        if (!userData) {
-            setErrorMessage("Login failed")
-            return
+        let user = JSON.parse(Cookies.get("user"))
+
+        if (!user || IsSessionExpired()) {
+            const userData = await loginWithEmailAndPassword(data.email, data.password)
+            if (!userData?.user) {
+                setErrorMessage("Login failed")
+                return
+            }
+            user = {
+                id: userData.user.id,
+                email: userData.user.email,
+                isVerified: userData.user.isVerified,
+                sessionExpiresOn: userData.user.sessionExpiresOn,
+            }
+            Cookies.set("user", JSON.stringify(user), {
+                expires: new Date(user.sessionExpiresOn),
+                secure: process.env.NODE_ENV === "production",
+                sameSite: "Strict",
+            })
         }
 
-        dispatch(setUserData({
-            id: userData.user.id,
-            email: userData.user.email,
-            isVerified: userData.user.isVerified,
-            sessionId: "",
-        }))
+        dispatch(setUserData(user))
+
         router.push("/")
     } // onSubmit
 

@@ -16,6 +16,7 @@ import { join } from "path"
 import { v4 as uuidv4 } from "uuid"
 
 const isDev = process.env.NODE_ENV === "development" || true
+export const SESSION_COOKIE_LIFESPAN = 60 * 60 * 24 * 14 * 1000
 
 const firebaseConfig = {
   projectId: process.env.FIREBASE_PROJECT_ID,
@@ -61,7 +62,7 @@ export const authorsCollection = collection(fbDb, COLLECTION_NAME.authors)
 
 /* Create an oAuth session token and add it to a response cookie. */
 export async function createSessionToken(res: Response, token: string) {
-    const expiresIn = 60 * 60 * 24 * 14 * 1000
+    const expiresIn = SESSION_COOKIE_LIFESPAN
     const sessionCookie = await fbAuthAdmin.createSessionCookie(token, { expiresIn })
 
     res.cookie("session", sessionCookie, {
@@ -71,7 +72,8 @@ export async function createSessionToken(res: Response, token: string) {
         maxAge: expiresIn,
     })
 
-    return sessionCookie
+    const expiresOn = new Date(Date.now() + expiresIn)
+    return { sessionCookie, expiresOn }
 } // createSessionToken
 
 
