@@ -111,15 +111,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         `public, s-maxage=${cacheTime}, stale-while-revalidate=30`
     )
 
-    const yearNow = new Date().getFullYear()
-
     const searchQuery = decodeURIComponent(context.query?.search as string || "")
     const queryTags = getValueFromQuery(context.query, "tag")
     const idQuery = getValueFromQuery(context.query, "id")
     const authorQuery = getValueFromQuery(context.query, "author")
     const yearQuery: IRange = {
-        start: Number(getValueFromQuery(context.query, "yearlowest")[0]) || 1996, 
-        end: Number(getValueFromQuery(context.query, "yearhighest")[0]) || yearNow,
+        start: Number(getValueFromQuery(context.query, "yearlowest")[0]) || null, 
+        end: Number(getValueFromQuery(context.query, "yearhighest")[0]) || null,
     }
     const page = Number(context.query?.page || 0)
 

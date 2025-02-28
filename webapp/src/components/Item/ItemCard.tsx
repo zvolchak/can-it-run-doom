@@ -33,7 +33,6 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
         if (!appliedIds)
             appliedIds = []
         const existingIndex = appliedIds.indexOf(id)
-        console.debug(existingIndex)
         if (existingIndex >= 0)
             appliedIds.splice(existingIndex, 1)
         else
@@ -112,6 +111,9 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                                     key={`tag_${tag}`} 
                                     text={tag} 
                                     queryKey="tags"
+                                    className={`
+                                        ${appliedFilters.tags.indexOf(tag) >= 0 ? "active" : ""}
+                                    `}
                                 />
                             })
                         }

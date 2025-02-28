@@ -1,4 +1,3 @@
-import { useRouter } from "next/router"
 import { CiSquareRemove } from "react-icons/ci"
 
 interface IBtnClearFiltersProps {
@@ -15,24 +14,11 @@ export function BtnClearFilters({
     className = "", 
     children 
 }: IBtnClearFiltersProps) {
-    const router = useRouter()
-
     function onBtnClick() {
         if (onClick) {
             onClick?.()
             return
         }
-
-        let query = router.query
-        if (target && target !== "")
-            delete query[target]
-        else
-            query = {}
-
-        router.push({
-            pathname: router.pathname,
-            query,
-        })
     } // onBtnClick
 
 

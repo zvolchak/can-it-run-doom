@@ -21,6 +21,7 @@ import {
 import { 
     RootState,
     setFiltered,
+    setItems,
 } from "@/src/store"
 
 
@@ -68,7 +69,6 @@ export function ArchiveDataView({ items }: IMainPageProps) {
 
 
     useEffect(() => {
-        console.debug(filters.searchString)
         let filtered = filterItems({
             items: items,
             searchQuery: filters.searchString,
@@ -82,6 +82,7 @@ export function ArchiveDataView({ items }: IMainPageProps) {
         setNumberOfPages(pages)
         filtered = paginate(filtered, currentPage - 1, itemsPerPage)
 
+        dispatch(setItems(items))
         dispatch(setFiltered(filtered))
     }, [items, filters, dispatch, setNumberOfPages, currentPage])
 

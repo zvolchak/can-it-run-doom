@@ -1,6 +1,5 @@
 "use client"
 import React, { useRef, } from 'react'
-import { useRouter, } from "next/router"
 import { useSelector, useDispatch, } from "react-redux"
 import { FaRegWindowClose } from "react-icons/fa"
 import {
@@ -14,6 +13,7 @@ import {
     setIsFiltersMenu,
     setAppliedTags,
     setAppliedAuthors,
+    isFilterApplied,
 } from "@/src/store"
 import {
     Tag,
@@ -28,20 +28,28 @@ import {
 
 export const FiltersMenu = () => {
     const dispatch = useDispatch()
-    const router = useRouter()
     const filters: IFiltersStoreState = useSelector((state: RootState) => state.availableFilters)
     const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
-    const items: IArchiveItem[] = useSelector((state: RootState) => state.submissions.items)
+    const isFiltersApplied: boolean = useSelector((state: RootState) => isFilterApplied(state))
+
+    // Use filtered items list if at least one filter is applied. Otherwise, use full items list.
+    const items: IArchiveItem[] = useSelector(
+        (state: RootState) => {
+            return isFilterApplied(state) ? 
+                            state.submissions.filtered : state.submissions.items
+        }
+    )
+
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
     const menuRef = useRef(null)
 
-    const queryTags = appliedFilters.tags
+    const appliedTags = appliedFilters.tags
     const queryAuthors = appliedFilters.authors
 
-    const isTagsHighlight = Object.keys(router.query).length > 0 
-    const activeTags = isTagsHighlight ? getTagsFromItems(items) : []
-    const activeAuthors = isTagsHighlight ? getAuthorsFromItems(items) : []
+    const isAuthorsHighlight = Object.keys(appliedFilters.authors).length > 0
 
+    const activeTags = isFiltersApplied ? getTagsFromItems(items) : []
+    const activeAuthors = isFiltersApplied ? getAuthorsFromItems(items) : []
     // function onYearRangeChanged(value: string, yearType: string) {
     //     const query = router.query
     //     const keyName = `year${yearType}`
@@ -114,8 +122,15 @@ export const FiltersMenu = () => {
                                     queryKey="tags"
                                     onDispatch={setAppliedTags}
                                     className={`
-                                        ${queryTags.indexOf(tag) >= 0 ? "active" : ""}
-                                        ${queryTags.indexOf(tag) < 0 && activeTags.indexOf(tag) >= 0 ? "highlight" : ""}
+                                        ${
+                                            appliedTags.indexOf(tag) >= 0 
+                                            ? "active" : ""
+                                        }
+                                        ${
+                                            isFilterApplied 
+                                            && activeTags.indexOf(tag) >= 0 
+                                            ? "highlight" : ""
+                                        }
                                     `}
                                 />
                             )
@@ -163,9 +178,16 @@ export const FiltersMenu = () => {
                                     queryKey="authors"
                                     onDispatch={setAppliedAuthors}
                                     className={`
-                                        ${queryAuthors.indexOf(author) >= 0 ? "active" : ""}
-                                        ${queryAuthors.indexOf(author) < 0 
-                                            && activeAuthors.indexOf(author) >= 0 ? "highlight" : ""}
+                                        ${
+                                            activeAuthors.indexOf(author) >= 0
+                                            && !isAuthorsHighlight 
+                                            ? "highlight" : ""
+                                        }
+                                        ${
+                                            isAuthorsHighlight 
+                                            && appliedFilters.authors.indexOf(author) >= 0 
+                                            ? "active" : ""
+                                        }
                                     `}
                                 />
                             )
