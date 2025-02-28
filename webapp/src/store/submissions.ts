@@ -3,6 +3,7 @@ import { ISubmissionsStoreState } from "@/src/types"
 
 const initialState: ISubmissionsStoreState = {
     items: [],
+    filtered: [],
 }
 
 const submissionsSlice = createSlice({
@@ -12,11 +13,16 @@ const submissionsSlice = createSlice({
         setItems: (state, action) => {
             state.items = action.payload
         },
+
+        setFiltered: (state, action) => {
+            state.filtered = action.payload
+        },
     }
 })
 
 export const { 
-    setItems, 
+    setItems,
+    setFiltered,
 } = submissionsSlice.actions
 
 

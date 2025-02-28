@@ -1,9 +1,14 @@
-import { useRouter } from "next/router"
+import { useSelector, useDispatch, } from "react-redux"
 import { ImCheckmark2 } from "react-icons/im"
 import { GiCrossMark } from "react-icons/gi"
 import { 
     IArchiveItem, 
+    IFiltersStoreState,
 } from "@/src/types"
+import { 
+    RootState,
+    setAppliedId,
+} from "@/src/store"
 import { 
     ImageLoader,
     RowMultiline,
@@ -19,13 +24,24 @@ interface IItemCardProps {
 
 
 export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
-    const router = useRouter()
+    const dispatch = useDispatch()
+    const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
+
+
     function onIdClick(id: string) {
-        router.push({
-            pathname: router.pathname,
-            query: { id },
-        })
-    }
+        let appliedIds = [ ...(appliedFilters.ids || [])]
+        if (!appliedIds)
+            appliedIds = []
+        const existingIndex = appliedIds.indexOf(id)
+        console.debug(existingIndex)
+        if (existingIndex >= 0)
+            appliedIds.splice(existingIndex, 1)
+        else
+            appliedIds.push(id)
+
+        dispatch(setAppliedId(appliedIds))
+    } // onIdClick
+
 
     return (
         <div className={`
@@ -95,7 +111,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                                 return <Tag 
                                     key={`tag_${tag}`} 
                                     text={tag} 
-                                    queryKey="tag"
+                                    queryKey="tags"
                                 />
                             })
                         }

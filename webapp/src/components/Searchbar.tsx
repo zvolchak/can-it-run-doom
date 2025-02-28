@@ -1,6 +1,10 @@
 import { useState } from "react"
 import { useRouter } from "next/router"
 import { FaSearch } from "react-icons/fa"
+import { useDispatch, } from "react-redux"
+import { 
+    setAppliedSearch,
+} from "@/src/store"
 
 interface ISearchbarProps {
     className?: string
@@ -8,44 +12,25 @@ interface ISearchbarProps {
 
 
 export const Searchbar = ({ className = "" }: ISearchbarProps) => {
+    const dispatch = useDispatch()
     const router = useRouter()
-    const [searchQuery, setSearchQuery] = useState("")
-    const [hasSubmitted, setHasSubmitted] = useState(false)
 
+    const [searchQuery, setSearchQuery] = useState("")
 
     function onSearchUpdated(e) {
         setSearchQuery(e.target.value)
-        setHasSubmitted(false)
+        onSearchSubmit(e)
     }
 
 
     function onSearchSubmit(e) {
-        if (hasSubmitted)
-            return
-        if (!searchQuery.trim() && !router.query.search)
-            return
-
-        setHasSubmitted(true)
         e.preventDefault()
-        if (!searchQuery || searchQuery === "") {
-            clearSearch()
-        } else if (searchQuery.trim()) {
-            router.push({
-                pathname: router.pathname,
-                query: { search: encodeURIComponent(searchQuery.trim()) },
-            })
+        if (!searchQuery.trim() && !router.query.search) {
+            dispatch(setAppliedSearch(null))
+            return
         }
-    }
 
-
-    function clearSearch() {
-        const query = router.query
-        delete query["search"]
-
-        router.replace({
-            pathname: router.pathname,
-            query,
-        })   
+        dispatch(setAppliedSearch(searchQuery.trim()))
     }
 
 

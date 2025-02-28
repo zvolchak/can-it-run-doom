@@ -39,6 +39,18 @@ export const appliedFiltersSlice = createSlice({
         setAppliedTags: (state, action) => reducers.setTags(state, action),
         setAppliedYears: (state, action) => reducers.setYears(state, action),
         setAppliedAuthors: (state, action) => reducers.setAuthors(state, action),
+
+        setAppliedSearch: (state, action) => {
+            state.searchString = action.payload
+        },
+
+        setAppliedId: (state, action) => {
+            state.ids = action.payload
+        },
+
+        setAppliedPage: (state, action) => {
+            state.page = action.payload
+        },
     }
 })
 
@@ -54,5 +66,8 @@ export const {
     setAppliedTags,
     setAppliedYears,
     setAppliedAuthors,
+    setAppliedSearch,
+    setAppliedId,
+    setAppliedPage,
 } = appliedFiltersSlice.actions
 

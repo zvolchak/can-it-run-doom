@@ -2,12 +2,22 @@ import Head from 'next/head'
 import { useEffect } from "react"
 import { useDispatch, } from "react-redux"
 import type { GetServerSideProps } from 'next'
-import { IArchiveItem } from "@/src/types"
+import { 
+    IArchiveItem,
+    IRange,
+} from "@/src/types"
 import {
     setItems,
     setAvailableTags,
     setAvailableYears,
     setAvailableAuthors,
+
+    setAppliedAuthors,
+    setAppliedTags,
+    setAppliedYears,
+    setAppliedId,
+    setAppliedSearch,
+    setAppliedPage,
 } from "@/src/store"
 import {
     ArchiveDataView,
@@ -16,35 +26,51 @@ import {
     fetchDoomPorts,
 } from "@/src/api"
 import {
-    onSearch,
-    filterById,
-    filterItemsByTags,
-    filterItemsByAuthors,
     getTagsFromItems,
     getAuthorsFromItems,
     getValueFromQuery,
-    getYearsFromItems,
 } from "@/src/utils"
 
 
 interface IMainPageProps {
     items: IArchiveItem[]
-    tags: string[]
-    years: number[]
-    authors: string[]
+    queryTags?: string[]
+    years?: { lowest: number, highest: number }
+    authorQuery?: string[]
+    searchQuery?: string
+    idQuery?: string[]
+    page?: number
 }
 
 
-export default function MainPage({ items, tags, years, authors }: IMainPageProps) {
+export default function MainPage({
+    items,
+    queryTags = [],
+    years = null,
+    authorQuery = [],
+    searchQuery = "",
+    idQuery = [],
+    page = 0,
+}: IMainPageProps) {
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(setItems(items))
 
+        const tags = getTagsFromItems(items)
+        const authors = getAuthorsFromItems(items).sort()
+
         dispatch(setAvailableTags(tags)) 
         dispatch(setAvailableYears(years)) 
         dispatch(setAvailableAuthors(authors))
-    }, [dispatch, items, tags, years, authors])
+
+        dispatch(setAppliedAuthors(authorQuery)) 
+        dispatch(setAppliedTags(queryTags)) 
+        dispatch(setAppliedYears(years))
+        dispatch(setAppliedSearch(searchQuery))
+        dispatch(setAppliedId(idQuery))
+        dispatch(setAppliedPage(page))
+    }, [dispatch, items, years, authorQuery, queryTags, searchQuery, idQuery, page])
 
 
     return (
@@ -84,48 +110,30 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         "Cache-Control", 
         `public, s-maxage=${cacheTime}, stale-while-revalidate=30`
     )
+
     const yearNow = new Date().getFullYear()
 
     const searchQuery = decodeURIComponent(context.query?.search as string || "")
     const queryTags = getValueFromQuery(context.query, "tag")
     const idQuery = getValueFromQuery(context.query, "id")
     const authorQuery = getValueFromQuery(context.query, "author")
-    const yearQuery = {
-        lowest: getValueFromQuery(context.query, "yearlowest")[0] || 1996, 
-        highest: getValueFromQuery(context.query, "yearhighest")[0] || yearNow,
+    const yearQuery: IRange = {
+        start: Number(getValueFromQuery(context.query, "yearlowest")[0]) || 1996, 
+        end: Number(getValueFromQuery(context.query, "yearhighest")[0]) || yearNow,
     }
+    const page = Number(context.query?.page || 0)
 
-    let items: IArchiveItem[] = await fetchDoomPorts({})
-    const tags = getTagsFromItems(items)
-    const authors = getAuthorsFromItems(items).sort()
-
-    if (searchQuery && searchQuery !== "")
-        items = onSearch(items, searchQuery)
-    if (authorQuery && authorQuery.length > 0)
-        items = filterItemsByAuthors(items, authorQuery)
-    if (idQuery && idQuery.length > 0)
-        items = filterById(items, idQuery)
-    if (queryTags && queryTags.length > 0)
-        items = filterItemsByTags(items, queryTags)
-
-
-    if (yearQuery.lowest || yearQuery.highest) {
-        items = items?.filter((item: IArchiveItem) => {
-            const itemYear = new Date(item.publishDate).getFullYear()
-            return itemYear >= Number(yearQuery.lowest) && itemYear <= Number(yearQuery.highest)
-        }) || []
-    }
-
-    // FIXME: move sorting to api endpoint
-    items.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
-    const submissionYears = getYearsFromItems(items)
+    const items: IArchiveItem[] = await fetchDoomPorts({})
 
     return {
-      props: {
-        items,
-        tags,
-        years: submissionYears.sort(),
-        authors,
-      },
+        props: {
+            items,
+            queryTags,
+            years: yearQuery,
+            authorQuery,
+            searchQuery,
+            idQuery,
+            page,
+        },
     }
 } // getServerSideProps

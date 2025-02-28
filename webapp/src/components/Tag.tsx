@@ -1,46 +1,45 @@
-import { useRouter } from "next/router"
+import { useDispatch, useSelector, } from "react-redux"
+import { 
+    RootState,
+} from "@/src/store"
+import {
+    IFiltersStoreState,
+} from "@/src/types"
+import { UnknownAction } from "@reduxjs/toolkit"
 
 
 interface ITagProps {
     text: string
     queryKey: string
     className?: string
+    onClick?: (e, tag: string) => void
+    onDispatch?: (values: any) => UnknownAction
 }
 
 
 export const Tag = ({ 
     text, 
     queryKey,
-    className = "", 
+    className = "",
+    onClick = null,
+    onDispatch = null,
 }: ITagProps) => {
-    const router = useRouter()
+    const dispatch = useDispatch()
+    const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
  
+
     function onTagClick(e, text: string) {
         e.preventDefault()
 
-        const query = router.query
-        const values = (decodeURIComponent(query[queryKey] as string) || "").split(",")
-            .filter(item => item && item !== "" && item !== "undefined")
+        const values = [ ...appliedFilters[queryKey] ]
         const incomingTagIndex = values.indexOf(text)
         if (incomingTagIndex >= 0)
             values.splice(incomingTagIndex, 1)
         else
             values.push(text)
 
-        if (values.length > 0) {
-            query[queryKey] = encodeURIComponent(values.join(","))
-        } else {
-            delete query[queryKey]
-        }
-
-        router.push(
-            {
-                pathname: router.pathname,
-                query: query
-            }, 
-            undefined, 
-            { scroll: false }
-        )
+        dispatch(onDispatch(values))
+        onClick?.(e, text)
     } // onTagClick
 
     return (

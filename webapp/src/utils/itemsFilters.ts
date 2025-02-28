@@ -159,7 +159,11 @@ export const getAuthorsFromItems = (items: IArchiveItem[]) => {
 
 
 export const getYearsFromItems = (items: IArchiveItem[]) => {
-    return Array.from(new Set(items.flatMap((item) => new Date(item.publishDate).getFullYear())))
+    return Array.from(
+        new Set(items.flatMap(
+            (item) => new Date(item.publishDate).getFullYear())
+        )
+    )
 }
 
 export function findMinYear(archiveItems: IArchiveItem[]): number | null {

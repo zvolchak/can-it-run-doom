@@ -7,10 +7,9 @@ import {
     RootState,
     store,
     setUserSessionId,
-    // setUserData,
+    persistor,
 } from "@/src/store"
 import { analyticsApp, trackPageView } from "@/src/utils/analytics"
-// import { validateSession } from "@/src/api"
 import {
     Navbar,
     Footer,

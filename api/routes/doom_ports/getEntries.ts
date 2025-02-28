@@ -29,6 +29,8 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
             }
             return result
         }))
+
+        entries.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
         return res.status(200).json(entries)
     } catch (error) {
         console.error("Error fetching entries:", error)
