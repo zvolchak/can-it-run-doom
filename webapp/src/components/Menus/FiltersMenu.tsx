@@ -9,7 +9,7 @@ import {
 } from "@/src/types"
 import { 
     RootState,
-    // setAppliedYears,
+    setAppliedYears,
     setIsFiltersMenu,
     setAppliedTags,
     setAppliedAuthors,
@@ -17,7 +17,7 @@ import {
 } from "@/src/store"
 import {
     Tag,
-    // RangePicker,
+    RangePicker,
     TagsContainer,
 } from "@/src/components"
 import {
@@ -45,37 +45,36 @@ export const FiltersMenu = () => {
 
     const appliedTags = appliedFilters.tags
     const queryAuthors = appliedFilters.authors
+    const yearQuery = appliedFilters.years
 
     const isAuthorsHighlight = Object.keys(appliedFilters.authors).length > 0
 
     const activeTags = isFiltersApplied ? getTagsFromItems(items) : []
     const activeAuthors = isFiltersApplied ? getAuthorsFromItems(items) : []
-    // function onYearRangeChanged(value: string, yearType: string) {
-    //     const query = router.query
-    //     const keyName = `year${yearType}`
-    //     // dispatch(setAppliedYears({ `${qyearType}`: value }))
-    //     // if (!Number(value) || query[keyName] === value)
-    //     //     delete query[`year${yearType}`]
-    //     // else
-    //     //     query[keyName] = value
 
-    //     // router.push({
-    //     //     pathname: router.pathname,
-    //     //     query,
-    //     // }, undefined, { scroll: false })
-    // } // onYearRangeChanged
+    function onYearRangeChanged(value: string, key: string) {
+        const range = { 
+            start: appliedFilters?.years?.start, 
+            end: appliedFilters?.years?.end 
+        }
+        
+        if (appliedFilters.years?.[key] === value)
+            range[key] = null // turn off previously selected
+        else
+            range[key] = value // turn on filter on the selected year
+
+        dispatch(setAppliedYears(range))
+
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+    } // onYearRangeChanged
     
  
-    // function createRangeValues(start: number, end: number) {
-    //     const result = filters.years.filter(i => i >= start && i <= end)
-    //         .map(i => ({ value: i.toString(), label: i.toString() }))
-    //     return result
-    // } // createSequenceValues
-
-    // function createRangeValues(start: number, end: number) {
-    //     return Array.from({ length: end - start + 1 }, (_, i) => start + i)
-    //         .map(i => ({ value: i.toString(), label: i.toString() }))
-    // }
+    function createRangeValues(start: number, end: number) {
+        // console.debug(`${start} : ${end}`)
+        const result = filters.availableYears.filter(i => i >= start && i <= end)
+            .map(i => ({ value: i.toString(), label: i.toString() }))
+        return result
+    } // createSequenceValues
 
 
     function onClose() {
@@ -139,33 +138,33 @@ export const FiltersMenu = () => {
                 </TagsContainer>
 
 
-                {/* {filters.years &&
+                {filters.availableYears &&
                     <div className="w-full mt-2 bg-gray-700">
                         <RangePicker 
                             minLabel="Start Year"
                             minOptions={[
                                 { label: "Lowest", value: "" }, 
                                 ...createRangeValues(
-                                    (filters?.years?.start || 1996), 
-                                    Number(yearQuery?.end) || new Date().getFullYear()
+                                    (filters?.availableYears?.[0] || 1996),
+                                    yearQuery?.end || new Date().getFullYear()
                                 )
                             ]} 
                             maxLabel="End Year"
                             maxOptions={[
                                 { label: "Highest", value: "" }, 
                                 ...createRangeValues(
-                                    Number(yearQuery?.start) || 1996, 
+                                    (yearQuery?.start || 1996), 
                                     new Date().getFullYear()
                                 )
                             ]} 
-                            onMinChange={(e) => onYearRangeChanged(e, "lowest")}
-                            onMaxChange={(e) => onYearRangeChanged(e, "highest")}
+                            onMinChange={(e) => onYearRangeChanged(e, "start")}
+                            onMaxChange={(e) => onYearRangeChanged(e, "end")}
 
-                            minValue={(router.query.yearlowest || "") as string}
-                            maxValue={(router.query.yearhighest || "") as string}
+                            minValue={appliedFilters?.years?.start?.toString() || "1996"}
+                            maxValue={appliedFilters?.years?.end?.toString() || (new Date().getFullYear()).toString()}
                         />
                     </div>
-                } */}
+                }
 
 
                 <TagsContainer title="Authors" queryKey="authors" activeTags={queryAuthors}>

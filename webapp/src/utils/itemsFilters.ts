@@ -127,7 +127,6 @@ export function filterById(items: IArchiveItem[], ids: string[]) {
 }
 
 
-
 export function proxyToArray(target: any): any {
     // idk WTF this is and why. Cause Proxy... but still.
     const values = Object.values(JSON.parse(JSON.stringify(target)))
@@ -138,33 +137,32 @@ export function proxyToArray(target: any): any {
 } // proxyToArray
 
 
-
 export function proxyToObject(target: any): any {
     return JSON.parse(JSON.stringify(target))
-}
-
+} // proxyToObject
 
 
 export function extractTagsFromString (target: string) {
     return target.split('#').filter(i => i.trim()).map(i => `#${i}`.trim())
-}
+} // extractTagsFromString
 
 
-export const getAuthorsFromItems = (items: IArchiveItem[]) => {
+export function getAuthorsFromItems (items: IArchiveItem[]) {
     if (!items)
         return []
 
     return Array.from(new Set(items.flatMap((item) => item.authors.map((author) => author.name))))
-}
+} // getAuthorsFromItems
 
 
-export const getYearsFromItems = (items: IArchiveItem[]) => {
+export function getYearsFromItems(items: IArchiveItem[]) {
     return Array.from(
         new Set(items.flatMap(
             (item) => new Date(item.publishDate).getFullYear())
         )
-    )
-}
+    ).reverse()
+} // getYearsFromItems
+
 
 export function findMinYear(archiveItems: IArchiveItem[]): number | null {
     if (archiveItems.length === 0) return null;
@@ -173,4 +171,4 @@ export function findMinYear(archiveItems: IArchiveItem[]): number | null {
         const itemYear = new Date(item.publishDate).getFullYear();
         return itemYear < minYear ? itemYear : minYear;
     }, Infinity);
-}
+} // findMinYear

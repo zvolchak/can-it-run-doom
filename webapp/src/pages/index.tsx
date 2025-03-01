@@ -29,6 +29,7 @@ import {
     getTagsFromItems,
     getAuthorsFromItems,
     getValueFromQuery,
+    getYearsFromItems,
 } from "@/src/utils"
 
 
@@ -60,12 +61,13 @@ export default function MainPage({
         const tags = getTagsFromItems(items)
         const authors = getAuthorsFromItems(items).sort()
 
+        const availableYears = getYearsFromItems(items)
         dispatch(setAvailableTags(tags)) 
-        dispatch(setAvailableYears(years)) 
+        dispatch(setAvailableYears(availableYears)) 
         dispatch(setAvailableAuthors(authors))
 
         dispatch(setAppliedAuthors(authorQuery)) 
-        dispatch(setAppliedTags(queryTags)) 
+        dispatch(setAppliedTags(queryTags))
         dispatch(setAppliedYears(years))
         dispatch(setAppliedSearch(searchQuery))
         dispatch(setAppliedId(idQuery))
@@ -116,8 +118,8 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const idQuery = getValueFromQuery(context.query, "id")
     const authorQuery = getValueFromQuery(context.query, "author")
     const yearQuery: IRange = {
-        start: Number(getValueFromQuery(context.query, "yearlowest")[0]) || null, 
-        end: Number(getValueFromQuery(context.query, "yearhighest")[0]) || null,
+        start: Number(getValueFromQuery(context.query, "yearstart")[0]) || null, 
+        end: Number(getValueFromQuery(context.query, "yearend")[0]) || null,
     }
     const page = Number(context.query?.page || 0)
 

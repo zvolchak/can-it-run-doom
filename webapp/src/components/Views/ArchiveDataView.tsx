@@ -47,10 +47,11 @@ function filterItems({
     if (queryTags && queryTags.length > 0)
         items = filterItemsByTags(items, queryTags)
 
-    if (yearQuery?.lowest || yearQuery?.highest) {
+    if (yearQuery?.start || yearQuery?.end) {
         items = items?.filter((item: IArchiveItem) => {
             const itemYear = new Date(item.publishDate).getFullYear()
-            return itemYear >= Number(yearQuery.lowest) && itemYear <= Number(yearQuery.highest)
+            const endYear = Number(yearQuery.end) || new Date().getFullYear()
+            return itemYear >= Number(yearQuery.start) && itemYear <= endYear
         }) || []
     }
     return items

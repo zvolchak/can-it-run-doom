@@ -25,7 +25,11 @@ export const availableFiltersSlice = createSlice({
     initialState,
     reducers: {
         setAvailableTags: (state, action) => reducers.setTags(state, action),
-        setAvailableYears: (state, action) => reducers.setYears(state, action),
+        
+        setAvailableYears: (state, action) => {
+            state.availableYears = action.payload
+        },
+        
         setAvailableAuthors: (state, action) => reducers.setAuthors(state, action),
     }
 })

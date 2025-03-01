@@ -7,7 +7,6 @@ import {
     RootState,
     store,
     setUserSessionId,
-    persistor,
 } from "@/src/store"
 import { analyticsApp, trackPageView } from "@/src/utils/analytics"
 import {

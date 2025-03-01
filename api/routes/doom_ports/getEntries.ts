@@ -17,8 +17,9 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
         
         const entries = await Promise.all(snapshot.docs.map(async doc => {
             const data = doc.data()
+            const rawDate = data.publishDate?.toDate()
             const previewImg = await getImageFromStorage(data.previewImg)
-            const publishDate = data.publishDate?.toDate() ? dayjs().format("MMMM D, YYYY") : null
+            const publishDate = rawDate ? dayjs(rawDate).format("MMMM D, YYYY") : null
             const result =  { 
                 id: doc.id, 
                 ...data,
