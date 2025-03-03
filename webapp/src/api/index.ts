@@ -46,9 +46,7 @@ interface IGetArchiveDataProps {
 }
 
 
-export async function fetchDoomPorts({
-    lang = "en",
-}: IGetArchiveDataProps): Promise<IArchiveItem[] | null> {
+export async function fetchDoomPorts({}: IGetArchiveDataProps): Promise<IArchiveItem[] | null> {
     try {
         const url = "/doom_ports"
         const response = await apiClient.get(url)
