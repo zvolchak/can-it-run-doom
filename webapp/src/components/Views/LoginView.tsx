@@ -1,5 +1,3 @@
-'use client'
-
 import { useForm } from "react-hook-form"
 import { useState } from "react"
 import { useDispatch, } from "react-redux"
@@ -16,10 +14,16 @@ import {
 } from "@/src/utils"
 
 
+interface LoginForm {
+    email: string
+    password: string
+}
+
+
 export function LoginView() {
     const dispatch = useDispatch()
     const router = useRouter()
-    const { register, handleSubmit, formState: { errors } } = useForm()
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>()
     const [errorMessage, setErrorMessage] = useState("")
 
 

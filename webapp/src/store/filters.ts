@@ -41,29 +41,29 @@ export const appliedFiltersSlice = createSlice({
     initialState,
     reducers: {
         setAppliedTags: (state, action) => {
-            reducers.setTags(state, action)
+            reducers.setTags(state, action || [])
             reducers.setAuthors(state, { ...action, payload: []})
         },
         
         setAppliedAuthors: (state, action) => {
-            reducers.setAuthors(state, action)
+            reducers.setAuthors(state, action || [])
             reducers.setTags(state, { ...action, payload: []})
         },
 
         setAppliedYears: (state, action) => reducers.setYears(state, action),
 
         setAppliedSearch: (state, action) => {
-            state.searchString = action.payload
+            state.searchString = action.payload || ""
         },
 
         setAppliedId: (state, action) => {
-            state.ids = action.payload
+            state.ids = action.payload || []
             reducers.setTags(state, { ...action, payload: []})
             reducers.setTags(state, { ...action, payload: []})
         },
 
         setAppliedPage: (state, action) => {
-            state.page = action.payload
+            state.page = action.payload || 1
         },
     }
 })

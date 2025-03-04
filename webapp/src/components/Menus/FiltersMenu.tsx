@@ -9,11 +9,11 @@ import {
 } from "@/src/types"
 import { 
     RootState,
-    setAppliedYears,
     setIsFiltersMenu,
+    isFilterApplied,
+    setAppliedYears,
     setAppliedTags,
     setAppliedAuthors,
-    isFilterApplied,
 } from "@/src/store"
 import {
     Tag,
@@ -70,7 +70,6 @@ export const FiltersMenu = () => {
     
  
     function createRangeValues(start: number, end: number) {
-        // console.debug(`${start} : ${end}`)
         const result = filters.availableYears.filter(i => i >= start && i <= end)
             .map(i => ({ value: i.toString(), label: i.toString() }))
         return result
@@ -84,12 +83,9 @@ export const FiltersMenu = () => {
 
     return (
         <nav 
-            className={
-                `h-full absolute sidebar 
-                sm:top-20
-                top-40
-                pl-2
-                z-1 
+            className={`
+                h-full absolute sidebar sm:top-20
+                top-40 pl-2 z-1 
                 ${settings.isFiltersMenu ? "open" : ""}`
             }
             ref={menuRef}
@@ -103,43 +99,18 @@ export const FiltersMenu = () => {
             <hr className="border-1"/>
 
             <div className="flex flex-col justify-between items-center w-80">
-                <div className="flex flex-row doom-color-slate bg-gray-700
-                    w-full justify-between p-2 py-4 pl-5"
+                <div className="
+                        flex flex-row doom-color-slate bg-gray-700
+                        w-full justify-end p-2 py-4 pl-5
+                    "
                 >
                     <p className="font-semibold text-l">
                         {items.length} Item{items.length > 1 ? "s" : ""}
                     </p>
                 </div>
 
-                <TagsContainer title="Tags" queryKey="tags" activeTags={activeTags}>
-                    <div className="tags-container scroll-slate flex flex-row flex-wrap gap-2 pt-5 px-4 pb-10">
-                        {
-                            filters.tags.map((tag: string) =>
-                                <Tag 
-                                    key={`tag_${tag}`} 
-                                    text={`#${tag}`} 
-                                    queryKey="tags"
-                                    onDispatch={setAppliedTags}
-                                    className={`
-                                        ${
-                                            appliedTags.indexOf(tag) >= 0 
-                                            ? "active" : ""
-                                        }
-                                        ${
-                                            isFilterApplied 
-                                            && activeTags.indexOf(tag) >= 0 
-                                            ? "highlight" : ""
-                                        }
-                                    `}
-                                />
-                            )
-                        }
-                    </div>
-                </TagsContainer>
-
-
                 {filters.availableYears &&
-                    <div className="w-full mt-2 bg-gray-700">
+                    <div className="w-full bg-gray-700">
                         <RangePicker 
                             minLabel="Start Year"
                             minOptions={[
@@ -161,13 +132,51 @@ export const FiltersMenu = () => {
                             onMaxChange={(e) => onYearRangeChanged(e, "end")}
 
                             minValue={appliedFilters?.years?.start?.toString() || "1996"}
-                            maxValue={appliedFilters?.years?.end?.toString() || (new Date().getFullYear()).toString()}
+                            maxValue={appliedFilters?.years?.end?.toString() || ""}
                         />
                     </div>
                 }
 
+                <TagsContainer 
+                    title="Tags" 
+                    onClearClick={() => dispatch(setAppliedTags([]))}
+                    activeTags={activeTags}
+                >
+                    <div className="
+                            flex flex-row flex-wrap
+                            tags-container scroll-slate gap-2 pt-5 px-4 pb-10
+                        "
+                    >
+                        {
+                            filters.tags.map((tag: string) =>
+                                <Tag 
+                                    key={`tag_${tag}`} 
+                                    text={`#${tag}`} 
+                                    queryKey="tags"
+                                    onDispatch={setAppliedTags}
+                                    className={`
+                                        ${
+                                            appliedTags?.indexOf(tag) >= 0 
+                                            ? "active" : ""
+                                        }
+                                        ${
+                                            isFilterApplied 
+                                            && activeTags?.indexOf(tag) >= 0 &&
+                                            appliedTags?.indexOf(tag) < 0 
+                                            ? "highlight" : ""
+                                        }
+                                    `}
+                                />
+                            )
+                        }
+                    </div>
+                </TagsContainer>
 
-                <TagsContainer title="Authors" queryKey="authors" activeTags={queryAuthors}>
+                <TagsContainer 
+                    title="Authors"
+                    onClearClick={() => dispatch(setAppliedAuthors([]))}
+                    activeTags={queryAuthors}
+                >
                     <div className="tags-container scroll-slate flex flex-row flex-wrap gap-2 pt-5 px-4 pb-10">
                         {
                             filters.authors.map((author: string) =>

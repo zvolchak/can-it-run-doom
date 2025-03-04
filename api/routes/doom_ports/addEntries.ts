@@ -74,8 +74,8 @@ export async function downloadImgIntoArrayBuffer(fileUrl: string) {
             size: fileBuffer.length
         }
     } catch (error) {
-        console.error(`Error downloading image file "${fileUrl}:`, error)
-        throw new Error("File upload failed")
+        console.error(`Error downloading image file "${fileUrl}:`)
+        return null
     }
 }
 
@@ -161,63 +161,6 @@ router.post(
         return res.status(400).json({ error: "Faild to upload bulk entries" })
     }
 })
-
-
-// router.post(
-//     "/add", 
-//     authenticate, 
-//     upload.single("image"), 
-//     async (req: Request, res: Response): Promise<any> => 
-// {
-//     const items: IArchiveItem[] = await buildArchiveItem([req.body])
-//     const incomingEntry: IArchiveItem = items[0] || null
-//     if (!incomingEntry)
-//         return res.status(400).json({ error: "Missing body content" })
-
-//     let incomingFile = (req as any).file
-
-//     // Handle URL previewImg by downloading the file and converting it into an array buffer.
-//     if (!incomingFile && incomingEntry.previewImg?.startsWith("http")) {
-//         incomingFile = await downloadImgIntoArrayBuffer(incomingEntry.previewImg)
-//     }
-    
-//     incomingEntry.authors = sourcesArrayToFirebaseObject(incomingEntry?.authors)
-//     incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl)
-//     incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl)
-
-//     const id = incomingEntry.id || generateFirestoreId()
-//     let fileName = null
-//     try {
-//         if (incomingFile?.buffer.length > 0) {
-//             const imageFileType = getFileType(incomingFile?.buffer)
-//             fileName = `doom-preview-images/${id}.${imageFileType}`
-//             await saveFileToStorage(fileName, incomingFile)
-//         }
-//     } catch (error) {
-//         console.error("Failed to add image", error.message)
-//         return res.status(400).json({ error: "Failed to process a preview image" })
-//     }
-
-//     try {
-//         const newEntry: IArchiveItem = {
-//             ...incomingEntry,
-//             previewImg: fileName,
-//             submittedBy: null,
-//             createdAt: Timestamp.now(),
-//             updatedAt: Timestamp.now(),
-//         }
-
-//         const docRef = await addDoomPort(newEntry) as DocumentReference<DocumentData, DocumentData>
-
-//         res.status(201).json({ 
-//             message: "Entry added", 
-//             entry: { ...newEntry, id: docRef.id }, 
-//         })
-//     } catch (error) {
-//         console.error(error)
-//         res.status(500).json({ error: "Failed to add entry" })
-//     }
-// })
 
 
 export default router

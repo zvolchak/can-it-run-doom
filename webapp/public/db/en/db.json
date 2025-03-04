@@ -255,7 +255,7 @@
       "sourcesUrl": [{ "name": "Youtube", "url": "https://youtu.be/op843cRGkNU?t=4"}],
       "sourceCodeUrl": null,
       "isFirstLevelComplete": false,
-      "publishDate": "14 Мар, 2016",
+      "publishDate": "Mar 14, 2016",
       "tags": ["mp3 player", "classic-doom", "device", "baremetal"],
       "previewImgUrl": "https://raw.githubusercontent.com/zvolchak/can-it-run-doom/main/storage/images/doom-mp3-sansa-e270.png"
     },

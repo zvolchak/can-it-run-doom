@@ -1,5 +1,4 @@
 import Image from "next/image"
-import { useRouter } from "next/router"
 import { useSelector, useDispatch, } from "react-redux"
 import Link from "next/link"
 import { FaCaretDown } from "react-icons/fa"
@@ -17,7 +16,6 @@ import {
 
 
 export const Navbar = () => {    
-    const router = useRouter()
     const dispatch = useDispatch()
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
 
@@ -40,12 +38,12 @@ export const Navbar = () => {
     return (
         <nav className="
             sm:flex sm:flex-row sm:items-center sm:px-6 lg:px-8 sm:pb-0
+            sm:sticky top-0 z-20
             relative
             flex flex-col 
-            px-2 w-full
+            px-2
             min-h-16
             bg-gray-800
-            sm:sticky top-0 z-10
             pb-3
             "
         >
@@ -78,12 +76,10 @@ export const Navbar = () => {
 
             <div className="
                     flex sm:justify-center items-center flex-1 order-2
-                    sm:py-0
-                    py-2
                 "
             >
                 <button
-                    className="doom-btn flex flex-row gap-1 mr-3 doom-color-slate"
+                    className="doom-btn flex flex-row gap-1 mr-6 doom-color-slate"
                     onClick={onFiltersBtnClicked}
                 >
                     {   settings?.isFiltersMenu &&
@@ -99,7 +95,7 @@ export const Navbar = () => {
             </div>
 
 
-            <div className="
+            {/* <div className="
                     flex items-end order-3 gap-3
                     sm:py-0
                     mt-3
@@ -116,7 +112,7 @@ export const Navbar = () => {
                 >
                         Add New
                 </Link>
-            </div>
+            </div> */}
         </nav>
     )
 }

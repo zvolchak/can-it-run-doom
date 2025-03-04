@@ -21,8 +21,7 @@ export const RowMultiline = ({
     items, 
     hoverIconSrc, 
 }: IRowMultilineProps) => {
-    const [isShowIcon, setIsShowIcon] = useState(false)
-    
+    const [hoveredItem, setHoveredItem] = useState(null)
 
     return (
         <ItemContentRow 
@@ -31,9 +30,9 @@ export const RowMultiline = ({
             {items && items.map((item: ISource, index: number) =>
                 <a 
                     key={`author_name: ${item.name}`} 
-                    className="doom-btn"
-                    onMouseOver={() => setIsShowIcon(true)}
-                    onMouseOut={() => setIsShowIcon(false)}
+                    className="doom-btn relative"
+                    onMouseOver={() => setHoveredItem(item.name)}
+                    onMouseOut={() => setHoveredItem(null)}
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -44,7 +43,10 @@ export const RowMultiline = ({
                     <Image
                         src={hoverIconSrc}
                         alt={`Icon ${hoverIconSrc}`}
-                        className={`icon ${isShowIcon ? "opacity-100" : "opacity-0"}`}
+                        className={`
+                            icon 
+                            ${hoveredItem === item.name ? "opacity-100" : "opacity-0"}
+                        `}
                         quality={100}
                         width={20}
                         height={20}

@@ -112,7 +112,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                                     text={tag} 
                                     queryKey="tags"
                                     className={`
-                                        ${appliedFilters.tags.indexOf(tag) >= 0 ? "active" : ""}
+                                        ${appliedFilters.tags?.indexOf(tag) >= 0 ? "active" : ""}
                                     `}
                                 />
                             })

@@ -1,22 +1,20 @@
 import { CiSquareRemove } from "react-icons/ci"
 
 interface IBtnClearFiltersProps {
-    target?: string
     className?: string
     children?: any
-    onClick?: () => void
+    onClick?: (e: any) => void
 }
 
 
 export function BtnClearFilters({ 
-    target = "",
     onClick = null,
     className = "", 
     children 
 }: IBtnClearFiltersProps) {
-    function onBtnClick() {
+    function onBtnClick(e) {
         if (onClick) {
-            onClick?.()
+            onClick?.(e)
             return
         }
     } // onBtnClick
