@@ -1,4 +1,5 @@
 import { Timestamp } from "firebase/firestore"
+import { DecodedIdToken } from "firebase-admin/auth"
 import {
     IArchiveItem,
 } from "../@types"
@@ -35,7 +36,10 @@ export function normalizeTagsValues(incomingTags: string | string[]) {
 } // normalizeTagsValues
 
 
-export async function buildArchiveItem(incoming: any[]): Promise<IArchiveItem[]> {
+export async function buildArchiveItem(
+    incoming: any[],
+    user: DecodedIdToken,
+): Promise<IArchiveItem[]> {
     if (!incoming)
         return []
 
@@ -52,6 +56,8 @@ export async function buildArchiveItem(incoming: any[]): Promise<IArchiveItem[]>
             tags: normalizeTagsValues(item.tags) || null,
             previewImg: item.previewImg || null,
             isPublished: Boolean(item.isPublished || false),
+            createdBy: user.uid || null,
+            updatedBy: user?.uid ? [user.uid] : [],
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
             submittedBy: item.uid || null,

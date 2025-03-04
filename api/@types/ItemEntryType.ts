@@ -17,6 +17,8 @@ export interface IArchiveItem {
     tags?: string[]
     previewImg?: string
     isPublished?: boolean
+    createdBy?: string
+    updatedBy?: string[]
 
     createdAt?: Timestamp // when was this entry created
     updatedAt?: Timestamp

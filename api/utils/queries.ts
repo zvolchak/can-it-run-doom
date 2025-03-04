@@ -24,6 +24,20 @@ export async function getAllEntries() {
 } // getAllEntries
 
 
+/* Get entries that are either isPublished or !isPublished - but not both. 
+* Use getAllEntries if need to get all unfiltered entries.
+*/
+export async function getPublishedEntries(isPublished) {
+    return await getDocs(
+        query(
+            doomPortsCollection,
+            where("isPublished", "==", isPublished),
+            limit(200)
+        )
+    )
+} // getPublishedEntries
+
+
 export async function getAuthorsByName(name: string) { 
     return await getDocs(query(
         authorsCollection, 

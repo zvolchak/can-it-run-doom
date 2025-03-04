@@ -10,16 +10,24 @@ import {
     DocumentData,
     WriteBatch,
 } from "firebase/firestore"
-import { IArchiveItem, ISource } from "../../@types"
+import { 
+    IArchiveItem, 
+    ISource,
+} from "../../@types"
 import {
-    authenticate,
-    addDoomPort,
     fbStorage,
     buildArchiveItem,
     fbDb,
     doomPortsCollection,
     generateFirestoreId,
+    UserRole,
+    IsAuthorized,
  } from "../../utils"
+ import {
+    authenticate,
+    authorizeByRole,
+ } from "../../middleware"
+
 
 const router = Router()
 const upload = multer({ storage: multer.memoryStorage() })
@@ -129,32 +137,44 @@ async function addEntry(incomingEntry: IArchiveItem, batch: WriteBatch, incoming
 
 router.post(
     "/add", 
-    authenticate, 
+    authenticate,
+    (req: Request, res: Response, next) => authorizeByRole(req, res, UserRole.User, next),
     upload.single("image"), 
     async (req: Request, res: Response): Promise<any> => 
 {
-    const items: IArchiveItem[] = await buildArchiveItem(req.body)
+    const items: IArchiveItem[] = await buildArchiveItem(req.body, req.user)
+    const user = req.user
 
     if (!items || items.length === 0) 
         return res.status(400).json({ error: "Missing body content" })
 
+    const result = { success: [], failed: [] }
     try {
         const batch = writeBatch(fbDb)
 
-        const toUpload = await Promise.all(items.map(async (entry: IArchiveItem) => {
-            const toUpload = await addEntry(entry, batch, null)
-            return toUpload
+        await Promise.all(items.map(async (entry: IArchiveItem) => {
+            const authorizedToPublish = IsAuthorized(user?.role, UserRole.Moderator)
+            
+            try {
+                // Only Moderator+ type user can add an entry to publish directly. Otherwise,
+                // an entry needs to be reviewed by a Moderator and published manually.
+                if (entry.isPublished && !authorizedToPublish) {
+                    throw new Error("Not authorized to publish!")
+                }
+
+                const toUpload = await addEntry(entry, batch, null)
+                result.success.push(toUpload.docRef.id)
+            } catch (error) {
+                console.error("Failed to add an entry: ", error)
+                result.failed.push(entry.id || entry.title)
+            }
         }))
 
-        const uploadedIds = await Promise.all(toUpload.map(async (toUpload) => {
-            return toUpload.docRef.id
-        }))
-        
         await batch.commit()
 
         return res.status(201).json({ 
             message: "Bulk Entries added",
-            ids: uploadedIds, 
+            ...result, 
          })
     } catch (error) {
         console.error("Failed to upload bulk items", error)

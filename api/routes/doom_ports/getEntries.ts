@@ -3,6 +3,7 @@ import dayjs from "dayjs"
 import {
     getAllEntries,
     getImageFromStorage,
+    getPublishedEntries,
 } from "../../utils"
 
 
@@ -13,7 +14,8 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
     res.setHeader("Cache-Control", "public, max-age=300, stale-while-revalidate=600")
     
     try {
-        const snapshot = await getAllEntries()
+        // Only get entries that are isPublished = true
+        const snapshot = await getPublishedEntries(true)
         
         const entries = await Promise.all(snapshot.docs.map(async doc => {
             const data = doc.data()

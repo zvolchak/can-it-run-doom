@@ -2,8 +2,10 @@ import { Request, Response, Router } from "express"
 import { IArchiveItem } from "../../@types"
 import {
     updateDoomPort,
-    authenticate,
  } from "../../utils"
+ import {
+    authenticate,
+ } from "../../middleware"
 
 const router = Router()
 

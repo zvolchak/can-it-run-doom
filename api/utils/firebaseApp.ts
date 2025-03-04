@@ -44,7 +44,6 @@ const fbApp = initializeApp(firebaseConfig)
 const fbDb = getFirestore(fbApp)
 const fbAuth = getAuth(fbApp)
 const fbStorage = admin.storage().bucket()
-
 const fbAuthAdmin = admin.auth()
 
 if (isDev) {
@@ -121,23 +120,6 @@ export async function createToken(uid: string, claims: object = {}) {
         return null
       }
 } // verifyToken
-
-
-export async function authenticate(req: Request, res: Response, next: NextFunction) {
-    const sessionCookie = req.cookies.session || null
-    if (!sessionCookie) {
-        return res.status(401).json({ error: "Unauthorized: No session cookie found" })
-    }
-
-    try {
-        const decodedClaims = await admin.auth().verifySessionCookie(sessionCookie, true)
-        req.user = decodedClaims
-        next()
-    } catch (error) {
-        console.error("Session cookie verification failed:", error)
-        return res.status(401).json({ error: "Unauthorized: Invalid or expired session cookie" })
-    }
-} // authenticate
 
 
 export function generateFirestoreId() {

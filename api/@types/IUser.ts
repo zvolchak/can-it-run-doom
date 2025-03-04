@@ -1,3 +1,6 @@
+import { UserRole } from "@/utils"
+
+
 export interface IUserAuth {
     id: string
     email?: string
@@ -5,7 +8,14 @@ export interface IUserAuth {
     sessionExpiresOn?: Date
 }
 
+
 export interface IUserAuthResponse {
     message: string
     user: IUserAuth
+}
+
+
+export interface ISetUserRoleBody {
+    uid: string
+    role: UserRole
 }

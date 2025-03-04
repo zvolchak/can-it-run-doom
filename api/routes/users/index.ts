@@ -2,6 +2,7 @@ import { Router, Request, Response, } from 'express'
 import { rateLimit } from 'express-rate-limit'
 import signupRoute from "./signup"
 import loginRoute from "./login"
+import userAdminRoute from "./admin"
 import {
     clearSessionToken,
 } from "../../utils"
@@ -31,5 +32,6 @@ router.post(
 
 router.use(NAMESPACE, signupRoute)
 router.use(NAMESPACE, loginRoute)
+router.use(NAMESPACE, userAdminRoute)
 
 export default router
