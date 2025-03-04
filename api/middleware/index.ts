@@ -29,7 +29,6 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
         next()
     } catch (error) {
         console.error("Session cookie verification failed: ", error)
-        return res.status(401).json({ error: "Failed to authenticate!"})
     }
 } // authenticate
 
@@ -52,6 +51,5 @@ export async function authorizeByRole(
         next()
     } catch (error) {
         console.error("Session cookie verification failed: ", error)
-        return res.status(401).json({ error: "Failed to authenticate!"})
     }
 }
