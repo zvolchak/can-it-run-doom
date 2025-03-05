@@ -15,15 +15,16 @@ import { readFileSync } from "fs"
 import { join } from "path"
 import { v4 as uuidv4 } from "uuid"
 
-const isDev = process.env.NODE_ENV === "development" || true
+const isDev = process.env.NODE_ENV === "development"
+console.debug(`Environment: ${process.env.NODE_ENV}`)
 export const SESSION_COOKIE_LIFESPAN = 60 * 60 * 24 * 14 * 1000
 
 const firebaseConfig = {
-  projectId: process.env.FIREBASE_PROJECT_ID,
-  apiKey: process.env.FIREBASE_API_KEY,
-  authDomain: process.env.FIREBASE_AUTH_DOMAIN,
-  storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
-  appId: process.env.FIREBASE_APP_ID,
+    projectId: process.env.FB_PROJECT_ID,
+    apiKey: process.env.FB_API_KEY,
+    authDomain: process.env.FB_AUTH_DOMAIN,
+    storageBucket: process.env.FB_STORAGE_BUCKET,
+    appId: process.env.FB_APP_ID,
 }
 
 if (isDev) {
@@ -31,11 +32,12 @@ if (isDev) {
     const credentials = JSON.parse(readFileSync(filePath, "utf8"))
     admin.initializeApp({
         credential: admin.credential.cert(credentials),
-        storageBucket: process.env.FIREBASE_STORAGE_BUCKET
+        storageBucket: process.env.FB_STORAGE_BUCKET
     })
 } else {
     admin.initializeApp({
         credential: admin.credential.applicationDefault(),
+        storageBucket: process.env.FB_STORAGE_BUCKET,
     })
 }
 

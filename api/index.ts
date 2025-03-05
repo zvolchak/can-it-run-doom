@@ -44,6 +44,7 @@ app.use((req, res, next) => {
 })
 
 const CORS_ORIGIN = (process.env.CORS_ORIGIN || "http://localhost:3000").split(",") || []
+CORS_ORIGIN.push("http://localhost:3000")
 app.use(cors({
     origin: CORS_ORIGIN,              
     credentials: true,
