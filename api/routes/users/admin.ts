@@ -36,7 +36,7 @@ router.post(
             await fbAuthAdmin.setCustomUserClaims(target.uid, { role: target.role })
             result.success.push(target)
         } catch (error) {
-            console.debug("Failed to setCustomUserClaims: ", error)
+            console.error("Failed to setCustomUserClaims: ", error)
             result.failed.push(target)
         }
     }))

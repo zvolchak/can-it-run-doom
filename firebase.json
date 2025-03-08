@@ -3,7 +3,6 @@
     {
       "codebase": "api",
       "source": "./api",
-      "predeploy": ["cd api && npm run build:prod"],
       "ignore": [
         "**/node_modules/**",
         ".git",
@@ -20,7 +19,6 @@
     {
       "codebase": "webapp",
       "source": "./webapp",
-      "predeploy": ["cd webapp && npm run build:prod"],
       "ignore": [
         "**/node_modules/**",
         ".git",
@@ -32,7 +30,7 @@
   ],
   "hosting": {
     "public": "./webapp/.next",
-    "predeploy": ["cd webapp && npm run build:sitemap && npm run build:prod"],
+    "predeploy": ["cd webapp && npm run build:sitemap"],
     "ignore": [
       "firebase.json",
       "**/.*",

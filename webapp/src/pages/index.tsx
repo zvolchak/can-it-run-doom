@@ -112,6 +112,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         "Cache-Control", 
         `public, s-maxage=${cacheTime}, stale-while-revalidate=30`
     )
+    console.debug("-- getServerSideProps")
 
     const searchQuery = decodeURIComponent(context.query?.search as string || "")
     const queryTags = getValueFromQuery(context.query, "tag")
@@ -124,6 +125,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const page = Number(context.query?.page || 0)
 
     const items: IArchiveItem[] = await fetchDoomPorts({})
+    console.debug(items)
 
     return {
         props: {

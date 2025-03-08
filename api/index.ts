@@ -14,8 +14,7 @@ import {
     UserRouter,
 } from "./routes"
 
-const isDev = process.env.NODE_ENV === "development" || true
-const BASE_URL = isDev ? "/api/v1" : "/v1"
+const BASE_URL = "/api/v1"
 
 const app = express()
 
@@ -31,6 +30,8 @@ const limiter = rateLimit({
     message: "Too many requests. Try again in 15 minutes."
 })
 
+// Trust first proxy (e.g., Firebase Functions, Cloud Run, Nginx)
+app.set("trust proxy", 1)
 app.use(limiter)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
@@ -44,7 +45,6 @@ app.use((req, res, next) => {
 })
 
 const CORS_ORIGIN = (process.env.CORS_ORIGIN || "http://localhost:3000").split(",") || []
-CORS_ORIGIN.push("http://localhost:3000")
 app.use(cors({
     origin: CORS_ORIGIN,              
     credentials: true,

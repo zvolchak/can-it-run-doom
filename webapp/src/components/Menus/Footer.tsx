@@ -1,6 +1,6 @@
-// import { 
-//     BtnUserAccount,
-// } from "@/src/components"
+import { 
+    BtnUserAccount,
+} from "@/src/components"
 
 
 interface IFooterProps {
@@ -13,9 +13,9 @@ export function Footer({ className = "", }: IFooterProps) {
         <footer className={`footer relative bottom-0 py-6 ${className}`}>
             <div className="w-full mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
                 {/* Left Section */}
-                {/* <div className="flex flex-col text-center md:text-left">
+                <div className="flex flex-col text-center md:text-left">
                     <BtnUserAccount />
-                </div> */}
+                </div>
 
                 {/* Middle Section */}
                 <div className="mt-4 md:mt-0 text-center">

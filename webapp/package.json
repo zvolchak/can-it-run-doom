@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build:prod": "DOTENV_KEY=$(npx dotenv-vault keys production) ./scripts/build_prod.sh",
+    "build:staging": "DOTENV_KEY=$(npx dotenv-vault keys staging) ./scripts/build_prod.sh",
     "build": "next build",
     "start": "next start",
     "start:dev": "nodemon",

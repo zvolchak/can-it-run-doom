@@ -50,7 +50,7 @@ router.post(`${ROUTE_NAMESPACE}/email_and_password`, async (req: Request, res: R
     const { email, password } = req.body
     try {
         const userData = await signInWithEmailAndPassword(fbAuth, email, password)
-        const idToken = await userData.user.getIdToken()
+        const idToken = await userData.user.getIdToken(true)
         const { expiresOn } = await createSessionToken(res, idToken)
 
         res.status(200).json({

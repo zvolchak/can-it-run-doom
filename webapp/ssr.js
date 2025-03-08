@@ -34,7 +34,7 @@ async function serveCompiledApp(app, request, response) {
 } // serveCompiledApp
 
 
-const dev = (process.env.NODE_ENV || "").toLowerCase() !== "production"
+const dev = (process.env.NODE_ENV || "").toLowerCase() === "development"
 const appCfg = { dev, conf: {} }
 if (!dev) {
     appCfg.conf = {

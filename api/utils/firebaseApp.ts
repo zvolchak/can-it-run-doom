@@ -1,13 +1,13 @@
 import dotenv from "dotenv"
 dotenv.config({ path: process.env.DOTENV_PATH || ".env" })
 
-import { Request, Response, NextFunction, } from "express"
+import { Response, } from "express"
 import { 
   collection, 
   getFirestore, 
   connectFirestoreEmulator,
 } from "firebase/firestore"
-import { getAuth } from "firebase/auth"
+import { getAuth, connectAuthEmulator } from "firebase/auth"
 import { DecodedIdToken } from "firebase-admin/auth"
 import { initializeApp } from "firebase/app"
 import * as admin from "firebase-admin"
@@ -15,7 +15,14 @@ import { readFileSync } from "fs"
 import { join } from "path"
 import { v4 as uuidv4 } from "uuid"
 
+/* To use Auth and Storage on the Emulator, don't forget to export these vars before running
+ * the server:
+ * export FIREBASE_STORAGE_EMULATOR_HOST=127.0.0.1:9199
+ * export FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099
+ */
+
 const isDev = process.env.NODE_ENV === "development"
+
 console.debug(`Environment: ${process.env.NODE_ENV}`)
 export const SESSION_COOKIE_LIFESPAN = 60 * 60 * 24 * 14 * 1000
 
@@ -28,7 +35,7 @@ const firebaseConfig = {
 }
 
 if (isDev) {
-    const filePath = join(__dirname, "../credentials.json")
+    const filePath = join(__dirname, `../credentials-${process.env.NODE_ENV}.json`)
     const credentials = JSON.parse(readFileSync(filePath, "utf8"))
     admin.initializeApp({
         credential: admin.credential.cert(credentials),
@@ -50,6 +57,7 @@ const fbAuthAdmin = admin.auth()
 
 if (isDev) {
     connectFirestoreEmulator(fbDb, "localhost", 8081)
+    connectAuthEmulator(fbAuth, "http://127.0.0.1:9099")
 }
 
 export const COLLECTION_NAME = {

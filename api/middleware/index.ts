@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction, } from "express"
 import { DecodedIdToken } from "firebase-admin/auth"
 import {
-    fbAuthAdmin,
     verifySessionCookie,
 } from "../utils"
 import {
@@ -29,6 +28,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
         next()
     } catch (error) {
         console.error("Session cookie verification failed: ", error)
+        res.status(401).json({ "error": "Failed to authenticate!" })
     }
 } // authenticate
 
@@ -45,11 +45,13 @@ export async function authorizeByRole(
             targetRole
         )
 
-        if (!isAuthorized)
+        const isOwner = process.env.FB_ROOT_UID.split(",").indexOf(req.user.uid) >= 0
+        if (!isAuthorized && !isOwner)
             throw new Error("Access denied!")
 
         next()
     } catch (error) {
         console.error("Session cookie verification failed: ", error)
+        res.status(404).json({ "error": "Unauthorized access!" })
     }
 }
