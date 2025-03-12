@@ -59,6 +59,9 @@
   "storage": {
     "rules": "storage.rules"
   },
+  "firestore": {
+    "indexes": "firestore.indexes.json"
+  },
   "emulators": {
     "functions": {
       "port": 8080

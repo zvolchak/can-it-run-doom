@@ -39,18 +39,24 @@ apiClient.interceptors.response.use(response => response, async error => {
 ) // apiClient.use
 
 
-interface IGetArchiveDataProps {
-    lang?: string
-    page?: number
-    limit?: number
-}
+// interface IGetArchiveDataProps {
+//     page?: number
+//     perPage?: number
+//     ids?: string[]
+// }
 
+// interface IFetchPortsResponse {
+//     items: IArchiveItem[]
+//     totalSize?: number
+// }
 
-export async function fetchDoomPorts({}: IGetArchiveDataProps): Promise<IArchiveItem[] | null> {
+export async function fetchDoomPorts(): 
+    Promise<IArchiveItem[] | null> 
+{
     try {
         const url = "/doom_ports"
         const response = await apiClient.get(url)
-        return response?.data
+        return response?.data?.items || []
     } catch (error) {
         console.error("Failed to get archive data", error)
         return []

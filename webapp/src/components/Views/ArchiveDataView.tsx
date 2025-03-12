@@ -60,14 +60,14 @@ function filterItems({
 
 export function ArchiveDataView({ items }: IMainPageProps) {
     const dispatch = useDispatch()
-    const itemsPerPage = 10
+    const itemsPerPage = 20
 
     const filters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
     const filteredItems: IArchiveItem[] = useSelector((state: RootState) => state.submissions.filtered)
+    // const totalItemsSize: number = useSelector((state: RootState) => state.submissions.totalSize)
     const currentPage = filters.page || 1
 
     const [numberOfPages, setNumberOfPages] = useState(Math.ceil(filteredItems.length / itemsPerPage))
-
 
     useEffect(() => {
         let filtered = filterItems({

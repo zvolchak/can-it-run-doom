@@ -90,20 +90,20 @@ export async function downloadImgIntoArrayBuffer(fileUrl: string) {
 
 async function addEntry(incomingEntry: IArchiveItem, batch: WriteBatch, incomingFile) {
     // Handle URL previewImg by downloading the file and converting it into an array buffer.
-    if (!incomingFile && incomingEntry.previewImg?.startsWith("http")) {
-        incomingFile = await downloadImgIntoArrayBuffer(incomingEntry.previewImg)
-    }
+    // if (!incomingFile && incomingEntry.previewImg?.startsWith("http")) {
+    //     incomingFile = await downloadImgIntoArrayBuffer(incomingEntry.previewImg)
+    // }
     
     incomingEntry.authors = sourcesArrayToFirebaseObject(incomingEntry?.authors)
     incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl)
     incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl)
 
     const id = incomingEntry.id || generateFirestoreId()
-    let fileName = null
+    let fileName = incomingEntry.previewImg
     try {
         if (incomingFile?.buffer.length > 0) {
             const imageFileType = getFileType(incomingFile?.buffer)
-            fileName = `doom-preview-images/${id}.${imageFileType}`
+            fileName = `/doom-preview-images/${id}.${imageFileType}`
             await saveFileToStorage(fileName, incomingFile)
         }
     } catch (error) {
@@ -151,10 +151,9 @@ router.post(
     const result = { success: [], failed: [] }
     try {
         const batch = writeBatch(fbDb)
+        const authorizedToPublish = IsAuthorized(user?.role, UserRole.Moderator)
 
         await Promise.all(items.map(async (entry: IArchiveItem) => {
-            const authorizedToPublish = IsAuthorized(user?.role, UserRole.Moderator)
-            
             try {
                 // Only Moderator+ type user can add an entry to publish directly. Otherwise,
                 // an entry needs to be reviewed by a Moderator and published manually.
@@ -173,11 +172,11 @@ router.post(
         await batch.commit()
 
         return res.status(201).json({ 
-            message: "Bulk Entries added",
+            message: "Entries added",
             ...result, 
          })
     } catch (error) {
-        console.error("Failed to upload bulk items", error)
+        console.error("Failed to upload items", error)
         return res.status(400).json({ error: "Faild to upload bulk entries" })
     }
 })

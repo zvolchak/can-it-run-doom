@@ -7,7 +7,9 @@ import {
     updateDoc,
     doc,
     setDoc,
-    limit,
+    startAfter,
+    orderBy,
+    limit as fbLimit,
 } from "firebase/firestore"
 import { 
     authorsCollection,
@@ -20,21 +22,34 @@ import { IAuthorDocument, IArchiveItem, } from "../@types"
 
 
 export async function getAllEntries() {
-    return await getDocs(query(doomPortsCollection, limit(200)))
+    return await getDocs(query(doomPortsCollection, fbLimit(200)))
 } // getAllEntries
 
 
 /* Get entries that are either isPublished or !isPublished - but not both. 
 * Use getAllEntries if need to get all unfiltered entries.
 */
-export async function getPublishedEntries(isPublished) {
-    return await getDocs(
-        query(
-            doomPortsCollection,
-            where("isPublished", "==", isPublished),
-            limit(200)
-        )
+export async function getPublishedEntries({ 
+    isPublished, 
+    limit = 200,
+    ids = []
+}) {
+    const conditions = [
+        where("isPublished", "==", isPublished),
+        orderBy("publishDate", "desc"),
+        fbLimit(limit)  
+    ]
+    
+    if (ids?.length > 0) {
+        conditions.push(where("id", "in", ids))
+    }
+
+    let q = query(
+        doomPortsCollection,
+        ...conditions
     )
+
+    return await getDocs(q)
 } // getPublishedEntries
 
 

@@ -11,13 +11,14 @@ import {
     setAvailableTags,
     setAvailableYears,
     setAvailableAuthors,
-
+    
     setAppliedAuthors,
     setAppliedTags,
     setAppliedYears,
     setAppliedId,
     setAppliedSearch,
     setAppliedPage,
+    setTotalSize,
 } from "@/src/store"
 import {
     ArchiveDataView,
@@ -35,6 +36,7 @@ import {
 
 interface IMainPageProps {
     items: IArchiveItem[]
+    totalSize: number // total number of items that, aka current page + the rest
     queryTags?: string[]
     years?: { lowest: number, highest: number }
     authorQuery?: string[]
@@ -46,6 +48,7 @@ interface IMainPageProps {
 
 export default function MainPage({
     items,
+    totalSize,
     queryTags = [],
     years = null,
     authorQuery = [],
@@ -72,14 +75,15 @@ export default function MainPage({
         dispatch(setAppliedSearch(searchQuery))
         dispatch(setAppliedId(idQuery))
         dispatch(setAppliedPage(page))
-    }, [dispatch, items, years, authorQuery, queryTags, searchQuery, idQuery, page])
+        dispatch(setTotalSize(totalSize))
+    }, [dispatch, items, years, authorQuery, queryTags, searchQuery, idQuery, page, totalSize])
 
 
     return (
         <>
             <Head>
                 <title>Can It Run Doom? An Archive of All Known Ports</title>
-                {items.length === 1 && (
+                {items?.length === 1 && (
                     <>
                         <meta property="og:title" content={items[0].title} />
                         <meta property="og:image" content={items[0].previewImg} />
@@ -88,7 +92,7 @@ export default function MainPage({
                         <meta name="twitter:image" content={items[0].previewImg} />
                     </>
                 )}
-                {items.length === 1 && items[0].description.length > 0 && (
+                {items?.length === 1 && items[0].description?.length > 0 && (
                     <>
                         <meta name="description" content={`${items[0].description.slice(0, 150)}...`} />
                         <meta property="og:description" content={`${items[0].description.slice(0, 150)}...`} />
@@ -106,14 +110,11 @@ export default function MainPage({
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    // 1 hour
-    const cacheTime = 60 * 60
-    context.res.setHeader(
-        "Cache-Control", 
-        `public, s-maxage=${cacheTime}, stale-while-revalidate=30`
-    )
-    console.debug("-- getServerSideProps")
-
+    // const cacheTime = 60 * 5
+    // context.res.setHeader(
+    //     "Cache-Control", 
+    //     `public, s-maxage=${cacheTime}, stale-while-revalidate=30`
+    // )
     const searchQuery = decodeURIComponent(context.query?.search as string || "")
     const queryTags = getValueFromQuery(context.query, "tag")
     const idQuery = getValueFromQuery(context.query, "id")
@@ -122,14 +123,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         start: Number(getValueFromQuery(context.query, "yearstart")[0]) || null, 
         end: Number(getValueFromQuery(context.query, "yearend")[0]) || null,
     }
-    const page = Number(context.query?.page || 0)
+    const page = Number(context.query?.page || 1)
 
-    const items: IArchiveItem[] = await fetchDoomPorts({})
-    console.debug(items)
-
+    const items = await fetchDoomPorts()
     return {
         props: {
-            items,
+            items: items || [],
+            totalSize: items?.length || 0,
             queryTags,
             years: yearQuery,
             authorQuery,

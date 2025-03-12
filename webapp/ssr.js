@@ -4,6 +4,7 @@ import { join, dirname } from "path"
 import { parse, fileURLToPath } from "url"
 import next from "next"
 
+console.info(` -- Environment: ${process.env.NODE_ENV}`)
 
 async function startServer(app) {
     const handle = app.getRequestHandler()
@@ -35,6 +36,8 @@ async function serveCompiledApp(app, request, response) {
 
 
 const dev = (process.env.NODE_ENV || "").toLowerCase() === "development"
+console.log(` --- Is Dev: ${dev}`)
+
 const appCfg = { dev, conf: {} }
 if (!dev) {
     appCfg.conf = {
@@ -44,12 +47,13 @@ if (!dev) {
 }
 
 const app = next(appCfg)
-console.log(` --- Is Dev: ${dev}`)
 if (dev) {
-  app.prepare().then(() => startServer(app))
+    console.log("Starting ssr server...")
+    app.prepare().then(() => startServer(app))
 }
 
 
 export const nextServer = functions.https.onRequest(
+    { memory: "512MiB" },
     async (request, response) => serveCompiledApp(app, request, response)
 )

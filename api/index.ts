@@ -14,8 +14,9 @@ import {
     UserRouter,
 } from "./routes"
 
-const BASE_URL = "/api/v1"
+console.info(` -- Environment: ${process.env.NODE_ENV}`)
 
+const BASE_URL = "/api/v1"
 const app = express()
 
 const logger = winston.createLogger({
@@ -68,5 +69,5 @@ app.use(BASE_URL, AuthorsRouter)
 app.use(BASE_URL, TagsRouter)
 app.use(BASE_URL, UserRouter)
 
-export const api = https.onRequest(app)
+export const api = https.onRequest({ memory: "512MiB" }, app)
 export default app

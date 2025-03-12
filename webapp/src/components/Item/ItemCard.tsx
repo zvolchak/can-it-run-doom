@@ -1,4 +1,5 @@
 import { useSelector, useDispatch, } from "react-redux"
+// import { useRouter } from "next/router"
 import { ImCheckmark2 } from "react-icons/im"
 import { GiCrossMark } from "react-icons/gi"
 import { 
@@ -25,6 +26,7 @@ interface IItemCardProps {
 
 export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
     const dispatch = useDispatch()
+    // const router = useRouter()
     const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
 
 
@@ -39,6 +41,11 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             appliedIds.push(id)
 
         dispatch(setAppliedId(appliedIds))
+        // const query = { ...router.query, ids: id }
+        // router.push({
+        //     pathname: router.pathname,
+        //     query,
+        // })
     } // onIdClick
 
 
@@ -48,10 +55,10 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             ${className}`}
         >
             <div className="flex flex-row title p-2">
-                {item.title}
+                {item?.title || ""}
             </div>
 
-            {item.description && item.description.length > 0 &&
+            {item?.description && item?.description.length > 0 &&
                 <div className="description flex flex-row p-2">
                     {item.description}
                 </div>
