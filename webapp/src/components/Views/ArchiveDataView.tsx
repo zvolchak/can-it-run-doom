@@ -1,5 +1,10 @@
-import { useRouter } from "next/router"
-import { IArchiveItem } from "@/src/types"
+import { useEffect, useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
+import { getMainLayout } from "@/src/layouts"
+import { 
+    IArchiveItem,
+    IFiltersStoreState,
+} from "@/src/types"
 import {
     ItemCard,
     BtnScrollTop,
@@ -8,7 +13,16 @@ import {
 } from "@/src/components"
 import {
     paginate,
+    onSearch,
+    filterById,
+    filterItemsByTags,
+    filterItemsByAuthors,
 } from "@/src/utils"
+import { 
+    RootState,
+    setFiltered,
+    setItems,
+} from "@/src/store"
 
 
 interface IMainPageProps {
@@ -16,22 +30,75 @@ interface IMainPageProps {
 }
 
 
-export function ArchiveDataView({ items }: IMainPageProps) {
-    const router = useRouter()
-    const currentPage = Number(router.query?.page || 0)
-    const itemsPerPage = 10
+function filterItems({
+    items,
+    searchQuery,
+    queryTags,
+    idQuery,
+    authorQuery,
+    yearQuery,
+}) {
+    if (searchQuery && searchQuery !== "")
+        items = onSearch(items, searchQuery)
+    if (authorQuery && authorQuery.length > 0)
+        items = filterItemsByAuthors(items, authorQuery)
+    if (idQuery && idQuery.length > 0)
+        items = filterById(items, idQuery)
+    if (queryTags && queryTags.length > 0)
+        items = filterItemsByTags(items, queryTags)
 
-    if (!items) {
+    if (yearQuery?.start || yearQuery?.end) {
+        items = items?.filter((item: IArchiveItem) => {
+            const itemYear = new Date(item.publishDate).getFullYear()
+            const endYear = Number(yearQuery.end) || new Date().getFullYear()
+            return itemYear >= Number(yearQuery.start) && itemYear <= endYear
+        }) || []
+    }
+    return items
+} // filterItems
+
+
+export function ArchiveDataView({ items }: IMainPageProps) {
+    const dispatch = useDispatch()
+    const itemsPerPage = 20
+
+    const filters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
+    const filteredItems: IArchiveItem[] = useSelector((state: RootState) => state.submissions.filtered)
+    // const totalItemsSize: number = useSelector((state: RootState) => state.submissions.totalSize)
+    const currentPage = filters.page || 1
+
+    const [numberOfPages, setNumberOfPages] = useState(Math.ceil(filteredItems.length / itemsPerPage))
+
+    useEffect(() => {
+        let filtered = filterItems({
+            items: items,
+            searchQuery: filters.searchString,
+            queryTags: filters.tags,
+            idQuery: filters.ids,
+            authorQuery: filters.authors,
+            yearQuery: filters.years,
+        })
+
+        const pages = Math.ceil(filtered.length / itemsPerPage)
+        setNumberOfPages(pages)
+        filtered = paginate(filtered, currentPage - 1, itemsPerPage)
+
+        dispatch(setItems(items))
+        dispatch(setFiltered(filtered))
+    }, [items, filters, dispatch, setNumberOfPages, currentPage])
+
+    if (!items || items?.length === 0) {
         return (
-            <div>Not items found. If this error persists, please contact support 
-            through Discord channel or email.</div>
+            <div className="
+                h-screen w-full justify-center mt-10 flex flex-row text-center text-white
+                "
+            >
+                Not items found. If this error persists, please contact support 
+            through Discord channel or email.
+            </div>
         )
     }
 
-    let filteredItems = [...items]
-
-    const numberOfPages = Math.ceil(filteredItems.length / itemsPerPage)
-    filteredItems = paginate(filteredItems, currentPage, itemsPerPage)
 
     return (
         <div className="archive-data-view">
@@ -70,3 +137,6 @@ export function ArchiveDataView({ items }: IMainPageProps) {
         </div>
     )
 } // MainPage
+
+
+ArchiveDataView.getLayout = getMainLayout

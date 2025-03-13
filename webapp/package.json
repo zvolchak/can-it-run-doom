@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build:prod": "DOTENV_KEY=$(npx dotenv-vault keys production) ./scripts/build_prod.sh",
+    "build:staging": "DOTENV_KEY=$(npx dotenv-vault keys staging) ./scripts/build_prod.sh",
     "build": "next build",
     "start": "next start",
     "start:dev": "nodemon",
@@ -24,10 +25,12 @@
     "firebase": "^11.2.0",
     "firebase-admin": "^13.0.2",
     "firebase-functions": "^6.2.0",
+    "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "next": "15.1.4",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.54.2",
     "react-icons": "^5.4.0",
     "react-redux": "^9.2.0",
     "uuid": "^11.0.5"

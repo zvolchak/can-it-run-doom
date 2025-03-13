@@ -1,9 +1,15 @@
-import { useRouter } from "next/router"
+import { useSelector, useDispatch, } from "react-redux"
+// import { useRouter } from "next/router"
 import { ImCheckmark2 } from "react-icons/im"
 import { GiCrossMark } from "react-icons/gi"
 import { 
     IArchiveItem, 
+    IFiltersStoreState,
 } from "@/src/types"
+import { 
+    RootState,
+    setAppliedId,
+} from "@/src/store"
 import { 
     ImageLoader,
     RowMultiline,
@@ -19,14 +25,29 @@ interface IItemCardProps {
 
 
 export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
-    const router = useRouter()
+    const dispatch = useDispatch()
+    // const router = useRouter()
+    const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
+
 
     function onIdClick(id: string) {
-        router.push({
-            pathname: router.pathname,
-            query: { id },
-        })
-    }
+        let appliedIds = [ ...(appliedFilters.ids || [])]
+        if (!appliedIds)
+            appliedIds = []
+        const existingIndex = appliedIds.indexOf(id)
+        if (existingIndex >= 0)
+            appliedIds.splice(existingIndex, 1)
+        else
+            appliedIds.push(id)
+
+        dispatch(setAppliedId(appliedIds))
+        // const query = { ...router.query, ids: id }
+        // router.push({
+        //     pathname: router.pathname,
+        //     query,
+        // })
+    } // onIdClick
+
 
     return (
         <div className={`
@@ -34,10 +55,10 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             ${className}`}
         >
             <div className="flex flex-row title p-2">
-                {item.title}
+                {item?.title || ""}
             </div>
 
-            {item.description && item.description.length > 0 &&
+            {item?.description && item?.description.length > 0 &&
                 <div className="description flex flex-row p-2">
                     {item.description}
                 </div>
@@ -45,12 +66,12 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
 
             <div className="item-container flex flex-row gap-1 items-start mt-1">
                 <div className="image-preview">
-                    <ImageLoader className="justify-self-start" src={item.previewImgUrl} />
+                    <ImageLoader className="justify-self-start" src={item.previewImg} />
                 </div>
 
                 <div className="
                     flex flex-col doom-card w-full gap-2
-                    overflow-y-scroll scrollbar-hidden"
+                    overflow-y-auto scrollbar-hidden"
                 >
                     <RowMultiline 
                         title="Author:"
@@ -67,7 +88,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                     />
 
                     <RowMultiline 
-                        title="Code"
+                        title="Source Code"
                         items={item.sourceCodeUrl} 
                         hoverIconSrc="/icons/doom-guy-look-left.png" 
                     />
@@ -85,7 +106,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                     <ItemContentRow 
                         title="ID:"
                     >
-                        <a onClick={() => onIdClick(item.id)}>
+                        <a className="doom-btn" onClick={() => onIdClick(item.id)}>
                             {item.id}
                         </a>
                     </ItemContentRow>
@@ -96,7 +117,10 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                                 return <Tag 
                                     key={`tag_${tag}`} 
                                     text={tag} 
-                                    queryKey="tag"
+                                    queryKey="tags"
+                                    className={`
+                                        ${appliedFilters.tags?.indexOf(tag) >= 0 ? "active" : ""}
+                                    `}
                                 />
                             })
                         }

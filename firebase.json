@@ -1,9 +1,24 @@
 {
   "functions": [
     {
+      "codebase": "api",
+      "source": "./api",
+      "ignore": [
+        "**/node_modules/**",
+        ".git",
+        "firebase-debug.log",
+        "firebase-debug.*.log",
+        "*.local",
+        "public/**",
+        "**/.*"
+      ],
+      "include": [
+        "api/dist/**"
+      ]
+    },
+    {
       "codebase": "webapp",
       "source": "./webapp",
-      "predeploy": ["cd webapp && npm run build:prod"],
       "ignore": [
         "**/node_modules/**",
         ".git",
@@ -15,7 +30,7 @@
   ],
   "hosting": {
     "public": "./webapp/.next",
-    "predeploy": ["cd webapp && npm run build:sitemap && npm run build:prod"],
+    "predeploy": ["cd webapp && npm run build:sitemap"],
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -41,6 +56,12 @@
       }
     ]
   },
+  "storage": {
+    "rules": "storage.rules"
+  },
+  "firestore": {
+    "indexes": "firestore.indexes.json"
+  },
   "emulators": {
     "functions": {
       "port": 8080
@@ -50,6 +71,15 @@
     },
     "ui": {
       "enabled": true
+    },
+    "firestore": {
+      "port": 8081
+    },
+    "storage": {
+      "port": 9199
+    },
+    "auth": {
+      "port": 9099
     },
     "singleProjectMode": true
   }

@@ -2,26 +2,31 @@ import Head from 'next/head'
 import { useEffect } from "react"
 import { useDispatch, } from "react-redux"
 import type { GetServerSideProps } from 'next'
-import { IArchiveItem } from "@/src/types"
+import { 
+    IArchiveItem,
+    IRange,
+} from "@/src/types"
 import {
     setItems,
     setAvailableTags,
     setAvailableYears,
     setAvailableAuthors,
+    
+    setAppliedAuthors,
+    setAppliedTags,
+    setAppliedYears,
+    setAppliedId,
+    setAppliedSearch,
+    setAppliedPage,
+    setTotalSize,
 } from "@/src/store"
 import {
     ArchiveDataView,
-    Navbar,
-    Footer,
 } from "@/src/components"
 import {
-    fetchArchiveData,
+    fetchDoomPorts,
 } from "@/src/api"
 import {
-    onSearch,
-    filterById,
-    filterItemsByTags,
-    filterItemsByAuthors,
     getTagsFromItems,
     getAuthorsFromItems,
     getValueFromQuery,
@@ -31,38 +36,63 @@ import {
 
 interface IMainPageProps {
     items: IArchiveItem[]
-    tags: string[]
-    years: number[]
-    authors: string[]
+    totalSize: number // total number of items that, aka current page + the rest
+    queryTags?: string[]
+    years?: { lowest: number, highest: number }
+    authorQuery?: string[]
+    searchQuery?: string
+    idQuery?: string[]
+    page?: number
 }
 
 
-export default function MainPage({ items, tags, years, authors }: IMainPageProps) {
+export default function MainPage({
+    items,
+    totalSize,
+    queryTags = [],
+    years = null,
+    authorQuery = [],
+    searchQuery = "",
+    idQuery = [],
+    page = 0,
+}: IMainPageProps) {
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(setItems(items))
 
+        const tags = getTagsFromItems(items)
+        const authors = getAuthorsFromItems(items).sort()
+
+        const availableYears = getYearsFromItems(items)
         dispatch(setAvailableTags(tags)) 
-        dispatch(setAvailableYears(years)) 
+        dispatch(setAvailableYears(availableYears)) 
         dispatch(setAvailableAuthors(authors))
-    }, [dispatch, items, tags, years, authors])
+
+        dispatch(setAppliedAuthors(authorQuery)) 
+        dispatch(setAppliedTags(queryTags))
+        dispatch(setAppliedYears(years))
+        dispatch(setAppliedSearch(searchQuery))
+        dispatch(setAppliedId(idQuery))
+        dispatch(setAppliedPage(page))
+        dispatch(setTotalSize(totalSize))
+    }, [dispatch, items, years, authorQuery, queryTags, searchQuery, idQuery, page, totalSize])
 
 
     return (
         <>
             <Head>
                 <title>Can It Run Doom? An Archive of All Known Ports</title>
-                {items.length === 1 && (
+                {items?.length === 1 && (
                     <>
                         <meta property="og:title" content={items[0].title} />
-                        <meta property="og:image" content={items[0].previewImgUrl} />
+                        <meta property="og:image" content={items[0].previewImg} />
 
                         <meta name="twitter:title" content={items[0].title} />
-                        <meta name="twitter:image" content={items[0].previewImgUrl} />
+                        <meta name="twitter:image" content={items[0].previewImg} />
                     </>
                 )}
-                {items.length === 1 && items[0].description.length > 0 && (
+                {items?.length === 1 && items[0].description?.length > 0 && (
                     <>
                         <meta name="description" content={`${items[0].description.slice(0, 150)}...`} />
                         <meta property="og:description" content={`${items[0].description.slice(0, 150)}...`} />
@@ -73,58 +103,39 @@ export default function MainPage({ items, tags, years, authors }: IMainPageProps
                 
             </Head>
 
-            <Navbar />
             <ArchiveDataView items={items} />
-            <Footer className="mt-20" />
         </>
     )
 } // MainPage
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    context.res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=30")
-    const yearNow = new Date().getFullYear()
-
+    // const cacheTime = 60 * 5
+    // context.res.setHeader(
+    //     "Cache-Control", 
+    //     `public, s-maxage=${cacheTime}, stale-while-revalidate=30`
+    // )
     const searchQuery = decodeURIComponent(context.query?.search as string || "")
     const queryTags = getValueFromQuery(context.query, "tag")
     const idQuery = getValueFromQuery(context.query, "id")
     const authorQuery = getValueFromQuery(context.query, "author")
-    const yearQuery = {
-        lowest: getValueFromQuery(context.query, "yearlowest")[0] || 1996, 
-        highest: getValueFromQuery(context.query, "yearhighest")[0] || yearNow,
+    const yearQuery: IRange = {
+        start: Number(getValueFromQuery(context.query, "yearstart")[0]) || null, 
+        end: Number(getValueFromQuery(context.query, "yearend")[0]) || null,
     }
+    const page = Number(context.query?.page || 1)
 
-    let items: IArchiveItem[] = await fetchArchiveData({})
-
-    const tags = getTagsFromItems(items)
-    const authors = getAuthorsFromItems(items).sort()
-
-    if (searchQuery && searchQuery !== "")
-        items = onSearch(items, searchQuery)
-    if (authorQuery && authorQuery.length > 0)
-        items = filterItemsByAuthors(items, authorQuery)
-    if (idQuery && idQuery.length > 0)
-        items = filterById(items, idQuery)
-    if (queryTags && queryTags.length > 0)
-        items = filterItemsByTags(items, queryTags)
-
-    if (yearQuery.lowest || yearQuery.highest) {
-        items = items.filter((item: IArchiveItem) => {
-            const itemYear = new Date(item.publishDate).getFullYear()
-            return itemYear >= Number(yearQuery.lowest) && itemYear <= Number(yearQuery.highest)
-        })
-    }
-
-    // FIXME: move sorting to api endpoint
-    items.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
-    const submissionYears = getYearsFromItems(items)
-
+    const items = await fetchDoomPorts()
     return {
-      props: {
-        items,
-        tags,
-        years: submissionYears.sort(),
-        authors,
-      },
+        props: {
+            items: items || [],
+            totalSize: items?.length || 0,
+            queryTags,
+            years: yearQuery,
+            authorQuery,
+            searchQuery,
+            idQuery,
+            page,
+        },
     }
 } // getServerSideProps

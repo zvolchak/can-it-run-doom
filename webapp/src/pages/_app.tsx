@@ -9,6 +9,10 @@ import {
     setUserSessionId,
 } from "@/src/store"
 import { analyticsApp, trackPageView } from "@/src/utils/analytics"
+import {
+    Navbar,
+    Footer,
+} from "@/src/components"
 
 
 function UserSessionInit() {
@@ -62,9 +66,11 @@ function App({ Component, pageProps }) {
         <Provider store={store}>
             <UserSessionInit />
             <PageViewAnalytics />
+            <Navbar />
             {getLayout(
                 <Component {...pageProps} />
             )}
+            <Footer />
         </Provider>
     )
 }

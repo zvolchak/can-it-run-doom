@@ -77,90 +77,98 @@ export const onSearch = (items: Array<any>, searching: string): any => {
 
 
 export function flattenByTagAndSort(itemsToFilter: IArchiveItem[]): string[] {
-  if (!itemsToFilter)
-    return []
+    if (!itemsToFilter)
+        return []
 
-  const flattened = itemsToFilter.flatMap(item => item.tags)
+    const flattened = itemsToFilter.flatMap(item => item.tags)
 
-  const frequency = flattened.reduce((map, tag) => {
-    map.set(tag, (map.get(tag) || 0) + 1)
-    return map
-  }, new Map<string, number>())
+    const frequency = flattened.reduce((map, tag) => {
+        map.set(tag, (map.get(tag) || 0) + 1)
+        return map
+    }, new Map<string, number>())
 
-  const sorted = Array.from(frequency.entries()).sort((a, b) => b[1] - a[1])
+    const sorted = Array.from(frequency.entries()).sort((a, b) => b[1] - a[1])
 
-  return sorted.map(([tag]) => tag)
+    return sorted.map(([tag]) => tag)
 } // flattenAndSortTags
 
 
 export function filterItemsByTags(itemsToFilter: IArchiveItem[], query: string[]) {
-  if (!query || query.length == 0)
-    return itemsToFilter
+    if (!query || query.length == 0)
+        return itemsToFilter
 
-  return itemsToFilter.filter(item =>
-    item.tags.some(tag => query.includes(tag)))
+    return itemsToFilter.filter(item =>
+        item.tags.some(tag => query.includes(tag)))
 } // filterItems
 
 
 export function filterItemsByAuthors(itemsToFilter: IArchiveItem[], query: string[]) {
-  if (!query || query.length == 0)
-    return itemsToFilter
+    if (!query || query.length == 0)
+        return itemsToFilter
 
-  return itemsToFilter.filter(item =>
-    item.authors.some(author => query.includes(author.name)))
+    return itemsToFilter.filter(item =>
+        item.authors.some(author => query.includes(author.name)))
 }
 
 
 export function getTagsFromItems(itemsToFilter: IArchiveItem[]) {
-  const uniqueTags = Array.from(
-    new Set(itemsToFilter.flatMap(item => item.tags))
-  )
-  return uniqueTags
+    if (!itemsToFilter)
+        return []
+
+    const uniqueTags = Array.from(
+        new Set(itemsToFilter.flatMap(item => item.tags))
+    )
+    return uniqueTags
 } // tagsInFilteredItems
 
 
 export function filterById(items: IArchiveItem[], ids: string[]) {
-  return items.filter((item: IArchiveItem) => ids.indexOf(item.id) >= 0)
+    return items.filter((item: IArchiveItem) => ids.indexOf(item.id) >= 0)
 }
-
 
 
 export function proxyToArray(target: any): any {
-  // idk WTF this is and why. Cause Proxy... but still.
-  const values = Object.values(JSON.parse(JSON.stringify(target)))
-  // @ts-ignore
-  return values.sort((a: any, b: any) =>
-    dayjs(b.publishDate).isAfter(dayjs(a.publishDate))
-  )
+    // idk WTF this is and why. Cause Proxy... but still.
+    const values = Object.values(JSON.parse(JSON.stringify(target)))
+    // @ts-ignore
+    return values.sort((a: any, b: any) =>
+        dayjs(b.publishDate).isAfter(dayjs(a.publishDate))
+    )
 } // proxyToArray
 
 
-
 export function proxyToObject(target: any): any {
-  return JSON.parse(JSON.stringify(target))
-}
-
+    return JSON.parse(JSON.stringify(target))
+} // proxyToObject
 
 
 export function extractTagsFromString (target: string) {
-  return target.split('#').filter(i => i.trim()).map(i => `#${i}`.trim())
-}
+    return target.split('#').filter(i => i.trim()).map(i => `#${i}`.trim())
+} // extractTagsFromString
 
 
-export const getAuthorsFromItems = (items: IArchiveItem[]) => {
-  return Array.from(new Set(items.flatMap((item) => item.authors.map((author) => author.name))))
-}
+export function getAuthorsFromItems (items: IArchiveItem[]) {
+    if (!items)
+        return []
+
+    return Array.from(new Set(items.flatMap((item) => item.authors.map((author) => author.name))))
+} // getAuthorsFromItems
 
 
-export const getYearsFromItems = (items: IArchiveItem[]) => {
-  return Array.from(new Set(items.flatMap((item) => new Date(item.publishDate).getFullYear())))
-}
+export function getYearsFromItems(items: IArchiveItem[]) {
+    return Array.from(
+        new Set(items.flatMap(
+            (item) => new Date(item.publishDate).getFullYear())
+        )
+    ).reverse()
+} // getYearsFromItems
+
 
 export function findMinYear(archiveItems: IArchiveItem[]): number | null {
-  if (archiveItems.length === 0) return null;
+    if (archiveItems.length === 0) return null;
 
-  return archiveItems.reduce((minYear, item) => {
-      const itemYear = new Date(item.publishDate).getFullYear();
-      return itemYear < minYear ? itemYear : minYear;
-  }, Infinity);
-}
+    return archiveItems.reduce((minYear, item) => {
+        const itemYear = new Date(item.publishDate).getFullYear();
+        return itemYear < minYear ? itemYear : minYear;
+    }, Infinity);
+} // findMinYear

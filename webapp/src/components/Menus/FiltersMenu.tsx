@@ -1,12 +1,20 @@
 "use client"
-import React from 'react'
-import { useRouter } from "next/router"
-import { useSelector, } from "react-redux"
+import React, { useRef, } from 'react'
+import { useSelector, useDispatch, } from "react-redux"
+import { FaRegWindowClose } from "react-icons/fa"
 import {
     IArchiveItem,
     IFiltersStoreState,
+    ISettingsStoreState,
 } from "@/src/types"
-import { RootState } from "@/src/store"
+import { 
+    RootState,
+    setIsFiltersMenu,
+    isFilterApplied,
+    setAppliedYears,
+    setAppliedTags,
+    setAppliedAuthors,
+} from "@/src/store"
 import {
     Tag,
     RangePicker,
@@ -14,70 +22,149 @@ import {
 } from "@/src/components"
 import {
     getTagsFromItems,
-    getValueFromQuery,
     getAuthorsFromItems,
 } from "@/src/utils"
 
 
 export const FiltersMenu = () => {
-    const router = useRouter()
+    const dispatch = useDispatch()
     const filters: IFiltersStoreState = useSelector((state: RootState) => state.availableFilters)
-    const items: IArchiveItem[] = useSelector((state: RootState) => state.submissions.items)
-    const queryTags = getValueFromQuery(router.query, "tag")
-    const queryAuthors = getValueFromQuery(router.query, "author")
-    const yearQuery = {
-        lowest: getValueFromQuery(router.query, "yearlowest")[0] || 1996, 
-        highest: getValueFromQuery(router.query, "yearhighest")[0] || new Date().getFullYear(),
-    }
+    const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
+    const isFiltersApplied: boolean = useSelector((state: RootState) => isFilterApplied(state))
 
-    const isTagsHighlight = Object.keys(router.query).length > 0 
-    const activeTags = isTagsHighlight ? getTagsFromItems(items) : []
-    const activeAuthors = isTagsHighlight ? getAuthorsFromItems(items) : []
+    // Use filtered items list if at least one filter is applied. Otherwise, use full items list.
+    const items: IArchiveItem[] = useSelector(
+        (state: RootState) => {
+            return isFilterApplied(state) ? 
+                            state.submissions.filtered : state.submissions.items
+        }
+    )
 
-    function onYearRangeChanged(value: string, yearType: string) {
-        const query = router.query
-        const keyName = `year${yearType}`
-        if (!Number(value) || query[keyName] === value)
-            delete query[`year${yearType}`]
+    const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
+    const menuRef = useRef(null)
+
+    const appliedTags = appliedFilters.tags
+    const queryAuthors = appliedFilters.authors
+    const yearQuery = appliedFilters.years
+
+    const isAuthorsHighlight = Object.keys(appliedFilters.authors).length > 0
+
+    const activeTags = isFiltersApplied ? getTagsFromItems(items) : []
+    const activeAuthors = isFiltersApplied ? getAuthorsFromItems(items) : []
+
+    function onYearRangeChanged(value: string, key: string) {
+        const range = { 
+            start: appliedFilters?.years?.start, 
+            end: appliedFilters?.years?.end 
+        }
+        
+        if (appliedFilters.years?.[key] === value)
+            range[key] = null // turn off previously selected
         else
-            query[keyName] = value
+            range[key] = value // turn on filter on the selected year
 
-        router.push({
-            pathname: router.pathname,
-            query,
-        }, undefined, { scroll: false })
+        dispatch(setAppliedYears(range))
+
+        window.scrollTo({ top: 0, behavior: 'smooth' })
     } // onYearRangeChanged
     
  
     function createRangeValues(start: number, end: number) {
-        const result = filters.years.filter(i => i >= start && i <= end)
+        const result = filters.availableYears.filter(i => i >= start && i <= end)
             .map(i => ({ value: i.toString(), label: i.toString() }))
         return result
     } // createSequenceValues
 
-    return (
-        <nav className="h-full absolute w-80">
-            <div className="flex flex-col justify-between items-center w-80">
 
-                <div className="flex flex-row doom-color-slate bg-gray-700
-                    w-full justify-between p-2 py-4 pl-5"
+    function onClose() {
+        dispatch(setIsFiltersMenu(false))
+    } // onClose
+
+
+    return (
+        <nav 
+            className={`
+                h-full absolute sidebar sm:top-20
+                top-40 pl-2 z-1 
+                ${settings.isFiltersMenu ? "open" : ""}`
+            }
+            ref={menuRef}
+        >
+            <div className="flex justify-end w-full p-2 bg-gray-700">
+                <button onClick={onClose}>
+                    <FaRegWindowClose size="24px" />
+                </button>
+            </div>
+            
+            <hr className="border-1"/>
+
+            <div className="flex flex-col justify-between items-center w-80">
+                <div className="
+                        flex flex-row doom-color-slate bg-gray-700
+                        w-full justify-end p-2 py-4 pl-5
+                    "
                 >
                     <p className="font-semibold text-l">
-                        {items.length} Items
+                        {items.length} Item{items.length > 1 ? "s" : ""}
                     </p>
                 </div>
 
-                <TagsContainer title="Tags" queryKey="tag" activeTags={activeTags}>
-                    <div className="tags-container scroll-slate flex flex-row flex-wrap gap-2 pt-5 px-4 pb-10">
+                {filters.availableYears &&
+                    <div className="w-full bg-gray-700">
+                        <RangePicker 
+                            minLabel="Start Year"
+                            minOptions={[
+                                { label: "Lowest", value: "" }, 
+                                ...createRangeValues(
+                                    (filters?.availableYears?.[0] || 1996),
+                                    yearQuery?.end || new Date().getFullYear()
+                                )
+                            ]} 
+                            maxLabel="End Year"
+                            maxOptions={[
+                                { label: "Highest", value: "" }, 
+                                ...createRangeValues(
+                                    (yearQuery?.start || 1996), 
+                                    new Date().getFullYear()
+                                )
+                            ]} 
+                            onMinChange={(e) => onYearRangeChanged(e, "start")}
+                            onMaxChange={(e) => onYearRangeChanged(e, "end")}
+
+                            minValue={appliedFilters?.years?.start?.toString() || "1996"}
+                            maxValue={appliedFilters?.years?.end?.toString() || ""}
+                        />
+                    </div>
+                }
+
+                <TagsContainer 
+                    title="Tags" 
+                    onClearClick={() => dispatch(setAppliedTags([]))}
+                    activeTags={activeTags}
+                >
+                    <div className="
+                            flex flex-row flex-wrap
+                            tags-container scroll-slate gap-2 pt-5 px-4 pb-10
+                        "
+                    >
                         {
                             filters.tags.map((tag: string) =>
                                 <Tag 
                                     key={`tag_${tag}`} 
                                     text={`#${tag}`} 
-                                    queryKey="tag"
+                                    queryKey="tags"
+                                    onDispatch={setAppliedTags}
                                     className={`
-                                        ${queryTags.indexOf(tag) >= 0 ? "active" : ""}
-                                        ${queryTags.indexOf(tag) < 0 && activeTags.indexOf(tag) >= 0 ? "highlight" : ""}
+                                        ${
+                                            appliedTags?.indexOf(tag) >= 0 
+                                            ? "active" : ""
+                                        }
+                                        ${
+                                            isFilterApplied 
+                                            && activeTags?.indexOf(tag) >= 0 &&
+                                            appliedTags?.indexOf(tag) < 0 
+                                            ? "highlight" : ""
+                                        }
                                     `}
                                 />
                             )
@@ -85,41 +172,30 @@ export const FiltersMenu = () => {
                     </div>
                 </TagsContainer>
 
-
-                {filters.years &&
-                    <div className="w-full mt-2 bg-gray-700">
-                        <RangePicker 
-                            minLabel="Start Year"
-                            minOptions={[
-                                { label: "Lowest", value: "" }, 
-                                ...createRangeValues((filters?.years?.[0] || 1996), Number(yearQuery.highest))
-                            ]} 
-                            maxLabel="End Year"
-                            maxOptions={[
-                                { label: "Highest", value: "" }, 
-                                ...createRangeValues(Number(yearQuery.lowest) || 1996, new Date().getFullYear())
-                            ]} 
-                            onMinChange={(e) => onYearRangeChanged(e, "lowest")}
-                            onMaxChange={(e) => onYearRangeChanged(e, "highest")}
-
-                            minValue={(router.query.yearlowest || "") as string}
-                            maxValue={(router.query.yearhighest || "") as string}
-                        />
-                    </div>
-                }
-
-
-                <TagsContainer title="Authors" queryKey="author" activeTags={queryAuthors}>
+                <TagsContainer 
+                    title="Authors"
+                    onClearClick={() => dispatch(setAppliedAuthors([]))}
+                    activeTags={queryAuthors}
+                >
                     <div className="tags-container scroll-slate flex flex-row flex-wrap gap-2 pt-5 px-4 pb-10">
                         {
                             filters.authors.map((author: string) =>
                                 <Tag 
                                     key={`author_${author}`} 
                                     text={author} 
-                                    queryKey="author"
+                                    queryKey="authors"
+                                    onDispatch={setAppliedAuthors}
                                     className={`
-                                        ${queryAuthors.indexOf(author) >= 0 ? "active" : ""}
-                                        ${queryAuthors.indexOf(author) < 0 && activeAuthors.indexOf(author) >= 0 ? "highlight" : ""}
+                                        ${
+                                            activeAuthors.indexOf(author) >= 0
+                                            && !isAuthorsHighlight 
+                                            ? "highlight" : ""
+                                        }
+                                        ${
+                                            isAuthorsHighlight 
+                                            && appliedFilters.authors.indexOf(author) >= 0 
+                                            ? "active" : ""
+                                        }
                                     `}
                                 />
                             )

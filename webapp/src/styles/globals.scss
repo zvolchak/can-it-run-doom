@@ -1,13 +1,14 @@
+@use "./doom";
+@use "./items";
+@use "./buttons";
+@use "./footer";
+@use "./bars";
+@use "./containers";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import "./doom.scss";
-@import "./items.scss";
-@import "./buttons.scss";
-@import "./footer.scss";
-@import "./bars.scss";
-@import "./containers.scss";
 
 @font-face {
     font-family: "editundo";

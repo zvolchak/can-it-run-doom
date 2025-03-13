@@ -7,7 +7,7 @@ interface IItemConentRow {
 
 export const ItemContentRow = ({ title, value, children, }: IItemConentRow) => {
     const titleClassSpan = title ? "col-span-7" : "col-span-12"
-    const childrenParentClass = children ? "doom-color-secondary doom-text-shadow-danger" : ""
+    const childrenParentClass = children ? "" : ""
 
     return (
         <div className="

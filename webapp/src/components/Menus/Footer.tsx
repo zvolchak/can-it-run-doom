@@ -1,3 +1,8 @@
+import { 
+    BtnUserAccount,
+} from "@/src/components"
+
+
 interface IFooterProps {
     className?: string
 }
@@ -9,6 +14,7 @@ export function Footer({ className = "", }: IFooterProps) {
             <div className="w-full mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
                 {/* Left Section */}
                 <div className="flex flex-col text-center md:text-left">
+                    <BtnUserAccount />
                 </div>
 
                 {/* Middle Section */}

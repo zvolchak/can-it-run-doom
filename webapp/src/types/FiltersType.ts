@@ -6,8 +6,12 @@ export interface IRange {
 
 export interface IFiltersStoreState {
     tags: string[]
-    years: number[] | null
+    years: IRange | null
+    availableYears?: number[] | null
     authors: string[]
+    ids?: string[]
+    searchString?: string | null
+    page?: number | null
 }
 
 
@@ -16,5 +20,7 @@ export function initFiltersStoreState(): IFiltersStoreState {
         tags: [],
         years: null,
         authors: [],
+        ids: [],
+        page: 1,
     }
 }

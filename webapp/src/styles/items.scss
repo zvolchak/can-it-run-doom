@@ -13,8 +13,9 @@ a {
 .item {
   background-color: doom.$doomColorAlt;
   border: 1px solid gray;
-  transition: 0.1s ease-in-out;
+  transition: 0.2s ease-in-out;
   width: 100%;
+  z-index: 1;
   
   @media (min-width: 640px) { // sm
     width: 100%;
@@ -32,11 +33,11 @@ a {
     box-shadow: doom.$doomBoxShadowDanger;
   }
 
-  &:hover > .item-container > .image-preview {
-    position: relative;
-    transform: scale(1.04);
-    margin-top: 3px;
-  }
+//   &:hover > .item-container > .image-preview {
+//     position: relative;
+//     transform: scale(1.04);
+//     margin-top: 3px;
+//   }
 }
 
 
@@ -67,13 +68,13 @@ a {
 
 .image-preview {
   img {
-    transition: 0.1s ease-in, 0.4s ease-out;
+    transition: 0.1s ease-in, 0.2s ease-out;
     height: 100%;
     width: 100%;
   }
 
   // width: 24rem;
-  transition: 0.1s ease-in, 0.4s ease-out;
+  transition: 0.1s ease-in, 0.2s ease-out;
 }
 
 

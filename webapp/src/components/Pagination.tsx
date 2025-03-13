@@ -1,6 +1,9 @@
-import { useRouter } from 'next/router'
+import { useDispatch, } from "react-redux"
+// import { useRouter } from "next/router"
 import React from 'react'
-
+import { 
+    setAppliedPage,
+} from "@/src/store"
 
 interface IPaginationProps {
     numberOfPages: number
@@ -10,7 +13,8 @@ interface IPaginationProps {
 
 
 export function Pagination({ numberOfPages, currentPage, className = "" }: IPaginationProps) {
-    const router = useRouter()
+    const dispatch = useDispatch()
+    // const router = useRouter()
 
     function onChangePage(page: number | string) {
         if (typeof page !== 'number') return
@@ -18,7 +22,12 @@ export function Pagination({ numberOfPages, currentPage, className = "" }: IPagi
         if (page <= 1) page = 1
         if (page >= numberOfPages) page = numberOfPages
         window?.scrollTo(0, 0)
-        router.push({ query: { page } })
+        dispatch(setAppliedPage(page))
+        // const query = { ...router.query, page }
+        // router.push({
+        //     pathname: router.pathname,
+        //     query,
+        // })
     }
 
 

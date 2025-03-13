@@ -1,0 +1,22 @@
+{
+    "indexes": [
+      {
+        "collectionGroup": "doomPorts",
+        "queryScope": "COLLECTION",
+        "fields": [
+          { "fieldPath": "isPublished", "order": "ASCENDING" },
+          { "fieldPath": "publishDate", "order": "DESCENDING" },
+          { "fieldPath": "id", "order": "DESCENDING" }
+        ]
+      },
+      {
+        "collectionGroup": "doomPorts",
+        "queryScope": "COLLECTION",
+        "fields": [
+          { "fieldPath": "isPublished", "order": "ASCENDING" },
+          { "fieldPath": "publishDate", "order": "DESCENDING" }
+        ]
+      }
+    ],
+    "fieldOverrides": []
+  }

@@ -23,16 +23,15 @@ export const ImageLoader = (props: IImageLoaderProps) => {
         setImageSrc(defaultSrc)
     } // handleImageLoadError
 
-    
     return (
         <Image 
-            key={src.toString()}
+            key={(src || "img").toString()}
             alt={alt || "Image for an item"}
             width={130} 
             height={100} 
             onError={handleImageLoadError}
             { ...parentProps }
-            src={imageSrc} 
+            src={imageSrc || ""} 
             className={`object-contain hover:cursor-pointer max-h-80 ${props.className}`}
         />
     )

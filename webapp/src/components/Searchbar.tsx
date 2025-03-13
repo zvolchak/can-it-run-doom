@@ -1,6 +1,10 @@
 import { useState } from "react"
 import { useRouter } from "next/router"
 import { FaSearch } from "react-icons/fa"
+import { useDispatch, } from "react-redux"
+import { 
+    setAppliedSearch,
+} from "@/src/store"
 
 interface ISearchbarProps {
     className?: string
@@ -8,51 +12,31 @@ interface ISearchbarProps {
 
 
 export const Searchbar = ({ className = "" }: ISearchbarProps) => {
+    const dispatch = useDispatch()
     const router = useRouter()
-    const [searchQuery, setSearchQuery] = useState("")
-    const [hasSubmitted, setHasSubmitted] = useState(false)
 
+    const [searchQuery, setSearchQuery] = useState("")
 
     function onSearchUpdated(e) {
         setSearchQuery(e.target.value)
-        setHasSubmitted(false)
+        onSearchSubmit(e)
     }
 
 
     function onSearchSubmit(e) {
-        if (hasSubmitted)
-            return
-        if (!searchQuery.trim() && !router.query.search)
-            return
-
-        console.debug(`-> ${searchQuery.trim()} :: ${router.query.search}`)
-        setHasSubmitted(true)
         e.preventDefault()
-        if (!searchQuery || searchQuery === "") {
-            clearSearch()
-        } else if (searchQuery.trim()) {
-            router.push({
-                pathname: router.pathname,
-                query: { search: encodeURIComponent(searchQuery.trim()) },
-            })
+        if (!searchQuery.trim() && !router.query.search) {
+            dispatch(setAppliedSearch(null))
+            return
         }
-    }
 
-
-    function clearSearch() {
-        const query = router.query
-        delete query["search"]
-
-        router.replace({
-            pathname: router.pathname,
-            query,
-        })   
+        dispatch(setAppliedSearch(searchQuery.trim()))
     }
 
 
     return (
-        <div className={`flex justify-center items-center flex-1 ${className}`}>
-            <form className="input-with-button flex flex-flow w-full max-w-lg z-20" 
+        <div className={`flex justify-center items-center ${className}`}>
+            <form className="input-with-button flex flex-flow w-full z-20" 
                 onSubmit={onSearchSubmit}
             >
                 <input

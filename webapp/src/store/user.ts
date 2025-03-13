@@ -9,7 +9,10 @@ const initialState: IUserStoreState = {
 
 function initDefaultUserData(): IUserData {
     return {
-        sessionId: null
+        id: "",
+        email: "",
+        isVerified: false,
+        sessionId: "",
     }
 }
 

@@ -1,3 +1,7 @@
+import Cookies from "js-cookie"
+import {
+    IUserAuth,
+} from "@/src/types"
 export * from "./itemsFilters"
 
 
@@ -27,3 +31,15 @@ export function getValueFromQuery(query, targetKey: string) {
     return decodeURIComponent(query[targetKey] as string || "").split(",")
             .filter(q => q || q !== "")
 } // getValueFromQuery
+
+
+export function IsSessionExpired() {
+    const user = JSON.parse(Cookies.get("user")) as IUserAuth
+    if (!user)
+        return false
+
+    const expirationTime = new Date(user.sessionExpiresOn).getTime()
+    const currentTime = Date.now()
+
+    return currentTime >= expirationTime
+} // isPastSessionDate

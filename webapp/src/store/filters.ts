@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { IFiltersStoreState, initFiltersStoreState } from "@/src/types"
-
+import { RootState } from "@/src/store"
 
 const initialState: IFiltersStoreState = initFiltersStoreState()
 
@@ -25,7 +25,11 @@ export const availableFiltersSlice = createSlice({
     initialState,
     reducers: {
         setAvailableTags: (state, action) => reducers.setTags(state, action),
-        setAvailableYears: (state, action) => reducers.setYears(state, action),
+        
+        setAvailableYears: (state, action) => {
+            state.availableYears = action.payload
+        },
+        
         setAvailableAuthors: (state, action) => reducers.setAuthors(state, action),
     }
 })
@@ -36,11 +40,43 @@ export const appliedFiltersSlice = createSlice({
     name: "appliedFilters",
     initialState,
     reducers: {
-        setAppliedTags: (state, action) => reducers.setTags(state, action),
+        setAppliedTags: (state, action) => {
+            reducers.setTags(state, action || [])
+            reducers.setAuthors(state, { ...action, payload: []})
+        },
+        
+        setAppliedAuthors: (state, action) => {
+            reducers.setAuthors(state, action || [])
+            reducers.setTags(state, { ...action, payload: []})
+        },
+
         setAppliedYears: (state, action) => reducers.setYears(state, action),
-        setAppliedAuthors: (state, action) => reducers.setAuthors(state, action),
+
+        setAppliedSearch: (state, action) => {
+            state.searchString = action.payload || ""
+        },
+
+        setAppliedId: (state, action) => {
+            state.ids = action.payload || []
+            reducers.setTags(state, { ...action, payload: []})
+            reducers.setTags(state, { ...action, payload: []})
+        },
+
+        setAppliedPage: (state, action) => {
+            state.page = action.payload || 1
+        },
     }
 })
+
+
+export const isFilterApplied = (state: RootState) => {
+    return state.appliedFilters.authors?.length > 0 ||
+            state.appliedFilters.tags?.length > 0 ||
+            state.appliedFilters.years?.start !== null || 
+            state.appliedFilters.years?.end !== null || 
+            state.appliedFilters.searchString?.length > 0 ||
+            state.appliedFilters.ids?.length > 0
+}
 
 
 export const { 
@@ -54,5 +90,8 @@ export const {
     setAppliedTags,
     setAppliedYears,
     setAppliedAuthors,
+    setAppliedSearch,
+    setAppliedId,
+    setAppliedPage,
 } = appliedFiltersSlice.actions
 

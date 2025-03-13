@@ -4,5 +4,9 @@ export interface IUserStoreState {
 
 
 export interface IUserData {
-    sessionId: string | null
+    id?: string
+    email?: string
+    isVerified?: boolean
+    sessionId?: string
+    sessionExpiresOn?: Date,
 }
