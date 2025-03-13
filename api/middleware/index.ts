@@ -52,6 +52,6 @@ export async function authorizeByRole(
         next()
     } catch (error) {
         console.error("Session cookie verification failed: ", error)
-        res.status(404).json({ "error": "Unauthorized access!" })
+        res.status(401).json({ "error": "Unauthorized access!" })
     }
 }
