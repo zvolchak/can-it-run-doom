@@ -9,7 +9,10 @@ import {
 import { 
     RootState,
     setAppliedId,
+<<<<<<< HEAD
     setAppliedTags,
+=======
+>>>>>>> origin/main
 } from "@/src/store"
 import { 
     ImageLoader,
@@ -60,7 +63,11 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             </div>
 
             {item?.description && item?.description.length > 0 &&
+<<<<<<< HEAD
                 <div className="description flex flex-row p-2 whitespace-pre-line">
+=======
+                <div className="description flex flex-row p-2">
+>>>>>>> origin/main
                     {item.description}
                 </div>
             }

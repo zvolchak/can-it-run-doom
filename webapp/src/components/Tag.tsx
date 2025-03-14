@@ -38,7 +38,11 @@ export const Tag = ({
         else
             values.push(text)
 
+<<<<<<< HEAD
         dispatch(onDispatch?.(values))
+=======
+        dispatch(onDispatch(values))
+>>>>>>> origin/main
         onClick?.(e, text)
     } // onTagClick
 
