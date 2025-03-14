@@ -80,7 +80,6 @@ export const FiltersMenu = () => {
         dispatch(setIsFiltersMenu(false))
     } // onClose
 
-
     return (
         <nav 
             className={`

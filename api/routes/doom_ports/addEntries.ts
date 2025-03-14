@@ -38,6 +38,11 @@ async function saveFileToStorage(fileName: string, file) {
     await storageFile.save(file.buffer, {
         metadata: { contentType: file.mimetype }
     })
+    await storageFile.makePublic()
+    const bucket_name = process.env.FB_STORAGE_BUCKET
+    const base_url = process.env.FB_STORAGE_BASE_URL
+    const public_url = `${base_url}/v0/b/${bucket_name}/o/doom-preview-images%2F${fileName}`
+    return public_url
 } // saveFileToStorage
 
 
@@ -103,11 +108,11 @@ async function addEntry(incomingEntry: IArchiveItem, batch: WriteBatch, incoming
     try {
         if (incomingFile?.buffer.length > 0) {
             const imageFileType = getFileType(incomingFile?.buffer)
-            fileName = `/doom-preview-images/${id}.${imageFileType}`
-            await saveFileToStorage(fileName, incomingFile)
+            fileName = `${id}.${imageFileType}`
+            fileName = await saveFileToStorage(fileName, incomingFile)
         }
     } catch (error) {
-        console.error("Failed to add image", error.message)
+        console.error("Failed to add image: ", error.message)
         throw Error("Failed to process a preview image")
     }
 

@@ -38,7 +38,7 @@ export const Tag = ({
         else
             values.push(text)
 
-        dispatch(onDispatch(values))
+        dispatch(onDispatch?.(values))
         onClick?.(e, text)
     } // onTagClick
 

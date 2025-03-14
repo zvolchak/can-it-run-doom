@@ -9,7 +9,7 @@ import {
     ItemCard,
     BtnScrollTop,
     Pagination,
-    // FiltersMenu,
+    FiltersMenu,
 } from "@/src/components"
 import {
     paginate,
@@ -110,7 +110,7 @@ export function ArchiveDataView({ items }: IMainPageProps) {
                 />
             </div>
 
-            {/* <FiltersMenu /> */}
+            <FiltersMenu />
 
             <div className="
                 min-h-screen

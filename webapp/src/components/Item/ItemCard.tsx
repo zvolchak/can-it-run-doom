@@ -9,6 +9,7 @@ import {
 import { 
     RootState,
     setAppliedId,
+    setAppliedTags,
 } from "@/src/store"
 import { 
     ImageLoader,
@@ -59,7 +60,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             </div>
 
             {item?.description && item?.description.length > 0 &&
-                <div className="description flex flex-row p-2">
+                <div className="description flex flex-row p-2 whitespace-pre-line">
                     {item.description}
                 </div>
             }
@@ -118,6 +119,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                                     key={`tag_${tag}`} 
                                     text={tag} 
                                     queryKey="tags"
+                                    onDispatch={setAppliedTags}
                                     className={`
                                         ${appliedFilters.tags?.indexOf(tag) >= 0 ? "active" : ""}
                                     `}
