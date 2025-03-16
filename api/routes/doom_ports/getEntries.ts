@@ -17,9 +17,11 @@ function paginateList(items: any[], page: number, limit: number): any[] {
 
 
 router.get('/', async (req: Request, res: Response): Promise<any> => {
-    // res.setHeader("Cache-Control", "public, max-age=300, stale-while-revalidate=600")
-    let { perPage = 20 , page = 1, ids = ""} = req.query
-    // perPage = parseInt(perPage as string, 10)
+    // 5 minutes cache
+    const cacheTime = 60 * 5
+    res.setHeader("Cache-Control", `public, max-age=${cacheTime}, stale-while-revalidate=600`)
+    let { perPage = 200 , page = 1, ids = ""} = req.query
+    perPage = parseInt(perPage as string, 10)
     page = parseInt(page as string, 10)
     ids = ((ids as string).split(",") || []).filter(id => id)
 
@@ -28,7 +30,7 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
         const snapshot = await getPublishedEntries({ 
             isPublished: true, 
             ids, 
-            // limit: perPage 
+            limit: perPage 
         })
 
         let entries = await Promise.all(snapshot.docs.map(async doc => {

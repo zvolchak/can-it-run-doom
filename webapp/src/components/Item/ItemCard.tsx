@@ -1,3 +1,4 @@
+import { useState } from "react"
 import { useSelector, useDispatch, } from "react-redux"
 // import { useRouter } from "next/router"
 import { ImCheckmark2 } from "react-icons/im"
@@ -29,7 +30,9 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
     const dispatch = useDispatch()
     // const router = useRouter()
     const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
-
+    const [expandedDsc, setExpandedDsc] = useState(false)
+    const maxDscLength = 180
+    const isDscOverflow = (item?.description || "").length > maxDscLength
 
     function onIdClick(id: string) {
         let appliedIds = [ ...(appliedFilters.ids || [])]
@@ -60,12 +63,29 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             </div>
 
             {item?.description && item?.description.length > 0 &&
-                <div className="description flex flex-row p-2 whitespace-pre-line">
-                    {item.description}
+                <div className="description flex flex-col p-2 items-start">
+                    <p className="whitespace-pre-line">
+                        {expandedDsc || !isDscOverflow 
+                            ? item?.description || "" 
+                            : (item?.description || "").slice(0, maxDscLength) + "..."
+                        }
+                    </p>
+                    {isDscOverflow && (
+                        <button 
+                        onClick={() => setExpandedDsc(!expandedDsc)} 
+                        className="doom-btn pt-3"
+                        >
+                            {expandedDsc ? "Show Less" : "Show More"}
+                        </button>
+                    )}
                 </div>
             }
 
-            <div className="item-container flex flex-row gap-1 items-start mt-1">
+            <div className={`
+                    item-container flex flex-row gap-1 items-start
+                    ${(item?.description || "").length > 0 ? "mt-4" : "mt-0"}
+                `
+                }>
                 <div className="image-preview">
                     <ImageLoader className="justify-self-start" src={item.previewImg} />
                 </div>
