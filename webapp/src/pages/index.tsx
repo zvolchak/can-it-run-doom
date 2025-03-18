@@ -110,7 +110,7 @@ export default function MainPage({
             <Head>
                 <title>{getTitle()}</title>
 
-                {items?.length === 1 && (
+                {selectedIds?.length >= 1 && (
                     <>
                         <meta property="og:title" content={getTitle()} />
                         <meta property="og:image" content={selectedItem(selectedIds?.[0]).previewImg} />
@@ -119,7 +119,7 @@ export default function MainPage({
                         <meta name="twitter:image" content={selectedItem(selectedIds?.[0]).previewImg} />
                     </>
                 )}
-                {items?.length === 1 && items[0].description?.length > 0 && (
+                {selectedIds?.length >= 1 && items[0].description?.length > 0 && (
                     <>
                         <meta name="description" content={getDescription()} />
                         <meta property="og:description" content={getDescription()} />
