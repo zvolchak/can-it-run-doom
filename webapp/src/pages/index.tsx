@@ -1,6 +1,7 @@
 import Head from 'next/head'
 import { useEffect } from "react"
 import { useDispatch, } from "react-redux"
+import { useRouter } from 'next/router'
 import type { GetServerSideProps } from 'next'
 import { 
     IArchiveItem,
@@ -56,7 +57,9 @@ export default function MainPage({
     idQuery = [],
     page = 0,
 }: IMainPageProps) {
+    const router = useRouter()
     const dispatch = useDispatch()
+    const selectedIds = (router.query?.id?.toString().split(",") || []) as string[]
 
     useEffect(() => {
         dispatch(setItems(items))
@@ -78,26 +81,50 @@ export default function MainPage({
         dispatch(setTotalSize(totalSize))
     }, [dispatch, items, years, authorQuery, queryTags, searchQuery, idQuery, page, totalSize])
 
+    function selectedItem(ids: string): IArchiveItem {
+        return items?.filter(i => ids?.indexOf(i.id.toString()) >= 0)?.[0] || null
+    } // selectedItems
+
+
+    function getTitle() {
+        const maxLength = 50
+        let title = (selectedIds.length === 0) 
+            ? "Can It Run Doom? An Archive of All Known Ports." 
+            :(selectedItem(selectedIds[0])?.title || "")
+    
+        title = title.length > maxLength ? `${title.slice(0, maxLength)}...` : title
+        return title
+    } // getTitle
+
+
+    function getDescription() {
+        const maxLength = 150
+        let dsc = selectedItem(selectedIds[0])?.description || ""
+        dsc = dsc.length > maxLength ? `${dsc.slice(0, maxLength)}...` : dsc
+        return dsc
+    } // getDescription
+
 
     return (
         <>
             <Head>
-                <title>Can It Run Doom? An Archive of All Known Ports</title>
-                {items?.length === 1 && (
-                    <>
-                        <meta property="og:title" content={items[0].title} />
-                        <meta property="og:image" content={items[0].previewImg} />
+                <title>{getTitle()}</title>
 
-                        <meta name="twitter:title" content={items[0].title} />
-                        <meta name="twitter:image" content={items[0].previewImg} />
+                {selectedIds?.length >= 1 && (
+                    <>
+                        <meta property="og:title" content={getTitle()} />
+                        <meta property="og:image" content={selectedItem(selectedIds?.[0]).previewImg} />
+
+                        <meta name="twitter:title" content={getTitle()} />
+                        <meta name="twitter:image" content={selectedItem(selectedIds?.[0]).previewImg} />
                     </>
                 )}
-                {items?.length === 1 && items[0].description?.length > 0 && (
+                {selectedIds?.length >= 1 && items[0].description?.length > 0 && (
                     <>
-                        <meta name="description" content={`${items[0].description.slice(0, 150)}...`} />
-                        <meta property="og:description" content={`${items[0].description.slice(0, 150)}...`} />
+                        <meta name="description" content={getDescription()} />
+                        <meta property="og:description" content={getDescription()} />
 
-                        <meta name="twitter:description" content={items[0].description.slice(0, 150)} />
+                        <meta name="twitter:description" content={getDescription()} />
                     </>
                 )}
                 
@@ -110,11 +137,11 @@ export default function MainPage({
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    // const cacheTime = 60 * 5
-    // context.res.setHeader(
-    //     "Cache-Control", 
-    //     `public, s-maxage=${cacheTime}, stale-while-revalidate=30`
-    // )
+    const cacheTime = 60 * 5 // 5 minutes cache
+    context.res.setHeader(
+        "Cache-Control", 
+        `public, s-maxage=${cacheTime}, stale-while-revalidate=30`
+    )
     const searchQuery = decodeURIComponent(context.query?.search as string || "")
     const queryTags = getValueFromQuery(context.query, "tag")
     const idQuery = getValueFromQuery(context.query, "id")
