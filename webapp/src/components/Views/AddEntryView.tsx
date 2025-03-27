@@ -1,124 +1,144 @@
 import { useState, useRef, } from "react"
 import { FaRegWindowClose } from "react-icons/fa"
+import { useSelector, useDispatch, } from "react-redux"
 import {
     addNewEntry,
 } from "@/src/api"
 import {
     InputWithLabel,
+    LoadingIcon,
     SourcesInputField,
 } from "@/src/components"
+import { IArchiveItem, ISource, IUploadStatus, EProcessingState, } from "@/src/types"
+import { RootState, setNewEntryForm, setUplaodStatus, } from "@/src/store"
+import { AddedEntrySuccessView } from "./ResponseViews/AddedEntrySuccessView"
+
 
 interface IAddEntryViewProps {
     className?: string
+    values?: IArchiveItem
+    onChange?: (item: any) => void
 }
 
 
-export function AddEntryView({ className = "", }: IAddEntryViewProps) {
-    const [formData, setFormData] = useState({
-        title: "",
-        description: "",
-        authors: [],
-        sourcesUrl: [],
-        sourceCodeUrl: [],
-        isFirstLevelComplete: false,
-        publishDate: "",
-        tags: "",
-        previewImg: ""
-    })
+export function AddEntryView({ 
+    className = "",
+    onChange = null,
+}: IAddEntryViewProps) {
+    const dispatch = useDispatch()
+    const formData: IArchiveItem = useSelector(
+        (state: RootState) => state.submissions.newEntryForm
+    )
+    const uploadStatus: IUploadStatus = useSelector(
+        (state: RootState) => state.submissions.uploadStatus
+    )
+
     const [imageFile, setImageFile] = useState<File | null>(null)
-    const [isLoading, setIsLoading] = useState<boolean>(false)
+    const [entryResponse, setEntryResponse] = useState(null)
     const authorInputRef = useRef<{ getAllInputs: () => string[][] } | null>(null)
     const sourcesInputRef = useRef<{ getAllInputs: () => string[][] } | null>(null)
     const sourceCodeInputRef = useRef<{ getAllInputs: () => string[][] } | null>(null)
 
-
     function handleChange(e) {
-        const { name, value, type, checked } = e.target
-        setFormData(prevState => ({
-            ...prevState,
+        const { name, value, type, checked, files } = e.target
+        const nextState = {
+            ...formData,
             [name]: type === "checkbox" ? checked : value
-        }))
+        }
+
+        if (name === "tags") {
+            nextState[name] = value.split(",")
+        } else {
+            nextState[name] = type === "checkbox" ? checked : value
+        }
+
+        if (files) {
+            setImageFile(files[0] || null)
+        }
+        
+        dispatch(setNewEntryForm(nextState))
+        onChange?.(nextState)
     } // handleChange
 
 
-    function handleImageChange(e) {
-        if (e.target.files.length > 0) {
-            setImageFile(e.target.files[0])
-        }
-    } // handleImageChange
-
-
-    function onSourcesInputChanged(inputs: string[][], key: string) {
-        if (!formData[key])
-            formData[key] = []
-
-        formData[key] = inputs
+    function onSourcesInputChanged(inputs: ISource[], key: string) {
+        const nextState = { ...formData }
+        if (!nextState[key])
+            nextState[key] = []
+        
+        nextState[key] = inputs
+        dispatch(setNewEntryForm(nextState))
+        onChange?.(nextState)
     } // onSourcesInputChanged
 
 
-    function getInputs(e) {
-        const formElement = e.target
-        const formDataObject = new FormData(formElement)
-        const inputsData = Object.fromEntries(formDataObject.entries())
-        inputsData.authors = (authorInputRef.current.getAllInputs() as any) || []
-        inputsData.sourcesUrl = (sourcesInputRef.current.getAllInputs() as any) || []
-        inputsData.sourceCodeUrl = (sourceCodeInputRef.current.getAllInputs() as any) || []
-
+    function getInputs() {
+        const inputsData = {
+            authors: (authorInputRef.current.getAllInputs() as any) || [],
+            sourcesUrl: (sourcesInputRef.current.getAllInputs() as any) || [],
+            sourceCodeUrl: (sourceCodeInputRef.current.getAllInputs() as any) || [],
+        }
         return inputsData
     } // getInputs
 
 
     async function handleSubmit(e) {
-        setIsLoading(true)
         e.preventDefault()
-        const newFormData = getInputs(e)
+        const loadingTimeStart = performance.now()
+        const nextState = { ...formData,  ...getInputs() }
+        dispatch(setNewEntryForm(nextState))
+        dispatch(setUplaodStatus({ state: EProcessingState.uploading }))
 
-        setFormData((prev) => ({
-            ...prev,
-            ...newFormData
-        }))
+        const formDataToSend = new FormData()
+        formDataToSend.append("items", JSON.stringify([formData]))
+        if (imageFile) {
+            formDataToSend.append("image", imageFile)
+        }
+        
+        // doom_ports/add endpoint expects a list of items in the body.
+        const response = await addNewEntry(formDataToSend)
+        setEntryResponse(response?.data)
 
-        let isFirstLevelComplete = false
-        if (formData.isFirstLevelComplete.toString() === "on")
-            isFirstLevelComplete = true
-
-        try {
-            const formDataToSend = new FormData()
-            formDataToSend.append("title", formData.title)
-            formDataToSend.append("description", formData.description)
-            formDataToSend.append("authors", JSON.stringify(formData.authors))
-            formDataToSend.append("sourcesUrl", JSON.stringify(formData.sourcesUrl))
-            formDataToSend.append("sourceCodeUrl", JSON.stringify(formData.sourceCodeUrl))
-            formDataToSend.append("isFirstLevelComplete", isFirstLevelComplete.toString())
-            formDataToSend.append("publishDate", formData.publishDate)
-            formDataToSend.append("tags", formData.tags)
-            if (imageFile) {
-                formDataToSend.append("image", imageFile)
-            }
-
-            await addNewEntry(formDataToSend)
-            setIsLoading(false)
-        } catch (error) {
-            setIsLoading(false)
-            console.error("Failed to add entry:", error)
+        if (response.status >= 400) {
+            console.error("Failed to add an entry:", response.error)
+            const message = "Failed to add an entry! Please, contact support if error persists."
+            dispatch(setUplaodStatus({ 
+                state: EProcessingState.error, 
+                message: response.data.error || message
+            })) 
+        } else {
+            // Show a loading spinner for at least 1 second, so that screen doesn change
+            // states too fast making it, potentially easier to comprehand chain of events
+            // when the "submit" button is pressed.
+            const loadingTime = performance.now() - loadingTimeStart
+            const delayTime = loadingTime > 1000 ? 0 : 1000 - loadingTime
+            setTimeout(() => {
+                dispatch(setUplaodStatus({ state: EProcessingState.success }))
+            }, delayTime)
         }
     } // handleSubmit
 
+    function isLoading() {
+        return uploadStatus.state === EProcessingState.uploading
+    }
 
     return (
         <div
             className={`
                 doom-color-secondary
-                doom-card p-6 w-full
+                doom-card 
+                w-full
                 ${className}
             `}
         >
-            { isLoading &&
-                <div>
-                    Uploading ...
-                </div>
+            { uploadStatus?.state === "success" &&
+                <AddedEntrySuccessView 
+                    title={formData?.title}
+                    requestUrl={entryResponse?.requestUrl || ""}
+                />
             }
-            { !isLoading &&
+
+            { uploadStatus.state !== "success" &&
                 <form 
                     onSubmit={handleSubmit} 
                     className="flex flex-col gap-6 w-full"
@@ -150,38 +170,13 @@ export function AddEntryView({ className = "", }: IAddEntryViewProps) {
                         <label className="block mb-1">Authors</label>
                         <SourcesInputField 
                             ref={authorInputRef}
-                            value={formData?.authors || [["", ""]]}
+                            value={formData?.authors}
                             requiredName={true}
                             requiredUrl={true}
                             placeholderUrl="Author's profile at Reddit, YouTube, Github, etc"
                             onChange={
-                                (inputs: string[][]) => 
+                                (inputs: ISource[]) => 
                                     onSourcesInputChanged(inputs, "authors")
-                            } 
-                        />
-                    </div>
-
-                    <div className="mt-2">
-                        <label className="block mb-1">Media Source</label>
-                        <SourcesInputField
-                            ref={sourcesInputRef}
-                            value={formData?.sourcesUrl || [["", ""]]}
-                            placeholderUrl="Url of gamepley or images of the port"
-                            onChange={
-                                (inputs: string[][]) => 
-                                    onSourcesInputChanged(inputs, "sourcesUrl")
-                            } 
-                        />
-                    </div>
-
-                    <div className="mt-2">
-                        <label className="block mb-1">Source Code</label>
-                        <SourcesInputField 
-                            ref={sourceCodeInputRef}
-                            value={formData?.sourceCodeUrl || [["", ""]]}
-                            onChange={
-                                (inputs: string[][]) => 
-                                    onSourcesInputChanged(inputs, "sourceCodeUrl")
                             } 
                         />
                     </div>
@@ -193,38 +188,63 @@ export function AddEntryView({ className = "", }: IAddEntryViewProps) {
                             value={formData.publishDate} 
                             type="date"
                             onChange={handleChange} 
-                            placeholder="Title" 
-                            className="w-full" 
+                            placeholder="YYYY-MM-DD"
+                            className="w-1/2" 
+                        />
+                    </div>
+
+                    <div className="mt-2">
+                        <label className="block mb-1">Media Source</label>
+                        <SourcesInputField
+                            ref={sourcesInputRef}
+                            value={formData?.sourcesUrl}
+                            placeholderUrl="Url of gamepley or images of the port"
+                            onChange={
+                                (inputs: ISource[]) => 
+                                    onSourcesInputChanged(inputs, "sourcesUrl")
+                            } 
+                        />
+                    </div>
+
+                    <div className="mt-2">
+                        <label className="block mb-1">Source Code</label>
+                        <SourcesInputField 
+                            ref={sourceCodeInputRef}
+                            value={formData?.sourceCodeUrl}
+                            onChange={
+                                (inputs: ISource[]) => 
+                                    onSourcesInputChanged(inputs, "sourceCodeUrl")
+                            } 
                         />
                     </div>
 
                     <input 
                         type="text" 
                         name="tags" 
-                        value={formData.tags} 
+                        value={(formData.tags || []).join(",") || ""} 
                         onChange={handleChange} 
                         placeholder="Tags (comma separated)" 
-                        className="w-full p-2 mb-3 border rounded" 
+                        className="w-full p-2 mb-3 mt-4 border rounded" 
                     />
 
                     <div>
                         <label className="doom-btn-default p-3">
-                            {   !imageFile ?
-                                    "Upload Image"
-                                    :
+                            {   imageFile ?
                                     `File: ${imageFile.name}`
+                                    :
+                                    "Upload Image"
                             }
                             <input 
                                 type="file" 
                                 accept="image/*" 
-                                onChange={handleImageChange} 
+                                onChange={handleChange} 
                                 className="hidden"
                             />
                         </label>
-                        {   imageFile &&
+                        {   formData?.previewImg &&
                             <button 
                                 className="doom-btn ml-4"
-                                onClick={() => setImageFile(null)}
+                                onClick={(e) => handleChange({ ...e, target: { files: [] }})}
                             >
                                 <FaRegWindowClose size="27px" />
                             </button>
@@ -235,18 +255,35 @@ export function AddEntryView({ className = "", }: IAddEntryViewProps) {
                         <input 
                             type="checkbox" 
                             name="isFirstLevelComplete" 
-                            checked={formData.isFirstLevelComplete} 
+                            value={formData.isFirstLevelComplete ? "on" : "off"} 
                             onChange={handleChange} 
                             className="mr-2" 
                         />
                         First Level Complete
                     </label>
 
+                    { uploadStatus.state === EProcessingState.error && 
+                        <div className="doom-color-danger self-center">
+                            {uploadStatus.message}
+                        </div>
+                    }
+
                     <button 
                         type="submit" 
-                        className="doom-action-btn"
+                        className="
+                            doom-action-btn 
+                            p-2 w-1/2 h-10 mb-3
+                            flex 
+                            items-center justify-center self-center
+                            gap-5"
+                        disabled={isLoading()}
                     >
-                        Submit
+                        { isLoading() &&
+                            <><LoadingIcon className="w-7 h-7" /> Uploading... </>
+                        }
+                        { !isLoading() &&
+                            <p>Submit</p>
+                        }
                     </button>
                 </form>
             }

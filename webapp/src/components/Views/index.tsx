@@ -1,3 +1,5 @@
 export * from "./ArchiveDataView"
 export * from "./LoginView"
 export * from "./AddEntryView"
+export * from "./SignupView"
+export * from "./ResponseViews"

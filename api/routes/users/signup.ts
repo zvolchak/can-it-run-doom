@@ -2,19 +2,25 @@ import { Request, Response, Router } from "express"
 import { 
     createUserWithEmailAndPassword,
     sendEmailVerification,
+    User,
 } from "firebase/auth"
 import {
     fbAuth,
+    getUserByEmail,
 } from "../../utils"
 import { 
     IUserAuthResponse,
 } from "../../@types"
+
 const router = Router()
 
 const ROUTE_NAMESPACE = "/signup"
 
 
-router.post(`${ROUTE_NAMESPACE}/email_and_password`, async (req: Request, res: Response): Promise<IUserAuthResponse | any> => {
+router.post(
+    `${ROUTE_NAMESPACE}/email_and_password`, 
+    async (req: Request, res: Response): Promise<IUserAuthResponse | any> => 
+{
     const { email, password } = req.body
     if (!email || !password) {
         return res.status(400).json({ error: "Email and password are required!" })
@@ -23,7 +29,6 @@ router.post(`${ROUTE_NAMESPACE}/email_and_password`, async (req: Request, res: R
     try {
         const userData = await createUserWithEmailAndPassword(fbAuth, email.trim(), password.trim())
         await sendEmailVerification(userData.user)
-        // await fbAuthAdmin.setCustomUserClaims(userData.user.uid, { role: UserRole.User })
 
         const idToken = await userData.user.getIdToken()
 
@@ -37,7 +42,13 @@ router.post(`${ROUTE_NAMESPACE}/email_and_password`, async (req: Request, res: R
         })
     } catch (error) {
         console.error("Error signing up with email and password!", error)
-        res.status(500).json({ error: error.message })
+        if (error.code === "auth/email-already-in-use") {
+            return res.status(409).json({ "error": "User with this email already exists!" })
+        }
+        
+        return res.status(500).json({ 
+            error: "Failed to create an account with provided email and password." 
+        })
     }
 }) // signup/email_and_password
 

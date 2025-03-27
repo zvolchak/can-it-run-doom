@@ -112,6 +112,24 @@ export async function loginWithEmailAndPassword(email: string, password: string)
 } // loginEmailAndPassword
 
 
+export async function signupWithEmailAndPassword(email: string, password: string): 
+    Promise<IUserAuthResponse> 
+{
+    const url = "/user/signup/email_and_password"
+    try {
+        const response = await apiClient.post(url, { email, password })
+        return response.data
+    } catch (error) {
+        console.error(error.response)
+        return {
+            user: null,
+            message: error?.response?.data?.error,
+            status_code: error?.response.status || 100
+        }
+    }
+} // signupWithEmailAndPassword
+
+
 export async function addNewEntry(formData) {
     const url = "/doom_ports/add"
     const headers = {
@@ -119,8 +137,9 @@ export async function addNewEntry(formData) {
     }
     try {
         const response = await apiClient.post(url, formData, { headers })
-        return response.data
+        return response
     } catch (error) {
         console.error(error)
+        return error.response
     }
 } // addNewEntry

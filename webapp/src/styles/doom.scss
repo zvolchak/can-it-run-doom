@@ -1,5 +1,7 @@
 $doomColorDanger: #ad0101;
 $doomColorDangerDarker: #960101;
+$doomColorAccent: #4E6A2B;
+$doomColorAccentDarker: #3F561F;
 $doomColorDangerDark: #3d0106;
 $doomColorSecondary: #FCFD85;
 $doomColorAlt: #373737;
@@ -15,6 +17,10 @@ $doomShadowShort: 2px 2px #242424;
   word-spacing: 2px;
   font-style: normal;
   font-variant: small-caps;
+}
+
+.doom-bg-alt {
+    background: $doomColorAlt
 }
 
 .doom-color-danger {
@@ -66,5 +72,20 @@ input, textarea {
     &:focus {
         outline: none;
         box-shadow: $doomBoxShadowDanger;
+    }
+}
+
+.loading-icon {
+    width: 100px;
+    image-rendering: crisp-edges;
+    // animation: flipAnimation 1s steps(2) infinite;
+}
+
+@keyframes flipAnimation {
+    0%, 49.99% {
+        background-image: url("/icons/doom-guy-look-left.png")
+    }
+    50%, 100% {
+        background-image: url("/icons/doom-guy-look-right.png")
     }
 }

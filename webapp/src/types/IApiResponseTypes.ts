@@ -8,5 +8,6 @@ export interface IUserAuth {
 
 export interface IUserAuthResponse {
     message: string
-    user: IUserAuth
+    user: IUserAuth | null
+    status_code?: number
 }

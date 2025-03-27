@@ -44,7 +44,7 @@ export const Tag = ({
 
     return (
         <p
-            key={`tag_${text}`}
+            key={`tag_${text}_${Math.random()}`}
             className={`py-1 px-2 tag bg-gray-700 h-7 ${className}`}
             onClick={(e) => onTagClick(e, text.replace("#", ""))}
         >

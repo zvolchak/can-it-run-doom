@@ -7,8 +7,8 @@ import {
   getFirestore, 
   connectFirestoreEmulator,
 } from "firebase/firestore"
-import { getAuth, connectAuthEmulator } from "firebase/auth"
-import { DecodedIdToken } from "firebase-admin/auth"
+import { getAuth, connectAuthEmulator, User } from "firebase/auth"
+import { DecodedIdToken, UserRecord } from "firebase-admin/auth"
 import { initializeApp } from "firebase/app"
 import * as admin from "firebase-admin"
 import { readFileSync } from "fs"
@@ -35,6 +35,7 @@ const firebaseConfig = {
 }
 
 if (isDev) {
+    console.debug(" - Using local dev credentials json")
     const filePath = join(__dirname, `../credentials-${process.env.NODE_ENV}.json`)
     const credentials = JSON.parse(readFileSync(filePath, "utf8"))
     admin.initializeApp({
@@ -56,16 +57,20 @@ const fbStorage = admin.storage().bucket()
 const fbAuthAdmin = admin.auth()
 
 if (isDev) {
+    console.debug(" - Using localhost emulator Auth")
     connectFirestoreEmulator(fbDb, "localhost", 8081)
     connectAuthEmulator(fbAuth, "http://127.0.0.1:9099")
 }
 
 export const COLLECTION_NAME = {
   doomPorts: "doomPorts",
+  // staging collection is used for reviewing before publishing to prod
+  doomPortsStaging: "doomPorts-Staging",
   authors: "authors",
 }
 
 export const doomPortsCollection = collection(fbDb, COLLECTION_NAME.doomPorts)
+export const doomPortsStagingCollection = collection(fbDb, COLLECTION_NAME.doomPortsStaging)
 export const authorsCollection = collection(fbDb, COLLECTION_NAME.authors)
 
 
@@ -137,6 +142,21 @@ export function generateFirestoreId() {
     const randomPart = uuidv4().replace(/-/g, "").substring(0, 10)
     return timestamp + randomPart
 }
+
+
+export async function getUserByEmail(
+    email: string
+): Promise<UserRecord | null> {
+    if (!email)
+        return null
+
+    try {
+        const data = await admin.auth().getUserByEmail(email)
+        return data
+    } catch (error) {
+        return null
+    }
+} // getUserFromToken
 
 
 export { fbApp, fbAuth, fbDb, fbAuthAdmin, fbStorage, }

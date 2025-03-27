@@ -4,7 +4,7 @@ import { useDispatch, } from "react-redux"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
 import {
-    loginWithEmailAndPassword,
+    signupWithEmailAndPassword,
 } from "@/src/api"
 import {
     setUserData,
@@ -12,6 +12,8 @@ import {
 import {
     IsSessionExpired,
 } from "@/src/utils"
+import { SignupSuccessView } from "./ResponseViews"
+import { IUserAuthResponse } from "@/src/types"
 
 
 interface LoginForm {
@@ -20,54 +22,56 @@ interface LoginForm {
 }
 
 
-interface LoginViewProps {
+interface SignupViewProps {
     className?: string
 }
 
-export function LoginView({
+
+export function SignupView({
     className = "",
-}: LoginViewProps) {
+}: SignupViewProps) {
     const dispatch = useDispatch()
     const router = useRouter()
-    const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>()
+    const user: IUserData = useSelector((state: RootState) => state.user.data)
+    const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>({
+        mode: "onBlur"
+    })
     const [errorMessage, setErrorMessage] = useState("")
+    const [signupState, setSignupState] = useState<"success" | "failed" | null>(null)
+    const [signupData, setSignupData] = useState<IUserAuthResponse | null>(null)
 
 
     async function onSubmit(data) {
-        const userCookie = Cookies.get("user")
-        let user = (userCookie && JSON.parse(userCookie)) || null
+        // let user = JSON.parse(Cookies.get("user"))
 
-        if (!user || IsSessionExpired()) {
-            const userData = await loginWithEmailAndPassword(data.email, data.password)
-            if (!userData?.user) {
-                setErrorMessage("Login failed")
-                return
-            }
-            user = {
-                id: userData.user.id,
-                email: userData.user.email,
-                isVerified: userData.user.isVerified,
-                sessionExpiresOn: userData.user.sessionExpiresOn,
-            }
-            Cookies.set("user", JSON.stringify(user), {
-                expires: new Date(user.sessionExpiresOn),
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "Strict",
-            })
+        setSignupState(null)
+        const userData = await signupWithEmailAndPassword(data.email, data.password)
+        if (userData?.status_code >= 400) {
+            setSignupState("failed")
+            setErrorMessage(userData.message)
+            return
+        }
+        setSignupData(userData)
+        if (!userData?.user) {
+            setSignupState("failed")
+            setErrorMessage("Failed to create an account! Please try again or contact support if the error persists.")
+            return
         }
 
-        dispatch(setUserData(user))
-
-        router.push("/")
+        setSignupState("success")
     } // onSubmit
 
 
     return (
+        <>
+        { signupState !== "success" &&
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className={`w-1/3 text-gray-300 ${className}`}
+                className={`w-1/3 ${className}`}
             >
-                <h2 className="title text-center mb-4">Login</h2>
+                <h2 className="title text-center mb-4">
+                    Create Account
+                </h2>
 
                 {errorMessage && (
                     <p className="text-red-500 text-center mb-4">
@@ -76,7 +80,7 @@ export function LoginView({
                 )}
 
                 <div className="mb-4">
-                    <label className="block  font-medium">
+                    <label className="block text-gray-300 font-medium">
                         Email
                     </label>
                     <input
@@ -100,20 +104,23 @@ export function LoginView({
                     )}
                 </div>
 
-                <div className="mt-6">
-                    <label className="block font-medium">
+                <div className="mb-10">
+                    <label className="block text-gray-300 font-medium">
                         Password
                     </label>
                     <input
                         type="password"
                         {...register('password', {
-                            required: 'Password is required'
+                            required: 'Password is required',
+                            minLength: { value: 8, message: 'Must be at least 8 characters' },
+                            pattern: {
+                                value: /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                                message: 'Must include uppercase, number, and special character',
+                            },
                         })}
-                        className="
-                            w-full p-2 text-white border border-gray-500 
-                            rounded-md focus:outline-none
-                        "
+                        className="w-full p-2 text-white border border-gray-500 rounded-md focus:outline-none"
                     />
+
                     {errors.password && (
                         <p className="text-red-500 text-sm mt-1">
                             {errors.password.message}
@@ -122,9 +129,10 @@ export function LoginView({
                 </div>
 
                 <button
-                    className="w-full doom-action-btn mt-16"
+                    type="submit"
+                    className="w-full doom-action-btn"
                 >
-                    Login
+                    Sign Up
                 </button>
 
                 <div className="flex items-center my-6">
@@ -136,10 +144,18 @@ export function LoginView({
                 <button
                     type="button"
                     className="w-full doom-secondary-btn"
-                    onClick={() => router.push("/signup")}
+                    onClick={() => router.push("/login")}
                 >
-                    Sign Up
+                    Login
                 </button>
             </form>
+        }
+
+        { signupState === "success" &&
+            <SignupSuccessView 
+                email={signupData?.user?.email || ""}
+            />
+        }
+        </>
     )
 }

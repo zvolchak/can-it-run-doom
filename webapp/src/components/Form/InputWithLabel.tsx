@@ -10,6 +10,7 @@ interface IInputWithLabelProps {
     placeholder?: string
     type?: string
     onChange?: (e) => void
+    onClick?: (e) => void
     className?: string
 }
 
@@ -22,6 +23,7 @@ export function InputWithLabel({
     placeholder = "",
     type = "text",
     onChange = null,
+    onClick = null,
     className="",
 }: IInputWithLabelProps) {
     const id = `entry_row: ${title}`
@@ -47,6 +49,7 @@ export function InputWithLabel({
                 name={name || camelCase(title)} 
                 value={inputValue} 
                 onChange={onInputChange} 
+                onClick={onClick}
                 placeholder={placeholder}
                 className="w-full" 
             />

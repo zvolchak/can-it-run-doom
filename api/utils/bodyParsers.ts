@@ -43,6 +43,9 @@ export async function buildArchiveItem(
     if (!incoming)
         return []
 
+    if (typeof(incoming) === "string")
+        incoming = jsonParseString(incoming)
+
     const items = await Promise.all(incoming.map(async (item) => {
         return {
             id: item.id,

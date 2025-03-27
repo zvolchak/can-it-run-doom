@@ -2,7 +2,7 @@ import { useEffect } from "react"
 import { useDispatch, } from "react-redux"
 import { useRouter } from "next/navigation"
 import {
-    LoginView,
+    SignupView,
 } from "@/src/components"
 import {
     validateSession,
@@ -13,27 +13,27 @@ import {
 import { getMainLayout } from "@/src/layouts"
 
 
-export default function LoginPage() {
+export default function SignupPage() {
     const dispatch = useDispatch()
     const router = useRouter()
 
     useEffect(() => {
-        async function checkSession() {
-            const session = await validateSession()
-            if (session?.user) {
-                dispatch(setUserData(session.user))
-                // router.push("/")
-            }
-        }
-        checkSession()
+        // async function checkSession() {
+        //     const session = await validateSession()
+        //     if (session?.user) {
+        //         dispatch(setUserData(session.user))
+        //         // router.push("/")
+        //     }
+        // }
+        // checkSession()
     }, [dispatch, router])
 
     return (
         <div className="min-h-screen flex items-start justify-center">
-            <LoginView className="mt-20" />
+            <SignupView className="mt-20" />
         </div>
     )
 } // LoginPage
 
 
-LoginPage.getLayout = getMainLayout
+SignupPage.getLayout = getMainLayout

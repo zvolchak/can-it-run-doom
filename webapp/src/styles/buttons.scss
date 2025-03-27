@@ -14,6 +14,25 @@
 }
 
 
+.doom-btn-primary {
+    padding: 0.5rem 0;
+    border-radius: 0.375rem;
+    transition: all 250ms ease-in-out;
+    font-weight: 600;
+    letter-spacing: 2px;
+
+    &:hover {
+        letter-spacing: 3px;
+    }
+
+    &:disabled, &[disabled] {
+        cursor: progress;
+        opacity: 0.8;
+        letter-spacing: 2px;
+    }
+}
+
+
 .doom-btn {
     cursor: pointer;
     transition: 0.1s linear;
@@ -70,8 +89,6 @@
   opacity: 0;
   transition: 0.2s ease-in, 0.2s ease-out;
   color: doom.$colorSlate;
-  // bottom: 5rem;
-  // right: 5rem;
 
   &.active {
     opacity: 1;
@@ -118,16 +135,30 @@
 }
 
 .doom-action-btn {
+    @extend .doom-btn-primary;
+
     background-color: doom.$doomColorDanger !important;
     color: doom.$colorSlate;
-    padding: 0.5rem 0;
-    border-radius: 0.375rem;
-    transition: all 250ms ease-in-out;
-    font-weight: 600;
 
     &:hover {
         background-color: doom.$doomColorDangerDarker !important;
         color: doom.$doomColorSecondary;
-        letter-spacing: 2px;
+    }
+
+    &:disabled, &[disabled] {
+        background-color: doom.$doomColorDanger !important;
+    }
+}
+
+
+.doom-secondary-btn {
+    @extend .doom-btn-primary;
+
+    background-color: doom.$doomColorAccent !important;
+    color: doom.$colorSlate;
+
+    &:hover {
+        background-color: doom.$doomColorAccentDarker !important;
+        color: doom.$doomColorSecondary;
     }
 }
