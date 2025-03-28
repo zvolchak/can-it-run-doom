@@ -55,35 +55,15 @@ export const Navbar = () => {
             pb-3
             "
         >
-            <div className="flex items-center py-2 sm:py-0">
+            <div className="mt-5 sm:mt-0">
                 <Link href="/"> 
                     <Image src="/favicon.ico" alt="can it run doom?" width={40} height={40} />
                 </Link>
-
-                <div className="flex order-1 ml-10">
-                    <div className="nav-icon" onClick={handleSourceCodeClick}>
-                        <Image
-                            src="/icons/github-mark-white.png"
-                            alt="source code"
-                            width={24}
-                            height={24}
-                            className="rounded-full sm:ml-4 cursor-pointer"
-                        />
-                    </div>
-                    <div className="nav-icon ml-5" onClick={handleJoinDiscordClick}>
-                        <Image
-                            src="/icons/discord-48.png"
-                            alt="discord server"
-                            width={24}
-                            height={24}
-                            className="rounded-full sm:ml-4 cursor-pointer"
-                        />
-                    </div>
-                </div>
             </div>
 
             <div className="
-                    flex sm:justify-center items-center flex-1 order-2
+                    flex sm:justify-start items-center flex-1 order-1
+                    mt-5 sm:mt-0
                 "
             >
                 { IsHomePage() &&
@@ -115,17 +95,36 @@ export const Navbar = () => {
 
 
             <div className="
-                    flex items-end order-3 gap-3
+                    flex items-center justify-end order-3 gap-2
                     sm:py-0
-                    mt-3
+                    mt-6 sm:mt-0
                 "
             >
                 <BtnUserAccount direction="bottom" />
+
+                <div className="flex items-center py-2 sm:py-0 ml-10">
+                    <div className="flex gap-10 sm:gap-3">
+                        <div className="nav-icon" onClick={handleSourceCodeClick}>
+                            <Image
+                                src="/icons/github-mark-white.png"
+                                alt="source code"
+                                width={24}
+                                height={24}
+                                className="rounded-full sm:ml-4 cursor-pointer"
+                            />
+                        </div>
+                        <div className="nav-icon" onClick={handleJoinDiscordClick}>
+                            <Image
+                                src="/icons/discord-48.png"
+                                alt="discord server"
+                                width={24}
+                                height={24}
+                                className="rounded-full sm:ml-4 cursor-pointer"
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
         </nav>
     )
 }
-function userRouter() {
-    throw new Error("Function not implemented.")
-}
-

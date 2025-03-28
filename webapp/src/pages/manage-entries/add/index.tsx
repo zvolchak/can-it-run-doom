@@ -35,24 +35,31 @@ export default function AddEntryPage() {
 
 
     return (
-        <div className="
-            flex flex-row 
+        <div className={`
+            flex sm:flex-row flex-col
             min-h-screen 
             w-full 
-            items-start justify-center 
+            items-start 
+            justify-center
             p-4
             gap-5
-            "
+        `}
         >
-            <AddEntryView 
-                className={`
-                    w-3/6 max-w-[55rem] min-w-[45rem] doom-bg-alt 
-                    ${!isLoading() ? "p-4" : ""}
-                `}
-                onChange={onEntryChanged}
-            />
+            <div className="flex flex-row">
+                <AddEntryView 
+                    className={`
+                        doom-bg-alt 
+                        w-3/6 sm:max-w-[55rem] sm:min-w-[45rem]
+                        ${!isLoading() ? "p-4" : ""}
+                    `}
+                    onChange={onEntryChanged}
+                />
+            </div>
 
-            <div className="flex flex-col sticky top-0">
+            <div className={`
+                    flex flex-col sm:sticky sm:top-0 w-full
+                `}
+            >
                 <div className="w-32">
                     <button 
                             className="doom-btn"
@@ -64,11 +71,13 @@ export default function AddEntryPage() {
 
                 <div className={`
                     pt-16
-                    ${isShowPreview ? "hidden xl:block" : "hidden"}
+                    w-full
+                    ${isShowPreview ? "block" : "hidden"}
                     `}
                 >
                     <ItemCard 
                         item={previewItem}                
+                        className="w-full"
                     />
                 </div>
             </div>
