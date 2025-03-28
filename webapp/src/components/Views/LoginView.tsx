@@ -12,6 +12,7 @@ import {
 import {
     IsSessionExpired,
 } from "@/src/utils"
+import Link from "next/link"
 
 
 interface LoginForm {
@@ -31,7 +32,7 @@ export function LoginView({
     const router = useRouter()
     const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>()
     const [errorMessage, setErrorMessage] = useState("")
-
+    const [isRememberMe, setIsRememberMe] = useState(true)
 
     async function onSubmit(data) {
         const userCookie = Cookies.get("user")
@@ -50,11 +51,13 @@ export function LoginView({
                 sessionExpiresOn: userData.user.sessionExpiresOn,
             }
             Cookies.set("user", JSON.stringify(user), {
-                expires: new Date(user.sessionExpiresOn),
+                // cleanup cookie on browser closed by setting expiration to 0, if user 
+                // chose to not remember his auth.
+                expires: isRememberMe ? new Date(user.sessionExpiresOn) : null,
                 secure: process.env.NODE_ENV === "production",
                 sameSite: "Strict",
             })
-        }
+        } // user
 
         dispatch(setUserData(user))
 
@@ -76,7 +79,7 @@ export function LoginView({
                 )}
 
                 <div className="mb-4">
-                    <label className="block  font-medium">
+                    <label className="">
                         Email
                     </label>
                     <input
@@ -101,7 +104,7 @@ export function LoginView({
                 </div>
 
                 <div className="mt-6">
-                    <label className="block font-medium">
+                    <label className="">
                         Password
                     </label>
                     <input
@@ -121,25 +124,26 @@ export function LoginView({
                     )}
                 </div>
 
+                <div className="flex flex-row items-center mt-6">
+                    <input 
+                        type="checkbox" 
+                        name="isRememberMe" 
+                        checked={isRememberMe}
+                        onChange={() => setIsRememberMe(!isRememberMe)}
+                        className="mr-4 doom-checkbox" 
+                    />
+                    Remember me?
+                </div>
+
                 <button
                     className="w-full doom-action-btn mt-16"
                 >
                     Login
                 </button>
 
-                <div className="flex items-center my-6">
-                    <div className="flex-grow border-t border-gray-300"></div>
-                    <span className="px-4 text-gray-500">OR</span>
-                    <div className="flex-grow border-t border-gray-300"></div>
+                <div className="mt-6">
+                    Dont have an account? <Link className="page-link" href="/signup">Signup</Link>
                 </div>
-
-                <button
-                    type="button"
-                    className="w-full doom-secondary-btn"
-                    onClick={() => router.push("/signup")}
-                >
-                    Sign Up
-                </button>
             </form>
     )
 }

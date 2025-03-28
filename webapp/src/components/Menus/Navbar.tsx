@@ -1,9 +1,11 @@
 import Image from "next/image"
 import { useSelector, useDispatch, } from "react-redux"
+import { useRouter } from "next/router"
 import Link from "next/link"
 import { FaCaretDown } from "react-icons/fa"
 import { FaCaretUp } from "react-icons/fa"
 import { 
+    BtnUserAccount,
     Searchbar, 
 } from "@/src/components"
 import {
@@ -17,6 +19,7 @@ import {
 
 export const Navbar = () => {    
     const dispatch = useDispatch()
+    const router = useRouter()
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
 
     function handleSourceCodeClick() {
@@ -32,6 +35,11 @@ export const Navbar = () => {
 
     function onFiltersBtnClicked() {
         dispatch(setIsFiltersMenu(!settings.isFiltersMenu))
+    }
+
+
+    function IsHomePage() {
+        return router.pathname === "/"
     }
 
 
@@ -78,41 +86,46 @@ export const Navbar = () => {
                     flex sm:justify-center items-center flex-1 order-2
                 "
             >
-                <button
-                    className="doom-btn flex flex-row gap-1 mr-6 doom-color-slate"
-                    onClick={onFiltersBtnClicked}
-                >
-                    {   settings?.isFiltersMenu &&
-                        <FaCaretUp size="20px" />
-                    }
-                    {   !settings?.isFiltersMenu &&
-                        <FaCaretDown size="20px" />
-                    }
+                { IsHomePage() &&
+                    <button
+                        className="doom-btn flex flex-row gap-1 mr-6 doom-color-slate"
+                        onClick={onFiltersBtnClicked}
+                    >
+                        {   settings?.isFiltersMenu &&
+                            <FaCaretUp size="20px" />
+                        }
+                        {   !settings?.isFiltersMenu &&
+                            <FaCaretDown size="20px" />
+                        }
 
-                    Filter
-                </button>
+                        Filter
+                    </button>
+                }
+                { !IsHomePage() &&
+                    <button
+                        className="doom-btn flex flex-row gap-1 mr-6 doom-color-slate"
+                        onClick={() => router.push("/")}
+                    >
+                        Home
+                    </button>
+
+                }
                 <Searchbar className="sm:w-2/6 w-full" />
             </div>
 
 
-            {/* <div className="
+            <div className="
                     flex items-end order-3 gap-3
                     sm:py-0
                     mt-3
                 "
             >
-                { router.pathname !== "/" &&
-                    <Link href="/" className="doom-btn">
-                            Home
-                    </Link>
-                }
-                <Link 
-                    href="/manage-entries/add"
-                    className="doom-btn"
-                >
-                        Add New
-                </Link>
-            </div> */}
+                <BtnUserAccount direction="bottom" />
+            </div>
         </nav>
     )
 }
+function userRouter() {
+    throw new Error("Function not implemented.")
+}
+

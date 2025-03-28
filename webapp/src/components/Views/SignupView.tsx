@@ -1,19 +1,21 @@
 import { useForm } from "react-hook-form"
 import { useState } from "react"
-import { useDispatch, } from "react-redux"
+import { useDispatch, useSelector, } from "react-redux"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
 import {
     signupWithEmailAndPassword,
 } from "@/src/api"
 import {
+    RootState,
     setUserData,
 } from "@/src/store"
 import {
     IsSessionExpired,
 } from "@/src/utils"
 import { SignupSuccessView } from "./ResponseViews"
-import { IUserAuthResponse } from "@/src/types"
+import { IUserAuthResponse, IUserData } from "@/src/types"
+import Link from "next/link"
 
 
 interface LoginForm {
@@ -67,7 +69,7 @@ export function SignupView({
         { signupState !== "success" &&
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className={`w-1/3 ${className}`}
+                className={`w-1/3 text-gray-300 ${className}`}
             >
                 <h2 className="title text-center mb-4">
                     Create Account
@@ -80,7 +82,7 @@ export function SignupView({
                 )}
 
                 <div className="mb-4">
-                    <label className="block text-gray-300 font-medium">
+                    <label className="">
                         Email
                     </label>
                     <input
@@ -104,8 +106,8 @@ export function SignupView({
                     )}
                 </div>
 
-                <div className="mb-10">
-                    <label className="block text-gray-300 font-medium">
+                <div className="mt-6">
+                    <label className="">
                         Password
                     </label>
                     <input
@@ -130,24 +132,14 @@ export function SignupView({
 
                 <button
                     type="submit"
-                    className="w-full doom-action-btn"
+                    className="w-full doom-action-btn mt-16"
                 >
                     Sign Up
                 </button>
 
-                <div className="flex items-center my-6">
-                    <div className="flex-grow border-t border-gray-300"></div>
-                    <span className="px-4 text-gray-500">OR</span>
-                    <div className="flex-grow border-t border-gray-300"></div>
+                <div className="mt-6">
+                    Have an account? <Link className="page-link" href="/login">Login</Link>
                 </div>
-
-                <button
-                    type="button"
-                    className="w-full doom-secondary-btn"
-                    onClick={() => router.push("/login")}
-                >
-                    Login
-                </button>
             </form>
         }
 

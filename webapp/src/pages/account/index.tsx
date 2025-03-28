@@ -22,6 +22,15 @@ export default function AccountPage() {
                 </h2>
             </div>
 
+            <div>
+                <button 
+                    className="doom-secondary-btn w-48 mt-24"
+                    onClick={() => router.push("manage-entries/add")}
+                >
+                    Add New Entry
+                </button>
+            </div>
+
             <div className="text-white mt-10">
             { user !== null && !user.isVerified &&
                 <div>

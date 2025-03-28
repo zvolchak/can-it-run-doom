@@ -34,7 +34,7 @@ export function getValueFromQuery(query, targetKey: string) {
 
 
 export function IsSessionExpired() {
-    const user = JSON.parse(Cookies.get("user")) as IUserAuth
+    const user = JSON.parse(Cookies.get("user") || null) as IUserAuth
     if (!user)
         return false
 

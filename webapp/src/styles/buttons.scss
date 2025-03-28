@@ -162,3 +162,44 @@
         color: doom.$doomColorSecondary;
     }
 }
+
+
+.doom-checkbox {
+    appearance: none;
+    width: 1.2rem;
+    height: 1.2rem;
+    border: 2px solid doom.$colorSlate;
+    border-radius: 0.25rem;
+    background-color: doom.$doomColorAlt;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    position: relative;
+  
+    &:checked {
+      background-color: doom.$doomColorDanger;
+      border-color: doom.$doomColorDanger;
+    }
+  
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px doom.$doomColorDangerDark;
+    }
+  
+    &::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 5px;
+      width: 5px;
+      height: 10px;
+      border: solid doom.$colorSlate;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+  
+    &:checked::after {
+      opacity: 1;
+    }
+  }

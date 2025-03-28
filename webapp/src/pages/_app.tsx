@@ -2,17 +2,21 @@ import "@/src/styles/globals.scss"
 import { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import { Provider, useDispatch, useSelector, } from "react-redux"
+import Cookies from "js-cookie"
 import { v4 as uuidv4 } from 'uuid'
 import { 
     RootState,
     store,
     setUserSessionId,
+    setUserData,
 } from "@/src/store"
 import { analyticsApp, trackPageView } from "@/src/utils/analytics"
 import {
     Navbar,
     Footer,
 } from "@/src/components"
+import { IUserAuth } from "../types"
+import { IsSessionExpired } from "../utils"
 
 
 function UserSessionInit() {
@@ -22,6 +26,11 @@ function UserSessionInit() {
     useEffect(() => {
         if (typeof window === "undefined" || isSessionCreated)
             return
+
+        const user = JSON.parse(Cookies.get("user") || null) as IUserAuth
+        const isSessionExpired = IsSessionExpired()
+        if (!isSessionExpired)
+            dispatch(setUserData(user))
 
         dispatch(setUserSessionId(uuidv4()))
         setIsSessionCreated(true)
