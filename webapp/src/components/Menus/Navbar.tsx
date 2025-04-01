@@ -64,6 +64,7 @@ export const Navbar = () => {
             <div className="
                     flex sm:justify-start items-center flex-1 order-1
                     mt-5 sm:mt-0
+                    sm:ml-2
                 "
             >
                 { IsHomePage() &&

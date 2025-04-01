@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useDispatch, } from "react-redux"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
+import Link from "next/link"
 import {
     loginWithEmailAndPassword,
 } from "@/src/api"
@@ -12,7 +13,9 @@ import {
 import {
     IsSessionExpired,
 } from "@/src/utils"
-import Link from "next/link"
+import {
+    LoadingIcon,
+} from "@/src/components"
 
 
 interface LoginForm {
@@ -33,15 +36,19 @@ export function LoginView({
     const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>()
     const [errorMessage, setErrorMessage] = useState("")
     const [isRememberMe, setIsRememberMe] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
+
 
     async function onSubmit(data) {
+        setIsLoading(true)
         const userCookie = Cookies.get("user")
         let user = (userCookie && JSON.parse(userCookie)) || null
 
         if (!user || IsSessionExpired()) {
             const userData = await loginWithEmailAndPassword(data.email, data.password)
             if (!userData?.user) {
-                setErrorMessage("Login failed")
+                setErrorMessage(userData.message)
+                setIsLoading(false)
                 return
             }
             user = {
@@ -55,13 +62,14 @@ export function LoginView({
                 // chose to not remember his auth.
                 expires: isRememberMe ? new Date(user.sessionExpiresOn) : null,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "Strict",
+                sameSite: "strict",
             })
         } // user
 
         dispatch(setUserData(user))
 
-        router.push("/")
+        setIsLoading(false)
+        router.push("/account")
     } // onSubmit
 
 
@@ -136,9 +144,22 @@ export function LoginView({
                 </div>
 
                 <button
-                    className="w-full doom-action-btn mt-16"
+                    disabled={isLoading}
+                    className="
+                        w-full doom-action-btn 
+                        mt-16 
+                        flex flex-col items-center justify-center
+                    "
                 >
-                    Login
+                    { isLoading &&
+                        <p className="flex flex-row items-center gap-4">
+                            <LoadingIcon className="w-8 h-8" />
+                            Loading...
+                        </p>
+                    }
+                    { !isLoading &&
+                        "Login"
+                    }
                 </button>
 
                 <div className="mt-6">

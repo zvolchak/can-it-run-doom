@@ -22,7 +22,6 @@ export default function LoginPage() {
             const session = await validateSession()
             if (session?.user) {
                 dispatch(setUserData(session.user))
-                // router.push("/")
             }
         }
         checkSession()

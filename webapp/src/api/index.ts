@@ -57,8 +57,7 @@ export async function fetchDoomPorts():
         const url = "/doom_ports"
         const response = await apiClient.get(url)
         return response?.data?.items || []
-    } catch (error) {
-        console.error("Failed to get archive data", error)
+    } catch {
         return []
     }
 } // getArchiveData
@@ -86,8 +85,7 @@ export async function signOut(): Promise<boolean> {
         localStorage.removeItem("sessionExpiresOn")
 
         return true
-    } catch(error) {
-        console.error("Failed to sign out", error)
+    } catch {
         return false
     }
 } // signOut
@@ -107,7 +105,15 @@ export async function loginWithEmailAndPassword(email: string, password: string)
 
         return response.data
     } catch (error) {
-        console.error(error)
+        let message = "Login failed"
+        if (error.response?.status === 401)
+            message = "Incorrect email or password."
+
+        return {
+            user: null,
+            message,
+            status_code: error?.response?.status || 500
+          }
     }
 } // loginEmailAndPassword
 
@@ -120,7 +126,6 @@ export async function signupWithEmailAndPassword(email: string, password: string
         const response = await apiClient.post(url, { email, password })
         return response.data
     } catch (error) {
-        console.error(error.response)
         return {
             user: null,
             message: error?.response?.data?.error,
@@ -139,7 +144,6 @@ export async function addNewEntry(formData) {
         const response = await apiClient.post(url, formData, { headers })
         return response
     } catch (error) {
-        console.error(error)
         return error.response
     }
 } // addNewEntry

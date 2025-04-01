@@ -36,7 +36,7 @@ export function getValueFromQuery(query, targetKey: string) {
 export function IsSessionExpired() {
     const user = JSON.parse(Cookies.get("user") || null) as IUserAuth
     if (!user)
-        return false
+        return true
 
     const expirationTime = new Date(user.sessionExpiresOn).getTime()
     const currentTime = Date.now()

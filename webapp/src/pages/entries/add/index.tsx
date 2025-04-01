@@ -1,22 +1,45 @@
-import { useState } from "react"
+"use client"
+import { useEffect, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import { useRouter } from "next/router"
+import { EProcessingState, IArchiveItem, IUploadStatus } from "@/src/types"
 import {
     AddEntryView,
 } from "@/src/components/Views"
 import {
     ItemCard,
-    LoadingIcon,
 } from "@/src/components"
-import { EProcessingState, IArchiveItem, IUploadStatus } from "@/src/types"
-import { useSelector } from "react-redux"
-import { RootState } from "@/src/store"
+import { RootState, setNewEntryForm, setUplaodStatus } from "@/src/store"
+import { IsSessionExpired } from "@/src/utils"
 
 
 export default function AddEntryPage() {
+    const router = useRouter()
+    const dispatch = useDispatch()
+
     const uploadStatus: IUploadStatus = useSelector(
         (state: RootState) => state.submissions.uploadStatus
     )
     const [previewItem, setPreviewItem] = useState<IArchiveItem>(null)
     const [isShowPreview, setIsShowPreview] = useState<boolean>(true)
+
+    useEffect(() => {
+        if (IsSessionExpired())
+            router.push("/login")
+
+        const handleRouteChange = () => {
+            // Reset form state on change of route, so that it is fresh when returning
+            // back to this page.
+            dispatch(setUplaodStatus({ state: EProcessingState.none, message: null }))
+            dispatch(setNewEntryForm(null))
+        }
+    
+        router.events.on("routeChangeComplete", handleRouteChange)
+        return () => {
+            router.events.off("routeChangeComplete", handleRouteChange)
+        }
+    }, [dispatch, router])
+
 
     function onEntryChanged(incoming: IArchiveItem) {
         const nextState = { 
@@ -36,14 +59,14 @@ export default function AddEntryPage() {
 
     return (
         <div className={`
-            flex sm:flex-row flex-col
-            min-h-screen 
-            w-full 
-            items-start 
-            justify-center
-            p-4
-            gap-5
-        `}
+                flex sm:flex-row flex-col
+                min-h-screen 
+                w-full 
+                items-start 
+                justify-center
+                p-4
+                gap-5
+            `}
         >
             <div className="flex flex-row">
                 <AddEntryView 

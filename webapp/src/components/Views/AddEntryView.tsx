@@ -227,7 +227,7 @@ export function AddEntryView({
                         className="w-full p-2 mb-3 mt-4 border rounded" 
                     />
 
-                    <div>
+                    {/* <div>
                         <label className="doom-btn-default p-3">
                             {   imageFile ?
                                     `File: ${imageFile.name}`
@@ -249,7 +249,7 @@ export function AddEntryView({
                                 <FaRegWindowClose size="27px" />
                             </button>
                         }
-                    </div>
+                    </div> */}
 
                     <label className="flex items-center mb-3 mt-4">
                         <input 

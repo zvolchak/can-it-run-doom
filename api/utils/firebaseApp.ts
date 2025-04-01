@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 dotenv.config({ path: process.env.DOTENV_PATH || ".env" })
 
-import { Response, } from "express"
+import { CookieOptions, Response, } from "express"
 import { 
   collection, 
   getFirestore, 
@@ -79,12 +79,14 @@ export async function createSessionToken(res: Response, token: string) {
     const expiresIn = SESSION_COOKIE_LIFESPAN
     const sessionCookie = await fbAuthAdmin.createSessionCookie(token, { expiresIn })
 
-    res.cookie("session", sessionCookie, {
+    const setting: CookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+        secure: !(process.env.NODE_ENV === "development"),
+        sameSite: "none",
         maxAge: expiresIn,
-    })
+    }
+    console.info(setting)
+    res.cookie("session", sessionCookie, setting)
 
     const expiresOn = new Date(Date.now() + expiresIn)
     return { sessionCookie, expiresOn }
@@ -94,8 +96,8 @@ export async function createSessionToken(res: Response, token: string) {
 export async function clearSessionToken(res: Response) {
     res.clearCookie("session", {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "strict" : "lax",
+        secure: !(process.env.NODE_ENV === "development"),
+        sameSite: "none",
     })
     return res
 } // clearSessionToken

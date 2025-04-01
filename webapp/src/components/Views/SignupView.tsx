@@ -1,21 +1,14 @@
 import { useForm } from "react-hook-form"
 import { useState } from "react"
-import { useDispatch, useSelector, } from "react-redux"
-import { useRouter } from "next/navigation"
-import Cookies from "js-cookie"
+import Link from "next/link"
 import {
     signupWithEmailAndPassword,
 } from "@/src/api"
-import {
-    RootState,
-    setUserData,
-} from "@/src/store"
-import {
-    IsSessionExpired,
-} from "@/src/utils"
 import { SignupSuccessView } from "./ResponseViews"
-import { IUserAuthResponse, IUserData } from "@/src/types"
-import Link from "next/link"
+import { IUserAuthResponse } from "@/src/types"
+import {
+    LoadingIcon,
+} from "@/src/components"
 
 
 interface LoginForm {
@@ -32,21 +25,16 @@ interface SignupViewProps {
 export function SignupView({
     className = "",
 }: SignupViewProps) {
-    const dispatch = useDispatch()
-    const router = useRouter()
-    const user: IUserData = useSelector((state: RootState) => state.user.data)
     const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>({
         mode: "onBlur"
     })
     const [errorMessage, setErrorMessage] = useState("")
-    const [signupState, setSignupState] = useState<"success" | "failed" | null>(null)
+    const [signupState, setSignupState] = useState<"success" | "failed" | "loading" | null>(null)
     const [signupData, setSignupData] = useState<IUserAuthResponse | null>(null)
 
 
     async function onSubmit(data) {
-        // let user = JSON.parse(Cookies.get("user"))
-
-        setSignupState(null)
+        setSignupState("loading")
         const userData = await signupWithEmailAndPassword(data.email, data.password)
         if (userData?.status_code >= 400) {
             setSignupState("failed")
@@ -66,7 +54,7 @@ export function SignupView({
 
     return (
         <>
-        { signupState !== "success" &&
+        { signupState === null &&
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className={`w-1/3 text-gray-300 ${className}`}
@@ -134,7 +122,15 @@ export function SignupView({
                     type="submit"
                     className="w-full doom-action-btn mt-16"
                 >
-                    Sign Up
+                    { signupState === "loading" &&
+                        <p className="flex flex-row items-center gap-4">
+                            <LoadingIcon className="w-8 h-8" />
+                            Loading...
+                        </p>
+                    }
+                    { signupState !== "loading" &&
+                        "Sign Up"
+                    }   
                 </button>
 
                 <div className="mt-6">

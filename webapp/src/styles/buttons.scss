@@ -155,7 +155,7 @@
     @extend .doom-btn-primary;
 
     background-color: doom.$doomColorAccent !important;
-    color: doom.$colorSlate;
+    color: white;
 
     &:hover {
         background-color: doom.$doomColorAccentDarker !important;

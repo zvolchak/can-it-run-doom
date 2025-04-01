@@ -30,7 +30,7 @@ export function BtnUserAccount({
 
     const listItems = [
         { title: "Account", href: "/account" },
-        { title: "Add Entry", href: "/manage-entries/add" },
+        { title: "Add Entry", href: "/entries/add" },
         { title: "Sign Out", href: "/account", onClick: onSignOutClicked, },
     ]
 
@@ -84,8 +84,8 @@ export function BtnUserAccount({
                     absolute 
                     ${direction === "top" ? "left-0 bottom-4 mb-2" : "right-0 top-4 mt-2"}
                     w-48 
-                    bg-gray-800 
-                    border border-gray-700 rounded-md 
+                    bg-gray-700 
+                    border border-gray-600 rounded-md 
                     shadow-lg`
                 }>
                     <ul className="py-1 text-white">

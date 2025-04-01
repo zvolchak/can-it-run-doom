@@ -1,7 +1,4 @@
 import { useRouter } from "next/router"
-import { useDispatch } from "react-redux"
-import { setUplaodStatus, setNewEntryForm, } from "@/src/store"
-import { EProcessingState } from "@/src/types"
 
 interface IAddedEntrySuccessViewProps {
     // the title of the entry or any other identirfier that makes sense.
@@ -17,13 +14,10 @@ export function AddedEntrySuccessView({
     className = "",
 }: IAddedEntrySuccessViewProps) {
     const router = useRouter()
-    const dispatch = useDispatch()
     const trimmedTitle = title.length > 20 ? `${title.slice(0, 20)}...` : title
 
     function onAddNewEntryClicked() {
-        dispatch(setUplaodStatus({ state: EProcessingState.none, message: null }))
-        dispatch(setNewEntryForm(null))
-        router.push("/manage-entries/add")
+        router.push("/entries/add")
     }
 
     return (
