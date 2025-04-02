@@ -1,10 +1,19 @@
+export enum EProcessingState {
+    none = null,
+    success = "success",
+    error = "error",
+    uploading = "uploading",
+}
+
+
 export interface ISource {
     name: string
     url: string
 }
 
+
 export interface IArchiveItem {
-    id: string
+    id?: string
     title: string
     description: string
     authors: ISource[]
@@ -17,8 +26,16 @@ export interface IArchiveItem {
 }
 
 
+export interface IUploadStatus {
+    state: EProcessingState
+    message: string | null
+}
+
+
 export interface ISubmissionsStoreState {
     items: IArchiveItem[]
     filtered: IArchiveItem[]
     totalSize: number
+    newEntryForm: IArchiveItem
+    uploadStatus: IUploadStatus
 }

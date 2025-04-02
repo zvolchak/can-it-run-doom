@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useDispatch, } from "react-redux"
 import { useRouter } from "next/navigation"
 import Cookies from "js-cookie"
+import Link from "next/link"
 import {
     loginWithEmailAndPassword,
 } from "@/src/api"
@@ -12,6 +13,9 @@ import {
 import {
     IsSessionExpired,
 } from "@/src/utils"
+import {
+    LoadingIcon,
+} from "@/src/components"
 
 
 interface LoginForm {
@@ -20,20 +24,31 @@ interface LoginForm {
 }
 
 
-export function LoginView() {
+interface LoginViewProps {
+    className?: string
+}
+
+export function LoginView({
+    className = "",
+}: LoginViewProps) {
     const dispatch = useDispatch()
     const router = useRouter()
     const { register, handleSubmit, formState: { errors } } = useForm<LoginForm>()
     const [errorMessage, setErrorMessage] = useState("")
+    const [isRememberMe, setIsRememberMe] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
 
 
     async function onSubmit(data) {
-        let user = JSON.parse(Cookies.get("user"))
+        setIsLoading(true)
+        const userCookie = Cookies.get("user")
+        let user = (userCookie && JSON.parse(userCookie)) || null
 
         if (!user || IsSessionExpired()) {
             const userData = await loginWithEmailAndPassword(data.email, data.password)
             if (!userData?.user) {
-                setErrorMessage("Login failed")
+                setErrorMessage(userData.message)
+                setIsLoading(false)
                 return
             }
             user = {
@@ -43,23 +58,25 @@ export function LoginView() {
                 sessionExpiresOn: userData.user.sessionExpiresOn,
             }
             Cookies.set("user", JSON.stringify(user), {
-                expires: new Date(user.sessionExpiresOn),
+                // cleanup cookie on browser closed by setting expiration to 0, if user 
+                // chose to not remember his auth.
+                expires: isRememberMe ? new Date(user.sessionExpiresOn) : null,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "Strict",
+                sameSite: "strict",
             })
-        }
+        } // user
 
         dispatch(setUserData(user))
 
-        router.push("/")
+        setIsLoading(false)
+        router.push("/account")
     } // onSubmit
 
 
     return (
-        <div className="">
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="doom-card p-6 rounded-md shadow-md w-full max-w-md border border-gray-600"
+                className={`w-1/3 text-gray-300 ${className}`}
             >
                 <h2 className="title text-center mb-4">Login</h2>
 
@@ -70,7 +87,7 @@ export function LoginView() {
                 )}
 
                 <div className="mb-4">
-                    <label className="block text-gray-300 font-medium">
+                    <label className="">
                         Email
                     </label>
                     <input
@@ -83,7 +100,7 @@ export function LoginView() {
                             },
                         })}
                         className="
-                            w-full p-2 bg-gray-700 text-white border border-gray-500 
+                            w-full p-2 text-white border border-gray-500 
                             rounded-md focus:outline-none
                         "
                     />
@@ -94,8 +111,8 @@ export function LoginView() {
                     )}
                 </div>
 
-                <div className="mb-4">
-                    <label className="block text-gray-300 font-medium">
+                <div className="mt-6">
+                    <label className="">
                         Password
                     </label>
                     <input
@@ -104,7 +121,7 @@ export function LoginView() {
                             required: 'Password is required'
                         })}
                         className="
-                            w-full p-2 bg-gray-700 text-white border border-gray-500 
+                            w-full p-2 text-white border border-gray-500 
                             rounded-md focus:outline-none
                         "
                     />
@@ -115,13 +132,39 @@ export function LoginView() {
                     )}
                 </div>
 
+                <div className="flex flex-row items-center mt-6">
+                    <input 
+                        type="checkbox" 
+                        name="isRememberMe" 
+                        checked={isRememberMe}
+                        onChange={() => setIsRememberMe(!isRememberMe)}
+                        className="mr-4 doom-checkbox" 
+                    />
+                    Remember me?
+                </div>
+
                 <button
-                    type="submit"
-                    className="w-full bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition duration-150"
+                    disabled={isLoading}
+                    className="
+                        w-full doom-action-btn 
+                        mt-16 
+                        flex flex-col items-center justify-center
+                    "
                 >
-                    Login
+                    { isLoading &&
+                        <p className="flex flex-row items-center gap-4">
+                            <LoadingIcon className="w-8 h-8" />
+                            Loading...
+                        </p>
+                    }
+                    { !isLoading &&
+                        "Login"
+                    }
                 </button>
+
+                <div className="mt-6">
+                    Dont have an account? <Link className="page-link" href="/signup">Signup</Link>
+                </div>
             </form>
-        </div>
     )
 }

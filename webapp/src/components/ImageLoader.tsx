@@ -3,6 +3,7 @@ import Image, { ImageProps } from 'next/image'
 
 
 interface IImageLoaderProps extends Omit<ImageProps, "alt"> {
+    src: any
     defaultSrc?: string
     alt?: string
     className?: string
@@ -23,8 +24,11 @@ export const ImageLoader = (props: IImageLoaderProps) => {
         setImageSrc(defaultSrc)
     } // handleImageLoadError
 
+
+    const Tag = (src as string)?.startsWith("blob") ? "img" : Image
+    
     return (
-        <Image 
+        <Tag 
             key={(src || "img").toString()}
             alt={alt || "Image for an item"}
             width={130} 

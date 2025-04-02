@@ -22,15 +22,14 @@ export default function LoginPage() {
             const session = await validateSession()
             if (session?.user) {
                 dispatch(setUserData(session.user))
-                router.push("/")
             }
         }
         checkSession()
     }, [dispatch, router])
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-800">
-            <LoginView />
+        <div className="min-h-screen flex items-start justify-center">
+            <LoginView className="mt-20" />
         </div>
     )
 } // LoginPage

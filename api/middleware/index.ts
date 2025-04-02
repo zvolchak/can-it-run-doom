@@ -51,7 +51,6 @@ export async function authorizeByRole(
         return
     }
     
-
     try {
         const isAuthorized = IsAuthorized(
             req?.user?.role?.toLocaleLowerCase(), 

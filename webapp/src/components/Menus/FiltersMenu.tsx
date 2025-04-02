@@ -149,7 +149,7 @@ export const FiltersMenu = () => {
                         {
                             filters.tags.map((tag: string) =>
                                 <Tag 
-                                    key={`tag_${tag}`} 
+                                    key={`tag_${tag}_${Math.random()}`} 
                                     text={`#${tag}`} 
                                     queryKey="tags"
                                     onDispatch={setAppliedTags}

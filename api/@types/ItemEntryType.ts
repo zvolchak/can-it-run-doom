@@ -13,12 +13,15 @@ export interface IArchiveItem {
     sourcesUrl?: ISource[]
     sourceCodeUrl?: ISource[]
     isFirstLevelComplete?: boolean
-    publishDate?: string | Timestamp // date of the port published somewhere on the internet (source code or a video)
+    // date of the port published somewhere on the internet (source code or a video)
     tags?: string[]
+    publishDate?: string | Timestamp 
     previewImg?: string
     isPublished?: boolean
     createdBy?: string
     updatedBy?: string[]
+    // A url to a submitted request to be reviewed. Right now, it is a Github Issues link.
+    requestUrl?: string
 
     createdAt?: Timestamp // when was this entry created
     updatedAt?: Timestamp

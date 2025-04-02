@@ -111,7 +111,7 @@ export function filterItemsByAuthors(itemsToFilter: IArchiveItem[], query: strin
 }
 
 
-export function getTagsFromItems(itemsToFilter: IArchiveItem[]) {
+export function getTagsFromItems(itemsToFilter: IArchiveItem[]): string[] {
     if (!itemsToFilter)
         return []
 

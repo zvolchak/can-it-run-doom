@@ -57,8 +57,7 @@ export async function fetchDoomPorts():
         const url = "/doom_ports"
         const response = await apiClient.get(url)
         return response?.data?.items || []
-    } catch (error) {
-        console.error("Failed to get archive data", error)
+    } catch {
         return []
     }
 } // getArchiveData
@@ -86,8 +85,7 @@ export async function signOut(): Promise<boolean> {
         localStorage.removeItem("sessionExpiresOn")
 
         return true
-    } catch(error) {
-        console.error("Failed to sign out", error)
+    } catch {
         return false
     }
 } // signOut
@@ -107,20 +105,45 @@ export async function loginWithEmailAndPassword(email: string, password: string)
 
         return response.data
     } catch (error) {
-        console.error(error)
+        let message = "Login failed"
+        if (error.response?.status === 401)
+            message = "Incorrect email or password."
+
+        return {
+            user: null,
+            message,
+            status_code: error?.response?.status || 500
+          }
     }
 } // loginEmailAndPassword
 
 
-export async function addNewEntry(formData) {
-    const url = "/doom_ports/add"
-    const headers = {
-        "Content-Type": "multipart/form-data"
-    }
+export async function signupWithEmailAndPassword(email: string, password: string): 
+    Promise<IUserAuthResponse> 
+{
+    const url = "/user/signup/email_and_password"
     try {
-        const response = await apiClient.post(url, formData, { headers })
+        const response = await apiClient.post(url, { email, password })
         return response.data
     } catch (error) {
-        console.error(error)
+        return {
+            user: null,
+            message: error?.response?.data?.error,
+            status_code: error?.response.status || 100
+        }
+    }
+} // signupWithEmailAndPassword
+
+
+export async function addNewEntry(formData) {
+    const url = "/doom_ports/add"
+    // const headers = {
+    //     "Content-Type": "multipart/form-data"
+    // }
+    try {
+        const response = await apiClient.post(url, formData)
+        return response
+    } catch (error) {
+        return error.response
     }
 } // addNewEntry

@@ -13,13 +13,26 @@ import {
 } from "@/src/store"
 
 
-export function BtnUserAccount() {
+interface IBtnUserAccountProps {
+    direction?: "top" | "bottom"
+}
+
+
+export function BtnUserAccount({
+    direction = "top",
+}: IBtnUserAccountProps) {
     const router = useRouter()
     const dispatch = useDispatch()
     const [isOpen, setIsOpen] = useState(false)
     const user: IUserData = useSelector((state: RootState) => state.user.data)
     const btnText = user?.id ? "Account" : "Sign In"
     const menuRef = useRef(null)
+
+    const listItems = [
+        { title: "Account", href: "/account" },
+        { title: "Add Entry", href: "/entries/add" },
+        { title: "Sign Out", href: "/account", onClick: onSignOutClicked, },
+    ]
 
     
     useEffect(() => {
@@ -67,21 +80,26 @@ export function BtnUserAccount() {
                 {btnText}
             </button>
             {isOpen && user?.id && (
-                <div className="absolute left-0 bottom-4 mb-2 w-48 bg-gray-800 border border-gray-700 rounded-md shadow-lg">
+                <div className={`
+                    absolute 
+                    ${direction === "top" ? "left-0 bottom-4 mb-2" : "right-0 top-4 mt-2"}
+                    w-48 
+                    bg-gray-700 
+                    border border-gray-600 rounded-md 
+                    shadow-lg`
+                }>
                     <ul className="py-1 text-white">
-                        <li>
-                            <Link href="/manage-entries" className="block px-4 py-2 hover:bg-gray-700">
-                                Add / Edit Entries
-                            </Link>
-                        </li>
-                        <li>
-                            <button 
-                                className="block w-full text-left px-4 py-2 hover:bg-gray-700"
-                                onClick={onSignOutClicked}
-                            >
-                                Sign Out
-                            </button>
-                        </li>
+                        {listItems.map((item, index) => (
+                            <li key={index}>
+                                <Link 
+                                    href={item.href}
+                                    className="block px-4 py-2 hover:bg-gray-700"
+                                    onClick={() => { onBtnClicked(); item.onClick?.(); }}
+                                >
+                                    {item.title}
+                                </Link>
+                            </li>
+                        ))}
                     </ul>
                 </div>
             )}
