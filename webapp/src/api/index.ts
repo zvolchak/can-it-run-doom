@@ -137,11 +137,11 @@ export async function signupWithEmailAndPassword(email: string, password: string
 
 export async function addNewEntry(formData) {
     const url = "/doom_ports/add"
-    const headers = {
-        "Content-Type": "multipart/form-data"
-    }
+    // const headers = {
+    //     "Content-Type": "multipart/form-data"
+    // }
     try {
-        const response = await apiClient.post(url, formData, { headers })
+        const response = await apiClient.post(url, formData)
         return response
     } catch (error) {
         return error.response

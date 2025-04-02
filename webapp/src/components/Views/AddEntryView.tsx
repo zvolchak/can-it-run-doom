@@ -1,5 +1,5 @@
 import { useState, useRef, } from "react"
-import { FaRegWindowClose } from "react-icons/fa"
+// import { FaRegWindowClose } from "react-icons/fa"
 import { useSelector, useDispatch, } from "react-redux"
 import {
     addNewEntry,
@@ -99,17 +99,15 @@ export function AddEntryView({
         const response = await addNewEntry(formDataToSend)
         setEntryResponse(response?.data)
 
-        if (response.status >= 400) {
-            console.error("Failed to add an entry:", response.error)
+        if (response?.status >= 400) {
             const message = "Failed to add an entry! Please, contact support if error persists."
             dispatch(setUplaodStatus({ 
                 state: EProcessingState.error, 
                 message: response.data.error || message
             })) 
         } else {
-            // Show a loading spinner for at least 1 second, so that screen doesn change
-            // states too fast making it, potentially easier to comprehand chain of events
-            // when the "submit" button is pressed.
+            // Show a loading spinner for at least 1 second, so that screen doesn't change
+            // states too fast.
             const loadingTime = performance.now() - loadingTimeStart
             const delayTime = loadingTime > 1000 ? 0 : 1000 - loadingTime
             setTimeout(() => {

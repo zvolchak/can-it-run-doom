@@ -31,8 +31,11 @@ import {
 
 
 const router = Router()
-const upload = multer({ storage: multer.memoryStorage() })
-
+const upload = multer({ 
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 400 * 1024 }
+})
+upload.none()
 
 async function saveFileToStorage(fileName: string, file) {
     const storageFile = fbStorage.file(fileName)
@@ -204,8 +207,9 @@ router.post(
     authenticate,
     (req: Request, res: Response, next) => authorizeByRole(req, res, UserRole.User, next),
     upload.single("image"), 
-    async (req: Request, res: Response): Promise<any> => {
-
+    async (req: Request, res: Response
+): Promise<any> => {
+    console.info("????????????????????? add endpoint")
     const items: IArchiveItem[] = await buildArchiveItem(req.body?.items, req.user)
     const user = req.user
 

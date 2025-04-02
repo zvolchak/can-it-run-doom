@@ -13,14 +13,14 @@ const initialState: ISubmissionsStoreState = {
     uploadStatus: { state: EProcessingState.none, message: null },
 
     newEntryForm: {
-        title: "Test Title",
-        description: "description string",
-        authors: [{ name: "Tester", url: "http://url"}],
-        sourcesUrl: [{ name: "Source Url Test", url: "http://url"}],
-        sourceCodeUrl: [{ name: "Source Code Url Test", url: "http://url"}],
+        title: "",
+        description: "",
+        authors: [],
+        sourcesUrl: [],
+        sourceCodeUrl: [],
         isFirstLevelComplete: false,
         publishDate: null,
-        tags: ["tag one", "tag2"],
+        tags: [],
         previewImg: ""
     }
 }

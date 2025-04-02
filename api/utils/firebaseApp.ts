@@ -85,7 +85,6 @@ export async function createSessionToken(res: Response, token: string) {
         sameSite: "none",
         maxAge: expiresIn,
     }
-    console.info(setting)
     res.cookie("session", sessionCookie, setting)
 
     const expiresOn = new Date(Date.now() + expiresIn)

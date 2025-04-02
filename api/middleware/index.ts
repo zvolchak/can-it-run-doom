@@ -12,8 +12,6 @@ import {
 
 async function getUserClaim(req: Request, res: Response): Promise<DecodedIdToken> {
     const sessionCookie = req.cookies.session || null
-    console.info("request cookies")
-    console.info(req.cookies)
     const claim = await verifySessionCookie(sessionCookie)
     if (!claim) {
         throw new Error("Failed to verifySessionCookie!")
