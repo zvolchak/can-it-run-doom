@@ -10,9 +10,12 @@ import {
     DocumentData,
     WriteBatch,
 } from "firebase/firestore"
+import { DecodedIdToken } from "firebase-admin/auth"
 import { 
     IArchiveItem, 
     ISource,
+    IEntryBatch,
+    IEntryAddedResponse,
 } from "../../@types"
 import {
     fbStorage,
@@ -100,61 +103,9 @@ export async function downloadImgIntoArrayBuffer(fileUrl: string) {
 /* upload to staging collection first to be reviewed by moderators. If IsPublished
  * is set to True - that means it can go directly to production.
 */
-function getStagingOrProdDb(entry: IArchiveItem) {
-    return entry.isPublished ? doomPortsCollection : doomPortsStagingCollection
-}
-
-
-async function addEntry(incomingEntry: IArchiveItem, batch: WriteBatch, incomingFile) {
-    // Handle URL previewImg by downloading the file and converting it into an array buffer.
-    // if (!incomingFile && incomingEntry.previewImg?.startsWith("http")) {
-    //     incomingFile = await downloadImgIntoArrayBuffer(incomingEntry.previewImg)
-    // }
-    
-    incomingEntry.authors = sourcesArrayToFirebaseObject(incomingEntry?.authors)
-    incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl)
-    incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl)
-
-    const id = incomingEntry.id || generateFirestoreId()
-    let fileName = incomingEntry.previewImg
-    try {
-        if (incomingFile?.buffer.length > 0) {
-            const imageFileType = getFileType(incomingFile?.buffer)
-            fileName = `${id}.${imageFileType}`
-            fileName = await saveFileToStorage(fileName, incomingFile)
-        }
-    } catch (error) {
-        console.error("Failed to add image: ", error.message)
-        throw Error("Failed to process a preview image")
-    }
-
-    let docRef: DocumentReference<DocumentData, DocumentData> = null
-    try {
-        const newEntry: IArchiveItem = {
-            ...incomingEntry,
-            previewImg: fileName,
-            submittedBy: null,
-            createdAt: Timestamp.now(),
-            updatedAt: Timestamp.now(),
-        }
-
-        // Some legacy entries may have ID supplied - so remove it and use doc's id instead.
-        delete newEntry.id
-        const targetCollection = getStagingOrProdDb(newEntry)
-        docRef = doc(targetCollection, id)
-        await batch.set(docRef, newEntry)
-        return { 
-            batch,
-            id,
-            entry: newEntry,  
-            docRef, 
-            file: { ...incomingFile, filename: fileName }
-        }
-    } catch (error) {
-        console.error(error)
-        throw Error("Failed to add entry")
-    }
-} // addEntry
+// function getStagingOrProdDb(entry: IArchiveItem) {
+//     return entry.isPublished ? doomPortsCollection : doomPortsStagingCollection
+// }
 
 
 async function createGithubIssue(items: IArchiveItem[]) {
@@ -202,6 +153,88 @@ async function createGithubIssue(items: IArchiveItem[]) {
 } // createGithubIssue
 
 
+async function createEntriesBatch(
+    incomingEntry: IArchiveItem, 
+    batch: WriteBatch, 
+    incomingFile): Promise<IEntryBatch> {
+    // Handle URL previewImg by downloading the file and converting it into an array buffer.
+    // if (!incomingFile && incomingEntry.previewImg?.startsWith("http")) {
+    //     incomingFile = await downloadImgIntoArrayBuffer(incomingEntry.previewImg)
+    // }
+    
+    incomingEntry.authors = sourcesArrayToFirebaseObject(incomingEntry?.authors)
+    incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl)
+    incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl)
+
+    const id = incomingEntry.id || generateFirestoreId()
+    let fileName = incomingEntry.previewImg
+    try {
+        if (incomingFile?.buffer.length > 0) {
+            const imageFileType = getFileType(incomingFile?.buffer)
+            fileName = `${id}.${imageFileType}`
+            fileName = await saveFileToStorage(fileName, incomingFile)
+        }
+    } catch (error) {
+        console.error("Failed to add image: ", error.message)
+        throw Error("Failed to process a preview image")
+    }
+
+    let docRef: DocumentReference<DocumentData, DocumentData> = null
+    try {
+        const newEntry: IArchiveItem = {
+            ...incomingEntry,
+            previewImg: fileName,
+            submittedBy: null,
+            createdAt: Timestamp.now(),
+            updatedAt: Timestamp.now(),
+        }
+
+        // Some legacy entries may have ID supplied - so remove it and use doc's id instead.
+        delete newEntry.id
+        // const targetCollection = getStagingOrProdDb(newEntry)
+        docRef = doc(doomPortsCollection, id)
+        await batch.set(docRef, newEntry)
+        return { 
+            batch,
+            id,
+            entry: newEntry,  
+            docRef, 
+            file: { ...incomingFile, filename: fileName }
+        }
+    } catch (error) {
+        console.error(error)
+        throw Error("Failed to add entry")
+    }
+} // createEntriesBatch
+
+
+export async function addEntries(
+    items: IArchiveItem[], 
+    user: DecodedIdToken
+): Promise<IEntryAddedResponse> {
+    const result = { success: [], failed: [] }
+    const batch = writeBatch(fbDb)
+
+    await Promise.all(items.map(async (entry: IArchiveItem) => {
+        try {
+            const authorizedToPublish = IsAuthorized(user?.role, UserRole.Moderator)
+            if (entry.isPublished && !authorizedToPublish) {
+                throw new Error("Not authorized to submit entries!")
+            }
+
+            const toUpload = await createEntriesBatch(entry, batch, null)
+            result.success.push(toUpload)
+        } catch (error) {
+            console.error("Failed to add an entry: ", error)
+            result.failed.push(entry)
+        }
+    }))
+
+    await batch.commit()
+    return result
+} // addEntries
+
+
 router.post(
     "/add", 
     authenticate,
@@ -209,36 +242,36 @@ router.post(
     upload.single("image"), 
     async (req: Request, res: Response
 ): Promise<any> => {
-    console.info("????????????????????? add endpoint")
     const items: IArchiveItem[] = await buildArchiveItem(req.body?.items, req.user)
     const user = req.user
 
     if (!items || items.length === 0) 
         return res.status(400).json({ error: "Missing required fields!" })
 
-    const result = { success: [], failed: [] }
+    // const result = { success: [], failed: [] }
     const errorMessage = "Failed to add a new entry! Please, try again or contact " +
                         "support if the error persists." 
     try {
-        const batch = writeBatch(fbDb)
-        const authorizedToPublish = IsAuthorized(user?.role, UserRole.Moderator)
+        // const batch = writeBatch(fbDb)
+        // const authorizedToPublish = IsAuthorized(user?.role, UserRole.Moderator)
 
-        await Promise.all(items.map(async (entry: IArchiveItem) => {
-            try {
-                // Only Moderator+ type user can add an entry to publish directly. Otherwise,
-                // an entry needs to be reviewed by a Moderator and published manually.
-                if (entry.isPublished && !authorizedToPublish) {
-                    throw new Error("Not authorized to submit entries!")
-                }
-                const toUpload = await addEntry(entry, batch, null)
-                result.success.push(toUpload)
-            } catch (error) {
-                console.error("Failed to add an entry: ", error)
-                result.failed.push(entry)
-            }
-        }))
+        // await Promise.all(items.map(async (entry: IArchiveItem) => {
+        //     try {
+        //         // Only Moderator+ type user can add an entry to publish directly. Otherwise,
+        //         // an entry needs to be reviewed by a Moderator and published manually.
+        //         if (entry.isPublished && !authorizedToPublish) {
+        //             throw new Error("Not authorized to submit entries!")
+        //         }
+        //         const toUpload = await createEntriesBatch(entry, batch, null)
+        //         result.success.push(toUpload)
+        //     } catch (error) {
+        //         console.error("Failed to add an entry: ", error)
+        //         result.failed.push(entry)
+        //     }
+        // }))
 
-        await batch.commit()
+        // await batch.commit()
+        const result = await addEntries(items, user)
 
         if (result.success.length === 0) {
             return res.status(400).json({ 

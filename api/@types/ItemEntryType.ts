@@ -1,4 +1,4 @@
-import { Timestamp } from "firebase/firestore"
+import { DocumentReference, Timestamp, WriteBatch } from "firebase/firestore"
 
 export interface ISource {
     name: string
@@ -21,7 +21,7 @@ export interface IArchiveItem {
     createdBy?: string
     updatedBy?: string[]
     // A url to a submitted request to be reviewed. Right now, it is a Github Issues link.
-    requestUrl?: string
+    requestUrl?: string | null
 
     createdAt?: Timestamp // when was this entry created
     updatedAt?: Timestamp
@@ -31,4 +31,18 @@ export interface IArchiveItem {
 
 export interface ISubmissionsStoreState {
     items: IArchiveItem[]
+}
+
+
+export interface IEntryBatch {
+    batch: WriteBatch
+    id: string
+    entry: IArchiveItem
+    docRef: DocumentReference<IArchiveItem>
+    file: any // FIXME: use the right file type
+}
+
+export interface IEntryAddedResponse {
+    success: IEntryBatch[]
+    failed: IArchiveItem[]
 }

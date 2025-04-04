@@ -8,11 +8,13 @@ import {
     doc,
     setDoc,
     orderBy,
+    documentId,
     limit as fbLimit,
 } from "firebase/firestore"
 import { 
     authorsCollection,
     doomPortsCollection,
+    doomPortsStagingCollection,
     COLLECTION_NAME,
     fbDb,
     fbStorage,
@@ -25,14 +27,30 @@ export async function getAllEntries() {
 } // getAllEntries
 
 
+export async function getEntriesForReview({
+    limit = 200,
+    ids = []
+} = {}) {
+    const conditions: any[] = [ fbLimit(limit) ]
+    if (ids?.length > 0) {
+        conditions.push(where(documentId(), "in", ids))
+    }
+    const q = query(
+        doomPortsStagingCollection,
+        ...conditions
+    )
+    return await getDocs(q)
+}
+
+
 /* Get entries that are either isPublished or !isPublished - but not both. 
 * Use getAllEntries if need to get all unfiltered entries.
 */
 export async function getPublishedEntries({ 
-    isPublished, 
+    isPublished = true, 
     limit = 200,
     ids = []
-}) {
+} = {}) {
     const conditions = [
         where("isPublished", "==", isPublished),
         orderBy("publishDate", "desc"),

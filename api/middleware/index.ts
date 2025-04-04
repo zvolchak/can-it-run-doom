@@ -23,7 +23,7 @@ async function getUserClaim(req: Request, res: Response): Promise<DecodedIdToken
 
 export async function authenticate(req: Request, res: Response, next: NextFunction) {
     if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
-        req.user = { uid: "test ", role: UserRole.Moderator } as any
+        req.user = { uid: "test-uid", role: UserRole.Owner } as any
         next()
         return
     }
