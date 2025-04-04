@@ -1,4 +1,4 @@
-export enum UserRole {
+export enum EUserRole {
     Owner = "owner",
     
     // A logged in user who can add and edit entries.
@@ -10,13 +10,13 @@ export enum UserRole {
 
 
 export const UserAccessPriority = [
-    UserRole.Owner, 
-    UserRole.Moderator,
-    UserRole.User, 
+    EUserRole.Owner, 
+    EUserRole.Moderator,
+    EUserRole.User, 
 ]
 
 
-export function IsAuthorized(incoming: UserRole, target: UserRole) {
+export function IsAuthorized(incoming: EUserRole, target: EUserRole) {
     if (!incoming || !target)
         return false
     

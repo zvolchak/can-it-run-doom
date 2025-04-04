@@ -2,6 +2,7 @@ import { Timestamp } from "firebase/firestore"
 import { DecodedIdToken } from "firebase-admin/auth"
 import {
     IArchiveItem,
+    EItemStatus,
 } from "../@types"
 
 /*
@@ -58,7 +59,8 @@ export async function buildArchiveItem(
             publishDate: item.publishDate ? Timestamp.fromDate(new Date(item.publishDate)) : null,
             tags: normalizeTagsValues(item.tags) || null,
             previewImg: item.previewImg || null,
-            isPublished: Boolean(item.isPublished || false),
+            status: item.status || EItemStatus.pending,
+            // isPublished: Boolean(item.isPublished || false),
             createdBy: user.uid || null,
             updatedBy: user?.uid ? [user.uid] : [],
             createdAt: Timestamp.now(),

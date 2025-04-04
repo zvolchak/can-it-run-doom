@@ -10,16 +10,17 @@ import {
     orderBy,
     documentId,
     limit as fbLimit,
+    arrayUnion,
 } from "firebase/firestore"
 import { 
     authorsCollection,
     doomPortsCollection,
-    doomPortsStagingCollection,
+    doomPortsIncomingCollection,
     COLLECTION_NAME,
     fbDb,
     fbStorage,
 } from "./firebaseApp"
-import { IAuthorDocument, IArchiveItem, } from "../@types"
+import { IAuthorDocument, IArchiveItem, EItemStatus, } from "../@types"
 
 
 export async function getAllEntries() {
@@ -27,47 +28,49 @@ export async function getAllEntries() {
 } // getAllEntries
 
 
-export async function getEntriesForReview({
-    limit = 200,
-    ids = []
-} = {}) {
-    const conditions: any[] = [ fbLimit(limit) ]
-    if (ids?.length > 0) {
-        conditions.push(where(documentId(), "in", ids))
-    }
-    const q = query(
-        doomPortsStagingCollection,
-        ...conditions
-    )
-    return await getDocs(q)
-}
+// export async function getEntriesForReview({
+//     limit = 200,
+//     ids = []
+// } = {}) {
+//     const conditions: any[] = [ fbLimit(limit) ]
+//     if (ids?.length > 0) {
+//         conditions.push(where(documentId(), "in", ids))
+//     }
+//     const q = query(
+//         doomPortsIncomingCollection,
+//         ...conditions
+//     )
+//     return await getDocs(q)
+// }
 
 
-/* Get entries that are either isPublished or !isPublished - but not both. 
+/* Get entries with a status == "published" to be displayed to users. 
 * Use getAllEntries if need to get all unfiltered entries.
 */
-export async function getPublishedEntries({ 
-    isPublished = true, 
+export async function getEntriesByStatus({ 
+    status = EItemStatus.published, 
     limit = 200,
     ids = []
 } = {}) {
     const conditions = [
-        where("isPublished", "==", isPublished),
+        where("status", "==", status),
         orderBy("publishDate", "desc"),
         fbLimit(limit)  
     ]
     
     if (ids?.length > 0) {
-        conditions.push(where("id", "in", ids))
+        conditions.push(where(documentId(), "in", ids))
     }
 
+    const collection = status !== EItemStatus.pending 
+        ? doomPortsCollection : doomPortsIncomingCollection
     let q = query(
-        doomPortsCollection,
+        collection,
         ...conditions
     )
 
     return await getDocs(q)
-} // getPublishedEntries
+} // getEntriesByStatus
 
 
 export async function getAuthorsByName(name: string) { 
@@ -130,15 +133,22 @@ export async function addDoomPort(newEntry: IArchiveItem) {
 } // addDoomPort
 
 
-export async function updateDoomPort(id: string, entry: IArchiveItem) {
+export function updateDoomPortQuery(id: string, entry: IArchiveItem) {
     const docRef = doc(fbDb, COLLECTION_NAME.doomPorts, id)
-    return await updateDoc(
-        docRef, 
-        { 
-            ...entry,
-            updatedAt: Timestamp.now(), // UTC timezone
-        }
-    )
+    const fields: any = { 
+        ...entry,
+        updatedAt: Timestamp.now(), // UTC timezone
+    }
+    if (entry.editHistory)
+        fields.editHistory = arrayUnion(...entry.editHistory)
+
+    return { docRef, fields }
+} // updateDoomPortQuery
+
+
+export async function updateDoomPort(id: string, entry: IArchiveItem) {
+    const { docRef, fields } = updateDoomPortQuery(id, entry)
+    return await updateDoc(docRef, fields)
 } // updateDoomPort
 
 

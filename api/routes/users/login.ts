@@ -6,6 +6,9 @@ import {
     createSessionToken,
     clearSessionToken,
     SESSION_COOKIE_LIFESPAN,
+    IsLocalhost,
+    EUserRole,
+    getTestUser,
 } from "../../utils"
 import { IUserAuthResponse } from "../../@types"
 import { signInWithEmailAndPassword } from "firebase/auth"
@@ -47,10 +50,19 @@ router.post(
 }) // validate
 
 
-router.post(`${ROUTE_NAMESPACE}/email_and_password`, async (req: Request, res: Response): 
-    Promise<IUserAuthResponse | any> => 
-{
+router.post(
+    `${ROUTE_NAMESPACE}/email_and_password`, 
+    async (req: Request, res: Response
+): Promise<IUserAuthResponse | any> => {
     const { email, password } = req.body
+    if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
+        res.cookie("session", "test-session-token")
+        return res.status(200).json({ 
+            message: "Test user logged in", 
+            user: getTestUser() 
+        })
+    }
+
     try {
         const userData = await signInWithEmailAndPassword(fbAuth, email, password)
         const idToken = await userData.user.getIdToken(true)

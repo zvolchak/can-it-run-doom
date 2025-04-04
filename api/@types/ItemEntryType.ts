@@ -5,6 +5,16 @@ export interface ISource {
     url: string
 }
 
+
+export enum EItemStatus {
+    pending = "pending",
+    published = "published",
+    hidden = "hidden",
+    approved = "approved",
+    rejected = "rejected",
+}
+
+
 export interface IArchiveItem {
     id?: string
     title?: string
@@ -17,11 +27,13 @@ export interface IArchiveItem {
     tags?: string[]
     publishDate?: string | Timestamp 
     previewImg?: string
-    isPublished?: boolean
+    // isPublished?: boolean
+    status?: EItemStatus
     createdBy?: string
     updatedBy?: string[]
     // A url to a submitted request to be reviewed. Right now, it is a Github Issues link.
     requestUrl?: string | null
+    editHistory?: string[]
 
     createdAt?: Timestamp // when was this entry created
     updatedAt?: Timestamp

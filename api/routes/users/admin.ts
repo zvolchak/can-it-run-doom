@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express"
 import {
     fbAuthAdmin,
     UserAccessPriority,
-    UserRole,
+    EUserRole,
 } from "../../utils"
 import {
     authenticate,
@@ -22,7 +22,7 @@ const ROUTE_NAMESPACE = "/admin"
 router.post(
     `${ROUTE_NAMESPACE}/set_role`,
     authenticate,
-    (req: Request, res: Response, next) => authorizeByRole(req, res, UserRole.Owner, next),
+    (req: Request, res: Response, next) => authorizeByRole(req, res, EUserRole.Owner, next),
     async (req: Request, res: Response):  Promise<IUserAuthResponse | any> => 
 {
     const targets: ISetUserRoleBody[] = req.body

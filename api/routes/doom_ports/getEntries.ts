@@ -1,9 +1,13 @@
 import { Request, Response, Router } from 'express'
 import dayjs from "dayjs"
 import {
+    EUserRole,
     getImageFromStorage,
-    getPublishedEntries,
+    getEntriesByStatus,
+    getUserFromRequest,
+    statusStringToEnum,
 } from "../../utils"
+import { EItemStatus } from '@/@types'
 
 
 const router = Router()
@@ -20,15 +24,24 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
     // 5 minutes cache
     const cacheTime = 60 * 5
     res.setHeader("Cache-Control", `public, max-age=${cacheTime}, stale-while-revalidate=600`)
-    let { perPage = 200 , page = 1, ids = ""} = req.query
+    let { perPage = 200 , page = 1, ids = "", status = "" } = req.query
+
+    // Make sure only status times from the enum are passed by the client. If not, can
+    // assume a "published" status, since it is a default, publically accessible status.
+    const targetStatus = statusStringToEnum(status as string)
+
+    const user = getUserFromRequest(req)
+    if (targetStatus !== EItemStatus.published && user?.role !== EUserRole.Owner) {
+        return res.status(403).json({ error: "Not authorized to query by status!" })
+    }
+
     perPage = parseInt(perPage as string, 10)
     page = parseInt(page as string, 10)
     ids = ((ids as string).split(",") || []).filter(id => id)
 
     try {
-        // Only get entries that are isPublished = true
-        const snapshot = await getPublishedEntries({ 
-            isPublished: true, 
+        const snapshot = await getEntriesByStatus({ 
+            status: targetStatus, 
             ids, 
             limit: perPage 
         })

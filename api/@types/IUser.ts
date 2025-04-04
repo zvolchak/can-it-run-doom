@@ -1,4 +1,4 @@
-import { UserRole } from "@/utils"
+import { EUserRole } from "@/utils"
 
 
 export interface IUserAuth {
@@ -17,5 +17,5 @@ export interface IUserAuthResponse {
 
 export interface ISetUserRoleBody {
     uid: string
-    role: UserRole
+    role: EUserRole
 }

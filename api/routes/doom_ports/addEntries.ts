@@ -16,15 +16,16 @@ import {
     ISource,
     IEntryBatch,
     IEntryAddedResponse,
+    EItemStatus,
 } from "../../@types"
 import {
     fbStorage,
     buildArchiveItem,
     fbDb,
     doomPortsCollection,
-    doomPortsStagingCollection,
+    doomPortsIncomingCollection,
     generateFirestoreId,
-    UserRole,
+    EUserRole,
     IsAuthorized,
  } from "../../utils"
  import {
@@ -102,10 +103,18 @@ export async function downloadImgIntoArrayBuffer(fileUrl: string) {
 
 /* upload to staging collection first to be reviewed by moderators. If IsPublished
  * is set to True - that means it can go directly to production.
+ * return: collection - a firebase collection destination to wich an entry will be written to.
+ *          id - an ID to use for the document name. For the "incoming" collection, use
+ *              a generated UUID, so that it could be used by editHistory field to
+ *              track which entry belong to which edits.
 */
-// function getStagingOrProdDb(entry: IArchiveItem) {
-//     return entry.isPublished ? doomPortsCollection : doomPortsStagingCollection
-// }
+function getStagingOrProdDb(item: IArchiveItem) {
+    if (item.status === EItemStatus.published) {
+        return { collection: doomPortsCollection, id: item.id}
+    } else {
+        return { collection: doomPortsIncomingCollection, id: generateFirestoreId()}
+    }
+} // getStagingOrProdDb
 
 
 async function createGithubIssue(items: IArchiveItem[]) {
@@ -139,8 +148,8 @@ async function createGithubIssue(items: IArchiveItem[]) {
         const issueUrl = response?.data?.html_url
         // Update DB docs with the URL to the github issue it belongs to.
         await Promise.all(items.map(async (item) => { 
-            const targetCollection = getStagingOrProdDb(item)
-            const docRef = doc(targetCollection, item.id)
+            const { collection, id } = getStagingOrProdDb(item)
+            const docRef = doc(collection, id)
             await batch.update(docRef, { id: item.id, requestUrl: issueUrl })
         }))
         await batch.commit()
@@ -165,8 +174,7 @@ async function createEntriesBatch(
     incomingEntry.authors = sourcesArrayToFirebaseObject(incomingEntry?.authors)
     incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl)
     incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl)
-
-    const id = incomingEntry.id || generateFirestoreId()
+    const { collection, id } = getStagingOrProdDb(incomingEntry)
     let fileName = incomingEntry.previewImg
     try {
         if (incomingFile?.buffer.length > 0) {
@@ -189,10 +197,7 @@ async function createEntriesBatch(
             updatedAt: Timestamp.now(),
         }
 
-        // Some legacy entries may have ID supplied - so remove it and use doc's id instead.
-        delete newEntry.id
-        // const targetCollection = getStagingOrProdDb(newEntry)
-        docRef = doc(doomPortsCollection, id)
+        docRef = doc(collection, id)
         await batch.set(docRef, newEntry)
         return { 
             batch,
@@ -217,10 +222,15 @@ export async function addEntries(
 
     await Promise.all(items.map(async (entry: IArchiveItem) => {
         try {
-            const authorizedToPublish = IsAuthorized(user?.role, UserRole.Moderator)
-            if (entry.isPublished && !authorizedToPublish) {
+            const authorizedToPublish = IsAuthorized(user?.role, EUserRole.Moderator)
+            if (entry.status !== null && !authorizedToPublish) {
                 throw new Error("Not authorized to submit entries!")
             }
+            // If no status passed, then it is most likely a new entry submitted by a 
+            // user for a review - so can assume "pending" status. Otherwise, probably
+            // a moderator has reviewed and is updating the status of an entry.
+            if (!entry.status)
+                entry.status = EItemStatus.pending
 
             const toUpload = await createEntriesBatch(entry, batch, null)
             result.success.push(toUpload)
@@ -238,7 +248,7 @@ export async function addEntries(
 router.post(
     "/add", 
     authenticate,
-    (req: Request, res: Response, next) => authorizeByRole(req, res, UserRole.User, next),
+    (req: Request, res: Response, next) => authorizeByRole(req, res, EUserRole.User, next),
     upload.single("image"), 
     async (req: Request, res: Response
 ): Promise<any> => {
@@ -253,7 +263,7 @@ router.post(
                         "support if the error persists." 
     try {
         // const batch = writeBatch(fbDb)
-        // const authorizedToPublish = IsAuthorized(user?.role, UserRole.Moderator)
+        // const authorizedToPublish = IsAuthorized(user?.role, EUserRole.Moderator)
 
         // await Promise.all(items.map(async (entry: IArchiveItem) => {
         //     try {

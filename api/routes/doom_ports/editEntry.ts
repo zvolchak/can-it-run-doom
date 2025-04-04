@@ -2,7 +2,7 @@ import { Request, Response, Router } from "express"
 import { IArchiveItem } from "../../@types"
 import {
     updateDoomPort,
-    UserRole,
+    EUserRole,
  } from "../../utils"
  import {
     authenticate,
@@ -13,14 +13,14 @@ const router = Router()
 
 const ALLOWED_KEYS = [
     "title", "description", "authors", "isFirstLevelComplete", "previewImg", 
-    "publishDate", "sourceCodeUrl", "sourcesUrl", "tags", "isPublished"
+    "publishDate", "sourceCodeUrl", "sourcesUrl", "tags", "status"
 ]
 
 
 router.patch(
     "/:id", 
     authenticate, 
-    (req: Request, res: Response, next) => authorizeByRole(req, res, UserRole.Moderator, next),
+    (req: Request, res: Response, next) => authorizeByRole(req, res, EUserRole.Moderator, next),
     async (req: Request, res: Response
 ): Promise<any> => {
     const { id } = req.params
@@ -30,13 +30,13 @@ router.patch(
 
     const user = req.user
 
-    if (newEntry?.hasOwnProperty("isPublished") && user.role !== UserRole.Owner) {
+    if (newEntry?.hasOwnProperty("status") && user.role !== EUserRole.Owner) {
         return res.status(403).json({ 
-            error: "Not authorized to modify publish state of an entry!" 
+            error: "Not authorized to modify status of an entry!" 
         })
     }
 
-    if (newEntry.submittedBy !== user.uid && user.role !== UserRole.Owner) {
+    if (newEntry.submittedBy !== user.uid && user.role !== EUserRole.Owner) {
         return res.status(403).json({ error: "Not authorized to edit someone's entry!" })
     }
 

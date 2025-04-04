@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 dotenv.config({ path: process.env.DOTENV_PATH || ".env" })
 
-import { CookieOptions, Response, } from "express"
+import { CookieOptions, Response, Request, } from "express"
 import { 
   collection, 
   getFirestore, 
@@ -14,6 +14,7 @@ import * as admin from "firebase-admin"
 import { readFileSync } from "fs"
 import { join } from "path"
 import { v4 as uuidv4 } from "uuid"
+import { EUserRole, IsLocalhost } from "."
 
 /* To use Auth and Storage on the Emulator, don't forget to export these vars before running
  * the server:
@@ -65,12 +66,12 @@ if (isDev) {
 export const COLLECTION_NAME = {
   doomPorts: "doomPorts",
   // staging collection is used for reviewing before publishing to prod
-  doomPortsStaging: "doomPorts-Staging",
+  doomPortsIncoming: "doomPorts-Incoming",
   authors: "authors",
 }
 
 export const doomPortsCollection = collection(fbDb, COLLECTION_NAME.doomPorts)
-export const doomPortsStagingCollection = collection(fbDb, COLLECTION_NAME.doomPortsStaging)
+export const doomPortsIncomingCollection = collection(fbDb, COLLECTION_NAME.doomPortsIncoming)
 export const authorsCollection = collection(fbDb, COLLECTION_NAME.authors)
 
 
@@ -158,6 +159,22 @@ export async function getUserByEmail(
         return null
     }
 } // getUserFromToken
+
+
+export function getUserFromRequest(req: Request) {
+    if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
+        return { 
+            uid: "test-uid", 
+            role: EUserRole.Owner, 
+            email: "test@email.com",
+            isVerified: true,
+            sessionExpiresOn: null
+        } as any
+    }
+
+    return req.user
+} // getTestUser
+
 
 
 export { fbApp, fbAuth, fbDb, fbAuthAdmin, fbStorage, }
