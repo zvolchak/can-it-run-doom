@@ -7,7 +7,7 @@ import {
     getUserFromRequest,
     statusStringToEnum,
 } from "../../utils"
-import { EItemStatus } from '@/@types'
+import { EItemStatus } from '../../@types'
 
 
 const router = Router()
@@ -40,11 +40,13 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
     ids = ((ids as string).split(",") || []).filter(id => id)
 
     try {
+        console.info("- 1")
         const snapshot = await getEntriesByStatus({ 
             status: targetStatus, 
             ids, 
             limit: perPage 
         })
+        console.info("- 2")
         let entries = await Promise.all(snapshot.docs.map(async doc => {
             const data = doc.data()
             const rawDate = data.publishDate?.toDate()
@@ -60,6 +62,7 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
             return result
         }))
 
+        console.info("- 3")
         entries.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
 
         return res.status(200).json({ 

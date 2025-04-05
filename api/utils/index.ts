@@ -3,7 +3,7 @@ export * from "./queries"
 export * from "./bodyParsers"
 export * from "./enums"
 
-import { EItemStatus } from "@/@types"
+import { EItemStatus } from "../@types"
 import { Request } from "express"
 
 

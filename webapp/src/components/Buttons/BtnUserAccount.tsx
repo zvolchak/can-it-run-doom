@@ -57,6 +57,7 @@ export function BtnUserAccount({
 
         dispatch(setUserData(null))
         Cookies.remove("user")
+        router.push("/")
     } // onSignOutClicked
 
 
