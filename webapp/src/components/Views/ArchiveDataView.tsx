@@ -23,6 +23,7 @@ import {
     setFiltered,
     setItems,
 } from "@/src/store"
+import Link from "next/link"
 
 
 interface IMainPageProps {
@@ -102,6 +103,11 @@ export function ArchiveDataView({ items }: IMainPageProps) {
 
     return (
         <div className="archive-data-view">
+            <div className="flex justify-center mt-3">
+                <Link className="doom-btn mr-4" href="/entries/add">
+                    Add Entry
+                </Link>
+            </div>
             <div className="h-10">
                 <Pagination 
                     currentPage={currentPage} 

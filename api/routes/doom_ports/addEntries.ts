@@ -222,7 +222,7 @@ export async function addEntries(
 
     await Promise.all(items.map(async (entry: IArchiveItem) => {
         try {
-            const authorizedToPublish = IsAuthorized(user?.role, EUserRole.Moderator)
+            const authorizedToPublish = IsAuthorized(user?.role, EUserRole.User)
             if (entry.status !== null && !authorizedToPublish) {
                 throw new Error("Not authorized to submit entries!")
             }

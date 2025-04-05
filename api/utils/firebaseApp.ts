@@ -164,11 +164,12 @@ export async function getUserByEmail(
 export function getUserFromRequest(req: Request) {
     if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
         return { 
-            uid: "test-uid", 
+            id: "test-uid", 
             role: EUserRole.Owner, 
+            displayName: "Tester",
             email: "test@email.com",
             isVerified: true,
-            sessionExpiresOn: null
+            sessionExpiresOn: new Date("01/01/2030")
         } as any
     }
 

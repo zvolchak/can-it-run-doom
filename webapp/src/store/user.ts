@@ -12,6 +12,7 @@ function initDefaultUserData(): IUserData {
         id: "",
         email: "",
         isVerified: false,
+        displayName: "",
         sessionId: "",
     }
 }

@@ -20,7 +20,7 @@ const ALLOWED_KEYS = [
 router.patch(
     "/:id", 
     authenticate, 
-    (req: Request, res: Response, next) => authorizeByRole(req, res, EUserRole.Moderator, next),
+    (req: Request, res: Response, next) => authorizeByRole(req, res, EUserRole.User, next),
     async (req: Request, res: Response
 ): Promise<any> => {
     const { id } = req.params

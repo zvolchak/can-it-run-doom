@@ -1,28 +1,15 @@
-import { useEffect, useState } from "react"
-import { useSelector, useDispatch } from "react-redux"
 import { getMainLayout } from "@/src/layouts"
 import { 
     IArchiveItem,
-    IFiltersStoreState,
 } from "@/src/types"
 import {
     ItemCard,
-    BtnScrollTop,
-    Pagination,
-    FiltersMenu,
+    LoadingIcon,
+    Modal,
 } from "@/src/components"
-import {
-    paginate,
-    onSearch,
-    filterById,
-    filterItemsByTags,
-    filterItemsByAuthors,
-} from "@/src/utils"
-import { 
-    RootState,
-    setFiltered,
-    setItems,
-} from "@/src/store"
+import { reviewEntry } from "@/src/api"
+import { useRouter } from "next/router"
+import { useState } from "react"
 
 
 interface IMainPageProps {
@@ -30,110 +17,124 @@ interface IMainPageProps {
 }
 
 
-function filterItems({
-    items,
-    searchQuery,
-    queryTags,
-    idQuery,
-    authorQuery,
-    yearQuery,
-}) {
-    if (searchQuery && searchQuery !== "")
-        items = onSearch(items, searchQuery)
-    if (authorQuery && authorQuery.length > 0)
-        items = filterItemsByAuthors(items, authorQuery)
-    if (idQuery && idQuery.length > 0)
-        items = filterById(items, idQuery)
-    if (queryTags && queryTags.length > 0)
-        items = filterItemsByTags(items, queryTags)
-
-    if (yearQuery?.start || yearQuery?.end) {
-        items = items?.filter((item: IArchiveItem) => {
-            const itemYear = new Date(item.publishDate).getFullYear()
-            const endYear = Number(yearQuery.end) || new Date().getFullYear()
-            return itemYear >= Number(yearQuery.start) && itemYear <= endYear
-        }) || []
-    }
-    return items
-} // filterItems
-
-
 export function ReviewEntriesView({ items }: IMainPageProps) {
-    const dispatch = useDispatch()
-    const itemsPerPage = 20
+    const router = useRouter()
+    const [isLoading, setIsLoading] = useState(false)
+    const [idsToUpdate, setIdsToUpdate] = useState<string[]>([])
+    const [statusToApply, setStatusToApply] = useState<string | null>(null)
+    const [isConfirmModal, setIsConfirmModal] = useState<boolean>(false)
+    const allIds = items.map(item => item.id)
 
-    const filters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
-    const filteredItems: IArchiveItem[] = useSelector((state: RootState) => state.submissions.filtered)
-    // const totalItemsSize: number = useSelector((state: RootState) => state.submissions.totalSize)
-    const currentPage = filters.page || 1
+    function onConfirmBtnClicked(ids: string[], status: string) {
+        if (!status)
+            return
 
-    const [numberOfPages, setNumberOfPages] = useState(Math.ceil(filteredItems.length / itemsPerPage))
-
-    useEffect(() => {
-        let filtered = filterItems({
-            items: items,
-            searchQuery: filters.searchString,
-            queryTags: filters.tags,
-            idQuery: filters.ids,
-            authorQuery: filters.authors,
-            yearQuery: filters.years,
+        setIsLoading(true)
+        reviewEntry({ ids, status }).finally(() => {
+            setIsLoading(false)
+            setIsConfirmModal(false)
+            router.reload()
         })
+    }
 
-        const pages = Math.ceil(filtered.length / itemsPerPage)
-        setNumberOfPages(pages)
-        filtered = paginate(filtered, currentPage - 1, itemsPerPage)
 
-        dispatch(setItems(items))
-        dispatch(setFiltered(filtered))
-    }, [items, filters, dispatch, setNumberOfPages, currentPage])
+    function onDecisionSelected(ids: string[], status: string) {
+        setIdsToUpdate(ids)
+        setStatusToApply(status)
+        setIsConfirmModal(true)
+    }
 
-    if (!items || items?.length === 0) {
+
+    function ActionDropdown({ emptyOption = "",  onChange = null }) {
         return (
-            <div className="
-                h-screen w-full justify-center mt-10 flex flex-row text-center text-white
-                "
-            >
-                Not items found. If this error persists, please contact support 
-            through Discord channel or email.
+            <div>
+                <select 
+                    className="doom-select " 
+                    id="status" 
+                    name="status"
+                    onChange={onChange}
+                >
+                    { !isLoading &&
+                        <>
+                            <option value="">{emptyOption}</option>
+                            <option value="approved">Approve</option>
+                            <option value="rejected">Reject</option>
+                        </>
+                    }
+                    
+                    {
+                        isLoading &&
+                        <LoadingIcon />
+                    }
+                </select>
             </div>
         )
     }
 
 
     return (
-        <div className="archive-data-view">
-            <div className="h-10">
-                <Pagination 
-                    currentPage={currentPage} 
-                    numberOfPages={numberOfPages} 
-                    className="my-4"
-                />
-            </div>
-
-            <FiltersMenu />
-
+        <div className="">
             <div className="
                 min-h-screen
                 grid content-start justify-center gap-14 mt-5
                 sm:gap-6"
             >
+                <Modal 
+                    open={isConfirmModal}
+                    onClose={() => setIsConfirmModal(false)}
+                >
+                    <div className="flex flex-col justify-between items-center">
+                        <div className="text-xl">
+                            You are about to apply &quot;<b>{statusToApply}&quot;</b> status to
+                            <b>&nbsp;[{idsToUpdate.join(", ")}]</b> id{items.length > 1 ? "s" : ""}.
+                            <br />
+                            Confirm to continue...
+                        </div>
+                        <div className="w-full flex justify-between mt-10">
+                            <button 
+                                className="doom-secondary-btn w-24"
+                                onClick={() => onConfirmBtnClicked(idsToUpdate, statusToApply)}
+                            >
+                                Confirm
+                            </button>
+
+                            <button 
+                                className="doom-action-btn w-24"
+                                onClick={() => setIsConfirmModal(false)}
+                            >
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+
+                <div className="flex flex-row text-white items-center gap-5">
+                    <ActionDropdown 
+                        emptyOption="Apply To All"
+                        onChange={(e) => onDecisionSelected(allIds, e.target.value)}
+                    />
+                </div>
+
+                <hr className="my-4" />
+                
                 {
-                    filteredItems.map((item: IArchiveItem) => 
-                        <ItemCard 
-                            key={`doom port item for ${item.title}`} item={item} 
-                            className="justify-self-center px-4"
-                        />
+                    items.map((item: IArchiveItem) =>
+                        <div 
+                            key={`doom port item for ${item.title}`}
+                            className="flex flex-col"
+                        >
+                            <ActionDropdown
+                                emptyOption="Review"
+                                onChange={(e) => onDecisionSelected([item.id], e.target.value)}
+                            />
+                            <ItemCard 
+                                item={item} 
+                                className="justify-self-center px-4"
+                            />
+                        </div>
                     )
                 }
             </div>
-
-            <Pagination 
-                currentPage={currentPage} 
-                numberOfPages={numberOfPages} 
-                className="my-8"
-            />
-
-            <BtnScrollTop className="bottom-5 sm:bottom-10 right-10 fixed z-10" />
         </div>
     )
 } // MainPage

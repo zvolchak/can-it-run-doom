@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react"
 import { useRouter } from "next/router"
+import { CgProfile } from "react-icons/cg"
 import Link from "next/link"
 import { useSelector, useDispatch, } from "react-redux"
 import { RootState } from "@/src/store"
@@ -25,7 +26,7 @@ export function BtnUserAccount({
     const dispatch = useDispatch()
     const [isOpen, setIsOpen] = useState(false)
     const user: IUserData = useSelector((state: RootState) => state.user.data)
-    const btnText = user?.id ? "Account" : "Sign In"
+    const btnText = user?.id ? user?.displayName || "Account" : "Sign In"
     const menuRef = useRef(null)
 
     const listItems = [
@@ -74,9 +75,15 @@ export function BtnUserAccount({
     return (
         <div className="relative" ref={menuRef}>
             <button 
-                className="doom-btn doom-color-secondary doom-text-shadow-danger"
+                className="
+                    flex flex-row gap-2 items-center 
+                    doom-btn doom-color-secondary doom-text-shadow-danger
+                "
                 onClick={() => onBtnClicked()}
             >
+                { btnText.toLowerCase() !== "sign in" &&
+                    <CgProfile />
+                }
                 {btnText}
             </button>
             {isOpen && user?.id && (

@@ -76,37 +76,37 @@ router.post(
     if (!ids || ids?.length === 0)
         return res.status(400).json({ error: "Missing list of ids!" })
 
-    const snapshot = await getEntriesByStatus({ status: EItemStatus.pending, ids })
-    const entries = await Promise.all(snapshot.docs.map(async doc => {
-        const data = doc.data()
-        data.status = EItemStatus.published
-        data.id = data.id || generateFirestoreId()
-        if (!data.editHistory)
-            data.editHistory = []
-
-        data.editHistory.push(doc.id)
-        return data
-    }))
-
-    let result: IEntryAddedResponse = null
     try {
+        const snapshot = await getEntriesByStatus({ status: EItemStatus.pending, ids })
+        const entries = await Promise.all(snapshot.docs.map(async doc => {
+            const data = doc.data()
+            data.status = EItemStatus.published
+            data.id = data.id || generateFirestoreId()
+            if (!data.editHistory)
+                data.editHistory = []
+
+            data.editHistory.push(doc.id)
+            return data
+        }))
+
+        let result: IEntryAddedResponse = null
         result = await approveEntries(entries, user, status)
+        
+        const statusCode = result?.failed.length === 0 ? 201 : 206
+        if (result.success.length === 0) {
+            return res.status(400).json({ error: "No entries has been processed!", ...result })
+        }
+        
+        return res.status(statusCode).json({ 
+            message: "Entries has been reviewed",
+            success: result?.success.map(s => s.id),
+            failed: result?.failed.map(f => f.id || f.title), 
+            // requestUrl: githubIssue?.url,
+        })
     } catch (error) {
         console.error(error)
         return res.status(500).json({ error: "Failed to update items status" })
     }
-
-    const statusCode = result?.failed.length === 0 ? 201 : 206
-    if (result.success.length === 0) {
-       return res.status(400).json({ error: "No entries has been processed!", ...result })
-    }
-
-    return res.status(statusCode).json({ 
-        message: "Entries has been reviewed",
-        success: result?.success.map(s => s.id),
-        failed: result?.failed.map(f => f.id || f.title), 
-        // requestUrl: githubIssue?.url,
-    })
 })
 
  

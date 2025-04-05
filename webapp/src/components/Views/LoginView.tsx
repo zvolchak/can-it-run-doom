@@ -53,7 +53,9 @@ export function LoginView({
             }
             user = {
                 id: userData.user.id,
+                displayName: userData.user.displayName,
                 email: userData.user.email,
+                role: userData.user.role,
                 isVerified: userData.user.isVerified,
                 sessionExpiresOn: userData.user.sessionExpiresOn,
             }

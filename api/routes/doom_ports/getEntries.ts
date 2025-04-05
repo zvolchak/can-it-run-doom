@@ -34,7 +34,7 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
     if (targetStatus !== EItemStatus.published && user?.role !== EUserRole.Owner) {
         return res.status(403).json({ error: "Not authorized to query by status!" })
     }
-
+    
     perPage = parseInt(perPage as string, 10)
     page = parseInt(page as string, 10)
     ids = ((ids as string).split(",") || []).filter(id => id)
@@ -45,15 +45,14 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
             ids, 
             limit: perPage 
         })
-
         let entries = await Promise.all(snapshot.docs.map(async doc => {
             const data = doc.data()
             const rawDate = data.publishDate?.toDate()
             // const previewImg = await getImageFromStorage(data.previewImg)
             const publishDate = rawDate ? dayjs(rawDate).format("MMMM D, YYYY") : null
             const result =  { 
-                id: doc.id, 
                 ...data,
+                id: doc.id, 
                 publishDate,
                 createdAt: data.createdAt?.toDate() || null,
                 updatedAt: data.updatedAt?.toDate() || null,
