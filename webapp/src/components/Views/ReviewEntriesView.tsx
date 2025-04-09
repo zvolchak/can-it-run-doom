@@ -49,7 +49,7 @@ export function ReviewEntriesView({ items }: IMainPageProps) {
         return (
             <div>
                 <select 
-                    className="doom-select " 
+                    className="doom-select" 
                     id="status" 
                     name="status"
                     onChange={onChange}
@@ -81,15 +81,15 @@ export function ReviewEntriesView({ items }: IMainPageProps) {
             >
                 <Modal 
                     open={isConfirmModal}
+                    title={`You are about to apply "${statusToApply}" status to the following ID list`}
                     onClose={() => setIsConfirmModal(false)}
                 >
                     <div className="flex flex-col justify-between items-center">
-                        <div className="text-xl">
-                            You are about to apply &quot;<b>{statusToApply}&quot;</b> status to
-                            <b>&nbsp;[{idsToUpdate.join(", ")}]</b> id{items.length > 1 ? "s" : ""}.
+                        <div className="text-xl  overflow-auto max-h-80">
+                            {idsToUpdate.join(", ")} id{items.length > 1 ? "s" : ""}.
                             <br />
-                            Confirm to continue...
                         </div>
+
                         <div className="w-full flex justify-between mt-10">
                             <button 
                                 className="doom-secondary-btn w-24"
@@ -129,7 +129,7 @@ export function ReviewEntriesView({ items }: IMainPageProps) {
                             />
                             <ItemCard 
                                 item={item} 
-                                className="justify-self-center px-4"
+                                className="justify-self-center px-4 w-full"
                             />
                         </div>
                     )

@@ -140,9 +140,8 @@ export async function createToken(uid: string, claims: object = {}) {
 
 
 export function generateFirestoreId() {
-    const timestamp = Date.now().toString(36)
     const randomPart = uuidv4().replace(/-/g, "").substring(0, 10)
-    return timestamp + randomPart
+    return randomPart
 }
 
 

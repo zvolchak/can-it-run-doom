@@ -109,16 +109,18 @@ export async function downloadImgIntoArrayBuffer(fileUrl: string) {
  *              track which entry belong to which edits.
 */
 function getStagingOrProdDb(item: IArchiveItem) {
-    if (item.status === EItemStatus.published) {
-        return { collection: doomPortsCollection, id: item.id}
-    } else {
-        return { collection: doomPortsIncomingCollection, id: generateFirestoreId()}
-    }
+    const id = item.id || generateFirestoreId()
+    const collection = item.status === EItemStatus.published ? 
+        doomPortsCollection : doomPortsIncomingCollection
+    return { collection, id }
 } // getStagingOrProdDb
 
 
 async function createGithubIssue(items: IArchiveItem[]) {
     const token = process.env.GITHUB_TOKEN
+    if (!token)
+        return { url: null }
+    
     // Remove fields that could potentially be considered sensitive to share publicly.
     items.forEach(i => {
         delete i.createdBy
@@ -162,10 +164,11 @@ async function createGithubIssue(items: IArchiveItem[]) {
 } // createGithubIssue
 
 
-async function createEntriesBatch(
+export async function createEntriesBatch(
     incomingEntry: IArchiveItem, 
     batch: WriteBatch, 
-    incomingFile): Promise<IEntryBatch> {
+    incomingFile
+): Promise<IEntryBatch> {
     // Handle URL previewImg by downloading the file and converting it into an array buffer.
     // if (!incomingFile && incomingEntry.previewImg?.startsWith("http")) {
     //     incomingFile = await downloadImgIntoArrayBuffer(incomingEntry.previewImg)
@@ -174,12 +177,17 @@ async function createEntriesBatch(
     incomingEntry.authors = sourcesArrayToFirebaseObject(incomingEntry?.authors)
     incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl)
     incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl)
-    const { collection, id } = getStagingOrProdDb(incomingEntry)
+    if (!incomingEntry.editHistory)
+        incomingEntry.editHistory = []
+    
+    const { collection } = getStagingOrProdDb(incomingEntry)
+    const entryId = incomingEntry.id || generateFirestoreId()
+    // incomingEntry.id = id
     let fileName = incomingEntry.previewImg
     try {
         if (incomingFile?.buffer.length > 0) {
             const imageFileType = getFileType(incomingFile?.buffer)
-            fileName = `${id}.${imageFileType}`
+            fileName = `${entryId}.${imageFileType}`
             fileName = await saveFileToStorage(fileName, incomingFile)
         }
     } catch (error) {
@@ -191,17 +199,24 @@ async function createEntriesBatch(
     try {
         const newEntry: IArchiveItem = {
             ...incomingEntry,
+            id: entryId,
             previewImg: fileName,
             submittedBy: null,
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),
         }
+        const docId = incomingEntry.status !== EItemStatus.pending ? entryId : generateFirestoreId()
+        docRef = doc(collection, docId)
+        // When id is set on the incoming entry - then it will be used as the final ID
+        // of the entry when it is approved. Otherwise, an undefined value is set to the
+        // entry that will break the batch.set operation. So need to clean it up.
+        // if (newEntry.id === undefined || newEntry.id === null)
+        //     delete newEntry.id
 
-        docRef = doc(collection, id)
         await batch.set(docRef, newEntry)
         return { 
             batch,
-            id,
+            id: docId,
             entry: newEntry,  
             docRef, 
             file: { ...incomingFile, filename: fileName }
@@ -293,7 +308,7 @@ router.post(
         
         let githubIssue = null
         // Create a github isue in Prod env to track and notify about new submissions.
-        if (process.env.NODE_ENV === "production") {
+        if (process.env.NODE_ENV !== "development" && process.env.GITHUB_TOKEN) {
             githubIssue = await createGithubIssue(
                 result.success.map(s => ({ ...s.entry, id: s.id }))
             )

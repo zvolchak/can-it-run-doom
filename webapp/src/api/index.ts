@@ -160,7 +160,8 @@ export async function reviewEntry({ ids, status }) {
         const url = `/doom_ports/review`
         const response = await apiClient.post(url, body)
         return response?.data?.items || []
-    } catch {
+    } catch (error) {
+        console.error(error)
         return []
     }
 } // reviewEntry
