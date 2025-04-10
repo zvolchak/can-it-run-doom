@@ -64,7 +64,7 @@ export function LoginView({
                 // chose to not remember his auth.
                 expires: isRememberMe ? new Date(user.sessionExpiresOn) : null,
                 secure: process.env.NODE_ENV === "production",
-                sameSite: "strict",
+                sameSite: "none",
             })
         } // user
 

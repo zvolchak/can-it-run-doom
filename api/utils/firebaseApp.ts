@@ -81,11 +81,12 @@ export async function createSessionToken(res: Response, token: string) {
     const sessionCookie = await fbAuthAdmin.createSessionCookie(token, { expiresIn })
 
     const setting: CookieOptions = {
-        httpOnly: true,
+        httpOnly: false,
         secure: !(process.env.NODE_ENV === "development"),
         sameSite: "none",
         maxAge: expiresIn,
     }
+    console.info(setting)
     res.cookie("session", sessionCookie, setting)
 
     const expiresOn = new Date(Date.now() + expiresIn)
@@ -95,7 +96,7 @@ export async function createSessionToken(res: Response, token: string) {
 
 export async function clearSessionToken(res: Response) {
     res.clearCookie("session", {
-        httpOnly: true,
+        httpOnly: false,
         secure: !(process.env.NODE_ENV === "development"),
         sameSite: "none",
     })

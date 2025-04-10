@@ -66,17 +66,18 @@ export async function fetchDoomPorts({ status = "published" } = {}):
 
 
 export async function validateSession(): Promise<IUserAuthResponse> {
-    const url = "/user/login/validate"
+    // const url = "/user/login/validate"
     const user = JSON.parse(Cookies.get("user") || null) as IUserAuth
     if (user && !IsSessionExpired())
         return { message: "", user }
 
-    try {
-        const response = await apiClient.post(url)
-        return response.data
-    } catch {
-        return { message: "Failed to validate session", user: null }
-    }
+    return { message: "", user: null }
+    // try {
+    //     const response = await apiClient.post(url)
+    //     return response.data
+    // } catch {
+    //     return { message: "Failed to validate session", user: null }
+    // }
 }
 
 

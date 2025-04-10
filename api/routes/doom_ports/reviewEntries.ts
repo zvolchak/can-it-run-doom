@@ -158,7 +158,6 @@ router.post(
         return res.status(400).json({ error: "Missing list of ids!" })
 
     try {
-        // const snapshot = await getEntriesByStatus({ status: EItemStatus.pending, ids })
         const snapshots = await fetchIdsInChunks(ids)
         const entries = await Promise.all(snapshots.map(async doc => {
             const data = doc.data()
@@ -178,14 +177,13 @@ router.post(
             return res.status(400).json({ error: "No entries has been processed!", ...result })
         }
         
-        // if (!IsLocalhost(req)) {
+        if (!IsLocalhost(req)) {
             await Promise.all(result.success.map(async (batch) => {
-                console.debug(batch.entry)
                 const hasIssueReolved = await resolveIssue(batch.entry)
                 if (hasIssueReolved)
                     await sendDiscordNotification(batch.entry)
             }))
-        // }
+        }
 
         return res.status(statusCode).json({ 
             message: "Entries has been reviewed",

@@ -58,6 +58,9 @@ export async function authorizeByRole(
             targetRole
         )
 
+        console.info(req.user)
+        console.info(isAuthorized)
+        
         const isOwner = process.env.FB_ROOT_UID?.split(",").indexOf(req.user.uid) >= 0
         if (!isAuthorized && !isOwner)
             throw new Error("Access denied!")
