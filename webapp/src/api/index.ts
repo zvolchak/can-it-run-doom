@@ -145,6 +145,9 @@ export async function addNewEntry(formData) {
     // }
     try {
         const response = await apiClient.post(url, formData)
+        if (response.status !== 200)
+            throw new Error("Failed to add new entry")
+
         return response
     } catch (error) {
         return error.response

@@ -31,7 +31,7 @@ export function BtnUserAccount({
 
     const listItems = [
         { title: "Account", href: "/account" },
-        { title: "Add Entry", href: "/entries/add" },
+        // { title: "Add Entry", href: "/entries/add" },
         { title: "Sign Out", href: "/account", onClick: onSignOutClicked, },
     ]
 
@@ -87,6 +87,7 @@ export function BtnUserAccount({
                 }
                 {btnText}
             </button>
+            
             {isOpen && user?.id && (
                 <div className={`
                     absolute 

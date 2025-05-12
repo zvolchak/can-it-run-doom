@@ -237,10 +237,10 @@ export async function addEntries(
 
     await Promise.all(items.map(async (entry: IArchiveItem) => {
         try {
-            const authorizedToPublish = IsAuthorized(user?.role, EUserRole.User)
-            if (entry.status !== null && !authorizedToPublish) {
-                throw new Error("Not authorized to submit entries!")
-            }
+            // const authorizedToPublish = IsAuthorized(user?.role, EUserRole.User)
+            // if (entry.status !== null && !authorizedToPublish) {
+            //     throw new Error("Not authorized to submit entries!")
+            // }
             // If no status passed, then it is most likely a new entry submitted by a 
             // user for a review - so can assume "pending" status. Otherwise, probably
             // a moderator has reviewed and is updating the status of an entry.
@@ -261,22 +261,22 @@ export async function addEntries(
 
 
 router.post(
-    "/add", 
-    authenticate,
-    (req: Request, res: Response, next) => authorizeByRole(req, res, EUserRole.User, next),
+    "/add",  
     upload.single("image"), 
     async (req: Request, res: Response
 ): Promise<any> => {
-    const items: IArchiveItem[] = await buildArchiveItem(req.body?.items, req.user)
-    const user = req.user
-
-    if (!items || items.length === 0) 
-        return res.status(400).json({ error: "Missing required fields!" })
-
-    // const result = { success: [], failed: [] }
     const errorMessage = "Failed to add a new entry! Please, try again or contact " +
-                        "support if the error persists." 
+        "support if the error persists." 
+
     try {
+        const items: IArchiveItem[] = await buildArchiveItem(req.body?.items, req.user)
+        const user = req.user
+
+        if (!items || items.length === 0) 
+            return res.status(400).json({ error: "Missing required fields!" })
+
+        // const result = { success: [], failed: [] }
+
         // const batch = writeBatch(fbDb)
         // const authorizedToPublish = IsAuthorized(user?.role, EUserRole.Moderator)
 

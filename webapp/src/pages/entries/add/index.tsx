@@ -10,7 +10,7 @@ import {
     ItemCard,
 } from "@/src/components"
 import { RootState, setNewEntryForm, setUplaodStatus } from "@/src/store"
-import { IsSessionExpired } from "@/src/utils"
+// import { IsSessionExpired } from "@/src/utils"
 
 
 export default function AddEntryPage() {
@@ -24,8 +24,8 @@ export default function AddEntryPage() {
     const [isShowPreview, setIsShowPreview] = useState<boolean>(true)
 
     useEffect(() => {
-        if (IsSessionExpired())
-            router.push("/login")
+        // if (IsSessionExpired())
+        //     router.push("/login")
 
         const handleRouteChange = () => {
             // Reset form state on change of route, so that it is fresh when returning

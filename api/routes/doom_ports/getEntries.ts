@@ -63,7 +63,7 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
             return result
         }))
 
-        entries.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
+        entries.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
 
         return res.status(200).json({ 
             items: entries, 

@@ -61,7 +61,7 @@ export async function buildArchiveItem(
             previewImg: item.previewImg || null,
             status: item.status || EItemStatus.pending,
             // isPublished: Boolean(item.isPublished || false),
-            createdBy: user.uid || null,
+            createdBy: user?.uid || null,
             updatedBy: user?.uid ? [user.uid] : [],
             createdAt: Timestamp.now(),
             updatedAt: Timestamp.now(),

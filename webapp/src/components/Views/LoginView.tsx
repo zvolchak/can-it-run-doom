@@ -43,6 +43,7 @@ export function LoginView({
         setIsLoading(true)
         const userCookie = Cookies.get("user")
         let user = (userCookie && JSON.parse(userCookie)) || null
+        const isDev = process.env.NODE_ENV === "development"
 
         if (!user || IsSessionExpired()) {
             const userData = await loginWithEmailAndPassword(data.email, data.password)
@@ -63,8 +64,8 @@ export function LoginView({
                 // cleanup cookie on browser closed by setting expiration to 0, if user 
                 // chose to not remember his auth.
                 expires: isRememberMe ? new Date(user.sessionExpiresOn) : null,
-                secure: process.env.NODE_ENV === "production",
-                sameSite: "none",
+                secure: !isDev,
+                sameSite: isDev ? "lax" : "none",
             })
         } // user
 

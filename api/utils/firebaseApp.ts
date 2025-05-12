@@ -79,11 +79,11 @@ export const authorsCollection = collection(fbDb, COLLECTION_NAME.authors)
 export async function createSessionToken(res: Response, token: string) {
     const expiresIn = SESSION_COOKIE_LIFESPAN
     const sessionCookie = await fbAuthAdmin.createSessionCookie(token, { expiresIn })
-
+    const isDev = process.env.NODE_ENV === "development"
     const setting: CookieOptions = {
         httpOnly: true,
-        secure: process.env.NODE_ENV !== "development",
-        sameSite: "none",
+        secure: !isDev,
+        sameSite: isDev ? "lax" : "none",
         maxAge: expiresIn,
     }
     console.info(setting)
@@ -95,10 +95,11 @@ export async function createSessionToken(res: Response, token: string) {
 
 
 export async function clearSessionToken(res: Response) {
+    const isDev = process.env.NODE_ENV === "development"
     res.clearCookie("session", {
         httpOnly: true,
-        secure: !(process.env.NODE_ENV === "development"),
-        sameSite: "none",
+        secure: !isDev,
+        sameSite: isDev ? "lax" : "none",
     })
     return res
 } // clearSessionToken

@@ -105,7 +105,7 @@ export function ArchiveDataView({ items }: IMainPageProps) {
         <div className="archive-data-view">
             <div className="flex justify-center mt-3">
                 <Link className="doom-btn mr-4" href="/entries/add">
-                    Add Entry
+                    Add Entry (no login required)
                 </Link>
             </div>
             <div className="h-10">
