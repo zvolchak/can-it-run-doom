@@ -209,7 +209,6 @@ router.post(
     upload.single("image"), 
     async (req: Request, res: Response
 ): Promise<any> => {
-    console.info("????????????????????? add endpoint")
     const items: IArchiveItem[] = await buildArchiveItem(req.body?.items, req.user)
     const user = req.user
 
