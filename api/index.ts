@@ -48,7 +48,7 @@ app.use((req, res, next) => {
 
 const CORS_ORIGIN = (process.env.CORS_ORIGIN || "http://localhost:3000").split(",").map(origin => origin.trim())
 app.use(cors({
-    origin: CORS_ORIGIN,              
+    origin: "https://canitrundoom.org",              
     credentials: true,
 }))
 // app.options("*", cors({ origin: CORS_ORIGIN, credentials: true }))

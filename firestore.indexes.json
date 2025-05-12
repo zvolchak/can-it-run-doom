@@ -5,7 +5,7 @@
         "queryScope": "COLLECTION",
         "fields": [
           { "fieldPath": "status", "order": "ASCENDING" },
-          { "fieldPath": "publishDate", "order": "DESCENDING" }
+          { "fieldPath": "updatedAt", "order": "DESCENDING" }
         ]
       },
       {
@@ -13,7 +13,7 @@
         "queryScope": "COLLECTION",
         "fields": [
           { "fieldPath": "status", "order": "ASCENDING" },
-          { "fieldPath": "publishDate", "order": "DESCENDING" }
+          { "fieldPath": "updatedAt", "order": "DESCENDING" }
         ]
       }
     ],

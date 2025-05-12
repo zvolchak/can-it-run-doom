@@ -81,8 +81,8 @@ export async function createSessionToken(res: Response, token: string) {
     const sessionCookie = await fbAuthAdmin.createSessionCookie(token, { expiresIn })
 
     const setting: CookieOptions = {
-        httpOnly: false,
-        secure: !(process.env.NODE_ENV === "development"),
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
         sameSite: "none",
         maxAge: expiresIn,
     }
@@ -96,7 +96,7 @@ export async function createSessionToken(res: Response, token: string) {
 
 export async function clearSessionToken(res: Response) {
     res.clearCookie("session", {
-        httpOnly: false,
+        httpOnly: true,
         secure: !(process.env.NODE_ENV === "development"),
         sameSite: "none",
     })

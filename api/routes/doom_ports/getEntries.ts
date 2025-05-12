@@ -32,8 +32,7 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
     const targetStatus = statusStringToEnum(status as string)
 
     const user = getUserFromRequest(req)
-    console.info("----")
-    console.info(user)
+
     if (targetStatus !== EItemStatus.published && 
         !IsAuthorized(user?.role, EUserRole.Moderator)) {
         return res.status(403).json({ error: "Not authorized to query by status!" })

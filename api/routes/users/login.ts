@@ -1,13 +1,10 @@
 import { Request, Response, Router } from "express"
 import {
     fbAuth,
-    createToken,
     verifySessionCookie,
     createSessionToken,
-    clearSessionToken,
     SESSION_COOKIE_LIFESPAN,
     IsLocalhost,
-    EUserRole,
     getUserFromRequest,
 } from "../../utils"
 import { IUserAuthResponse } from "../../@types"

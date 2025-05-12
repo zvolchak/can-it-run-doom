@@ -54,7 +54,7 @@ export async function getEntriesByStatus({
 } = {}) {
     const conditions = [
         where("status", "==", status),
-        orderBy("publishDate", "desc"),
+        orderBy("updatedAt", "desc"),
         fbLimit(limit)  
     ]
     

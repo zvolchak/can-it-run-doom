@@ -42,6 +42,13 @@ async function resolveIssue(entry: IArchiveItem): Promise<boolean> {
     if (!entry?.requestUrl)
         return false
 
+    console.info(`- Attempting to resolve an issue "${entry.requestUrl}" for entry ${entry.id}`)
+    const token = process.env.GITHUB_TOKEN
+    if (!token) {
+        console.warn(`Missing github token to resolve an issue ${entry?.id}: ${entry?.requestUrl}`)
+        return
+    }
+
     let comment = { body: getSuccessNotification(entry) }
     if (entry.status === EItemStatus.rejected) {
         comment = { 
@@ -50,9 +57,14 @@ async function resolveIssue(entry: IArchiveItem): Promise<boolean> {
         }
     }
 
+    const headers = {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/vnd.github+json"
+    }
+
     try {
-        await axios.post(`${entry.requestUrl}/comments`, comment)
-        await axios.post(entry.requestUrl, { state: "closed"})
+        await axios.post(`${entry.requestUrl}/comments`, comment, { headers })
+        await axios.patch(entry.requestUrl, { state: "closed"}, { headers })
     } catch (error) {
         console.error("Failed to resolve an issue for entry " +
             `${entry.id} : ${entry.requestUrl}`, error)
