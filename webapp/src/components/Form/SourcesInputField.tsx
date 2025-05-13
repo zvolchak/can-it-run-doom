@@ -39,9 +39,11 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
     function removeInputField(index: number) {
         if (index >= inputs.length)
             return
-        setInputs(inputs.splice(index, 1))
 
-        onChange?.(inputs)
+        const newInputs = inputs.filter((_, i) => i !== index); // Create a new array without mutating
+        setInputs(newInputs)
+
+        onChange?.(newInputs)
     } // removeInputField
 
 

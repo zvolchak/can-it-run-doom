@@ -89,3 +89,25 @@ input, textarea {
         background-image: url("/icons/doom-guy-look-right.png")
     }
 }
+
+
+.doom-select {
+    background-color: $doomColorAccentDarker;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    border: 1px solid $doomColorAccentDarker;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+        background-color: $doomColorAccentDarker;
+        color: $doomColorSecondary;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px $doomColorDangerDark;
+    }
+}

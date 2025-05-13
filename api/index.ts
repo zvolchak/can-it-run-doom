@@ -26,8 +26,8 @@ const logger = winston.createLogger({
 })
 
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 10, // Limit each IP to 10 requests per minute
     message: "Too many requests. Try again in 15 minutes."
 })
 
@@ -47,13 +47,13 @@ app.use((req, res, next) => {
 })
 
 const CORS_ORIGIN = (process.env.CORS_ORIGIN || "http://localhost:3000").split(",").map(origin => origin.trim())
-console.info(CORS_ORIGIN)
 app.use(cors({
     origin: CORS_ORIGIN,              
     credentials: true,
 }))
-app.options("*", cors({ origin: CORS_ORIGIN, credentials: true }))
+// app.options("*", cors({ origin: CORS_ORIGIN, credentials: true }))
 
+console.info(CORS_ORIGIN)
 app.use(BASE_URL, DoomProtsRouter)
 app.use(BASE_URL, AuthorsRouter)
 app.use(BASE_URL, TagsRouter)

@@ -4,6 +4,8 @@ export interface IUserAuth {
     email?: string
     sessionExpiresOn?: Date
     isVerified?: boolean
+    displayName?: string
+    role?: string
 }
 
 export interface IUserAuthResponse {

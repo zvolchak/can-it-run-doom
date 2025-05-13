@@ -2,10 +2,13 @@ import { Request, Response, Router } from "express"
 import { 
     createUserWithEmailAndPassword,
     sendEmailVerification,
+    updateProfile,
     User,
 } from "firebase/auth"
 import {
+    EUserRole,
     fbAuth,
+    fbAuthAdmin,
     getUserByEmail,
 } from "../../utils"
 import { 
@@ -21,13 +24,17 @@ router.post(
     `${ROUTE_NAMESPACE}/email_and_password`, 
     async (req: Request, res: Response): Promise<IUserAuthResponse | any> => 
 {
-    const { email, password } = req.body
+    const { displayName, email, password } = req.body
     if (!email || !password) {
         return res.status(400).json({ error: "Email and password are required!" })
     }
 
     try {
         const userData = await createUserWithEmailAndPassword(fbAuth, email.trim(), password.trim())
+        const customClaims = { role: EUserRole.User }
+
+        await updateProfile(userData.user, { displayName })
+        await fbAuthAdmin.setCustomUserClaims(userData.user.uid, customClaims)
         await sendEmailVerification(userData.user)
 
         const idToken = await userData.user.getIdToken()
@@ -36,6 +43,8 @@ router.post(
             message: "User signed up with email and password.",
             user: {
                 id: userData.user.uid,
+                displayName: displayName,
+                role: customClaims.role,
                 email: userData.user.email,
                 accessToken: idToken
             }

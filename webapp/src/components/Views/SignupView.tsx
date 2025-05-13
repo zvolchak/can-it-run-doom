@@ -12,6 +12,7 @@ import {
 
 
 interface LoginForm {
+    displayName: string
     email: string
     password: string
 }
@@ -35,7 +36,12 @@ export function SignupView({
 
     async function onSubmit(data) {
         setSignupState("loading")
-        const userData = await signupWithEmailAndPassword(data.email, data.password)
+        const body = {
+            displayName: data.displayName,
+            email: data.email, 
+            password: data.password,
+        }
+        const userData = await signupWithEmailAndPassword(body)
         if (userData?.status_code >= 400) {
             setSignupState("failed")
             setErrorMessage(userData.message)
@@ -68,6 +74,30 @@ export function SignupView({
                         {errorMessage}
                     </p>
                 )}
+
+<               div className="mb-4">
+                    <label className="">
+                        Display Name
+                    </label>
+                    <input
+                        type="text"
+                        maxLength={30}
+                        minLength={3}
+                        {...register('displayName', {
+                            required: 'Display Name required',
+                        })}
+                        className="
+                            w-full p-2 text-white border border-gray-500 
+                            rounded-md focus:outline-none
+                        "
+                    />
+                    {errors.displayName && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.displayName.message}
+                        </p>
+                    )}
+                </div>
+
 
                 <div className="mb-4">
                     <label className="">
