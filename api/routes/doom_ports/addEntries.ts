@@ -314,12 +314,13 @@ router.post(
             )
         }
 
-        return res.status(statusCode).json({ 
+        const respData = { 
             message: "Entries added",
             success: result.success.map(s => s.id),
             failed: result.failed.map(f => f.id || f.title), 
             requestUrl: githubIssue?.url,
-        })
+        }
+        return res.status(statusCode).json(respData)
     } catch (error) {
         console.error("Failed to upload items", error)
         return res.status(400).json({ 

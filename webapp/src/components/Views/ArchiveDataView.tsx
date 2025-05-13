@@ -90,12 +90,19 @@ export function ArchiveDataView({ items }: IMainPageProps) {
 
     if (!items || items?.length === 0) {
         return (
-            <div className="
-                h-screen w-full justify-center mt-10 flex flex-row text-center text-white
-                "
-            >
-                Not items found. If this error persists, please contact support 
-            through Discord channel or email.
+            <div>
+                <div className="flex justify-center mt-3">
+                    <Link className="doom-btn mr-4" href="/entries/add">
+                        Add Entry (no login required)
+                    </Link>
+                </div>
+                <div className="
+                    h-screen w-full justify-center mt-10 flex flex-row text-center text-white
+                    "
+                >
+                    No items found. If this error persists, please contact support 
+                through Discord channel or email.
+                </div>
             </div>
         )
     }

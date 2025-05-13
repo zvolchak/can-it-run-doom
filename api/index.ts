@@ -26,8 +26,8 @@ const logger = winston.createLogger({
 })
 
 const limiter = rateLimit({
-	windowMs: 15 * 60 * 1000, // 15 minutes
-	limit: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes).
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 10, // Limit each IP to 10 requests per minute
     message: "Too many requests. Try again in 15 minutes."
 })
 

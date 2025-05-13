@@ -2,17 +2,17 @@ import { createSlice } from "@reduxjs/toolkit"
 import { ISubmissionsStoreState, EProcessingState } from "@/src/types"
 
 
-const entryFormForTesting = {
-    title: "Test",
-    description: "Test description",
-    authors: [{ name: "Test Author", url: "http://test.com" }],
-    sourcesUrl: [{ name: "Test Source", url: "http://test.com" }],
-    sourceCodeUrl: [{ name: "Test Source Code", url: "http://test.com" }],
-    isFirstLevelComplete: false,
-    publishDate: "08/05/2023",
-    tags: ["test", "test2"],
-    previewImg: ""
-}
+// const entryFormForTesting = {
+//     title: "Test",
+//     description: "Test description",
+//     authors: [{ name: "Test Author", url: "http://test.com" }],
+//     sourcesUrl: [{ name: "Test Source", url: "http://test.com" }],
+//     sourceCodeUrl: [{ name: "Test Source Code", url: "http://test.com" }],
+//     isFirstLevelComplete: false,
+//     publishDate: "08/05/2023",
+//     tags: ["test", "test2"],
+//     previewImg: ""
+// }
 
 
 const initialState: ISubmissionsStoreState = {
@@ -24,18 +24,18 @@ const initialState: ISubmissionsStoreState = {
      * or to display the right Success or Error screen when the http request is completed. 
     */
     uploadStatus: { state: EProcessingState.none, message: null },
-    newEntryForm: entryFormForTesting,
-    // newEntryForm: {
-    //     title: "",
-    //     description: "",
-    //     authors: [],
-    //     sourcesUrl: [],
-    //     sourceCodeUrl: [],
-    //     isFirstLevelComplete: false,
-    //     publishDate: null,
-    //     tags: [],
-    //     previewImg: ""
-    // }
+    // newEntryForm: entryFormForTesting,
+    newEntryForm: {
+        title: "",
+        description: "",
+        authors: [],
+        sourcesUrl: [],
+        sourceCodeUrl: [],
+        isFirstLevelComplete: false,
+        publishDate: null,
+        tags: [],
+        previewImg: ""
+    }
 }
 
 const submissionsSlice = createSlice({
