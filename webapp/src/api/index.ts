@@ -50,11 +50,13 @@ apiClient.interceptors.response.use(response => response, async error => {
 //     totalSize?: number
 // }
 
-export async function fetchDoomPorts(): 
+export async function fetchDoomPorts({ status = "published" } = {}): 
     Promise<IArchiveItem[] | null> 
 {
+    const query = `?status=${status}`
+
     try {
-        const url = "/doom_ports"
+        const url = `/doom_ports${query}`
         const response = await apiClient.get(url)
         return response?.data?.items || []
     } catch {
@@ -64,17 +66,18 @@ export async function fetchDoomPorts():
 
 
 export async function validateSession(): Promise<IUserAuthResponse> {
-    const url = "/user/login/validate"
+    // const url = "/user/login/validate"
     const user = JSON.parse(Cookies.get("user") || null) as IUserAuth
     if (user && !IsSessionExpired())
         return { message: "", user }
 
-    try {
-        const response = await apiClient.post(url)
-        return response.data
-    } catch {
-        return { message: "Failed to validate session", user: null }
-    }
+    return { message: "", user: null }
+    // try {
+    //     const response = await apiClient.post(url)
+    //     return response.data
+    // } catch {
+    //     return { message: "Failed to validate session", user: null }
+    // }
 }
 
 
@@ -118,18 +121,18 @@ export async function loginWithEmailAndPassword(email: string, password: string)
 } // loginEmailAndPassword
 
 
-export async function signupWithEmailAndPassword(email: string, password: string): 
+export async function signupWithEmailAndPassword({displayName, email, password }): 
     Promise<IUserAuthResponse> 
 {
     const url = "/user/signup/email_and_password"
     try {
-        const response = await apiClient.post(url, { email, password })
+        const response = await apiClient.post(url, { displayName, email, password })
         return response.data
     } catch (error) {
         return {
             user: null,
-            message: error?.response?.data?.error,
-            status_code: error?.response.status || 100
+            message: error?.response?.data?.error || "Failed to signup",
+            status_code: error?.response?.status || 500
         }
     }
 } // signupWithEmailAndPassword
@@ -142,8 +145,27 @@ export async function addNewEntry(formData) {
     // }
     try {
         const response = await apiClient.post(url, formData)
+        if (response?.status >= 400)
+            throw new Error("Failed to add new entry")
+
         return response
     } catch (error) {
         return error.response
     }
 } // addNewEntry
+
+
+export async function reviewEntry({ ids, status }) {
+    const body = {
+        ids,
+        status
+    }
+    try {
+        const url = `/doom_ports/review`
+        const response = await apiClient.post(url, body)
+        return response?.data?.items || []
+    } catch (error) {
+        console.error(error)
+        return []
+    }
+} // reviewEntry

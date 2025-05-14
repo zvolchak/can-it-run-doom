@@ -114,9 +114,6 @@ export default function MainPage({
                     <>
                         <meta property="og:title" content={getTitle()} />
                         <meta property="og:image" content={selectedItem(selectedIds?.[0]).previewImg} />
-
-                        <meta name="twitter:title" content={getTitle()} />
-                        <meta name="twitter:image" content={selectedItem(selectedIds?.[0]).previewImg} />
                     </>
                 )}
                 {selectedIds?.length >= 1 && items[0].description?.length > 0 && (

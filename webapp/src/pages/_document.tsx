@@ -15,13 +15,13 @@ class MyDocument extends Document {
           <meta name="description" content={description} />
           <meta name="robots" content="index, follow" />
           
-          <meta property="og:title" content="Can It Run Doom? An Archive of All Known Ports" />
+          <meta property="og:title" content={title} />
           <meta property="og:description" content={description}  />
 
-          <meta name="twitter:card" content="summary" />
-          <meta name="twitter:title" content={title} />
-          <meta name="twitter:description" content={description} />
-          <meta name="twitter:image" content="https://canitrundoom.org/doom-placeholder.jpeg" />
+          {/* <meta name="twitter:card" content="summary" /> */}
+          {/* <meta name="twitter:title" content={title} /> */}
+          {/* <meta name="twitter:description" content={description} /> */}
+          {/* <meta name="twitter:image" content="https://canitrundoom.org/doom-placeholder.jpeg" /> */}
           <meta name="twitter:site" content="@gamehoundgames" />
           <meta name="twitter:creator" content="@gamehoundgames" />
 

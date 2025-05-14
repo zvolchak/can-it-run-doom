@@ -1,9 +1,14 @@
 import { Request, Response, Router } from 'express'
 import dayjs from "dayjs"
 import {
+    EUserRole,
     getImageFromStorage,
-    getPublishedEntries,
+    getEntriesByStatus,
+    getUserFromRequest,
+    statusStringToEnum,
+    IsAuthorized,
 } from "../../utils"
+import { EItemStatus } from '../../@types'
 
 
 const router = Router()
@@ -20,27 +25,37 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
     // 5 minutes cache
     const cacheTime = 60 * 5
     res.setHeader("Cache-Control", `public, max-age=${cacheTime}, stale-while-revalidate=600`)
-    let { perPage = 200 , page = 1, ids = ""} = req.query
+    let { perPage = 200 , page = 1, ids = "", status = "" } = req.query
+
+    // Make sure only status times from the enum are passed by the client. If not, can
+    // assume a "published" status, since it is a default, publically accessible status.
+    const targetStatus = statusStringToEnum(status as string)
+
+    const user = getUserFromRequest(req)
+
+    if (targetStatus !== EItemStatus.published && 
+        !IsAuthorized(user?.role, EUserRole.Moderator)) {
+        return res.status(403).json({ error: "Not authorized to query by status!" })
+    }
+    
     perPage = parseInt(perPage as string, 10)
     page = parseInt(page as string, 10)
     ids = ((ids as string).split(",") || []).filter(id => id)
 
     try {
-        // Only get entries that are isPublished = true
-        const snapshot = await getPublishedEntries({ 
-            isPublished: true, 
+        const snapshot = await getEntriesByStatus({ 
+            status: targetStatus, 
             ids, 
             limit: perPage 
         })
-
         let entries = await Promise.all(snapshot.docs.map(async doc => {
             const data = doc.data()
             const rawDate = data.publishDate?.toDate()
             // const previewImg = await getImageFromStorage(data.previewImg)
             const publishDate = rawDate ? dayjs(rawDate).format("MMMM D, YYYY") : null
             const result =  { 
-                id: doc.id, 
                 ...data,
+                id: doc.id, 
                 publishDate,
                 createdAt: data.createdAt?.toDate() || null,
                 updatedAt: data.updatedAt?.toDate() || null,
@@ -48,7 +63,7 @@ router.get('/', async (req: Request, res: Response): Promise<any> => {
             return result
         }))
 
-        entries.sort((a, b) => new Date(b.publishDate).getTime() - new Date(a.publishDate).getTime())
+        entries.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
 
         return res.status(200).json({ 
             items: entries, 

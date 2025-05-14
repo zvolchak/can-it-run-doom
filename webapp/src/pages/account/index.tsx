@@ -1,9 +1,9 @@
 import { useEffect } from "react"
 import { useRouter } from "next/router"
 import { RootState } from "@/src/store"
-import { IUserData } from "@/src/types"
+import { EUserRole, IUserData } from "@/src/types"
 import { useSelector } from "react-redux"
-import { IsSessionExpired } from "@/src/utils"
+import { IsAuthorized, IsSessionExpired } from "@/src/utils"
 
 export default function AccountPage() {
     const router = useRouter()
@@ -33,6 +33,17 @@ export default function AccountPage() {
                         Add New Entry
                     </button>
                 </div>
+
+                { IsAuthorized(user?.role, EUserRole.Moderator) &&
+                    <div>
+                        <button 
+                            className="doom-secondary-btn w-48 mt-24"
+                            onClick={() => router.push("/entries/review")}
+                        >
+                            Review Entries
+                        </button>
+                    </div>
+                }
 
                 <div className="text-white mt-10">
                 { user !== null && !user.isVerified &&

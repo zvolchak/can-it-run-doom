@@ -1,7 +1,7 @@
 import dotenv from "dotenv"
 dotenv.config({ path: process.env.DOTENV_PATH || ".env" })
 
-import { CookieOptions, Response, } from "express"
+import { CookieOptions, Response, Request, } from "express"
 import { 
   collection, 
   getFirestore, 
@@ -14,6 +14,7 @@ import * as admin from "firebase-admin"
 import { readFileSync } from "fs"
 import { join } from "path"
 import { v4 as uuidv4 } from "uuid"
+import { EUserRole, IsLocalhost } from "."
 
 /* To use Auth and Storage on the Emulator, don't forget to export these vars before running
  * the server:
@@ -65,12 +66,12 @@ if (isDev) {
 export const COLLECTION_NAME = {
   doomPorts: "doomPorts",
   // staging collection is used for reviewing before publishing to prod
-  doomPortsStaging: "doomPorts-Staging",
+  doomPortsIncoming: "doomPorts-Incoming",
   authors: "authors",
 }
 
 export const doomPortsCollection = collection(fbDb, COLLECTION_NAME.doomPorts)
-export const doomPortsStagingCollection = collection(fbDb, COLLECTION_NAME.doomPortsStaging)
+export const doomPortsIncomingCollection = collection(fbDb, COLLECTION_NAME.doomPortsIncoming)
 export const authorsCollection = collection(fbDb, COLLECTION_NAME.authors)
 
 
@@ -78,13 +79,14 @@ export const authorsCollection = collection(fbDb, COLLECTION_NAME.authors)
 export async function createSessionToken(res: Response, token: string) {
     const expiresIn = SESSION_COOKIE_LIFESPAN
     const sessionCookie = await fbAuthAdmin.createSessionCookie(token, { expiresIn })
-
+    const isDev = process.env.NODE_ENV === "development"
     const setting: CookieOptions = {
         httpOnly: true,
-        secure: !(process.env.NODE_ENV === "development"),
-        sameSite: "none",
+        secure: !isDev,
+        sameSite: isDev ? "lax" : "none",
         maxAge: expiresIn,
     }
+    console.info(setting)
     res.cookie("session", sessionCookie, setting)
 
     const expiresOn = new Date(Date.now() + expiresIn)
@@ -93,10 +95,11 @@ export async function createSessionToken(res: Response, token: string) {
 
 
 export async function clearSessionToken(res: Response) {
+    const isDev = process.env.NODE_ENV === "development"
     res.clearCookie("session", {
         httpOnly: true,
-        secure: !(process.env.NODE_ENV === "development"),
-        sameSite: "none",
+        secure: !isDev,
+        sameSite: isDev ? "lax" : "none",
     })
     return res
 } // clearSessionToken
@@ -139,9 +142,8 @@ export async function createToken(uid: string, claims: object = {}) {
 
 
 export function generateFirestoreId() {
-    const timestamp = Date.now().toString(36)
     const randomPart = uuidv4().replace(/-/g, "").substring(0, 10)
-    return timestamp + randomPart
+    return randomPart
 }
 
 
@@ -158,6 +160,23 @@ export async function getUserByEmail(
         return null
     }
 } // getUserFromToken
+
+
+export function getUserFromRequest(req: Request) {
+    if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
+        return { 
+            id: "test-uid", 
+            role: EUserRole.Owner, 
+            displayName: "Tester",
+            email: "test@email.com",
+            isVerified: true,
+            sessionExpiresOn: new Date("01/01/2030")
+        } as any
+    }
+
+    return req.user
+} // getTestUser
+
 
 
 export { fbApp, fbAuth, fbDb, fbAuthAdmin, fbStorage, }

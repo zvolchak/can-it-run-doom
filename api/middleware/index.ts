@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction, } from "express"
 import { DecodedIdToken } from "firebase-admin/auth"
 import {
+    getUserFromRequest,
     verifySessionCookie,
 } from "../utils"
 import {
-    UserRole,
+    EUserRole,
     IsAuthorized,
     IsLocalhost,
 } from "../utils"
@@ -23,7 +24,7 @@ async function getUserClaim(req: Request, res: Response): Promise<DecodedIdToken
 
 export async function authenticate(req: Request, res: Response, next: NextFunction) {
     if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
-        req.user = { uid: "test ", role: UserRole.Moderator } as any
+        req.user = getUserFromRequest(req)
         next()
         return
     }
@@ -43,7 +44,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
 export async function authorizeByRole(
     req: Request, 
     res: Response, 
-    targetRole: UserRole, 
+    targetRole: EUserRole, 
     next: NextFunction
 ) {
     if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
@@ -57,6 +58,9 @@ export async function authorizeByRole(
             targetRole
         )
 
+        console.info(req.user)
+        console.info(isAuthorized)
+        
         const isOwner = process.env.FB_ROOT_UID?.split(",").indexOf(req.user.uid) >= 0
         if (!isAuthorized && !isOwner)
             throw new Error("Access denied!")

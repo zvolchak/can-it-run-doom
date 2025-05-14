@@ -1,6 +1,8 @@
 import Cookies from "js-cookie"
 import {
+    EUserRole,
     IUserAuth,
+    UserAccessPriority,
 } from "@/src/types"
 export * from "./itemsFilters"
 
@@ -43,3 +45,17 @@ export function IsSessionExpired() {
 
     return currentTime >= expirationTime
 } // isPastSessionDate
+
+
+export function IsAuthorized(incoming: EUserRole, target: EUserRole) {
+    if (!incoming || !target)
+        return false
+    
+    const incomingIndex = UserAccessPriority.indexOf(incoming)
+    const targetIndex = UserAccessPriority.indexOf(target)
+
+    if (incomingIndex < 0 || targetIndex < 0)
+        return false
+
+    return incomingIndex <= targetIndex
+} // IsAuthorized
