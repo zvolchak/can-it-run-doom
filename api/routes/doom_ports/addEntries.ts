@@ -25,14 +25,7 @@ import {
     doomPortsCollection,
     doomPortsIncomingCollection,
     generateFirestoreId,
-    EUserRole,
-    IsAuthorized,
  } from "../../utils"
- import {
-    authenticate,
-    authorizeByRole,
- } from "../../middleware"
-
 
 const router = Router()
 const upload = multer({ 
@@ -275,27 +268,6 @@ router.post(
         if (!items || items.length === 0) 
             return res.status(400).json({ error: "Missing required fields!" })
 
-        // const result = { success: [], failed: [] }
-
-        // const batch = writeBatch(fbDb)
-        // const authorizedToPublish = IsAuthorized(user?.role, EUserRole.Moderator)
-
-        // await Promise.all(items.map(async (entry: IArchiveItem) => {
-        //     try {
-        //         // Only Moderator+ type user can add an entry to publish directly. Otherwise,
-        //         // an entry needs to be reviewed by a Moderator and published manually.
-        //         if (entry.isPublished && !authorizedToPublish) {
-        //             throw new Error("Not authorized to submit entries!")
-        //         }
-        //         const toUpload = await createEntriesBatch(entry, batch, null)
-        //         result.success.push(toUpload)
-        //     } catch (error) {
-        //         console.error("Failed to add an entry: ", error)
-        //         result.failed.push(entry)
-        //     }
-        // }))
-
-        // await batch.commit()
         const result = await addEntries(items, user)
 
         if (result.success.length === 0) {
