@@ -51,10 +51,10 @@
     color: black;
     border-radius: 0.375rem;
     transition: 0.1s linear;
+    letter-spacing: 1px;    
 
     &:hover {
         @include doom-btn-default-hover;
-        letter-spacing: 2px;
     }
 }
 
@@ -151,7 +151,7 @@
 }
 
 
-.doom-secondary-btn {
+.doom-btn-secondary {
     @extend .doom-btn-primary;
 
     background-color: doom.$doomColorAccent !important;

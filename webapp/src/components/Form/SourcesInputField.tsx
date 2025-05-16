@@ -1,6 +1,7 @@
 import { ISource } from "@/src/types"
 import { useState, forwardRef, useImperativeHandle, } from "react"
 import { FaRegWindowClose } from "react-icons/fa"
+import { MdAdd } from "react-icons/md"
 
 interface ISourcesInputProps {
     value?: ISource[]
@@ -112,9 +113,12 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
                 <button
                     type="button"
                     onClick={() => addInputField(1)}
-                    className="doom-secondary-btn mt-2 w-24"
+                    className="flex gap-2 doom-btn-primary mt-2 w-24"
                 >
-                    Add
+                    <MdAdd size={19} />
+                    <p>
+                        Add
+                    </p>
                 </button>
             </div>
         </div>

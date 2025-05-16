@@ -140,11 +140,11 @@ export async function signupWithEmailAndPassword({displayName, email, password }
 
 export async function addNewEntry(formData) {
     const url = "/doom_ports/add"
-    // const headers = {
-    //     "Content-Type": "multipart/form-data"
-    // }
+    const headers = {
+        "Content-Type": "multipart/form-data"
+    }
     try {
-        const response = await apiClient.post(url, formData)
+        const response = await apiClient.post(url, formData, { headers })
         if (response?.status >= 400)
             throw new Error("Failed to add new entry")
 

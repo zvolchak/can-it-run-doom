@@ -5,7 +5,6 @@ import Link from "next/link"
 import { FaCaretDown } from "react-icons/fa"
 import { FaCaretUp } from "react-icons/fa"
 import { 
-    BtnUserAccount,
     Searchbar, 
 } from "@/src/components"
 import {
@@ -68,30 +67,32 @@ export const Navbar = () => {
                 "
             >
                 { IsHomePage() &&
-                    <button
-                        className="doom-btn flex flex-row gap-1 mr-6 doom-color-slate"
-                        onClick={onFiltersBtnClicked}
-                    >
-                        {   settings?.isFiltersMenu &&
-                            <FaCaretUp size="20px" />
-                        }
-                        {   !settings?.isFiltersMenu &&
-                            <FaCaretDown size="20px" />
-                        }
+                    <>
+                        <button
+                            className="doom-btn flex flex-row gap-1 mr-6 doom-color-slate"
+                            onClick={onFiltersBtnClicked}
+                        >
+                            {   settings?.isFiltersMenu &&
+                                <FaCaretUp size="20px" />
+                            }
+                            {   !settings?.isFiltersMenu &&
+                                <FaCaretDown size="20px" />
+                            }
 
-                        Filter
-                    </button>
+                            Filter
+                        </button>
+                        <Searchbar className="sm:w-2/6 w-full" />
+                    </>
                 }
                 { !IsHomePage() &&
                     <button
-                        className="doom-btn flex flex-row gap-1 mr-6 doom-color-slate"
+                        className="doom-btn flex flex-row gap-1 ml-6 doom-color-slate"
                         onClick={() => router.push("/")}
                     >
                         Home
                     </button>
 
                 }
-                <Searchbar className="sm:w-2/6 w-full" />
             </div>
 
 
@@ -101,7 +102,11 @@ export const Navbar = () => {
                     mt-6 sm:mt-0
                 "
             >
-                <BtnUserAccount direction="bottom" />
+                <div className="flex items-center">
+                    <Link className="doom-btn p-2" href="/entries/add">
+                        Add Entry
+                    </Link>
+                </div>
 
                 <div className="flex items-center py-2 sm:py-0 ml-10">
                     <div className="flex gap-10 sm:gap-3">

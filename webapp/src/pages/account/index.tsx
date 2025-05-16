@@ -27,7 +27,7 @@ export default function AccountPage() {
 
                 <div>
                     <button 
-                        className="doom-secondary-btn w-48 mt-24"
+                        className="doom-btn-secondary w-48 mt-24"
                         onClick={() => router.push("/entries/add")}
                     >
                         Add New Entry
@@ -37,7 +37,7 @@ export default function AccountPage() {
                 { IsAuthorized(user?.role, EUserRole.Moderator) &&
                     <div>
                         <button 
-                            className="doom-secondary-btn w-48 mt-24"
+                            className="doom-btn-secondary w-48 mt-24"
                             onClick={() => router.push("/entries/review")}
                         >
                             Review Entries

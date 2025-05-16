@@ -1,4 +1,7 @@
 import { useRouter } from "next/router"
+import { useDispatch } from "react-redux"
+import { setNewEntryForm } from "@/src/store"
+
 
 interface IAddedEntrySuccessViewProps {
     // the title of the entry or any other identirfier that makes sense.
@@ -14,9 +17,12 @@ export function AddedEntrySuccessView({
     className = "",
 }: IAddedEntrySuccessViewProps) {
     const router = useRouter()
+    const dispatch = useDispatch()
     const trimmedTitle = title.length > 20 ? `${title.slice(0, 20)}...` : title
 
+
     function onAddNewEntryClicked() {
+        dispatch(setNewEntryForm({}))
         router.push("/entries/add")
     }
 
@@ -32,7 +38,7 @@ export function AddedEntrySuccessView({
             </p>
 
             <button 
-                className="doom-secondary-btn p-2 w-60 mt-10"
+                className="doom-btn-secondary p-2 w-60 mt-10"
                 onClick={onAddNewEntryClicked}
             >
                 Add Another Entry

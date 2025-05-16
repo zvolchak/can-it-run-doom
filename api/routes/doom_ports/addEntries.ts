@@ -34,6 +34,7 @@ const upload = multer({
 })
 upload.none()
 
+
 async function saveFileToStorage(fileName: string, file) {
     const storageFile = fbStorage.file(fileName)
     await storageFile.save(file.buffer, {
@@ -41,8 +42,8 @@ async function saveFileToStorage(fileName: string, file) {
     })
     await storageFile.makePublic()
     const bucket_name = process.env.FB_STORAGE_BUCKET
-    const base_url = process.env.FB_STORAGE_BASE_URL
-    const public_url = `${base_url}/v0/b/${bucket_name}/o/doom-preview-images%2F${fileName}`
+    // const base_url = process.env.FB_STORAGE_PUBLIC_URL
+    const public_url = `/v0/b/${bucket_name}/o/doom-preview-images%2F${fileName}?alt=media`
     return public_url
 } // saveFileToStorage
 
@@ -166,7 +167,6 @@ export async function createEntriesBatch(
     // if (!incomingFile && incomingEntry.previewImg?.startsWith("http")) {
     //     incomingFile = await downloadImgIntoArrayBuffer(incomingEntry.previewImg)
     // }
-    
     incomingEntry.authors = sourcesArrayToFirebaseObject(incomingEntry?.authors)
     incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl)
     incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl)
@@ -175,8 +175,7 @@ export async function createEntriesBatch(
     
     const { collection } = getStagingOrProdDb(incomingEntry)
     const entryId = incomingEntry.id || generateFirestoreId()
-    // incomingEntry.id = id
-    let fileName = incomingEntry.previewImg
+    let fileName = incomingFile?.originalname || incomingEntry.previewImg
     try {
         if (incomingFile?.buffer.length > 0) {
             const imageFileType = getFileType(incomingFile?.buffer)
@@ -212,7 +211,7 @@ export async function createEntriesBatch(
             id: docId,
             entry: newEntry,  
             docRef, 
-            file: { ...incomingFile, filename: fileName }
+            file: { filename: fileName }
         }
     } catch (error) {
         console.error(error)
@@ -223,7 +222,8 @@ export async function createEntriesBatch(
 
 export async function addEntries(
     items: IArchiveItem[], 
-    user: DecodedIdToken
+    user: DecodedIdToken,
+    incomingFile
 ): Promise<IEntryAddedResponse> {
     const result = { success: [], failed: [] }
     const batch = writeBatch(fbDb)
@@ -240,7 +240,7 @@ export async function addEntries(
             if (!entry.status)
                 entry.status = EItemStatus.pending
 
-            const toUpload = await createEntriesBatch(entry, batch, null)
+            const toUpload = await createEntriesBatch(entry, batch, incomingFile)
             result.success.push(toUpload)
         } catch (error) {
             console.error("Failed to add an entry: ", error)
@@ -268,7 +268,7 @@ router.post(
         if (!items || items.length === 0) 
             return res.status(400).json({ error: "Missing required fields!" })
 
-        const result = await addEntries(items, user)
+        const result = await addEntries(items, user, req.file || null)
 
         if (result.success.length === 0) {
             return res.status(400).json({ 
@@ -279,7 +279,7 @@ router.post(
         const statusCode = result.failed.length === 0 ? 201 : 206
         
         let githubIssue = null
-        // Create a github isue in Prod env to track and notify about new submissions.
+        // Create a github issue in Prod env to track and notify about new submissions.
         if (process.env.NODE_ENV !== "development" && process.env.GITHUB_TOKEN) {
             githubIssue = await createGithubIssue(
                 result.success.map(s => ({ ...s.entry, id: s.id }))
