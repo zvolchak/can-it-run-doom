@@ -21,14 +21,15 @@ export const ImageLoader = (props: IImageLoaderProps) => {
     delete parentProps["defaultSrc"]
 
     function handleImageLoadError() {
-        setImageSrc(defaultSrc)
+        setImageSrc(src || defaultSrc || imageSrc || "")
     } // handleImageLoadError
 
     const Tag = (src as string)?.startsWith("blob") ? "img" : Image
     return (
         <Tag 
             key={(src || "img").toString()}
-            alt={alt || "Image for an item"}
+            alt={alt || ""}
+            unoptimized
             width={130} 
             height={100} 
             onError={handleImageLoadError}

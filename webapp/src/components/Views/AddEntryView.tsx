@@ -1,5 +1,4 @@
 import { useState, useRef, } from "react"
-// import { FaRegWindowClose } from "react-icons/fa"
 import { useSelector, useDispatch, } from "react-redux"
 import {
     addNewEntry,
@@ -13,7 +12,6 @@ import {
 import { IArchiveItem, ISource, IUploadStatus, EProcessingState, } from "@/src/types"
 import { RootState, setNewEntryForm, setUplaodStatus, } from "@/src/store"
 import { AddedEntrySuccessView } from "./ResponseViews/AddedEntrySuccessView"
-// import { validateImageFile } from "@/src/utils"
 
 
 interface IAddEntryViewProps {
@@ -36,7 +34,6 @@ export function AddEntryView({
     )
 
     const [imageFile, setImageFile] = useState<File | null>(null)
-    // const [imageError, setImageError] = useState<string | null>(null)
     const [entryResponse, setEntryResponse] = useState(null)
     const authorInputRef = useRef<{ getAllInputs: () => string[][] } | null>(null)
     const sourcesInputRef = useRef<{ getAllInputs: () => string[][] } | null>(null)
@@ -64,21 +61,6 @@ export function AddEntryView({
         dispatch(setNewEntryForm(nextState))
         onChange?.(nextState)
     } // handleChange
-
-
-    // function onImageUploaded(e) {
-    //     validateImageFile(e.target.files[0]).then((isValid) => {
-    //         if (isValid?.valid) {
-    //             setImageError(null)
-    //             return
-    //         }
-
-    //         const defaultMessage = "File should be: less than 400x400px, " +
-    //             "no more than 300kb, and in png, jpg or jpeg format."
-
-    //         setImageError(isValid?.message || defaultMessage)
-    //     })
-    // }
 
 
     function onSourcesInputChanged(inputs: ISource[], key: string) {
@@ -119,7 +101,7 @@ export function AddEntryView({
         const response = await addNewEntry(formDataToSend)
         setEntryResponse(response?.data)
 
-        if (response?.status >= 400) {
+        if (response?.status >= 400 || response?.error) {
             const message = "Failed to add an entry! Please, contact support if error persists."
             dispatch(setUplaodStatus({ 
                 state: EProcessingState.error, 
@@ -136,9 +118,11 @@ export function AddEntryView({
         }
     } // handleSubmit
 
+
     function isLoading() {
         return uploadStatus.state === EProcessingState.uploading
     }
+
 
     return (
         <div
@@ -158,7 +142,7 @@ export function AddEntryView({
 
             { uploadStatus.state !== "success" &&
                 <form 
-                    onSubmit={handleSubmit} 
+                    // onSubmit={handleSubmit} 
                     className="flex flex-col gap-8 w-full"
                 >
                     <h2 className="title text-center mb-4">Add New Entry</h2>
@@ -248,62 +232,12 @@ export function AddEntryView({
                             className="w-full p-2 border rounded" 
                         />
                     </div>
+
                     <div>
                         <ImageUploaderInput 
                             onImageSelect={handleChange}
                         />
                     </div>
-
-                    {/* <div className="">
-                        <label className="block mb-3">Preview Image</label>
-
-                        { imageError && 
-                            <div className="doom-color-danger self-center mb-5">
-                                {imageError}
-                            </div>
-                        }
-
-                        <div className="flex flex-row items-center">
-                            <div 
-                                className="doom-btn-default py-2 px-3"
-                                onClick={() => document.getElementById("previewImg-file-input")?.click()}
-                            >
-                                { imageFile ?
-                                        `File: ${imageFile?.name?.slice(0, 30)}`
-                                        :
-                                        "Upload Image"
-                                }
-                                <input 
-                                    id="previewImg-file-input"
-                                    type="file" 
-                                    accept="image/*" 
-                                    onChange={(e) => { handleChange(e); onImageUploaded(e)} } 
-                                    className="hidden"
-                                />
-                            </div>
-
-                            { formData?.previewImg &&
-                                <button 
-                                    className="doom-btn ml-4"
-                                    onClick={(e) => handleChange({ ...e, target: { files: [] }})}
-                                >
-                                    <FaRegWindowClose size={24} />
-                                </button>
-                            }
-                        </div>
-
-                        Or
-                        <div>
-                            <input 
-                                type="text" 
-                                name="previewImg" 
-                                value={formData.previewImg} 
-                                onChange={handleChange} 
-                                placeholder="Preview Image URL" 
-                                className="w-full p-2 border rounded"
-                            />
-                        </div>
-                    </div> */}
 
                     <label className="flex items-center mb-3 mt-4">
                         <input 
@@ -323,7 +257,7 @@ export function AddEntryView({
                     }
 
                     <button 
-                        type="submit" 
+                        type="button" 
                         className="
                             doom-action-btn 
                             p-2 w-1/2 h-10 mb-3
@@ -331,6 +265,7 @@ export function AddEntryView({
                             items-center justify-center self-center
                             gap-5"
                         disabled={isLoading()}
+                        onClick={handleSubmit}
                     >
                         { isLoading() &&
                             <><LoadingIcon className="w-7 h-7" /> Uploading... </>

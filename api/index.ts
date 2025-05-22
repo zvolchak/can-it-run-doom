@@ -37,10 +37,29 @@ app.use(limiter)
 app.use(cookieParser())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+
+app.use((req, res, next) => {
+    if (req.path.includes("/doom_ports/add")) {
+        logger.info("Skipping urlencoded parser for /doom_ports/add")
+        return next()
+    }
+    express.urlencoded({ extended: true })(req, res, next)
+})
+
+app.use((req, res, next) => {
+    if (req.path.includes("/doom_ports/add")) {
+        logger.info("Skipping json parser for /doom_ports/add")
+        return next()
+    }
+    express.json()(req, res, next)
+})
+
 app.use((req, res, next) => {
     logger.info({
+        message: `Request received for "${req.path}"`,
         method: req.method,
         url: req.url,
+        headers: req.headers,
         statusCode: res.statusCode,
     })
     next()

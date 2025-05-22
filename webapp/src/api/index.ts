@@ -13,10 +13,10 @@ import {
 const apiClient = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     withCredentials: true,
-    headers: {
-        "Content-Type": "application/json",
-        "Accept": "application/json",
-    },
+    // headers: {
+    //     "Content-Type": "application/json",
+    //     "Accept": "application/json",
+    // },
 })
 
 
@@ -140,11 +140,11 @@ export async function signupWithEmailAndPassword({displayName, email, password }
 
 export async function addNewEntry(formData) {
     const url = "/doom_ports/add"
-    const headers = {
-        "Content-Type": "multipart/form-data"
-    }
+    // const headers = {
+    //     "Content-Type": "multipart/form-data"
+    // }
     try {
-        const response = await apiClient.post(url, formData, { headers })
+        const response = await apiClient.post(url, formData, { headers: { "Content-Type": undefined } })
         if (response?.status >= 400)
             throw new Error("Failed to add new entry")
 

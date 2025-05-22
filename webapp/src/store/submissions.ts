@@ -55,7 +55,8 @@ const submissionsSlice = createSlice({
         },
 
         setNewEntryForm: (state, action) => {
-            state.newEntryForm = !action.payload ? initialState.newEntryForm : action.payload
+            const isEmpty = !action.payload || Object.keys(action.payload || {}).length === 0
+            state.newEntryForm = isEmpty ? initialState.newEntryForm : action.payload
         },
 
         setUplaodStatus: (state, action) => {

@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useRouter } from "next/router"
-import { EProcessingState, IArchiveItem, IUploadStatus } from "@/src/types"
+import { EProcessingState, IUploadStatus } from "@/src/types"
 import {
     AddEntryView,
 } from "@/src/components/Views"
@@ -10,7 +10,6 @@ import {
     ItemCard,
 } from "@/src/components"
 import { RootState, setNewEntryForm, setUplaodStatus } from "@/src/store"
-// import { IsSessionExpired } from "@/src/utils"
 
 
 export default function AddEntryPage() {
@@ -20,7 +19,9 @@ export default function AddEntryPage() {
     const uploadStatus: IUploadStatus = useSelector(
         (state: RootState) => state.submissions.uploadStatus
     )
-    const [previewItem, setPreviewItem] = useState<IArchiveItem>(null)
+    const newEntryForm = useSelector(
+        (state: RootState) => state.submissions.newEntryForm
+    )
     const [isShowPreview, setIsShowPreview] = useState<boolean>(true)
 
     useEffect(() => {
@@ -39,17 +40,6 @@ export default function AddEntryPage() {
             router.events.off("routeChangeComplete", handleRouteChange)
         }
     }, [dispatch, router])
-
-
-    function onEntryChanged(incoming: IArchiveItem) {
-        const nextState = { 
-            ...incoming,
-            id: "112233",
-            tags: (incoming.tags || []).filter(t => t.trim() !== "") || [],
-
-        }
-        setPreviewItem(nextState)
-    } // onEntryChanged
 
 
     function isLoading() {
@@ -75,7 +65,6 @@ export default function AddEntryPage() {
                         w-3/6 sm:max-w-[55rem] sm:min-w-[45rem]
                         ${!isLoading() ? "p-4" : ""}
                     `}
-                    onChange={onEntryChanged}
                 />
             </div>
 
@@ -99,7 +88,7 @@ export default function AddEntryPage() {
                     `}
                 >
                     <ItemCard 
-                        item={previewItem}                
+                        item={newEntryForm}                
                         className="w-full"
                     />
                 </div>

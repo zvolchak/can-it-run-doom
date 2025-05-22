@@ -99,6 +99,7 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
                     <div className="pt-3">
                         {   inputs?.length > 1 &&
                             <button 
+                                type="button"
                                 className="doom-color-danger pt-4"
                                 onClick={() => removeInputField(index)}
                             >

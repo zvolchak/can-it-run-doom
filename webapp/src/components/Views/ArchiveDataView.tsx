@@ -23,7 +23,6 @@ import {
     setFiltered,
     setItems,
 } from "@/src/store"
-import Link from "next/link"
 
 
 interface IMainPageProps {

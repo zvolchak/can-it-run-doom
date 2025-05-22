@@ -1,4 +1,5 @@
 import { Request, Response, Router } from "express"
+import Busboy from "busboy"
 import axios from "axios"
 import multer from "multer"
 import filetype from 'magic-bytes.js'
@@ -28,22 +29,23 @@ import {
  } from "../../utils"
 
 const router = Router()
-const upload = multer({ 
-    storage: multer.memoryStorage(),
-    limits: { fileSize: 400 * 1024 }
-})
-upload.none()
+// const upload = multer({ 
+//     storage: multer.memoryStorage(),
+//     limits: { fileSize: 2 * 1024 * 1024 }
+// })
+const upload = multer({ storage: multer.memoryStorage() })
 
 
 async function saveFileToStorage(fileName: string, file) {
-    const storageFile = fbStorage.file(fileName)
+    const bucketDir = "doom-preview-images"
+    const storageFile = fbStorage.file(`${bucketDir}/${fileName}`)
     await storageFile.save(file.buffer, {
         metadata: { contentType: file.mimetype }
     })
     await storageFile.makePublic()
     const bucket_name = process.env.FB_STORAGE_BUCKET
     // const base_url = process.env.FB_STORAGE_PUBLIC_URL
-    const public_url = `/v0/b/${bucket_name}/o/doom-preview-images%2F${fileName}?alt=media`
+    const public_url = `/v0/b/${bucket_name}/o/${bucketDir}%2F${fileName}?alt=media`
     return public_url
 } // saveFileToStorage
 
@@ -253,22 +255,73 @@ export async function addEntries(
 } // addEntries
 
 
+
+function parseBusboyRequest(req: Request): Promise<{
+    itemsJson: string
+    image: { buffer: Buffer, originalname: string } | null
+}> {
+    return new Promise((resolve, reject) => {
+        const busboy = Busboy({ headers: req.headers })
+
+        let itemsJson = ''
+        let imageBuffer: Buffer | null = null
+        let imageName = ''
+
+        busboy.on('file', (fieldname, file, filename) => {
+            const chunks: Buffer[] = []
+            imageName = filename
+
+            file.on('data', data => chunks.push(data))
+            file.on('end', () => {
+                imageBuffer = Buffer.concat(chunks)
+            })
+
+            file.resume()
+        })
+
+        busboy.on('field', (fieldname, value) => {
+            if (fieldname === 'items') itemsJson = value
+        })
+
+        busboy.on('finish', () => {
+            resolve({
+                itemsJson,
+                image: imageBuffer ? { buffer: imageBuffer, originalname: imageName } : null
+            })
+        })
+
+        busboy.on('error', err => {
+            console.error("Busboy encountered an error:", err.message)
+            reject(err)
+        })
+
+        // Check if the request has a rawBody (e.g., in cloud functions)
+        if ((req as any).rawBody) {
+            console.info("Using rawBody for busboy", (req as any).rawBody)
+            busboy.end((req as any).rawBody)
+        } else {
+            req.pipe(busboy)
+        }
+    })
+}
+
+
 router.post(
-    "/add",  
-    upload.single("image"), 
-    async (req: Request, res: Response
-): Promise<any> => {
+    "/add",
+    async (req: Request, res: Response): Promise<any> => {
+    const { itemsJson, image } = await parseBusboyRequest(req)
+    console.info("Incoming request to add a new entry:", itemsJson)
     const errorMessage = "Failed to add a new entry! Please, try again or contact " +
         "support if the error persists." 
-
+    
     try {
-        const items: IArchiveItem[] = await buildArchiveItem(req.body?.items, req.user)
+        const items: IArchiveItem[] = await buildArchiveItem(itemsJson as any, req.user)
         const user = req.user
 
         if (!items || items.length === 0) 
             return res.status(400).json({ error: "Missing required fields!" })
 
-        const result = await addEntries(items, user, req.file || null)
+        const result = await addEntries(items, user, image || null)
 
         if (result.success.length === 0) {
             return res.status(400).json({ 
