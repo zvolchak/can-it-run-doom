@@ -1,7 +1,6 @@
 import { Request, Response, Router } from "express"
 import Busboy from "busboy"
 import axios from "axios"
-import multer from "multer"
 import filetype from 'magic-bytes.js'
 import { 
     Timestamp,
@@ -29,11 +28,6 @@ import {
  } from "../../utils"
 
 const router = Router()
-// const upload = multer({ 
-//     storage: multer.memoryStorage(),
-//     limits: { fileSize: 2 * 1024 * 1024 }
-// })
-const upload = multer({ storage: multer.memoryStorage() })
 
 
 async function saveFileToStorage(fileName: string, file) {
@@ -303,7 +297,7 @@ function parseBusboyRequest(req: Request): Promise<{
             req.pipe(busboy)
         }
     })
-}
+} // parseBusboyRequest
 
 
 router.post(
@@ -352,7 +346,7 @@ router.post(
             error: errorMessage
         })
     }
-})
+}) // add endpoint
 
 
 export default router

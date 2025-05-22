@@ -70,7 +70,6 @@ app.use(cors({
     origin: CORS_ORIGIN,              
     credentials: true,
 }))
-// app.options("*", cors({ origin: CORS_ORIGIN, credentials: true }))
 
 console.info(CORS_ORIGIN)
 app.use(BASE_URL, DoomProtsRouter)
