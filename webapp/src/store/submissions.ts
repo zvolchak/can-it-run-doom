@@ -9,7 +9,7 @@ import { ISubmissionsStoreState, EProcessingState } from "@/src/types"
 //     sourcesUrl: [{ name: "Test Source", url: "http://test.com" }],
 //     sourceCodeUrl: [{ name: "Test Source Code", url: "http://test.com" }],
 //     isFirstLevelComplete: false,
-//     publishDate: "08/05/2023",
+//     publishDate: "2023-01-01",
 //     tags: ["test", "test2"],
 //     previewImg: ""
 // }
@@ -55,7 +55,8 @@ const submissionsSlice = createSlice({
         },
 
         setNewEntryForm: (state, action) => {
-            state.newEntryForm = !action.payload ? initialState.newEntryForm : action.payload
+            const isEmpty = !action.payload || Object.keys(action.payload || {}).length === 0
+            state.newEntryForm = isEmpty ? initialState.newEntryForm : action.payload
         },
 
         setUplaodStatus: (state, action) => {

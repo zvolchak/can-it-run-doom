@@ -150,6 +150,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     const page = Number(context.query?.page || 1)
 
     const items = await fetchDoomPorts()
+    // Add base url to the preview image if it doesn't start with "http" - which means it
+    // is a path to a storage backet.
+    items.map((item: IArchiveItem) => {
+        if (!item?.previewImg || item.previewImg?.startsWith("http"))
+            return item
+
+        const storageBaseUrl = process.env.NEXT_PUBLIC_STORAGE_BASE_URL?.replace(/\/$/, "")
+        item.previewImg = `${storageBaseUrl}/${item.previewImg.replace(/^\//, "")}`
+        return item
+    })
+
     return {
         props: {
             items: items || [],

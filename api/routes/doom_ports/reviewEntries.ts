@@ -189,7 +189,7 @@ router.post(
             return res.status(400).json({ error: "No entries has been processed!", ...result })
         }
         
-        if (!IsLocalhost(req)) {
+        if (process.env.NODE_ENV === "production") {
             await Promise.all(result.success.map(async (batch) => {
                 const hasIssueReolved = await resolveIssue(batch.entry)
                 if (hasIssueReolved)

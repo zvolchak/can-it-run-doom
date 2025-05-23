@@ -59,3 +59,57 @@ export function IsAuthorized(incoming: EUserRole, target: EUserRole) {
 
     return incomingIndex <= targetIndex
 } // IsAuthorized
+
+
+export async function validateImageFile(
+    file: File, 
+    options = { 
+        maxSizeMB: 0.3, 
+        maxWidth: 400, 
+        maxHeight: 400,
+         allowedFormats: ["image/jpeg", "image/png", "image/jpg"] 
+    }
+): Promise<{ valid: boolean, message?: string }> {
+    const fileSize = file.size / 1024 / 1024
+    // Size check
+    if (fileSize > options.maxSizeMB) {
+        return { 
+            valid: false, 
+            message: `Image size should be less than ${options.maxSizeMB}MB. ` +
+                `Got ${fileSize.toPrecision(2)}MB.` 
+        }
+    }
+
+    // Format check
+    if (!options.allowedFormats.includes(file.type)) {
+        return { 
+            valid: false, 
+            message: `Invalid file format "${file.type}". ` + 
+                `Allowed formats are: ${options.allowedFormats.join(", ")}.` 
+        };
+    }
+
+    // Dimension check
+    const img = document.createElement('img')
+    const objectUrl = URL.createObjectURL(file)
+    return new Promise<{ valid: boolean, message?: string }>((resolve) => {
+        img.onload = function () {
+            if (img.width > options.maxWidth || img.height > options.maxHeight) {
+                resolve({ 
+                    valid: false, 
+                    message: "Image dimensions should be at most " + 
+                        `${options.maxWidth}x${options.maxHeight}px.` +
+                        ` Got ${img.width}x${img.height}px.`
+                })
+            } else {
+                resolve({ valid: true })
+            }
+            URL.revokeObjectURL(objectUrl)
+        }
+        img.onerror = function () {
+            resolve({ valid: false, message: "Invalid image file." })
+            URL.revokeObjectURL(objectUrl)
+        }
+        img.src = objectUrl
+    })
+} // validateImageFile

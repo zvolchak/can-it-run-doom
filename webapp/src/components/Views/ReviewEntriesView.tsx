@@ -92,7 +92,7 @@ export function ReviewEntriesView({ items }: IMainPageProps) {
 
                         <div className="w-full flex justify-between mt-10">
                             <button 
-                                className="doom-secondary-btn w-24"
+                                className="doom-btn-secondary w-24"
                                 onClick={() => onConfirmBtnClicked(idsToUpdate, statusToApply)}
                             >
                                 Confirm

@@ -1,6 +1,6 @@
 import { Request, Response, Router } from "express"
+import Busboy from "busboy"
 import axios from "axios"
-import multer from "multer"
 import filetype from 'magic-bytes.js'
 import { 
     Timestamp,
@@ -28,21 +28,18 @@ import {
  } from "../../utils"
 
 const router = Router()
-const upload = multer({ 
-    storage: multer.memoryStorage(),
-    limits: { fileSize: 400 * 1024 }
-})
-upload.none()
+
 
 async function saveFileToStorage(fileName: string, file) {
-    const storageFile = fbStorage.file(fileName)
+    const bucketDir = "doom-preview-images"
+    const storageFile = fbStorage.file(`${bucketDir}/${fileName}`)
     await storageFile.save(file.buffer, {
         metadata: { contentType: file.mimetype }
     })
     await storageFile.makePublic()
     const bucket_name = process.env.FB_STORAGE_BUCKET
-    const base_url = process.env.FB_STORAGE_BASE_URL
-    const public_url = `${base_url}/v0/b/${bucket_name}/o/doom-preview-images%2F${fileName}`
+    // const base_url = process.env.FB_STORAGE_PUBLIC_URL
+    const public_url = `/v0/b/${bucket_name}/o/${bucketDir}%2F${fileName}?alt=media`
     return public_url
 } // saveFileToStorage
 
@@ -166,7 +163,6 @@ export async function createEntriesBatch(
     // if (!incomingFile && incomingEntry.previewImg?.startsWith("http")) {
     //     incomingFile = await downloadImgIntoArrayBuffer(incomingEntry.previewImg)
     // }
-    
     incomingEntry.authors = sourcesArrayToFirebaseObject(incomingEntry?.authors)
     incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl)
     incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl)
@@ -175,8 +171,7 @@ export async function createEntriesBatch(
     
     const { collection } = getStagingOrProdDb(incomingEntry)
     const entryId = incomingEntry.id || generateFirestoreId()
-    // incomingEntry.id = id
-    let fileName = incomingEntry.previewImg
+    let fileName = incomingFile?.originalname || incomingEntry.previewImg
     try {
         if (incomingFile?.buffer.length > 0) {
             const imageFileType = getFileType(incomingFile?.buffer)
@@ -212,7 +207,7 @@ export async function createEntriesBatch(
             id: docId,
             entry: newEntry,  
             docRef, 
-            file: { ...incomingFile, filename: fileName }
+            file: { filename: fileName }
         }
     } catch (error) {
         console.error(error)
@@ -223,7 +218,8 @@ export async function createEntriesBatch(
 
 export async function addEntries(
     items: IArchiveItem[], 
-    user: DecodedIdToken
+    user: DecodedIdToken,
+    incomingFile
 ): Promise<IEntryAddedResponse> {
     const result = { success: [], failed: [] }
     const batch = writeBatch(fbDb)
@@ -240,7 +236,7 @@ export async function addEntries(
             if (!entry.status)
                 entry.status = EItemStatus.pending
 
-            const toUpload = await createEntriesBatch(entry, batch, null)
+            const toUpload = await createEntriesBatch(entry, batch, incomingFile)
             result.success.push(toUpload)
         } catch (error) {
             console.error("Failed to add an entry: ", error)
@@ -253,22 +249,73 @@ export async function addEntries(
 } // addEntries
 
 
+
+function parseBusboyRequest(req: Request): Promise<{
+    itemsJson: string
+    image: { buffer: Buffer, originalname: string } | null
+}> {
+    return new Promise((resolve, reject) => {
+        const busboy = Busboy({ headers: req.headers })
+
+        let itemsJson = ''
+        let imageBuffer: Buffer | null = null
+        let imageName = ''
+
+        busboy.on('file', (fieldname, file, filename) => {
+            const chunks: Buffer[] = []
+            imageName = filename
+
+            file.on('data', data => chunks.push(data))
+            file.on('end', () => {
+                imageBuffer = Buffer.concat(chunks)
+            })
+
+            file.resume()
+        })
+
+        busboy.on('field', (fieldname, value) => {
+            if (fieldname === 'items') itemsJson = value
+        })
+
+        busboy.on('finish', () => {
+            resolve({
+                itemsJson,
+                image: imageBuffer ? { buffer: imageBuffer, originalname: imageName } : null
+            })
+        })
+
+        busboy.on('error', err => {
+            console.error("Busboy encountered an error:", err.message)
+            reject(err)
+        })
+
+        // Check if the request has a rawBody (e.g., in cloud functions)
+        if ((req as any).rawBody) {
+            console.info("Using rawBody for busboy", (req as any).rawBody)
+            busboy.end((req as any).rawBody)
+        } else {
+            req.pipe(busboy)
+        }
+    })
+} // parseBusboyRequest
+
+
 router.post(
-    "/add",  
-    upload.single("image"), 
-    async (req: Request, res: Response
-): Promise<any> => {
+    "/add",
+    async (req: Request, res: Response): Promise<any> => {
+    const { itemsJson, image } = await parseBusboyRequest(req)
+    console.info("Incoming request to add a new entry:", itemsJson)
     const errorMessage = "Failed to add a new entry! Please, try again or contact " +
         "support if the error persists." 
-
+    
     try {
-        const items: IArchiveItem[] = await buildArchiveItem(req.body?.items, req.user)
+        const items: IArchiveItem[] = await buildArchiveItem(itemsJson as any, req.user)
         const user = req.user
 
         if (!items || items.length === 0) 
             return res.status(400).json({ error: "Missing required fields!" })
 
-        const result = await addEntries(items, user)
+        const result = await addEntries(items, user, image || null)
 
         if (result.success.length === 0) {
             return res.status(400).json({ 
@@ -279,7 +326,7 @@ router.post(
         const statusCode = result.failed.length === 0 ? 201 : 206
         
         let githubIssue = null
-        // Create a github isue in Prod env to track and notify about new submissions.
+        // Create a github issue in Prod env to track and notify about new submissions.
         if (process.env.NODE_ENV !== "development" && process.env.GITHUB_TOKEN) {
             githubIssue = await createGithubIssue(
                 result.success.map(s => ({ ...s.entry, id: s.id }))
@@ -299,7 +346,7 @@ router.post(
             error: errorMessage
         })
     }
-})
+}) // add endpoint
 
 
 export default router

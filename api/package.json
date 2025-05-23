@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "axios": "^1.7.9",
+    "busboy": "^1.6.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",
@@ -28,7 +29,6 @@
     "firebase": "^11.3.0",
     "firebase-functions": "^6.1.1",
     "magic-bytes.js": "^1.10.0",
-    "multer": "^1.4.5-lts.1",
     "sequelize": "^6.37.4",
     "sequelize-cli": "^6.6.2",
     "sqlite3": "^5.1.7",

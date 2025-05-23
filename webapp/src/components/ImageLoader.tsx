@@ -16,26 +16,25 @@ export const ImageLoader = (props: IImageLoaderProps) => {
         alt,
         defaultSrc = "/doom-placeholder.jpeg",
     } = props
-    const [imageSrc, setImageSrc] = useState(src || defaultSrc)
+    const [imageSrc, setImageSrc] = useState<string>()
     const parentProps = { ...props }
     delete parentProps["defaultSrc"]
 
     function handleImageLoadError() {
-        setImageSrc(defaultSrc)
+        setImageSrc(src || defaultSrc || imageSrc || "")
     } // handleImageLoadError
 
-
     const Tag = (src as string)?.startsWith("blob") ? "img" : Image
-    
     return (
         <Tag 
             key={(src || "img").toString()}
-            alt={alt || "Image for an item"}
+            alt={alt || ""}
+            unoptimized
             width={130} 
             height={100} 
             onError={handleImageLoadError}
             { ...parentProps }
-            src={imageSrc || ""} 
+            src={src || defaultSrc || imageSrc || ""} 
             className={`object-contain hover:cursor-pointer max-h-80 ${props.className}`}
         />
     )

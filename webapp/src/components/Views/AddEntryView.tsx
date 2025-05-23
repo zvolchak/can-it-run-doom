@@ -1,5 +1,4 @@
 import { useState, useRef, } from "react"
-// import { FaRegWindowClose } from "react-icons/fa"
 import { useSelector, useDispatch, } from "react-redux"
 import {
     addNewEntry,
@@ -8,6 +7,7 @@ import {
     InputWithLabel,
     LoadingIcon,
     SourcesInputField,
+    ImageUploaderInput,
 } from "@/src/components"
 import { IArchiveItem, ISource, IUploadStatus, EProcessingState, } from "@/src/types"
 import { RootState, setNewEntryForm, setUplaodStatus, } from "@/src/store"
@@ -39,6 +39,7 @@ export function AddEntryView({
     const sourcesInputRef = useRef<{ getAllInputs: () => string[][] } | null>(null)
     const sourceCodeInputRef = useRef<{ getAllInputs: () => string[][] } | null>(null)
 
+
     function handleChange(e) {
         const { name, value, type, checked, files } = e.target
         const nextState = {
@@ -54,6 +55,7 @@ export function AddEntryView({
 
         if (files) {
             setImageFile(files[0] || null)
+            nextState.previewImg = files[0] ? URL.createObjectURL(files[0]) : null
         }
         
         dispatch(setNewEntryForm(nextState))
@@ -99,7 +101,7 @@ export function AddEntryView({
         const response = await addNewEntry(formDataToSend)
         setEntryResponse(response?.data)
 
-        if (response?.status >= 400) {
+        if (response?.status >= 400 || response?.error) {
             const message = "Failed to add an entry! Please, contact support if error persists."
             dispatch(setUplaodStatus({ 
                 state: EProcessingState.error, 
@@ -116,9 +118,11 @@ export function AddEntryView({
         }
     } // handleSubmit
 
+
     function isLoading() {
         return uploadStatus.state === EProcessingState.uploading
     }
+
 
     return (
         <div
@@ -138,8 +142,8 @@ export function AddEntryView({
 
             { uploadStatus.state !== "success" &&
                 <form 
-                    onSubmit={handleSubmit} 
-                    className="flex flex-col gap-6 w-full"
+                    // onSubmit={handleSubmit} 
+                    className="flex flex-col gap-8 w-full"
                 >
                     <h2 className="title text-center mb-4">Add New Entry</h2>
 
@@ -204,7 +208,7 @@ export function AddEntryView({
                         />
                     </div>
 
-                    <div className="mt-2">
+                    <div className="">
                         <label className="block mb-1">Source Code</label>
                         <SourcesInputField 
                             ref={sourceCodeInputRef}
@@ -216,38 +220,24 @@ export function AddEntryView({
                         />
                     </div>
 
-                    <input 
-                        type="text" 
-                        name="tags" 
-                        value={(formData.tags || []).join(",") || ""} 
-                        onChange={handleChange} 
-                        placeholder="Tags (comma separated)" 
-                        className="w-full p-2 mb-3 mt-4 border rounded" 
-                    />
 
-                    {/* <div>
-                        <label className="doom-btn-default p-3">
-                            {   imageFile ?
-                                    `File: ${imageFile.name}`
-                                    :
-                                    "Upload Image"
-                            }
-                            <input 
-                                type="file" 
-                                accept="image/*" 
-                                onChange={handleChange} 
-                                className="hidden"
-                            />
-                        </label>
-                        {   formData?.previewImg &&
-                            <button 
-                                className="doom-btn ml-4"
-                                onClick={(e) => handleChange({ ...e, target: { files: [] }})}
-                            >
-                                <FaRegWindowClose size="27px" />
-                            </button>
-                        }
-                    </div> */}
+                    <div className="">
+                        <label className="block mb-1">Tags</label>
+                        <input 
+                            type="text" 
+                            name="tags" 
+                            value={(formData.tags || []).join(",") || ""} 
+                            onChange={handleChange} 
+                            placeholder="Tags (comma separated)" 
+                            className="w-full p-2 border rounded" 
+                        />
+                    </div>
+
+                    <div>
+                        <ImageUploaderInput 
+                            onImageSelect={handleChange}
+                        />
+                    </div>
 
                     <label className="flex items-center mb-3 mt-4">
                         <input 
@@ -267,7 +257,7 @@ export function AddEntryView({
                     }
 
                     <button 
-                        type="submit" 
+                        type="button" 
                         className="
                             doom-action-btn 
                             p-2 w-1/2 h-10 mb-3
@@ -275,6 +265,7 @@ export function AddEntryView({
                             items-center justify-center self-center
                             gap-5"
                         disabled={isLoading()}
+                        onClick={handleSubmit}
                     >
                         { isLoading() &&
                             <><LoadingIcon className="w-7 h-7" /> Uploading... </>

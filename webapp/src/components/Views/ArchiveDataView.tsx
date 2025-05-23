@@ -23,7 +23,6 @@ import {
     setFiltered,
     setItems,
 } from "@/src/store"
-import Link from "next/link"
 
 
 interface IMainPageProps {
@@ -88,14 +87,10 @@ export function ArchiveDataView({ items }: IMainPageProps) {
         dispatch(setFiltered(filtered))
     }, [items, filters, dispatch, setNumberOfPages, currentPage])
 
+
     if (!items || items?.length === 0) {
         return (
             <div>
-                <div className="flex justify-center mt-3">
-                    <Link className="doom-btn mr-4" href="/entries/add">
-                        Add Entry (no login required)
-                    </Link>
-                </div>
                 <div className="
                     h-screen w-full justify-center mt-10 flex flex-row text-center text-white
                     "
@@ -110,11 +105,6 @@ export function ArchiveDataView({ items }: IMainPageProps) {
 
     return (
         <div className="archive-data-view">
-            <div className="flex justify-center mt-3">
-                <Link className="doom-btn mr-4" href="/entries/add">
-                    Add Entry (no login required)
-                </Link>
-            </div>
             <div className="h-10">
                 <Pagination 
                     currentPage={currentPage} 
