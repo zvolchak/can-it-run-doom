@@ -17,6 +17,7 @@ import { ISubmissionsStoreState, EProcessingState } from "@/src/types"
 
 const initialState: ISubmissionsStoreState = {
     items: [],
+    selected: null,
     filtered: [],
     totalSize: 0,
     /* Tracks the status of uploading a new entry. Helps to act on different types of 
@@ -62,6 +63,10 @@ const submissionsSlice = createSlice({
         setUplaodStatus: (state, action) => {
             state.uploadStatus = { ...state.uploadStatus, ...action.payload }
         },
+
+        selectItem: (state, action) => {
+            state.selected = action.payload
+        },
     }
 })
 
@@ -71,6 +76,7 @@ export const {
     setTotalSize,
     setNewEntryForm,
     setUplaodStatus,
+    selectItem,
 } = submissionsSlice.actions
 
 

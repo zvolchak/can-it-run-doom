@@ -14,11 +14,13 @@ import {
     setAppliedYears,
     setAppliedTags,
     setAppliedAuthors,
+    setLvlCompleted,
 } from "@/src/store"
 import {
     Tag,
     RangePicker,
     TagsContainer,
+    FirstLevelCompletedInput,
 } from "@/src/components"
 import {
     getTagsFromItems,
@@ -39,7 +41,6 @@ export const FiltersMenu = () => {
                             state.submissions.filtered : state.submissions.items
         }
     )
-
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
     const menuRef = useRef(null)
 
@@ -80,6 +81,12 @@ export const FiltersMenu = () => {
         dispatch(setIsFiltersMenu(false))
     } // onClose
 
+
+    function onLvlFilterChanged(value: boolean | null) {
+        dispatch(setLvlCompleted(value === null ? null : value))
+    }
+
+    console.debug(appliedFilters.query)
     return (
         <nav 
             className={`
@@ -170,6 +177,13 @@ export const FiltersMenu = () => {
                         }
                     </div>
                 </TagsContainer>
+
+                <div className="my-4 w-full">
+                    <FirstLevelCompletedInput 
+                        value={appliedFilters.query?.levelCompleted}
+                        onChange={onLvlFilterChanged}
+                    />
+                </div>
 
                 <TagsContainer 
                     title="Authors"

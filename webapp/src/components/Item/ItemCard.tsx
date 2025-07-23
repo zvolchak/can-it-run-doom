@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { useSelector, useDispatch, } from "react-redux"
-// import { useRouter } from "next/router"
 import { ImCheckmark2 } from "react-icons/im"
 import { GiCrossMark } from "react-icons/gi"
 import { 
@@ -28,7 +27,6 @@ interface IItemCardProps {
 
 export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
     const dispatch = useDispatch()
-    // const router = useRouter()
     const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
     const [expandedDsc, setExpandedDsc] = useState(false)
     const maxDscLength = 180
@@ -45,12 +43,9 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             appliedIds.push(id)
 
         dispatch(setAppliedId(appliedIds))
-        // const query = { ...router.query, ids: id }
-        // router.push({
-        //     pathname: router.pathname,
-        //     query,
-        // })
     } // onIdClick
+
+
     return (
         <div className={`
             item flex flex-col text-slate-50 gap-1
@@ -80,7 +75,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             }
 
             <div className={`
-                    item-container flex flex-row gap-1 items-start
+                    item-container flex flex-col sm:flex-row gap-1 items-start
                     ${(item?.description || "").length > 0 ? "mt-4" : "mt-0"}
                 `
                 }>
@@ -101,7 +96,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                     <ItemContentRow title="Published Date:" value={item?.publishDate} />
 
                     <RowMultiline 
-                        title="Sources:"
+                        title="Media"
                         items={item?.sourcesUrl} 
                         hoverIconSrc="/icons/doom-guy-scream.png" 
                     />

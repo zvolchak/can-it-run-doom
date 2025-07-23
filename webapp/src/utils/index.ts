@@ -5,6 +5,9 @@ import {
     UserAccessPriority,
 } from "@/src/types"
 export * from "./itemsFilters"
+export * from "./routings"
+
+import { ParsedUrlQuery } from 'querystring'
 
 
 export function IsProd() {
@@ -113,3 +116,17 @@ export async function validateImageFile(
         img.src = objectUrl
     })
 } // validateImageFile
+
+
+export function stringToBoolOrNull(target: string | null) {
+    if (target === null)
+        return null
+    return target.toLocaleLowerCase() === "true" ? true : false
+} // stringToBoolOrNull
+
+
+export function decodeContextQuery(query: ParsedUrlQuery): object {
+    return Object.fromEntries(
+        Object.entries(query).map(([k, v]) => [k, decodeURIComponent(v as string)])
+    )
+} // decodeContextQuery

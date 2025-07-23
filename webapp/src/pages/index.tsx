@@ -22,7 +22,7 @@ import {
     setTotalSize,
 } from "@/src/store"
 import {
-    ArchiveDataView,
+    CategorizedDataView,
 } from "@/src/components"
 import {
     fetchDoomPorts,
@@ -44,6 +44,7 @@ interface IMainPageProps {
     searchQuery?: string
     idQuery?: string[]
     page?: number
+    hasCode?: string
 }
 
 
@@ -81,6 +82,7 @@ export default function MainPage({
         dispatch(setTotalSize(totalSize))
     }, [dispatch, items, years, authorQuery, queryTags, searchQuery, idQuery, page, totalSize])
 
+    
     function selectedItem(ids: string): IArchiveItem {
         return items?.filter(i => ids?.indexOf(i.id.toString()) >= 0)?.[0] || null
     } // selectedItems
@@ -127,7 +129,7 @@ export default function MainPage({
                 
             </Head>
 
-            <ArchiveDataView items={items} />
+            <CategorizedDataView items={items} />
         </>
     )
 } // MainPage

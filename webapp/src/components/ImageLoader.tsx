@@ -6,6 +6,8 @@ interface IImageLoaderProps extends Omit<ImageProps, "alt"> {
     src: any
     defaultSrc?: string
     alt?: string
+    width?: number
+    height?: number
     className?: string
 }
 
@@ -14,6 +16,8 @@ export const ImageLoader = (props: IImageLoaderProps) => {
     const {
         src,
         alt,
+        width=200,
+        height=200,
         defaultSrc = "/doom-placeholder.jpeg",
     } = props
     const [imageSrc, setImageSrc] = useState<string>()
@@ -24,18 +28,18 @@ export const ImageLoader = (props: IImageLoaderProps) => {
         setImageSrc(src || defaultSrc || imageSrc || "")
     } // handleImageLoadError
 
-    const Tag = (src as string)?.startsWith("blob") ? "img" : Image
+    const ImgHtmlTag = (src as string)?.startsWith("blob") ? "img" : Image
     return (
-        <Tag 
+        <ImgHtmlTag 
             key={(src || "img").toString()}
             alt={alt || ""}
             unoptimized
-            width={130} 
-            height={100} 
+            width={width} 
+            height={height} 
             onError={handleImageLoadError}
             { ...parentProps }
             src={src || defaultSrc || imageSrc || ""} 
-            className={`object-contain hover:cursor-pointer max-h-80 ${props.className}`}
+            className={`hover:cursor-pointer ${props.className}`}
         />
     )
 }

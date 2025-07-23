@@ -51,11 +51,11 @@ export const RangePicker: React.FC<FilterProps> = ({
                 </label>
 
                 <select
-                className="doom-select w-full p-2"
-                id="max_value_select"
-                name="max_value"
-                value={maxValue ? maxValue : maxOptions[0].value}
-                onChange={(e: any) => onMaxChange(e.target.value)}
+                    className="doom-select w-full p-2"
+                    id="max_value_select"
+                    name="max_value"
+                    value={maxValue ? maxValue : maxOptions[0].value}
+                    onChange={(e: any) => onMaxChange(e.target.value)}
                 >
                 {maxOptions.map((option) => (
                     <option key={option.value} value={option.value}>

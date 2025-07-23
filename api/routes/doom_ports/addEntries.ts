@@ -303,7 +303,17 @@ function parseBusboyRequest(req: Request): Promise<{
 router.post(
     "/add",
     async (req: Request, res: Response): Promise<any> => {
-    const { itemsJson, image } = await parseBusboyRequest(req)
+    let itemsJson = ''
+    let image = null
+
+    try {
+        const parsed = await parseBusboyRequest(req)
+        itemsJson = parsed.itemsJson
+        image = parsed.image
+    } catch (error) {
+        console.warn("Falling back to JSON body due to Busboy error:", error.message)
+        itemsJson = req.body?.items || ''
+    }
     console.info("Incoming request to add a new entry:", itemsJson)
     const errorMessage = "Failed to add a new entry! Please, try again or contact " +
         "support if the error persists." 

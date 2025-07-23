@@ -13,7 +13,7 @@
     "build": "tsc",
     "build:prod": "DOTENV_PATH=.env.production tsc",
     "build:staging": "DOTENV_PATH=.env.staging tsc",
-    "dev": "DOTENV_PATH=.env nodemon",
+    "dev": "doppler run -- nodemon",
     "prod": "tsx server.ts",
     "migration": "npx sequalize-cli db:migration"
   },

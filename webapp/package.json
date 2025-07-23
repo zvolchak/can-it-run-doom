@@ -8,7 +8,7 @@
   },
   "main": "ssr.js",
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "doppler run -- next dev --turbopack",
     "build:prod": "DOTENV_KEY=$(npx dotenv-vault keys production) ./scripts/build_prod.sh",
     "build:staging": "DOTENV_KEY=$(npx dotenv-vault keys staging) ./scripts/build_prod.sh",
     "build": "next build",
@@ -33,6 +33,8 @@
     "react-hook-form": "^7.54.2",
     "react-icons": "^5.4.0",
     "react-redux": "^9.2.0",
+    "react-slick": "^0.30.3",
+    "slick-carousel": "^1.8.1",
     "uuid": "^11.0.5"
   },
   "devDependencies": {

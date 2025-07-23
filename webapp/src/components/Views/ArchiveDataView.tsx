@@ -17,6 +17,11 @@ import {
     filterById,
     filterItemsByTags,
     filterItemsByAuthors,
+    sortDscOrAsc,
+    filterItemsByLvlCompleted,
+    filterBySourceCode,
+    filterByAuthorsPerItem,
+    stringToBoolOrNull,
 } from "@/src/utils"
 import { 
     RootState,
@@ -37,7 +42,10 @@ function filterItems({
     idQuery,
     authorQuery,
     yearQuery,
+    query,
 }) {
+    if (query?.levelCompleted)
+        items = filterItemsByLvlCompleted(items, stringToBoolOrNull(query.levelCompleted))
     if (searchQuery && searchQuery !== "")
         items = onSearch(items, searchQuery)
     if (authorQuery && authorQuery.length > 0)
@@ -46,6 +54,13 @@ function filterItems({
         items = filterById(items, idQuery)
     if (queryTags && queryTags.length > 0)
         items = filterItemsByTags(items, queryTags)
+    if (query?.authorsPerItem)
+        items = filterByAuthorsPerItem(items, Number(query.authorsPerItem))
+    if (query?.hasCode)
+        items = filterBySourceCode(items, stringToBoolOrNull(query.hasCode))
+    
+    if (query?.sort)
+        items = sortDscOrAsc(items, query.sort)
 
     if (yearQuery?.start || yearQuery?.end) {
         items = items?.filter((item: IArchiveItem) => {
@@ -60,13 +75,11 @@ function filterItems({
 
 export function ArchiveDataView({ items }: IMainPageProps) {
     const dispatch = useDispatch()
-    const itemsPerPage = 20
+    const itemsPerPage = 10
 
     const filters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
     const filteredItems: IArchiveItem[] = useSelector((state: RootState) => state.submissions.filtered)
-    // const totalItemsSize: number = useSelector((state: RootState) => state.submissions.totalSize)
     const currentPage = filters.page || 1
-
     const [numberOfPages, setNumberOfPages] = useState(Math.ceil(filteredItems.length / itemsPerPage))
 
     useEffect(() => {
@@ -77,6 +90,7 @@ export function ArchiveDataView({ items }: IMainPageProps) {
             idQuery: filters.ids,
             authorQuery: filters.authors,
             yearQuery: filters.years,
+            query: filters.query,
         })
 
         const pages = Math.ceil(filtered.length / itemsPerPage)

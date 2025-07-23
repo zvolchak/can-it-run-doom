@@ -34,6 +34,7 @@ export interface IUploadStatus {
 
 export interface ISubmissionsStoreState {
     items: IArchiveItem[]
+    selected: IArchiveItem
     filtered: IArchiveItem[]
     totalSize: number
     newEntryForm: IArchiveItem

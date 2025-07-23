@@ -12,20 +12,23 @@ import { isUseComma } from "@/src/utils"
 interface IRowMultilineProps {
     title: string
     items: ISource[],
-    hoverIconSrc: string
+    hoverIconSrc: string,
+    className?: string
 }
 
 
 export const RowMultiline = ({ 
     title,
     items, 
-    hoverIconSrc, 
+    hoverIconSrc,
+    className = "",
 }: IRowMultilineProps) => {
     const [hoveredItem, setHoveredItem] = useState(null)
 
     return (
         <ItemContentRow 
             title={title}
+            className={className}
         >
             {items && items.map((item: ISource, index: number) =>
                 <a 

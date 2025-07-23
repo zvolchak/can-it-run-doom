@@ -1,5 +1,5 @@
 import dayjs from 'dayjs'
-import { IArchiveItem } from "@/src/types"
+import { IArchiveItem, SortOption } from "@/src/types"
 
 
 export const findTag = (tags: Array<any>, wordToFind: string) => {
@@ -98,8 +98,17 @@ export function filterItemsByTags(itemsToFilter: IArchiveItem[], query: string[]
         return itemsToFilter
 
     return itemsToFilter.filter(item =>
-        item.tags.some(tag => query.includes(tag)))
+        !query.some(q =>
+            q.startsWith('!') &&
+            item.tags.includes(q.slice(1))
+        )
+    )
 } // filterItems
+
+
+export function filterItemsByLvlCompleted(items: IArchiveItem[], state: boolean) {
+    return items.filter((item: IArchiveItem) => item.isFirstLevelComplete === state)
+} // filterItemsByLvlCompleted
 
 
 export function filterItemsByAuthors(itemsToFilter: IArchiveItem[], query: string[]) {
@@ -172,3 +181,31 @@ export function findMinYear(archiveItems: IArchiveItem[]): number | null {
         return itemYear < minYear ? itemYear : minYear;
     }, Infinity);
 } // findMinYear
+
+
+export function sortDscOrAsc(items: IArchiveItem[], order: string = "latest") {
+    return [...items].sort(
+        (a, b) => {
+            const first = !order || order === SortOption.latest ? a : b
+            const second = !order || order === SortOption.latest ? b : a
+            return new Date(second.publishDate).getTime() - new Date(first.publishDate).getTime()
+        }
+    )
+} // sortDscOrAsc
+
+
+export function filterBySourceCode(items: IArchiveItem[], hasCode = true) {
+    return items.filter((item: IArchiveItem) => {
+        if (hasCode)
+            return item.sourceCodeUrl?.length > 0
+        else
+            return !item.sourceCodeUrl || item.sourceCodeUrl.length == 0
+    })
+}
+
+
+export function filterByAuthorsPerItem(items: IArchiveItem[], limit=1) {
+    return items.filter((item: IArchiveItem) => {
+        return item?.authors.length > 1 && item.authors?.length <= limit
+    })
+}

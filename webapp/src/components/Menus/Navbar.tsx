@@ -37,8 +37,8 @@ export const Navbar = () => {
     }
 
 
-    function IsHomePage() {
-        return router.pathname === "/"
+    function IsSubmissionsListPage() {
+        return router.pathname === "/entries"
     }
 
 
@@ -66,7 +66,7 @@ export const Navbar = () => {
                     sm:ml-2
                 "
             >
-                { IsHomePage() &&
+                { IsSubmissionsListPage() &&
                     <>
                         <button
                             className="doom-btn flex flex-row gap-1 mr-6 doom-color-slate"
@@ -84,7 +84,7 @@ export const Navbar = () => {
                         <Searchbar className="sm:w-2/6 w-full" />
                     </>
                 }
-                { !IsHomePage() &&
+                { IsSubmissionsListPage() &&
                     <button
                         className="doom-btn flex flex-row gap-1 ml-6 doom-color-slate"
                         onClick={() => router.push("/")}
