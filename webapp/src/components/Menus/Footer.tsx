@@ -10,7 +10,7 @@ interface IFooterProps {
 
 export function Footer({ className = "", }: IFooterProps) {
     return (
-        <footer className={`footer relative bottom-0 py-6 ${className}`}>
+        <footer className={`footer relative bottom-0 py-6 mt-12 ${className}`}>
             <div className="w-full mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
                 {/* Left Section */}
                 <div className="flex flex-col text-center md:text-left">

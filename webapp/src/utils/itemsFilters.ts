@@ -97,12 +97,17 @@ export function filterItemsByTags(itemsToFilter: IArchiveItem[], query: string[]
     if (!query || query.length == 0)
         return itemsToFilter
 
-    return itemsToFilter.filter(item =>
-        !query.some(q =>
-            q.startsWith('!') &&
-            item.tags.includes(q.slice(1))
+    return itemsToFilter.filter(item => {
+        const hasExcludedTag = query.some(q =>
+            q.startsWith('!') && item.tags.includes(q.slice(1))
         )
-    )
+
+        const hasIncludedTag = query.some(q =>
+            !q.startsWith('!') && item.tags.includes(q)
+        )
+
+        return !hasExcludedTag && hasIncludedTag
+    })
 } // filterItems
 
 

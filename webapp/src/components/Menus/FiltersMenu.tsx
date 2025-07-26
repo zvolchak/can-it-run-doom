@@ -38,7 +38,7 @@ export const FiltersMenu = () => {
     const items: IArchiveItem[] = useSelector(
         (state: RootState) => {
             return isFilterApplied(state) ? 
-                            state.submissions.filtered : state.submissions.items
+                    state.submissions.filtered : state.submissions.items
         }
     )
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
@@ -86,7 +86,6 @@ export const FiltersMenu = () => {
         dispatch(setLvlCompleted(value === null ? null : value))
     }
 
-    console.debug(appliedFilters.query)
     return (
         <nav 
             className={`

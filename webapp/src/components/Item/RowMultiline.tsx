@@ -26,40 +26,47 @@ export const RowMultiline = ({
     const [hoveredItem, setHoveredItem] = useState(null)
 
     return (
-        <ItemContentRow 
-            title={title}
-            className={className}
-        >
+        <div className="flex flex-col items-end gap-1">
+            <div className="px-2">
+                {title}
+            </div>
             {items && items.map((item: ISource, index: number) =>
-                <a 
-                    key={`author_name: ${item.name}`} 
-                    className="doom-btn relative"
-                    onMouseOver={() => setHoveredItem(item.name)}
-                    onMouseOut={() => setHoveredItem(null)}
-                    href={item.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                <ItemContentRow
+                    key={`item_row_${index}`}
+                    className={`${className} flex flex-row`}
                 >
-                    {item.name}
-                    {isUseComma(items, index) && <br className="my-1" />}
+                    <a 
+                        key={`item.name: ${item.name}`} 
+                        className="doom-btn relative items-end"
+                        onMouseOver={() => setHoveredItem(item.name)}
+                        onMouseOut={() => setHoveredItem(null)}
+                        href={item.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        <div className="">
+                            {item.name}
+                        </div>
+                        {/* {isUseComma(items, index) && <br className="my-1" />} */}
 
-                    <Image
-                        src={hoverIconSrc}
-                        alt={`Icon ${hoverIconSrc}`}
-                        className={`
-                            icon 
-                            ${hoveredItem === item.name ? "opacity-100" : "opacity-0"}
-                        `}
-                        quality={100}
-                        width={20}
-                        height={20}
-                    />
-                </a>
+                        {/* <Image
+                            src={hoverIconSrc}
+                            alt={`Icon ${hoverIconSrc}`}
+                            className={`
+                                icon 
+                                ${hoveredItem === item.name ? "opacity-100" : "opacity-0"}
+                            `}
+                            quality={100}
+                            width={20}
+                            height={20}
+                        /> */}
+                    </a>
+
+                    { (!items || items?.length === 0) && 
+                        <div>N/A</div>
+                    }
+                </ItemContentRow>
             )}
-
-            { (!items || items?.length === 0) && 
-                <div>N/A</div>
-            }
-        </ItemContentRow>
+        </div>
     )
 }

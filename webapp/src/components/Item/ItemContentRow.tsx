@@ -1,5 +1,5 @@
 interface IItemConentRow {
-    title: string
+    title?: string
     value?: any
     children?: any
     className?: string
@@ -7,7 +7,7 @@ interface IItemConentRow {
 
 
 export const ItemContentRow = ({ 
-    title, 
+    title = null, 
     value, 
     children,
     className="",
@@ -20,7 +20,8 @@ export const ItemContentRow = ({
                 sm:grid sm:grid-cols 
                 sm:grid-cols-12
                 gap-2 tracking-wider
-                flex-row flex
+                flex
+                flex-row
                 ${className}
             `}
         >
@@ -29,8 +30,9 @@ export const ItemContentRow = ({
                 <div className="
                     sm:block sm:w-auto
                     sm:w-full
-                    w-1/2
-                    col-span-5 justify-self-end py-1 text-right"
+                    col-span-5 justify-self-end py-1 text-right
+                    items-center justify-center flex flex-col
+                    "
                 >
                     <p className="doom-gradient-light doom-text-shadow-light">
                         {title}
@@ -40,11 +42,8 @@ export const ItemContentRow = ({
             {/* Value Column */}
             <div
                 className={`${childrenParentClass}
-                    flex justify-content-start items-center 
-                    text-start
+                    flex flex-row flex-wrap justify-end
                     py-1 px-3
-                    w-1/2
-                    sm:w-full
                     bg-gray-700 
                     overflow-hidden
                     ${titleClassSpan}

@@ -130,3 +130,12 @@ export function decodeContextQuery(query: ParsedUrlQuery): object {
         Object.entries(query).map(([k, v]) => [k, decodeURIComponent(v as string)])
     )
 } // decodeContextQuery
+
+
+export function getNameFromMediaUrl(url: string) {
+    const urlObj = new URL(url)
+    const hostname = urlObj.hostname.split(".")[0]
+
+    if (hostname.toLowerCase() === "github")
+        return `${urlObj.hostname}${urlObj.pathname.split("/").splice(0,3).join("/")}`
+}

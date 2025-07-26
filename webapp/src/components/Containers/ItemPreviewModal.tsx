@@ -51,11 +51,11 @@ export function ItemPreviewModal({
                     open={selectedItem !== null}
                     title={""}
                     onClose={onItemPreviewClose}
-                    className="flex flex-row w-full sm:w-1/2 h-auto p-1"
+                    className="flex flex-row w-full sm:w-auto h-auto"
                 >
                     <ItemCard 
                         item={item} 
-                        className="justify-self-center w-full px-8"
+                        className="justify-self-center w-full sm:w-8/12 sm:px-8 px-3"
                     />
                 </Modal>
             }

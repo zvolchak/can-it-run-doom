@@ -51,7 +51,7 @@ function ArrowPrevious({ onClick = null}) {
                 h-full 
                 w-10
                 doom-btn
-                left-5 absolute top-0 z-10
+                left-0 absolute top-0 z-10
                 `}
             onClick={onClick}
         >
@@ -102,7 +102,7 @@ export function CategoryContainer({
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
-                    centerPadding: "20px",
+                    centerPadding: "14px",
                     centerMode: true,
                     arrows: false,
                 }
@@ -116,16 +116,17 @@ export function CategoryContainer({
                 title={title}
                 label={btnTitle}
                 onClick={onMoreClicked}
+                className="px-14 sm:pl-12 text-lg"
             />
 
-            <Slider {...settings} className="p-0">
+            <Slider {...settings} className="p-0 sm:pl-11 pl-2">
                 {
                     items.map((item: IArchiveItem) => 
                         <ItemCardSimple 
                             key={`doom port item for ${item.title}`} item={item} 
                             className="justify-self-center flex-shrink-0
                             item flex flex-col text-slate-50 gap-1 py-2
-                            w-72 h-[31rem]
+                            w-72 h-[30rem]
                             "
                         />
                     )

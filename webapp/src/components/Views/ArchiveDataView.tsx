@@ -54,6 +54,7 @@ function filterItems({
         items = filterById(items, idQuery)
     if (queryTags && queryTags.length > 0)
         items = filterItemsByTags(items, queryTags)
+
     if (query?.authorsPerItem)
         items = filterByAuthorsPerItem(items, Number(query.authorsPerItem))
     if (query?.hasCode)
@@ -138,7 +139,7 @@ export function ArchiveDataView({ items }: IMainPageProps) {
                     filteredItems.map((item: IArchiveItem) => 
                         <ItemCard 
                             key={`doom port item for ${item.title}`} item={item} 
-                            className="justify-self-center px-4"
+                            className="justify-self-center px-4 sm:w-[40rem]"
                         />
                     )
                 }

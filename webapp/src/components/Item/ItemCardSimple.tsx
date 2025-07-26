@@ -1,22 +1,15 @@
-import { useState } from "react"
-import { useSelector, useDispatch, } from "react-redux"
-// import { useRouter } from "next/router"
-import { ImCheckmark2 } from "react-icons/im"
-import { GiCrossMark } from "react-icons/gi"
+import { useDispatch, } from "react-redux"
 import { 
     IArchiveItem, 
-    IFiltersStoreState,
+    ISource,
 } from "@/src/types"
 import { 
-    RootState,
-    setAppliedId,
-    setAppliedTags,
+    selectItem,
 } from "@/src/store"
 import { 
     ImageLoader,
-    RowMultiline,
     ItemContentRow,
-    Tag,
+    ItemField,
 } from "@/src/components"
 
 
@@ -28,56 +21,22 @@ interface IItemCardProps {
 
 export const ItemCardSimple = ({ item, className = "", }: IItemCardProps) => {
     const dispatch = useDispatch()
-    // const router = useRouter()
-    const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
-    const [expandedDsc, setExpandedDsc] = useState(false)
-    const maxDscLength = 180
-    const isDscOverflow = (item?.description || "").length > maxDscLength
 
-    function onIdClick(id: string) {
-        let appliedIds = [ ...(appliedFilters.ids || [])]
-        if (!appliedIds)
-            appliedIds = []
-        const existingIndex = appliedIds.indexOf(id)
-        if (existingIndex >= 0)
-            appliedIds.splice(existingIndex, 1)
-        else
-            appliedIds.push(id)
-
-        dispatch(setAppliedId(appliedIds))
-        // const query = { ...router.query, ids: id }
-        // router.push({
-        //     pathname: router.pathname,
-        //     query,
-        // })
+    function onItemClicked() {
+        dispatch(selectItem(item))
     } // onIdClick
+
+
     return (
-        <div className={`${className}`}
+        <div className={`overflow-y-auto cursor:pointer ${className}`}
+            onClick={onItemClicked}
         >
             <div className="flex flex-row p-2 h-16">
                 {item?.title || ""}
             </div>
 
-            {/* {item?.description && item?.description.length > 0 &&
-                <div className="description flex flex-col p-2 items-start">
-                    <p className="whitespace-pre-line">
-                        {expandedDsc || !isDscOverflow 
-                            ? item?.description || "" 
-                            : (item?.description || "").slice(0, maxDscLength) + "..."
-                        }
-                    </p>
-                    {isDscOverflow && (
-                        <button 
-                        onClick={() => setExpandedDsc(!expandedDsc)} 
-                        className="doom-btn pt-3"
-                        >
-                            {expandedDsc ? "Show Less" : "Show More"}
-                        </button>
-                    )}
-                </div>
-            } */}
-
-            <div className={`
+            <div 
+                className={`
                     flex flex-col gap-0
                 `}
             >
@@ -88,89 +47,54 @@ export const ItemCardSimple = ({ item, className = "", }: IItemCardProps) => {
                     />
                 </div>
 
-                <div className="flex flex-col gap-2 mt-2 w-full">
-                    <ItemContentRow
-                        title="" 
-                        value={item?.publishDate} 
-                    />
+                <div className="w-full text-right px-3 py-1">
+                    {item?.publishDate} 
+                </div>
 
-                    <RowMultiline 
-                        title=""
-                        items={item?.sourcesUrl} 
-                        hoverIconSrc="/icons/doom-guy-scream.png" 
-                    />
+                {/* <RowMultiline 
+                    title={`${item.authors.length > 1 ? "Authors" : "Author"}`}
+                    items={[...item?.authors, { name: "test", url: "localhost" }]} 
+                    hoverIconSrc="/icons/doom-guy-scream.png" 
+                    className=""
+                /> */}
 
+                <div className="
+                    flex flex-row flex-wrap gap-1
+                    mt-2 w-full justify-end 
+                    px-3
+                    "
+                >
                     {
-                        (!item?.sourceCodeUrl || item?.sourceCodeUrl.length !== 0) &&
-                        <RowMultiline 
-                            title="Source Code"
-                            items={item?.sourceCodeUrl} 
-                            hoverIconSrc="/icons/doom-guy-look-left.png" 
-                        />
+                        item?.authors?.map((author: ISource) => 
+                            <ItemContentRow 
+                                key={`item_field_author_${author.name}`}
+                                value={author.name} 
+                            />
+
+                            // <ItemField 
+                            //     key={`item_field_author_${author.name}`}
+                            //     label={author.name}
+                            //     url={author.url}
+                            //     className="bg-slate-700 px-2"
+                            // />
+                        )
                     }
                 </div>
 
-                    <div className="
-                        flex flex-col doom-card w-full gap-1
-                        overflow-y-auto scrollbar-hidden
-                        top-1
-                        absolute
-                        "
-                    >
-                        {/* <RowMultiline 
-                            title=" "
-                            items={item?.authors} 
-                            hoverIconSrc="/icons/doom-guy-grin.png" 
-                        /> */}
-                        
+                <div className="flex flex-col gap-1 mt-2 w-full items-end px-3">
+                    {
+                        item?.sourcesUrl?.map((source: ISource, index: number) => 
+                            <>
+                                <ItemField 
+                                    key={`item_key_source_${source.name}_${index}`}
+                                    label={source.name}
+                                    url={source.url}
+                                />
+                            </>
+                        )
+                    }
+                </div>
 
-                        {/* <RowMultiline 
-                            title="Sources:"
-                            items={item?.sourcesUrl} 
-                            hoverIconSrc="/icons/doom-guy-scream.png" 
-                        />
-
-                        <RowMultiline 
-                            title="Source Code"
-                            items={item?.sourceCodeUrl} 
-                            hoverIconSrc="/icons/doom-guy-look-left.png" 
-                        /> */}
-
-
-                        {/* <ItemContentRow title="First Level Completed">
-                            {item?.isFirstLevelComplete ?
-                                <ImCheckmark2 className="mt-1" />
-                                :
-                                <GiCrossMark className="mt-1" />
-                            }
-                        </ItemContentRow> */}
-
-
-                        {/* <ItemContentRow 
-                            title="ID:"
-                        >
-                            <a className="doom-btn" onClick={() => onIdClick(item?.id)}>
-                                {item?.id}
-                            </a>
-                        </ItemContentRow> */}
-
-                        {/* <div className="flex flex-wrap flex-row gap-1 mt-3 p-4">
-                            {
-                                item?.tags.map((tag: string) => {
-                                    return <Tag 
-                                        key={`tag_${tag}_${Math.random()}`} 
-                                        text={tag} 
-                                        queryKey="tags"
-                                        onDispatch={setAppliedTags}
-                                        className={`
-                                            ${appliedFilters.tags?.indexOf(tag) >= 0 ? "active" : ""}
-                                        `}
-                                    />
-                                })
-                            }
-                        </div> */}
-                    </div>
-                
             </div>
         </div>
     )

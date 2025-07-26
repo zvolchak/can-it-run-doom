@@ -1,22 +1,22 @@
 import { useState } from "react"
-import { useSelector, useDispatch, } from "react-redux"
-import { ImCheckmark2 } from "react-icons/im"
-import { GiCrossMark } from "react-icons/gi"
 import { 
     IArchiveItem, 
-    IFiltersStoreState,
+    IFiltersStoreState, 
+    ISource,
 } from "@/src/types"
 import { 
-    RootState,
-    setAppliedId,
-    setAppliedTags,
-} from "@/src/store"
-import { 
     ImageLoader,
-    RowMultiline,
     ItemContentRow,
+    ItemField,
     Tag,
 } from "@/src/components"
+import { FaCode } from "react-icons/fa"
+import { MdOndemandVideo } from "react-icons/md"
+import { FaUserAstronaut } from "react-icons/fa"
+import { isFilterApplied, RootState, setAppliedTags } from "@/src/store"
+import { useSelector } from "react-redux"
+import { getTagsFromItems, redirectToEntries } from "@/src/utils"
+import { useRouter } from "next/router"
 
 
 interface IItemCardProps {
@@ -26,119 +26,196 @@ interface IItemCardProps {
 
 
 export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
-    const dispatch = useDispatch()
+    const router = useRouter()
     const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
+    const isFiltersApplied: boolean = useSelector((state: RootState) => isFilterApplied(state))
     const [expandedDsc, setExpandedDsc] = useState(false)
     const maxDscLength = 180
     const isDscOverflow = (item?.description || "").length > maxDscLength
 
-    function onIdClick(id: string) {
-        let appliedIds = [ ...(appliedFilters.ids || [])]
-        if (!appliedIds)
-            appliedIds = []
-        const existingIndex = appliedIds.indexOf(id)
-        if (existingIndex >= 0)
-            appliedIds.splice(existingIndex, 1)
-        else
-            appliedIds.push(id)
+    // Use filtered items list if at least one filter is applied. Otherwise, use full items list.
+    const items: IArchiveItem[] = useSelector(
+        (state: RootState) => {
+            return isFilterApplied(state) ? 
+                    state.submissions.filtered : state.submissions.items
+        }
+    )
+    const activeTags = isFiltersApplied ? getTagsFromItems(items) : []
 
-        dispatch(setAppliedId(appliedIds))
-    } // onIdClick
 
+    function onTagClicked(event, targetTag: string) {
+        redirectToEntries(router, "tag", targetTag)
+    }
 
     return (
         <div className={`
             item flex flex-col text-slate-50 gap-1
             ${className}`}
         >
-            <div className="flex flex-row title p-2">
+            <div className="flex flex-row title py-2">
                 {item?.title || ""}
             </div>
 
             {item?.description && item?.description.length > 0 &&
-                <div className="description flex flex-col p-2 items-start">
+                <div className="
+                    description flex flex-row flex-wrap sm:p-2 items-start
+                    "
+                >
                     <p className="whitespace-pre-line">
                         {expandedDsc || !isDscOverflow 
                             ? item?.description || "" 
                             : (item?.description || "").slice(0, maxDscLength) + "..."
                         }
+                        {isDscOverflow && (
+                            <button 
+                            onClick={() => setExpandedDsc(!expandedDsc)} 
+                            className="doom-btn ml-2"
+                            >
+                                {expandedDsc ? "Show Less" : "Show More"}
+                            </button>
+                        )}
                     </p>
-                    {isDscOverflow && (
-                        <button 
-                        onClick={() => setExpandedDsc(!expandedDsc)} 
-                        className="doom-btn pt-3"
-                        >
-                            {expandedDsc ? "Show Less" : "Show More"}
-                        </button>
-                    )}
                 </div>
             }
 
+            <ItemContentRow value={item?.publishDate} className="mt-4 w-auto sm:w-1/2" />
+
             <div className={`
-                    item-container flex flex-col sm:flex-row gap-1 items-start
-                    ${(item?.description || "").length > 0 ? "mt-4" : "mt-0"}
+                    item-container flex flex-col sm:flex-row gap-1 items-start min-h-[20rem]
                 `
                 }>
-                <div className="image-preview">
+
+                <div className="image-preview sm:h-[18rem] sm:w-[38rem]">
                     <ImageLoader className="justify-self-start" src={item?.previewImg} />
                 </div>
 
                 <div className="
-                    flex flex-col doom-card w-full gap-2
+                    flex flex-col doom-card w-full gap-2 h-full
                     overflow-y-auto scrollbar-hidden"
                 >
-                    <RowMultiline 
-                        title="Author:"
-                        items={item?.authors} 
-                        hoverIconSrc="/icons/doom-guy-grin.png" 
-                    />
-                    
-                    <ItemContentRow title="Published Date:" value={item?.publishDate} />
 
-                    <RowMultiline 
-                        title="Media"
-                        items={item?.sourcesUrl} 
-                        hoverIconSrc="/icons/doom-guy-scream.png" 
-                    />
-
-                    <RowMultiline 
-                        title="Source Code"
-                        items={item?.sourceCodeUrl} 
-                        hoverIconSrc="/icons/doom-guy-look-left.png" 
-                    />
-
-
-                    <ItemContentRow title="First Level Completed">
-                        {item?.isFirstLevelComplete ?
-                            <ImCheckmark2 className="mt-1" />
-                            :
-                            <GiCrossMark className="mt-1" />
-                        }
-                    </ItemContentRow>
-
-
-                    <ItemContentRow 
-                        title="ID:"
+                    <div className="
+                        flex flex-row flex-wrap gap-1
+                        w-full justify-center 
+                        mt-2 
+                        sm:mt-0 
+                        "
                     >
-                        <a className="doom-btn" onClick={() => onIdClick(item?.id)}>
-                            {item?.id}
-                        </a>
-                    </ItemContentRow>
-
-                    <div className="flex flex-wrap flex-row gap-1 mt-3 p-4">
                         {
-                            item?.tags.map((tag: string) => {
-                                return <Tag 
-                                    key={`tag_${tag}_${Math.random()}`} 
-                                    text={tag} 
-                                    queryKey="tags"
-                                    onDispatch={setAppliedTags}
-                                    className={`
-                                        ${appliedFilters.tags?.indexOf(tag) >= 0 ? "active" : ""}
-                                    `}
-                                />
-                            })
+                            item?.authors?.map((author: ISource) => 
+                                <div 
+                                    key={`item_field_code_${author.name}`}
+                                    className="flex flex-row items-center px-2 bg-slate-700"
+                                >
+                                    <div>
+                                        <FaUserAstronaut />
+                                    </div>
+                                    <ItemField 
+                                        label={author.name}
+                                        url={author.url}
+                                        className="px-2"
+                                    />
+                                </div>
+                            )
                         }
+                    </div>
+
+                    <div className="
+                        flex flex-row flex-wrap 
+                        gap-x-4 gap-2
+                        sm:gap-1
+                        mt-2 
+                        w-full h-full items-start
+                        justify-end
+                        "
+                    >
+                        {
+                            item?.sourcesUrl?.map((source: ISource) => 
+                                <div 
+                                    key={`item_field_code_${source.name}`}
+                                    className="flex flex-row items-center"
+                                >
+                                    <div>
+                                        <MdOndemandVideo />
+                                    </div>
+                                    <ItemField 
+                                        label={source.name}
+                                        url={source.url}
+                                        className="px-2"
+                                    />
+                                </div>
+                            )
+                        }
+                    </div>
+
+
+                    <div className="
+                        flex flex-row flex-wrap 
+                        gap-3
+                        sm:gap-1
+                        w-full h-full
+                        justify-end items-end
+                        "
+                    >
+                        {
+                            item?.sourceCodeUrl?.map((source: ISource) =>
+                                <div 
+                                    key={`item_field_code_${source.name}`}
+                                    className="flex flex-row items-center"
+                                >
+                                    <div>
+                                        <FaCode />
+                                    </div>
+                                    <ItemField 
+                                        label={source.name}
+                                        url={source.url}
+                                        className="px-2"
+                                    />
+                                </div>
+                            )
+                        }
+                    </div>
+
+
+                    <div className="
+                        flex flex-row flex-wrap h-auto
+                        mt-2 w-full items-end 
+                        "
+                    >
+                        <div className="
+                            flex flex-row flex-wrap justify-center
+                            gap-4
+                            px-4 pb-5 pt-2
+                            sm:gap-2
+                            "
+                        >
+                            {
+                                item?.tags?.map((tag: string) => 
+                                    <Tag 
+                                        key={`tag_${tag}_${Math.random()}`} 
+                                        text={`#${tag}`} 
+                                        queryKey="tags"
+                                        onClick={onTagClicked}
+                                        className={`
+                                            ${
+                                                appliedFilters.tags?.indexOf(tag) >= 0 
+                                                ? "active" : ""
+                                            }
+                                            ${
+                                                isFilterApplied 
+                                                && activeTags?.indexOf(tag) >= 0 &&
+                                                appliedFilters.tags?.indexOf(tag) < 0 
+                                                ? "highlight" : ""
+                                            }
+                                        `}
+                                    />
+                                )
+                            }
+                        </div>
+                    </div>
+
+                    {/* Some footer padding */}
+                    <div className="h-5">
                     </div>
                 </div>
             </div>
