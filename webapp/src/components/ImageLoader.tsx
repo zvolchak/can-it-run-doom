@@ -39,7 +39,7 @@ export const ImageLoader = (props: IImageLoaderProps) => {
             onError={handleImageLoadError}
             { ...parentProps }
             src={src || defaultSrc || imageSrc || ""} 
-            className={`hover:cursor-pointer ${props.className}`}
+            className={`${props.className}`}
         />
     )
 }

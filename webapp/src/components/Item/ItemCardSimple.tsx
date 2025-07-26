@@ -1,15 +1,17 @@
-import { useDispatch, } from "react-redux"
+// import { useDispatch, } from "react-redux"
 import { 
     IArchiveItem, 
-    ISource,
 } from "@/src/types"
+// import { 
+//     selectItem,
+// } from "@/src/store"
 import { 
-    selectItem,
-} from "@/src/store"
-import { 
+    AuthorsField,
     ImageLoader,
     ItemContentRow,
-    ItemField,
+    MediaField,
+    SourceCodeField,
+    TagsField,
 } from "@/src/components"
 
 
@@ -20,79 +22,39 @@ interface IItemCardProps {
 
 
 export const ItemCardSimple = ({ item, className = "", }: IItemCardProps) => {
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
 
-    function onItemClicked() {
-        dispatch(selectItem(item))
-    } // onIdClick
+    // function onItemClicked() {
+    //     dispatch(selectItem(item))
+    // } // onIdClick
 
 
     return (
-        <div className={`overflow-y-auto cursor:pointer ${className}`}
-            onClick={onItemClicked}
+        <div className={`overflow-y-auto ${className}`}
         >
-            <div className="flex flex-row p-2 h-16">
+            <div className="flex flex-row p-2 h-20">
                 {item?.title || ""}
             </div>
 
+            <ItemContentRow value={item?.publishDate} className="mt-4" />
+
             <div 
                 className={`
-                    flex flex-col gap-0
+                    flex flex-col gap-0 h-full
                 `}
             >
-                <div className="gap-1 h-52 bg-black">
-                    <ImageLoader 
-                        className="w-full h-full"
-                        src={item?.previewImg} 
-                    />
+                <div className="image-preview sm:h-[12rem]">
+                    <ImageLoader className="h-full" src={item?.previewImg} />
                 </div>
 
-                <div className="w-full text-right px-3 py-1">
-                    {item?.publishDate} 
+                <div className="mt-5">
+                    <AuthorsField item={item} />
                 </div>
+                <MediaField item={item} />
+                <SourceCodeField item={item} />
 
-                {/* <RowMultiline 
-                    title={`${item.authors.length > 1 ? "Authors" : "Author"}`}
-                    items={[...item?.authors, { name: "test", url: "localhost" }]} 
-                    hoverIconSrc="/icons/doom-guy-scream.png" 
-                    className=""
-                /> */}
-
-                <div className="
-                    flex flex-row flex-wrap gap-1
-                    mt-2 w-full justify-end 
-                    px-3
-                    "
-                >
-                    {
-                        item?.authors?.map((author: ISource) => 
-                            <ItemContentRow 
-                                key={`item_field_author_${author.name}`}
-                                value={author.name} 
-                            />
-
-                            // <ItemField 
-                            //     key={`item_field_author_${author.name}`}
-                            //     label={author.name}
-                            //     url={author.url}
-                            //     className="bg-slate-700 px-2"
-                            // />
-                        )
-                    }
-                </div>
-
-                <div className="flex flex-col gap-1 mt-2 w-full items-end px-3">
-                    {
-                        item?.sourcesUrl?.map((source: ISource, index: number) => 
-                            <>
-                                <ItemField 
-                                    key={`item_key_source_${source.name}_${index}`}
-                                    label={source.name}
-                                    url={source.url}
-                                />
-                            </>
-                        )
-                    }
+                <div className="hidden sm:block">
+                    <TagsField item={item} className="justify-end sm:gap-2"/>
                 </div>
 
             </div>

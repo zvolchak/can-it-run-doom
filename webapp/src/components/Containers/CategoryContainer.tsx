@@ -126,7 +126,7 @@ export function CategoryContainer({
                             key={`doom port item for ${item.title}`} item={item} 
                             className="justify-self-center flex-shrink-0
                             item flex flex-col text-slate-50 gap-1 py-2
-                            w-72 h-[30rem]
+                            w-72 h-[35rem]
                             "
                         />
                     )

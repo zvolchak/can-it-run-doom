@@ -45,31 +45,41 @@ export const Navbar = () => {
     return (
         <nav className="
             sm:flex sm:flex-row sm:items-center sm:px-6 lg:px-8 sm:pb-0
-            sm:sticky top-0 z-20
+            sm:sticky 
+            top-0 z-20
             relative
-            flex flex-col 
-            px-2
+            flex flex-row flex-wrap 
+            pl-2 pr-4
             min-h-16
             bg-gray-800
-            pb-3
+            items-center
             "
         >
-            <div className="mt-5 sm:mt-0">
+            <div className="mt-0 sm:mt-0 flex items-center">
                 <Link href="/"> 
                     <Image src="/favicon.ico" alt="can it run doom?" width={40} height={40} />
                 </Link>
             </div>
 
             <div className="
-                    flex sm:justify-start items-center flex-1 order-1
-                    mt-5 sm:mt-0
+                    flex sm:justify-start items-center flex-1 order-0
+                    mt-0 sm:mt-0
                     sm:ml-2
                 "
             >
                 { IsSubmissionsListPage() &&
+                    <button
+                        className="doom-btn flex flex-row gap-1 ml-6 doom-color-slate"
+                        onClick={() => router.push("/")}
+                    >
+                        Home
+                    </button>
+                }
+
+                { IsSubmissionsListPage() &&
                     <>
                         <button
-                            className="doom-btn flex flex-row gap-1 mr-6 doom-color-slate"
+                            className="doom-btn flex flex-row gap-1 ml-6 mr-4 doom-color-slate"
                             onClick={onFiltersBtnClicked}
                         >
                             {   settings?.isFiltersMenu &&
@@ -79,24 +89,22 @@ export const Navbar = () => {
                                 <FaCaretDown size="20px" />
                             }
 
-                            Filter
+                            Filters
                         </button>
                         <Searchbar className="sm:w-2/6 w-full" />
                     </>
                 }
-                { IsSubmissionsListPage() &&
-                    <button
-                        className="doom-btn flex flex-row gap-1 ml-6 doom-color-slate"
-                        onClick={() => router.push("/")}
-                    >
-                        Home
-                    </button>
 
-                }
+            </div>
+
+            <div className="flex items-center h-full">
+                <Link className="doom-btn p-2" href="/entries/add">
+                    Add Entry
+                </Link>
             </div>
 
 
-            <div className="
+            {/* <div className="
                     flex items-center justify-end order-3 gap-2
                     sm:py-0
                     mt-6 sm:mt-0
@@ -130,7 +138,7 @@ export const Navbar = () => {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
         </nav>
     )
 }
