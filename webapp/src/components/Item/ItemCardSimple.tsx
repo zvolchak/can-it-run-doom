@@ -1,14 +1,11 @@
-// import { useDispatch, } from "react-redux"
 import { 
     IArchiveItem, 
 } from "@/src/types"
-// import { 
-//     selectItem,
-// } from "@/src/store"
 import { 
     AuthorsField,
     ImageLoader,
     ItemContentRow,
+    ItemField,
     MediaField,
     SourceCodeField,
     TagsField,
@@ -22,13 +19,6 @@ interface IItemCardProps {
 
 
 export const ItemCardSimple = ({ item, className = "", }: IItemCardProps) => {
-    // const dispatch = useDispatch()
-
-    // function onItemClicked() {
-    //     dispatch(selectItem(item))
-    // } // onIdClick
-
-
     return (
         <div className={`overflow-y-auto ${className}`}
         >
@@ -57,6 +47,13 @@ export const ItemCardSimple = ({ item, className = "", }: IItemCardProps) => {
                     <TagsField item={item} className="justify-end sm:gap-2"/>
                 </div>
 
+            </div>
+
+            <div className="w-full flex flex-row justify-center items-center m-0 p-0">
+                <ItemField 
+                    label={item.id}
+                    url={`entries?id=${item.id}`}
+                />
             </div>
         </div>
     )

@@ -36,7 +36,8 @@ const initialState: ISubmissionsStoreState = {
         publishDate: null,
         tags: [],
         previewImg: ""
-    }
+    },
+    collections: null
 }
 
 const submissionsSlice = createSlice({
@@ -67,6 +68,10 @@ const submissionsSlice = createSlice({
         selectItem: (state, action) => {
             state.selected = action.payload
         },
+
+        setCollection: (state, action) => {
+            state.collections = { ...state.collections, ...(action.payload as any) }
+        },
     }
 })
 
@@ -77,6 +82,7 @@ export const {
     setNewEntryForm,
     setUplaodStatus,
     selectItem,
+    setCollection,
 } = submissionsSlice.actions
 
 

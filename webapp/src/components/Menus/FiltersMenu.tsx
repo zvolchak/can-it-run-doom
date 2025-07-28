@@ -1,7 +1,7 @@
 "use client"
 import React, { useRef, } from 'react'
 import { useSelector, useDispatch, } from "react-redux"
-import { FaRegWindowClose } from "react-icons/fa"
+import { RiMenuFoldLine } from "react-icons/ri"
 import {
     IArchiveItem,
     IFiltersStoreState,
@@ -14,7 +14,7 @@ import {
     setAppliedYears,
     setAppliedTags,
     setAppliedAuthors,
-    setLvlCompleted,
+    setQuery,
 } from "@/src/store"
 import {
     Tag,
@@ -83,8 +83,13 @@ export const FiltersMenu = () => {
 
 
     function onLvlFilterChanged(value: boolean | null) {
-        dispatch(setLvlCompleted(value === null ? null : value))
+        const query = { 
+            ...appliedFilters.query, 
+            levelCompleted: value === null ? null : value,
+        }
+        dispatch(setQuery(query))
     }
+
 
     return (
         <nav 
@@ -97,7 +102,7 @@ export const FiltersMenu = () => {
         >
             <div className="flex justify-end w-full p-2 bg-gray-700">
                 <button onClick={onClose}>
-                    <FaRegWindowClose size="24px" />
+                    <RiMenuFoldLine size="24px" />
                 </button>
             </div>
             
@@ -179,7 +184,7 @@ export const FiltersMenu = () => {
 
                 <div className="my-4 w-full">
                     <FirstLevelCompletedInput 
-                        value={appliedFilters.query?.levelCompleted}
+                        value={appliedFilters.query?.levelCompleted?.toString() || null}
                         onChange={onLvlFilterChanged}
                     />
                 </div>

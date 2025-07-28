@@ -70,7 +70,7 @@ export function CategoryContainer({
 }: IMainPageProps) {
     const settings = {
         dots: false,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 4,
         slidesToScroll: 3,
@@ -83,10 +83,8 @@ export function CategoryContainer({
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: 3,
+                    slidesToShow: 2,
                     slidesToScroll: 2,
-                    infinite: true,
-                    dots: true
                 }
             },
             {
@@ -116,7 +114,7 @@ export function CategoryContainer({
                 title={title}
                 label={btnTitle}
                 onClick={onMoreClicked}
-                className="px-14 sm:pl-12 text-lg"
+                className="px-4 sm:pl-12 text-lg"
             />
 
             <Slider {...settings} className="p-0 sm:pl-11 pl-2">

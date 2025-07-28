@@ -32,6 +32,11 @@ export interface IUploadStatus {
 }
 
 
+export interface IItemCollection {
+    [key: string]: IArchiveItem[]
+}
+
+
 export interface ISubmissionsStoreState {
     items: IArchiveItem[]
     selected: IArchiveItem
@@ -39,4 +44,5 @@ export interface ISubmissionsStoreState {
     totalSize: number
     newEntryForm: IArchiveItem
     uploadStatus: IUploadStatus
+    collections: IItemCollection | null
 }

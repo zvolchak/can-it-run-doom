@@ -121,6 +121,8 @@ export async function validateImageFile(
 export function stringToBoolOrNull(target: string | null) {
     if (target === null)
         return null
+    if (typeof(target) === "boolean")
+        return target
     return target.toLocaleLowerCase() === "true" ? true : false
 } // stringToBoolOrNull
 

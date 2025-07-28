@@ -1,11 +1,10 @@
 import { NextRouter } from "next/router"
 
 
-export function redirectToEntries(router: NextRouter, key: string = null, value: string = null) {
+export function redirectToEntries(router: NextRouter, query = {}) {
     const params: any = { pathname: "/entries", }
-    if (key) {
-        params.query = {}
-        params.query[key] = value
+    if (query) {
+        params.query = query
     }
     
     router.push(params)

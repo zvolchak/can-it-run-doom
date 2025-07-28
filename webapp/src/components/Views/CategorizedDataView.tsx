@@ -10,8 +10,8 @@ import {
     LazyLoader,
 } from "@/src/components"
 import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux"
-import { RootState, } from "@/src/store"
+import { useDispatch, useSelector } from "react-redux"
+import { RootState, setAppliedAuthors, setAppliedSearch, setAppliedTags, setAppliedYears, } from "@/src/store"
 import { useRouter } from "next/router"
 import { redirectToEntries, sortDscOrAsc } from "@/src/utils"
 
@@ -22,8 +22,15 @@ interface IMainPageProps {
 
 export function CategorizedDataView({ items }: IMainPageProps) {
     const router = useRouter()
+    const dispatch = useDispatch()
     const selectedItem: IArchiveItem = useSelector((state: RootState) => state.submissions.selected)
     const [randomItems, setRandomItems] = useState<IArchiveItem[]>([])
+
+    // Reset filters on this page
+    dispatch(setAppliedTags([]))
+    dispatch(setAppliedAuthors([]))
+    dispatch(setAppliedSearch(""))
+    dispatch(setAppliedYears(null))
 
     useEffect(() => {
         const picks = [...items]
@@ -60,20 +67,20 @@ export function CategorizedDataView({ items }: IMainPageProps) {
 
     return (
         <div className="archive-data-view">
-            <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-10">
                 <CategoryContainer
                     items={sortDscOrAsc(items).splice(0, 10)}
                     title="Latest Submissions"
-                    onMoreClicked={() => redirectToEntries(router, "sort", "latest")}
+                    onMoreClicked={() => redirectToEntries(router, { sort: "latest", limit: 10 })}
                 />
                 
                 <CategoryContainer
                     items={baremetalItems}
                     title="Baremetal"
-                    onMoreClicked={() => redirectToEntries(router, "tag", "baremetal")}
+                    onMoreClicked={() => redirectToEntries(router, { tag: "baremetal" })}
                 />
 
-                <LazyLoader>
+                <LazyLoader className="my-8 py-4 bg-slate-800">
                     <GrouppedMiniShowcase 
                         items={items}
                     />
@@ -83,7 +90,7 @@ export function CategorizedDataView({ items }: IMainPageProps) {
                     <CategoryContainer
                         items={otherItems().splice(0, 10)}
                         title="Other"
-                        onMoreClicked={() => redirectToEntries(router, "tag", "!baremetal")}
+                        onMoreClicked={() => redirectToEntries(router, { tag: "!baremetal" })}
                     />
                 </LazyLoader>
 

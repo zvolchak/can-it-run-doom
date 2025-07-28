@@ -10,6 +10,13 @@ export enum SortOption {
 }
 
 
+export interface IFilterQuery {
+    levelCompleted?: boolean
+    limit?: number
+    sort?: SortOption
+}
+
+
 export interface IFiltersStoreState {
     tags: string[]
     years: IRange | null
@@ -18,9 +25,7 @@ export interface IFiltersStoreState {
     ids?: string[]
     searchString?: string | null
     page?: number | null
-    sortOrder?: SortOption | null
-    isLvlCompleted?: boolean | null
-    query: any
+    query?: IFilterQuery
 }
 
 

@@ -1,6 +1,6 @@
 import { IArchiveItem, ISource } from "@/src/types"
 import { FaUserAstronaut } from "react-icons/fa"
-import { ItemField } from "../ItemField"
+import { ItemField } from "@/src/components"
 
 
 interface IProps {

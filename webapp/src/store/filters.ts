@@ -62,14 +62,6 @@ export const appliedFiltersSlice = createSlice({
             state.page = action.payload || 1
         },
 
-        setSortOrder: (state, action) => {
-            state.sortOrder = action.payload
-        },
-
-        setLvlCompleted: (state, action) => {
-            state.isLvlCompleted = action.payload
-        }, 
-
         setQuery: (state, action) => {
             state.query = action.payload
         },
@@ -84,8 +76,7 @@ export const isFilterApplied = (state: RootState) => {
             state.appliedFilters.years?.end !== null || 
             state.appliedFilters.searchString?.length > 0 ||
             state.appliedFilters.ids?.length > 0 ||
-            state.appliedFilters.sortOrder !== null ||
-            state.appliedFilters.isLvlCompleted !== null
+            state.appliedFilters.query?.levelCompleted
 }
 
 
@@ -103,8 +94,6 @@ export const {
     setAppliedSearch,
     setAppliedId,
     setAppliedPage,
-    setSortOrder,
-    setLvlCompleted,
     setQuery,
 } = appliedFiltersSlice.actions
 

@@ -6,10 +6,12 @@ import {
     AuthorsField,
     ImageLoader,
     ItemContentRow,
+    LevelCompletedField,
     MediaField,
     SourceCodeField,
     TagsField,
 } from "@/src/components"
+import { useRouter } from "next/router"
 
 
 interface IItemCardProps {
@@ -19,9 +21,27 @@ interface IItemCardProps {
 
 
 export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
+    const router = useRouter()
     const [expandedDsc, setExpandedDsc] = useState(false)
     const maxDscLength = 180
     const isDscOverflow = (item?.description || "").length > maxDscLength
+
+    function onIdClicked() {
+        if (isOnItemsPage())
+            return
+
+        router.push({
+            pathname: "/entries",
+            query: { id: item.id }
+        })
+    } // onIdClicked
+
+
+    function isOnItemsPage() {
+        const currPageId = router.query?.id
+        return currPageId === item.id
+    } // isOnItemsPage
+
 
     return (
         <div className={`
@@ -57,7 +77,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             <ItemContentRow value={item?.publishDate} className="mt-4 w-auto sm:w-1/2" />
 
             <div className={`
-                    item-container flex flex-col sm:flex-row gap-1 items-start min-h-[20rem]
+                    item-container flex flex-col sm:flex-row gap-1 items-start
                 `
                 }>
 
@@ -72,12 +92,22 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
 
                     <AuthorsField item={item} />
                     <MediaField item={item} />
+                    <LevelCompletedField item={item} />
                     <SourceCodeField item={item} />
                     <TagsField item={item} />
 
                     {/* Some footer padding */}
-                    <div className="h-5">
+                    <div className="h-5 p-2">
                     </div>
+                </div>
+            </div>
+
+            <div className="w-full flex flex-row justify-center items-center mt-0 p-2">
+                <div 
+                    className={`doom-btn ${isOnItemsPage() ? "hover:cursor-default" : ""}`}
+                    onClick={onIdClicked}
+                >
+                    {item.id}
                 </div>
             </div>
         </div>

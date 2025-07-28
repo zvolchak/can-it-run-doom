@@ -30,7 +30,7 @@ export function TagsField({
 
 
     function onTagClicked(event, targetTag: string) {
-        redirectToEntries(router, "tag", targetTag)
+        redirectToEntries(router, { tag: targetTag })
     }
 
     

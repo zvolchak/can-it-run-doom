@@ -1,7 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 
 
-export function LazyLoader({ children }: { children: React.ReactNode }) {
+interface IProps {
+    className?: string
+    children: React.ReactNode
+}
+
+
+export function LazyLoader({ 
+    className="", 
+    children 
+}: IProps) {
     const ref = useRef<HTMLDivElement>(null)
     const [isVisible, setIsVisible] = useState(false)
 
@@ -23,7 +32,7 @@ export function LazyLoader({ children }: { children: React.ReactNode }) {
     }, [])
 
     return (
-        <div ref={ref}>
+        <div ref={ref} className={`${className}`}>
             {isVisible ? children : null}
         </div>
     )

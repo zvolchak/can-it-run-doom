@@ -5,21 +5,10 @@ import { useRouter } from 'next/router'
 import type { GetServerSideProps } from 'next'
 import { 
     IArchiveItem,
-    IRange,
 } from "@/src/types"
 import {
+    selectItem,
     setItems,
-    setAvailableTags,
-    setAvailableYears,
-    setAvailableAuthors,
-    
-    setAppliedAuthors,
-    setAppliedTags,
-    setAppliedYears,
-    setAppliedId,
-    setAppliedSearch,
-    setAppliedPage,
-    setTotalSize,
 } from "@/src/store"
 import {
     CategorizedDataView,
@@ -27,36 +16,15 @@ import {
 import {
     fetchDoomPorts,
 } from "@/src/api"
-import {
-    getTagsFromItems,
-    getAuthorsFromItems,
-    getValueFromQuery,
-    getYearsFromItems,
-} from "@/src/utils"
 
 
 interface IMainPageProps {
     items: IArchiveItem[]
-    totalSize: number // total number of items that, aka current page + the rest
-    queryTags?: string[]
-    years?: { lowest: number, highest: number }
-    authorQuery?: string[]
-    searchQuery?: string
-    idQuery?: string[]
-    page?: number
-    hasCode?: string
 }
 
 
 export default function MainPage({
     items,
-    totalSize,
-    queryTags = [],
-    years = null,
-    authorQuery = [],
-    searchQuery = "",
-    idQuery = [],
-    page = 0,
 }: IMainPageProps) {
     const router = useRouter()
     const dispatch = useDispatch()
@@ -64,23 +32,8 @@ export default function MainPage({
 
     useEffect(() => {
         dispatch(setItems(items))
-
-        const tags = getTagsFromItems(items)
-        const authors = getAuthorsFromItems(items).sort()
-
-        const availableYears = getYearsFromItems(items)
-        dispatch(setAvailableTags(tags)) 
-        dispatch(setAvailableYears(availableYears)) 
-        dispatch(setAvailableAuthors(authors))
-
-        dispatch(setAppliedAuthors(authorQuery)) 
-        dispatch(setAppliedTags(queryTags))
-        dispatch(setAppliedYears(years))
-        dispatch(setAppliedSearch(searchQuery))
-        dispatch(setAppliedId(idQuery))
-        dispatch(setAppliedPage(page))
-        dispatch(setTotalSize(totalSize))
-    }, [dispatch, items, years, authorQuery, queryTags, searchQuery, idQuery, page, totalSize])
+        dispatch(selectItem(null))
+    }, [dispatch, items])
 
     
     function selectedItem(ids: string): IArchiveItem {
@@ -141,15 +94,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         "Cache-Control", 
         `public, s-maxage=${cacheTime}, stale-while-revalidate=30`
     )
-    const searchQuery = decodeURIComponent(context.query?.search as string || "")
-    const queryTags = getValueFromQuery(context.query, "tag")
-    const idQuery = getValueFromQuery(context.query, "id")
-    const authorQuery = getValueFromQuery(context.query, "author")
-    const yearQuery: IRange = {
-        start: Number(getValueFromQuery(context.query, "yearstart")[0]) || null, 
-        end: Number(getValueFromQuery(context.query, "yearend")[0]) || null,
-    }
-    const page = Number(context.query?.page || 1)
 
     const items = await fetchDoomPorts()
     // Add base url to the preview image if it doesn't start with "http" - which means it
@@ -166,13 +110,6 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     return {
         props: {
             items: items || [],
-            totalSize: items?.length || 0,
-            queryTags,
-            years: yearQuery,
-            authorQuery,
-            searchQuery,
-            idQuery,
-            page,
         },
     }
 } // getServerSideProps

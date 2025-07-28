@@ -8,7 +8,7 @@ export function FirstLevelCompletedInput({
     value = null,
     onChange = null
 }: IProps) {
-    const incomingValue = value === null ? -1 : Number(value.toLocaleLowerCase() === "true" ? 1 : -1)
+    const incomingValue = value === null ? -1 : Number(value.toString().toLocaleLowerCase() === "true" ? 1 : 0)
 
     function onSelected(e: any) {
         const targetValue = Number(e.target.value)
