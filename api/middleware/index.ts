@@ -10,6 +10,7 @@ import {
     IsLocalhost,
 } from "../utils"
 
+const secrets = process.env
 
 async function getUserClaim(req: Request, res: Response): Promise<DecodedIdToken> {
     const sessionCookie = req.cookies.session || null
@@ -23,7 +24,7 @@ async function getUserClaim(req: Request, res: Response): Promise<DecodedIdToken
 
 
 export async function authenticate(req: Request, res: Response, next: NextFunction) {
-    if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
+    if (IsLocalhost(req) && secrets.NODE_ENV === "development") {
         req.user = getUserFromRequest(req)
         next()
         return
@@ -47,7 +48,7 @@ export async function authorizeByRole(
     targetRole: EUserRole, 
     next: NextFunction
 ) {
-    if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
+    if (IsLocalhost(req) && secrets.NODE_ENV === "development") {
         next()
         return
     }
@@ -61,7 +62,7 @@ export async function authorizeByRole(
         console.info(req.user)
         console.info(isAuthorized)
         
-        const isOwner = process.env.FB_ROOT_UID?.split(",").indexOf(req.user.uid) >= 0
+        const isOwner = secrets.FB_ROOT_UID?.split(",").indexOf(req.user.uid) >= 0
         if (!isAuthorized && !isOwner)
             throw new Error("Access denied!")
 

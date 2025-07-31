@@ -14,7 +14,9 @@ import {
     UserRouter,
 } from "./routes"
 
-console.info(` -- Environment: ${process.env.NODE_ENV}`)
+const secrets = process.env
+
+console.info(` -- Environment: ${secrets.NODE_ENV}`)
 
 const BASE_URL = "/api/v1"
 const app = express()
@@ -65,7 +67,7 @@ app.use((req, res, next) => {
     next()
 })
 
-const CORS_ORIGIN = (process.env.CORS_ORIGIN || "http://localhost:3000").split(",").map(origin => origin.trim())
+const CORS_ORIGIN = (secrets.CORS_ORIGIN || "http://localhost:3000").split(",").map(origin => origin.trim())
 app.use(cors({
     origin: CORS_ORIGIN,              
     credentials: true,

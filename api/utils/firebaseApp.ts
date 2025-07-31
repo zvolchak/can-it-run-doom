@@ -1,6 +1,3 @@
-import dotenv from "dotenv"
-dotenv.config({ path: process.env.DOTENV_PATH || ".env" })
-
 import { CookieOptions, Response, Request, } from "express"
 import { 
   collection, 
@@ -16,37 +13,40 @@ import { join } from "path"
 import { v4 as uuidv4 } from "uuid"
 import { EUserRole, IsLocalhost } from "."
 
+const secrets = process.env
 /* To use Auth and Storage on the Emulator, don't forget to export these vars before running
  * the server:
  * export FIREBASE_STORAGE_EMULATOR_HOST=127.0.0.1:9199
  * export FIREBASE_AUTH_EMULATOR_HOST=127.0.0.1:9099
  */
 
-const isDev = process.env.NODE_ENV === "development"
-
-console.debug(`Environment: ${process.env.NODE_ENV}`)
 export const SESSION_COOKIE_LIFESPAN = 60 * 60 * 24 * 14 * 1000
+const isDev = secrets.NODE_ENV === "development"
+
+console.debug(`Environment: ${secrets.NODE_ENV}`)
 
 const firebaseConfig = {
-    projectId: process.env.FB_PROJECT_ID,
-    apiKey: process.env.FB_API_KEY,
-    authDomain: process.env.FB_AUTH_DOMAIN,
-    storageBucket: process.env.FB_STORAGE_BUCKET,
-    appId: process.env.FB_APP_ID,
+    projectId: secrets.FB_PROJECT_ID,
+    apiKey: secrets.FB_API_KEY,
+    authDomain: secrets.FB_AUTH_DOMAIN,
+    storageBucket: secrets.FB_STORAGE_BUCKET,
+    appId: secrets.FB_APP_ID,
 }
+
+console.debug(firebaseConfig)
 
 if (isDev) {
     console.debug(" - Using local dev credentials json")
-    const filePath = join(__dirname, `../credentials-${process.env.NODE_ENV}.json`)
+    const filePath = join(__dirname, `../credentials-${secrets.NODE_ENV}.json`)
     const credentials = JSON.parse(readFileSync(filePath, "utf8"))
     admin.initializeApp({
         credential: admin.credential.cert(credentials),
-        storageBucket: process.env.FB_STORAGE_BUCKET
+        storageBucket: firebaseConfig.storageBucket
     })
 } else {
     admin.initializeApp({
         credential: admin.credential.applicationDefault(),
-        storageBucket: process.env.FB_STORAGE_BUCKET,
+        storageBucket: firebaseConfig.storageBucket,
     })
 }
 
@@ -79,7 +79,7 @@ export const authorsCollection = collection(fbDb, COLLECTION_NAME.authors)
 export async function createSessionToken(res: Response, token: string) {
     const expiresIn = SESSION_COOKIE_LIFESPAN
     const sessionCookie = await fbAuthAdmin.createSessionCookie(token, { expiresIn })
-    const isDev = process.env.NODE_ENV === "development"
+    const isDev = secrets.NODE_ENV === "development"
     const setting: CookieOptions = {
         httpOnly: true,
         secure: !isDev,
@@ -95,7 +95,7 @@ export async function createSessionToken(res: Response, token: string) {
 
 
 export async function clearSessionToken(res: Response) {
-    const isDev = process.env.NODE_ENV === "development"
+    const isDev = secrets.NODE_ENV === "development"
     res.clearCookie("session", {
         httpOnly: true,
         secure: !isDev,
@@ -163,7 +163,7 @@ export async function getUserByEmail(
 
 
 export function getUserFromRequest(req: Request) {
-    if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
+    if (IsLocalhost(req) && secrets.NODE_ENV === "development") {
         return { 
             id: "test-uid", 
             role: EUserRole.Owner, 

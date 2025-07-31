@@ -10,9 +10,11 @@
     "@": "dist"
   },
   "scripts": {
+    "env:staging": "doppler secrets download --project canitrundoom-api --config stg --no-file --format env > .env",
+    "env:prod": "doppler secrets download --project canitrundoom-api --config prd --no-file --format env > .env",
     "build": "tsc",
-    "build:prod": "DOTENV_PATH=.env.production tsc",
-    "build:staging": "DOTENV_PATH=.env.staging tsc",
+    "build:staging": "npm run env:staging && tsc",
+    "build:prod": "npm run env:prod && tsc",
     "dev": "doppler run -- nodemon",
     "prod": "tsx server.ts",
     "migration": "npx sequalize-cli db:migration"
@@ -23,7 +25,7 @@
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",
-    "dotenv": "^16.4.5",
+    "dotenv": "^17.2.1",
     "express": "^4.21.0",
     "express-rate-limit": "^7.5.0",
     "firebase": "^11.3.0",

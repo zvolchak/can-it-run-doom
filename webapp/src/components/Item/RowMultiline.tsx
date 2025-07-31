@@ -1,12 +1,12 @@
-import { useState } from "react"
-import Image from 'next/image'
+// import { useState } from "react"
+// import Image from 'next/image'
 import { 
     ISource, 
 } from "@/src/types"
 import { 
     ItemContentRow,
 } from "."
-import { isUseComma } from "@/src/utils"
+// import { isUseComma } from "@/src/utils"
 
 
 interface IRowMultilineProps {
@@ -20,10 +20,10 @@ interface IRowMultilineProps {
 export const RowMultiline = ({ 
     title,
     items, 
-    hoverIconSrc,
+    // hoverIconSrc,
     className = "",
 }: IRowMultilineProps) => {
-    const [hoveredItem, setHoveredItem] = useState(null)
+    // const [hoveredItem, setHoveredItem] = useState(null)
 
     return (
         <div className="flex flex-col items-end gap-1">
@@ -38,8 +38,8 @@ export const RowMultiline = ({
                     <a 
                         key={`item.name: ${item.name}`} 
                         className="doom-btn relative items-end"
-                        onMouseOver={() => setHoveredItem(item.name)}
-                        onMouseOut={() => setHoveredItem(null)}
+                        // onMouseOver={() => setHoveredItem(item.name)}
+                        // onMouseOut={() => setHoveredItem(null)}
                         href={item.url}
                         target="_blank"
                         rel="noopener noreferrer"

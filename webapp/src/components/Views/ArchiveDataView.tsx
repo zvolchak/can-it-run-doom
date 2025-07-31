@@ -12,7 +12,6 @@ import {
     FiltersMenu,
     CategoryContainer,
     GrouppedMiniShowcase,
-    LazyLoader,
 } from "@/src/components"
 import {
     paginate,

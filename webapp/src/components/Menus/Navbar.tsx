@@ -21,15 +21,15 @@ export const Navbar = () => {
     const router = useRouter()
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
 
-    function handleSourceCodeClick() {
-        const url = process.env.NEXT_PUBLIC_SOURCE_CODE_URL
-        window.open(url, "_blank")
-    }
+    // function handleSourceCodeClick() {
+    //     const url = process.env.NEXT_PUBLIC_SOURCE_CODE_URL
+    //     window.open(url, "_blank")
+    // }
 
-    function handleJoinDiscordClick() {
-        const url = process.env.NEXT_PUBLIC_DISCORD_URL
-        window.open(url, "_blank")
-    }
+    // function handleJoinDiscordClick() {
+    //     const url = process.env.NEXT_PUBLIC_DISCORD_URL
+    //     window.open(url, "_blank")
+    // }
 
 
     function onFiltersBtnClicked() {

@@ -26,6 +26,7 @@ import {
 } from "../../middleware"
 import axios from "axios"
 
+const secrets = process.env
 
 const router = Router()
 
@@ -43,7 +44,7 @@ async function resolveIssue(entry: IArchiveItem): Promise<boolean> {
         return false
 
     console.info(`- Attempting to resolve an issue "${entry.requestUrl}" for entry ${entry.id}`)
-    const token = process.env.GITHUB_TOKEN
+    const token = secrets.GITHUB_TOKEN
     if (!token) {
         console.warn(`Missing github token to resolve an issue ${entry?.id}: ${entry?.requestUrl}`)
         return
@@ -75,7 +76,7 @@ async function resolveIssue(entry: IArchiveItem): Promise<boolean> {
 
 
 async function sendDiscordNotification(entry: IArchiveItem): Promise<boolean> {
-    const webhook = process.env.DISCORD_ENTRY_NOTIFY_WEBHOOK
+    const webhook = secrets.DISCORD_ENTRY_NOTIFY_WEBHOOK
     if (!webhook)
         return false
 
@@ -189,7 +190,7 @@ router.post(
             return res.status(400).json({ error: "No entries has been processed!", ...result })
         }
         
-        if (process.env.NODE_ENV === "production") {
+        if (secrets.NODE_ENV === "production") {
             await Promise.all(result.success.map(async (batch) => {
                 const hasIssueReolved = await resolveIssue(batch.entry)
                 if (hasIssueReolved)

@@ -10,8 +10,9 @@ import {
 import { IUserAuthResponse } from "../../@types"
 import { getIdTokenResult, signInWithEmailAndPassword } from "firebase/auth"
 
-const router = Router()
+const secrets = process.env
 
+const router = Router()
 const ROUTE_NAMESPACE = "/login"
 
 
@@ -21,7 +22,7 @@ router.post(
     async (req: Request, res: Response
 ):  Promise<IUserAuthResponse | any> => {
     const sessionCookie = req.cookies?.session
-    if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
+    if (IsLocalhost(req) && secrets.NODE_ENV === "development") {
         const user = req.user
         return res.status(200).json({ 
             message: "Test session",
@@ -62,7 +63,7 @@ router.post(
     async (req: Request, res: Response
 ): Promise<IUserAuthResponse | any> => {
     const { email, password } = req.body
-    if (IsLocalhost(req) && process.env.NODE_ENV === "development") {
+    if (IsLocalhost(req) && secrets.NODE_ENV === "development") {
         res.cookie("session", "test-session-token")
         return res.status(200).json({ 
             message: "Test user logged in", 
