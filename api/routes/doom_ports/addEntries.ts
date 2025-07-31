@@ -27,6 +27,8 @@ import {
     generateFirestoreId,
  } from "../../utils"
 
+const secrets = process.env
+
 const router = Router()
 
 
@@ -37,8 +39,7 @@ async function saveFileToStorage(fileName: string, file) {
         metadata: { contentType: file.mimetype }
     })
     await storageFile.makePublic()
-    const bucket_name = process.env.FB_STORAGE_BUCKET
-    // const base_url = process.env.FB_STORAGE_PUBLIC_URL
+    const bucket_name = secrets.FB_STORAGE_BUCKET
     const public_url = `/v0/b/${bucket_name}/o/${bucketDir}%2F${fileName}?alt=media`
     return public_url
 } // saveFileToStorage
@@ -107,7 +108,7 @@ function getStagingOrProdDb(item: IArchiveItem) {
 
 
 async function createGithubIssue(items: IArchiveItem[]) {
-    const token = process.env.GITHUB_TOKEN
+    const token = secrets.GITHUB_TOKEN
     if (!token)
         return { url: null }
     
@@ -303,7 +304,17 @@ function parseBusboyRequest(req: Request): Promise<{
 router.post(
     "/add",
     async (req: Request, res: Response): Promise<any> => {
-    const { itemsJson, image } = await parseBusboyRequest(req)
+    let itemsJson = ''
+    let image = null
+
+    try {
+        const parsed = await parseBusboyRequest(req)
+        itemsJson = parsed.itemsJson
+        image = parsed.image
+    } catch (error) {
+        console.warn("Falling back to JSON body due to Busboy error:", error.message)
+        itemsJson = req.body?.items || ''
+    }
     console.info("Incoming request to add a new entry:", itemsJson)
     const errorMessage = "Failed to add a new entry! Please, try again or contact " +
         "support if the error persists." 
@@ -327,7 +338,7 @@ router.post(
         
         let githubIssue = null
         // Create a github issue in Prod env to track and notify about new submissions.
-        if (process.env.NODE_ENV !== "development" && process.env.GITHUB_TOKEN) {
+        if (secrets.NODE_ENV !== "development" && secrets.GITHUB_TOKEN) {
             githubIssue = await createGithubIssue(
                 result.success.map(s => ({ ...s.entry, id: s.id }))
             )

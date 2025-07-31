@@ -4,6 +4,19 @@ export interface IRange {
 }
 
 
+export enum SortOption {
+    latest = "latest",
+    oldest = "oldest",
+}
+
+
+export interface IFilterQuery {
+    levelCompleted?: boolean
+    limit?: number
+    sort?: SortOption
+}
+
+
 export interface IFiltersStoreState {
     tags: string[]
     years: IRange | null
@@ -12,6 +25,7 @@ export interface IFiltersStoreState {
     ids?: string[]
     searchString?: string | null
     page?: number | null
+    query?: IFilterQuery
 }
 
 
@@ -22,5 +36,6 @@ export function initFiltersStoreState(): IFiltersStoreState {
         authors: [],
         ids: [],
         page: 1,
+        query: {},
     }
 }

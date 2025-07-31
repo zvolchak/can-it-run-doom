@@ -1,23 +1,17 @@
 import { useState } from "react"
-import { useSelector, useDispatch, } from "react-redux"
-// import { useRouter } from "next/router"
-import { ImCheckmark2 } from "react-icons/im"
-import { GiCrossMark } from "react-icons/gi"
 import { 
     IArchiveItem, 
-    IFiltersStoreState,
 } from "@/src/types"
 import { 
-    RootState,
-    setAppliedId,
-    setAppliedTags,
-} from "@/src/store"
-import { 
+    AuthorsField,
     ImageLoader,
-    RowMultiline,
     ItemContentRow,
-    Tag,
+    LevelCompletedField,
+    MediaField,
+    SourceCodeField,
+    TagsField,
 } from "@/src/components"
+import { useRouter } from "next/router"
 
 
 interface IItemCardProps {
@@ -27,124 +21,93 @@ interface IItemCardProps {
 
 
 export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
-    const dispatch = useDispatch()
-    // const router = useRouter()
-    const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
+    const router = useRouter()
     const [expandedDsc, setExpandedDsc] = useState(false)
     const maxDscLength = 180
     const isDscOverflow = (item?.description || "").length > maxDscLength
 
-    function onIdClick(id: string) {
-        let appliedIds = [ ...(appliedFilters.ids || [])]
-        if (!appliedIds)
-            appliedIds = []
-        const existingIndex = appliedIds.indexOf(id)
-        if (existingIndex >= 0)
-            appliedIds.splice(existingIndex, 1)
-        else
-            appliedIds.push(id)
+    function onIdClicked() {
+        if (isOnItemsPage())
+            return
 
-        dispatch(setAppliedId(appliedIds))
-        // const query = { ...router.query, ids: id }
-        // router.push({
-        //     pathname: router.pathname,
-        //     query,
-        // })
-    } // onIdClick
+        router.push({
+            pathname: "/entries",
+            query: { id: item.id }
+        })
+    } // onIdClicked
+
+
+    function isOnItemsPage() {
+        const currPageId = router.query?.id
+        return currPageId === item.id
+    } // isOnItemsPage
+
+
     return (
         <div className={`
             item flex flex-col text-slate-50 gap-1
             ${className}`}
         >
-            <div className="flex flex-row title p-2">
+            <div className="flex flex-row title py-2">
                 {item?.title || ""}
             </div>
 
             {item?.description && item?.description.length > 0 &&
-                <div className="description flex flex-col p-2 items-start">
+                <div className="
+                    description flex flex-row flex-wrap sm:p-2 items-start
+                    "
+                >
                     <p className="whitespace-pre-line">
                         {expandedDsc || !isDscOverflow 
                             ? item?.description || "" 
                             : (item?.description || "").slice(0, maxDscLength) + "..."
                         }
+                        {isDscOverflow && (
+                            <button 
+                            onClick={() => setExpandedDsc(!expandedDsc)} 
+                            className="doom-btn ml-2"
+                            >
+                                {expandedDsc ? "Show Less" : "Show More"}
+                            </button>
+                        )}
                     </p>
-                    {isDscOverflow && (
-                        <button 
-                        onClick={() => setExpandedDsc(!expandedDsc)} 
-                        className="doom-btn pt-3"
-                        >
-                            {expandedDsc ? "Show Less" : "Show More"}
-                        </button>
-                    )}
                 </div>
             }
 
+            <ItemContentRow value={item?.publishDate} className="mt-4 w-auto sm:w-1/2" />
+
             <div className={`
-                    item-container flex flex-row gap-1 items-start
-                    ${(item?.description || "").length > 0 ? "mt-4" : "mt-0"}
+                    item-container flex flex-col sm:flex-row gap-1 items-start
                 `
                 }>
-                <div className="image-preview">
+
+                <div className="image-preview sm:h-[18rem] sm:w-[38rem]">
                     <ImageLoader className="justify-self-start" src={item?.previewImg} />
                 </div>
 
                 <div className="
-                    flex flex-col doom-card w-full gap-2
+                    flex flex-col doom-card w-full gap-2 h-full
                     overflow-y-auto scrollbar-hidden"
                 >
-                    <RowMultiline 
-                        title="Author:"
-                        items={item?.authors} 
-                        hoverIconSrc="/icons/doom-guy-grin.png" 
-                    />
-                    
-                    <ItemContentRow title="Published Date:" value={item?.publishDate} />
 
-                    <RowMultiline 
-                        title="Sources:"
-                        items={item?.sourcesUrl} 
-                        hoverIconSrc="/icons/doom-guy-scream.png" 
-                    />
+                    <AuthorsField item={item} />
+                    <MediaField item={item} />
+                    <LevelCompletedField item={item} />
+                    <SourceCodeField item={item} />
+                    <TagsField item={item} />
 
-                    <RowMultiline 
-                        title="Source Code"
-                        items={item?.sourceCodeUrl} 
-                        hoverIconSrc="/icons/doom-guy-look-left.png" 
-                    />
-
-
-                    <ItemContentRow title="First Level Completed">
-                        {item?.isFirstLevelComplete ?
-                            <ImCheckmark2 className="mt-1" />
-                            :
-                            <GiCrossMark className="mt-1" />
-                        }
-                    </ItemContentRow>
-
-
-                    <ItemContentRow 
-                        title="ID:"
-                    >
-                        <a className="doom-btn" onClick={() => onIdClick(item?.id)}>
-                            {item?.id}
-                        </a>
-                    </ItemContentRow>
-
-                    <div className="flex flex-wrap flex-row gap-1 mt-3 p-4">
-                        {
-                            item?.tags.map((tag: string) => {
-                                return <Tag 
-                                    key={`tag_${tag}_${Math.random()}`} 
-                                    text={tag} 
-                                    queryKey="tags"
-                                    onDispatch={setAppliedTags}
-                                    className={`
-                                        ${appliedFilters.tags?.indexOf(tag) >= 0 ? "active" : ""}
-                                    `}
-                                />
-                            })
-                        }
+                    {/* Some footer padding */}
+                    <div className="h-5 p-2">
                     </div>
+                </div>
+            </div>
+
+            <div className="w-full flex flex-row justify-center items-center mt-0 p-2">
+                <div 
+                    className={`doom-btn ${isOnItemsPage() ? "hover:cursor-default" : ""}`}
+                    onClick={onIdClicked}
+                >
+                    {item.id}
                 </div>
             </div>
         </div>

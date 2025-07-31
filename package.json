@@ -1,0 +1,18 @@
+{
+    "scripts": {
+        "build-api:staging": "npm --prefix ./api run build:staging",
+        "build-webapp:staging": "npm --prefix ./webapp run build:staging",
+
+        "build-api:prod": "npm --prefix ./api run build:prod",
+        "build-webapp:prod": "npm --prefix ./webapp run build:prod",
+
+        "deploy-api:dev": "npm run build-api:staging && firebase deploy --only functions:api --project dev",
+        "deploy-webapp:dev": "npm run build-webapp:staging && firebase deploy --only functions:webapp --project dev",
+
+        "deploy-api:prod": "npm run build-api:prod && firebase deploy --only functions:api --project prod",
+        "deploy-webapp:prod": "npm run build-webapp:prod && firebase deploy --only functions:webapp --project prod",
+
+        "sync-web:dev": "firebase --project dev functions:config:unset doppler && firebase functions:config:set doppler=\"$(doppler secrets download -p canitrundoom-webapp --config stg --no-file)\"",
+        "sync-api:dev": "firebase --project dev functions:config:unset doppler && firebase functions:config:set doppler=\"$(doppler secrets download -p canitrundoom-api --config stg --no-file)\""
+    }
+}

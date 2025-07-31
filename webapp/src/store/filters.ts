@@ -42,12 +42,10 @@ export const appliedFiltersSlice = createSlice({
     reducers: {
         setAppliedTags: (state, action) => {
             reducers.setTags(state, action || [])
-            reducers.setAuthors(state, { ...action, payload: []})
         },
         
         setAppliedAuthors: (state, action) => {
             reducers.setAuthors(state, action || [])
-            reducers.setTags(state, { ...action, payload: []})
         },
 
         setAppliedYears: (state, action) => reducers.setYears(state, action),
@@ -58,12 +56,14 @@ export const appliedFiltersSlice = createSlice({
 
         setAppliedId: (state, action) => {
             state.ids = action.payload || []
-            reducers.setTags(state, { ...action, payload: []})
-            reducers.setTags(state, { ...action, payload: []})
         },
 
         setAppliedPage: (state, action) => {
             state.page = action.payload || 1
+        },
+
+        setQuery: (state, action) => {
+            state.query = action.payload
         },
     }
 })
@@ -75,7 +75,8 @@ export const isFilterApplied = (state: RootState) => {
             state.appliedFilters.years?.start !== null || 
             state.appliedFilters.years?.end !== null || 
             state.appliedFilters.searchString?.length > 0 ||
-            state.appliedFilters.ids?.length > 0
+            state.appliedFilters.ids?.length > 0 ||
+            state.appliedFilters.query?.levelCompleted
 }
 
 
@@ -93,5 +94,6 @@ export const {
     setAppliedSearch,
     setAppliedId,
     setAppliedPage,
+    setQuery,
 } = appliedFiltersSlice.actions
 

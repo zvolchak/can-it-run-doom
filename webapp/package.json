@@ -8,9 +8,11 @@
   },
   "main": "ssr.js",
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build:prod": "DOTENV_KEY=$(npx dotenv-vault keys production) ./scripts/build_prod.sh",
-    "build:staging": "DOTENV_KEY=$(npx dotenv-vault keys staging) ./scripts/build_prod.sh",
+    "env:staging": "doppler secrets download --project canitrundoom-webapp --config stg --no-file --format env > .env",
+    "env:prod": "doppler secrets download --project canitrundoom-webapp --config prd --no-file --format env > .env",
+    "dev": "doppler run -- next dev --turbopack",
+    "build:prod": "npm run env:prod && ./scripts/build_prod.sh",
+    "build:staging": "npm run env:staging && ./scripts/build_prod.sh",
     "build": "next build",
     "start": "next start",
     "start:dev": "nodemon",
@@ -21,7 +23,7 @@
     "@reduxjs/toolkit": "^2.5.0",
     "axios": "^1.7.9",
     "dayjs": "^1.11.13",
-    "dotenv": "^16.4.7",
+    "dotenv": "^17.2.1",
     "firebase": "^11.2.0",
     "firebase-admin": "^13.0.2",
     "firebase-functions": "^6.2.0",
@@ -33,6 +35,8 @@
     "react-hook-form": "^7.54.2",
     "react-icons": "^5.4.0",
     "react-redux": "^9.2.0",
+    "react-slick": "^0.30.3",
+    "slick-carousel": "^1.8.1",
     "uuid": "^11.0.5"
   },
   "devDependencies": {

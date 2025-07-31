@@ -5,6 +5,9 @@ import {
     UserAccessPriority,
 } from "@/src/types"
 export * from "./itemsFilters"
+export * from "./routings"
+
+import { ParsedUrlQuery } from 'querystring'
 
 
 export function IsProd() {
@@ -113,3 +116,28 @@ export async function validateImageFile(
         img.src = objectUrl
     })
 } // validateImageFile
+
+
+export function stringToBoolOrNull(target: string | null) {
+    if (target === null)
+        return null
+    if (typeof(target) === "boolean")
+        return target
+    return target.toLocaleLowerCase() === "true" ? true : false
+} // stringToBoolOrNull
+
+
+export function decodeContextQuery(query: ParsedUrlQuery): object {
+    return Object.fromEntries(
+        Object.entries(query).map(([k, v]) => [k, decodeURIComponent(v as string)])
+    )
+} // decodeContextQuery
+
+
+export function getNameFromMediaUrl(url: string) {
+    const urlObj = new URL(url)
+    const hostname = urlObj.hostname.split(".")[0]
+
+    if (hostname.toLowerCase() === "github")
+        return `${urlObj.hostname}${urlObj.pathname.split("/").splice(0,3).join("/")}`
+}

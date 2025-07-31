@@ -1,25 +1,38 @@
 interface IItemConentRow {
-    title: string
+    title?: string
     value?: any
     children?: any
+    className?: string
 }
 
 
-export const ItemContentRow = ({ title, value, children, }: IItemConentRow) => {
+export const ItemContentRow = ({ 
+    title = null, 
+    value, 
+    children,
+    className="",
+}: IItemConentRow) => {
     const titleClassSpan = title ? "col-span-7" : "col-span-12"
     const childrenParentClass = children ? "" : ""
 
     return (
-        <div className="
-                grid grid-cols gap-2 tracking-wider
+        <div className={`
+                sm:grid sm:grid-cols 
                 sm:grid-cols-12
-            "
+                gap-2 tracking-wider
+                flex
+                flex-row
+                ${className}
+            `}
         >
             {/* Title Column */}
             {title && (
                 <div className="
-                    hidden sm:block
-                    col-span-5 justify-self-end py-1 text-right"
+                    sm:block sm:w-auto
+                    sm:w-full
+                    col-span-5 justify-self-end py-1 text-right
+                    items-center justify-center flex flex-col
+                    "
                 >
                     <p className="doom-gradient-light doom-text-shadow-light">
                         {title}
@@ -29,9 +42,12 @@ export const ItemContentRow = ({ title, value, children, }: IItemConentRow) => {
             {/* Value Column */}
             <div
                 className={`${childrenParentClass}
-                    py-1 pl-3 bg-gray-700 justify-content-end text-left 
-                    ${titleClassSpan}`
-                }
+                    flex flex-row flex-wrap justify-end
+                    py-1 px-3
+                    bg-gray-700 
+                    overflow-hidden
+                    ${titleClassSpan}
+                `}
             >
                 {children ? (
                     children

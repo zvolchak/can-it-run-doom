@@ -10,6 +10,8 @@ import {
     BtnScrollTop,
     Pagination,
     FiltersMenu,
+    CategoryContainer,
+    GrouppedMiniShowcase,
 } from "@/src/components"
 import {
     paginate,
@@ -17,12 +19,20 @@ import {
     filterById,
     filterItemsByTags,
     filterItemsByAuthors,
+    sortDscOrAsc,
+    filterItemsByLvlCompleted,
+    filterBySourceCode,
+    filterByAuthorsPerItem,
+    stringToBoolOrNull,
+    redirectToEntries,
 } from "@/src/utils"
 import { 
+    isFilterApplied,
     RootState,
     setFiltered,
     setItems,
 } from "@/src/store"
+import router from "next/router"
 
 
 interface IMainPageProps {
@@ -37,36 +47,49 @@ function filterItems({
     idQuery,
     authorQuery,
     yearQuery,
-}) {
+    query,
+}): IArchiveItem[] {
+    let filtered = [ ...items ]
+    if (query?.levelCompleted)
+        filtered = filterItemsByLvlCompleted(filtered, stringToBoolOrNull(query.levelCompleted))
     if (searchQuery && searchQuery !== "")
-        items = onSearch(items, searchQuery)
+        filtered = onSearch(filtered, searchQuery)
     if (authorQuery && authorQuery.length > 0)
-        items = filterItemsByAuthors(items, authorQuery)
+        filtered = filterItemsByAuthors(filtered, authorQuery)
     if (idQuery && idQuery.length > 0)
-        items = filterById(items, idQuery)
+        filtered = filterById(filtered, idQuery)
     if (queryTags && queryTags.length > 0)
-        items = filterItemsByTags(items, queryTags)
+        filtered = filterItemsByTags(filtered, queryTags)
+
+    if (query?.authorsPerItem)
+        filtered = filterByAuthorsPerItem(filtered, Number(query.authorsPerItem))
+    if (query?.hasCode)
+        filtered = filterBySourceCode(filtered, stringToBoolOrNull(query.hasCode))
+    
+    if (query?.sort)
+        filtered = sortDscOrAsc(filtered, query.sort)
+    if (query?.limit)
+        filtered = filtered.slice(0, query.limit)
 
     if (yearQuery?.start || yearQuery?.end) {
-        items = items?.filter((item: IArchiveItem) => {
+        filtered = filtered?.filter((item: IArchiveItem) => {
             const itemYear = new Date(item.publishDate).getFullYear()
             const endYear = Number(yearQuery.end) || new Date().getFullYear()
             return itemYear >= Number(yearQuery.start) && itemYear <= endYear
         }) || []
     }
-    return items
+    return filtered
 } // filterItems
 
 
 export function ArchiveDataView({ items }: IMainPageProps) {
     const dispatch = useDispatch()
-    const itemsPerPage = 20
+    const itemsPerPage = 10
 
     const filters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
     const filteredItems: IArchiveItem[] = useSelector((state: RootState) => state.submissions.filtered)
-    // const totalItemsSize: number = useSelector((state: RootState) => state.submissions.totalSize)
+    const hasFilters = useSelector(isFilterApplied)
     const currentPage = filters.page || 1
-
     const [numberOfPages, setNumberOfPages] = useState(Math.ceil(filteredItems.length / itemsPerPage))
 
     useEffect(() => {
@@ -77,6 +100,7 @@ export function ArchiveDataView({ items }: IMainPageProps) {
             idQuery: filters.ids,
             authorQuery: filters.authors,
             yearQuery: filters.years,
+            query: filters.query,
         })
 
         const pages = Math.ceil(filtered.length / itemsPerPage)
@@ -104,7 +128,7 @@ export function ArchiveDataView({ items }: IMainPageProps) {
 
 
     return (
-        <div className="archive-data-view">
+        <div className="archive-data-view flex flex-col">
             <div className="h-10">
                 <Pagination 
                     currentPage={currentPage} 
@@ -116,7 +140,6 @@ export function ArchiveDataView({ items }: IMainPageProps) {
             <FiltersMenu />
 
             <div className="
-                min-h-screen
                 grid content-start justify-center gap-14 mt-5
                 sm:gap-6"
             >
@@ -124,7 +147,7 @@ export function ArchiveDataView({ items }: IMainPageProps) {
                     filteredItems.map((item: IArchiveItem) => 
                         <ItemCard 
                             key={`doom port item for ${item.title}`} item={item} 
-                            className="justify-self-center px-4"
+                            className="justify-self-center px-4 sm:w-[40rem]"
                         />
                     )
                 }
@@ -135,6 +158,23 @@ export function ArchiveDataView({ items }: IMainPageProps) {
                 numberOfPages={numberOfPages} 
                 className="my-8"
             />
+
+            <div className="py-4 flex flex-col grow justify-end gap-7">
+                {
+                    (hasFilters || items.length !== filteredItems.length) &&
+                        <CategoryContainer
+                            items={items.slice(0, 10)}
+                            title="All Ports"
+                            btnTitle="See All"
+                            onMoreClicked={() => redirectToEntries(router)}
+                        />
+                }
+
+                <GrouppedMiniShowcase
+                    className="bg-slate-800 py-4"
+                    items={items}
+                />
+            </div>
 
             <BtnScrollTop className="bottom-5 sm:bottom-10 right-10 fixed z-10" />
         </div>

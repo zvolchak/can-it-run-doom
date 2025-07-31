@@ -1,7 +1,7 @@
 "use client"
 import React, { useRef, } from 'react'
 import { useSelector, useDispatch, } from "react-redux"
-import { FaRegWindowClose } from "react-icons/fa"
+import { RiMenuFoldLine } from "react-icons/ri"
 import {
     IArchiveItem,
     IFiltersStoreState,
@@ -14,11 +14,13 @@ import {
     setAppliedYears,
     setAppliedTags,
     setAppliedAuthors,
+    setQuery,
 } from "@/src/store"
 import {
     Tag,
     RangePicker,
     TagsContainer,
+    FirstLevelCompletedInput,
 } from "@/src/components"
 import {
     getTagsFromItems,
@@ -36,10 +38,9 @@ export const FiltersMenu = () => {
     const items: IArchiveItem[] = useSelector(
         (state: RootState) => {
             return isFilterApplied(state) ? 
-                            state.submissions.filtered : state.submissions.items
+                    state.submissions.filtered : state.submissions.items
         }
     )
-
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
     const menuRef = useRef(null)
 
@@ -80,6 +81,16 @@ export const FiltersMenu = () => {
         dispatch(setIsFiltersMenu(false))
     } // onClose
 
+
+    function onLvlFilterChanged(value: boolean | null) {
+        const query = { 
+            ...appliedFilters.query, 
+            levelCompleted: value === null ? null : value,
+        }
+        dispatch(setQuery(query))
+    }
+
+
     return (
         <nav 
             className={`
@@ -91,7 +102,7 @@ export const FiltersMenu = () => {
         >
             <div className="flex justify-end w-full p-2 bg-gray-700">
                 <button onClick={onClose}>
-                    <FaRegWindowClose size="24px" />
+                    <RiMenuFoldLine size="24px" />
                 </button>
             </div>
             
@@ -170,6 +181,13 @@ export const FiltersMenu = () => {
                         }
                     </div>
                 </TagsContainer>
+
+                <div className="my-4 w-full">
+                    <FirstLevelCompletedInput 
+                        value={appliedFilters.query?.levelCompleted?.toString() || null}
+                        onChange={onLvlFilterChanged}
+                    />
+                </div>
 
                 <TagsContainer 
                     title="Authors"
