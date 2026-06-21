@@ -10,6 +10,9 @@ interface IFooterProps {
 
 
 export function Footer({ className = "", }: IFooterProps) {
+    const sourceUrl = process.env.NEXT_PUBLIC_SOURCE_CODE_URL || "https://github.com"
+    const discordUrl = process.env.NEXT_PUBLIC_DISCORD_URL || "https://discord.com"
+
     return (
         <footer className={`footer relative bottom-0 py-6 mt-12 ${className}`}>
             <div className="w-full mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
@@ -26,7 +29,7 @@ export function Footer({ className = "", }: IFooterProps) {
                 {/* Right Section */}
                 <div className="mt-4 md:mt-0 flex space-x-4">
                     <a
-                        href="https://github.com"
+                        href={sourceUrl}
                         target="_blank"
                         className="flex flex-row gap-2"
                         rel="noopener noreferrer"
@@ -42,7 +45,7 @@ export function Footer({ className = "", }: IFooterProps) {
                     </a>
 
                     <a
-                        href="https://discord.com"
+                        href={discordUrl}
                         target="_blank"
                         className="flex flex-row gap-2"
                         rel="noopener noreferrer"

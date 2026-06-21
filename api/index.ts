@@ -74,7 +74,6 @@ app.use(cors({
     credentials: true,
 }))
 
-console.info(CORS_ORIGIN)
 app.use(BASE_URL, DoomProtsRouter)
 app.use(BASE_URL, AuthorsRouter)
 app.use(BASE_URL, TagsRouter)
