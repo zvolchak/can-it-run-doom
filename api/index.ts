@@ -7,7 +7,7 @@ import { https } from "firebase-functions"
 import cors from "cors"
 import cookieParser from 'cookie-parser'
 import winston from "winston"
-import { 
+import {
     DoomProtsRouter,
     AuthorsRouter,
     TagsRouter,
@@ -68,8 +68,9 @@ app.use((req, res, next) => {
 })
 
 const CORS_ORIGIN = (secrets.CORS_ORIGIN || "http://localhost:3000").split(",").map(origin => origin.trim())
+console.debug(`CORS_ORIGIN set to: ${CORS_ORIGIN}`)
 app.use(cors({
-    origin: CORS_ORIGIN,              
+    origin: CORS_ORIGIN,
     credentials: true,
 }))
 
