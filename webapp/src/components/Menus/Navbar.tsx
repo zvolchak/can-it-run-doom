@@ -4,8 +4,8 @@ import { useRouter } from "next/router"
 import Link from "next/link"
 import { FaCaretDown } from "react-icons/fa"
 import { FaCaretUp } from "react-icons/fa"
-import { 
-    Searchbar, 
+import {
+    Searchbar,
 } from "@/src/components"
 import {
     RootState,
@@ -16,20 +16,10 @@ import {
 } from "@/src/types"
 
 
-export const Navbar = () => {    
+export const Navbar = () => {
     const dispatch = useDispatch()
     const router = useRouter()
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
-
-    // function handleSourceCodeClick() {
-    //     const url = process.env.NEXT_PUBLIC_SOURCE_CODE_URL
-    //     window.open(url, "_blank")
-    // }
-
-    // function handleJoinDiscordClick() {
-    //     const url = process.env.NEXT_PUBLIC_DISCORD_URL
-    //     window.open(url, "_blank")
-    // }
 
 
     function onFiltersBtnClicked() {
@@ -56,7 +46,7 @@ export const Navbar = () => {
             "
         >
             <div className="mt-0 sm:mt-0 flex items-center">
-                <Link href="/"> 
+                <Link href="/">
                     <Image src="/favicon.ico" alt="can it run doom?" width={40} height={40} />
                 </Link>
             </div>
@@ -67,7 +57,7 @@ export const Navbar = () => {
                     sm:ml-2
                 "
             >
-                { IsSubmissionsListPage() &&
+                {IsSubmissionsListPage() &&
                     <button
                         className="doom-btn flex flex-row gap-1 ml-6 doom-color-slate"
                         onClick={() => router.push("/")}
@@ -76,16 +66,16 @@ export const Navbar = () => {
                     </button>
                 }
 
-                { IsSubmissionsListPage() &&
+                {IsSubmissionsListPage() &&
                     <>
                         <button
                             className="doom-btn flex flex-row gap-1 ml-6 mr-4 doom-color-slate"
                             onClick={onFiltersBtnClicked}
                         >
-                            {   settings?.isFiltersMenu &&
+                            {settings?.isFiltersMenu &&
                                 <FaCaretUp size="20px" />
                             }
-                            {   !settings?.isFiltersMenu &&
+                            {!settings?.isFiltersMenu &&
                                 <FaCaretDown size="20px" />
                             }
 

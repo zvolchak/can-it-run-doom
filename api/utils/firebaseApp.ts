@@ -1,8 +1,8 @@
 import { CookieOptions, Response, Request, } from "express"
-import { 
-  collection, 
-  getFirestore, 
-  connectFirestoreEmulator,
+import {
+    collection,
+    getFirestore,
+    connectFirestoreEmulator,
 } from "firebase/firestore"
 import { getAuth, connectAuthEmulator, User } from "firebase/auth"
 import { DecodedIdToken, UserRecord } from "firebase-admin/auth"
@@ -33,8 +33,6 @@ const firebaseConfig = {
     appId: secrets.FB_APP_ID,
 }
 
-console.debug(firebaseConfig)
-
 if (isDev) {
     console.debug(" - Using local dev credentials json")
     const filePath = join(__dirname, `../credentials-${secrets.NODE_ENV}.json`)
@@ -64,10 +62,10 @@ if (isDev) {
 }
 
 export const COLLECTION_NAME = {
-  doomPorts: "doomPorts",
-  // staging collection is used for reviewing before publishing to prod
-  doomPortsIncoming: "doomPorts-Incoming",
-  authors: "authors",
+    doomPorts: "doomPorts",
+    // staging collection is used for reviewing before publishing to prod
+    doomPortsIncoming: "doomPorts-Incoming",
+    authors: "authors",
 }
 
 export const doomPortsCollection = collection(fbDb, COLLECTION_NAME.doomPorts)
@@ -113,8 +111,8 @@ export async function verifySessionCookie(session: string): Promise<DecodedIdTok
         const claims = await fbAuthAdmin.verifySessionCookie(session, true)
         return claims
     } catch (error) {
-      console.error("Failed to verify session cookie!", error)
-      return null
+        console.error("Failed to verify session cookie!", error)
+        return null
     }
 } // verifySessionCookie
 
@@ -123,10 +121,10 @@ export async function verifyToken(token: string) {
     try {
         const decodedToken = await fbAuthAdmin.verifyIdToken(token)
         return decodedToken
-      } catch (error) {
+    } catch (error) {
         console.error("Failed to verify token.", error)
         return null
-      }
+    }
 } // verifyToken
 
 
@@ -134,10 +132,10 @@ export async function createToken(uid: string, claims: object = {}) {
     try {
         const customToken = await admin.auth().createCustomToken(uid, claims)
         return customToken
-      } catch (error) {
+    } catch (error) {
         console.error("Error creating token:", error)
         return null
-      }
+    }
 } // verifyToken
 
 
@@ -164,9 +162,9 @@ export async function getUserByEmail(
 
 export function getUserFromRequest(req: Request) {
     if (IsLocalhost(req) && secrets.NODE_ENV === "development") {
-        return { 
-            id: "test-uid", 
-            role: EUserRole.Owner, 
+        return {
+            id: "test-uid",
+            role: EUserRole.Owner,
             displayName: "Tester",
             email: "test@email.com",
             isVerified: true,

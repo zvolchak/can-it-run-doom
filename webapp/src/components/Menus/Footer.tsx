@@ -1,6 +1,6 @@
-import { 
-    BtnUserAccount,
-} from "@/src/components"
+// import {
+//     BtnUserAccount,
+// } from "@/src/components"
 import Image from "next/image"
 
 
@@ -10,13 +10,16 @@ interface IFooterProps {
 
 
 export function Footer({ className = "", }: IFooterProps) {
+    const sourceUrl = process.env.NEXT_PUBLIC_SOURCE_CODE_URL || "https://github.com"
+    const discordUrl = process.env.NEXT_PUBLIC_DISCORD_URL || "https://discord.com"
+
     return (
         <footer className={`footer relative bottom-0 py-6 mt-12 ${className}`}>
             <div className="w-full mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
                 {/* Left Section */}
-                <div className="flex flex-col text-center md:text-left">
+                {/* <div className="flex flex-col text-center md:text-left">
                     <BtnUserAccount />
-                </div>
+                </div> */}
 
                 {/* Middle Section */}
                 <div className="mt-4 md:mt-0 text-center">
@@ -25,10 +28,10 @@ export function Footer({ className = "", }: IFooterProps) {
 
                 {/* Right Section */}
                 <div className="mt-4 md:mt-0 flex space-x-4">
-                    <a 
-                        href="https://github.com" 
-                        target="_blank" 
-                        className="flex flex-row gap-2" 
+                    <a
+                        href={sourceUrl}
+                        target="_blank"
+                        className="flex flex-row gap-2"
                         rel="noopener noreferrer"
                     >
                         <Image
@@ -41,10 +44,10 @@ export function Footer({ className = "", }: IFooterProps) {
                         Github
                     </a>
 
-                    <a 
-                        href="https://discord.com" 
+                    <a
+                        href={discordUrl}
                         target="_blank"
-                        className="flex flex-row gap-2" 
+                        className="flex flex-row gap-2"
                         rel="noopener noreferrer"
                     >
                         <Image
