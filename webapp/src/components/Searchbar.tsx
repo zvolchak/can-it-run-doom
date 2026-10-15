@@ -1,8 +1,8 @@
-import { useState } from "react"
-import { useRouter } from "next/router"
+import { useEffect, useState } from "react"
 import { FaSearch } from "react-icons/fa"
-import { useDispatch, } from "react-redux"
+import { useDispatch, useSelector, } from "react-redux"
 import { 
+    RootState,
     setAppliedSearch,
 } from "@/src/store"
 
@@ -13,19 +13,30 @@ interface ISearchbarProps {
 
 export const Searchbar = ({ className = "" }: ISearchbarProps) => {
     const dispatch = useDispatch()
-    const router = useRouter()
+    const appliedSearch = useSelector((state: RootState) => state.appliedFilters.searchString)
 
     const [searchQuery, setSearchQuery] = useState("")
 
+    useEffect(() => {
+        setSearchQuery(appliedSearch || "")
+    }, [appliedSearch])
+
     function onSearchUpdated(e) {
-        setSearchQuery(e.target.value)
-        onSearchSubmit(e)
+        const nextValue = e.target.value
+        setSearchQuery(nextValue)
+
+        if (!nextValue.trim()) {
+            dispatch(setAppliedSearch(null))
+            return
+        }
+
+        dispatch(setAppliedSearch(nextValue.trim()))
     }
 
 
     function onSearchSubmit(e) {
         e.preventDefault()
-        if (!searchQuery.trim() && !router.query.search) {
+        if (!searchQuery.trim()) {
             dispatch(setAppliedSearch(null))
             return
         }

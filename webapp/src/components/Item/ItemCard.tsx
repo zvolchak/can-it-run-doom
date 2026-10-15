@@ -31,7 +31,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
             return
 
         router.push({
-            pathname: "/entries",
+            pathname: "/",
             query: { id: item.id }
         })
     } // onIdClicked
@@ -87,7 +87,7 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
 
                 <div className="
                     flex flex-col doom-card w-full gap-2 h-full
-                    overflow-y-auto scrollbar-hidden"
+                    overflow-y-auto"
                 >
 
                     <AuthorsField item={item} />

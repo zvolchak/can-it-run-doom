@@ -16,6 +16,12 @@ a {
   transition: 0.2s ease-in-out;
   width: 100%;
   z-index: 1;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 
   @media (min-width: 640px) { // sm
     width: 100%;
@@ -61,9 +67,13 @@ a {
 
 .doom-card {
   overflow-y: auto;
-  // background-color: doom.$doomColorAlt;
-  // border: 1px solid gray;
   transition: 0.1s ease-in, 0.4s ease-out;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
 
 

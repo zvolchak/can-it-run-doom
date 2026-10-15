@@ -94,8 +94,8 @@ export const FiltersMenu = () => {
     return (
         <nav 
             className={`
-                h-full absolute sidebar sm:top-20
-                top-40 pl-2 z-1 
+                h-full absolute sidebar sm:top-16
+                top-16 pl-2 z-11
                 ${settings.isFiltersMenu ? "open" : ""}`
             }
             ref={menuRef}
@@ -108,7 +108,7 @@ export const FiltersMenu = () => {
             
             <hr className="border-1"/>
 
-            <div className="flex flex-col justify-between items-center w-80">
+            <div className="flex flex-col justify-between items-center w-80 bg-gray-700">
                 <div className="
                         flex flex-row doom-color-slate bg-gray-700
                         w-full justify-end p-2 py-4 pl-5

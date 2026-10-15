@@ -15,6 +15,7 @@ const apiClient = axios.create({
     withCredentials: true,
 })
 
+console.debug("API Client initialized with base URL:", apiClient.defaults.baseURL)
 
 apiClient.interceptors.response.use(response => response, async error => {
         const urlIgnoreRegex = /^\/user\/(login|signup)(\/.*)?$/

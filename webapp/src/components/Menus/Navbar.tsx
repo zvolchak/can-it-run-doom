@@ -1,4 +1,5 @@
 import Image from "next/image"
+import { useEffect } from "react"
 import { useSelector, useDispatch, } from "react-redux"
 import { useRouter } from "next/router"
 import Link from "next/link"
@@ -9,7 +10,14 @@ import {
 } from "@/src/components"
 import {
     RootState,
+    setAppliedAuthors,
+    setAppliedId,
+    setAppliedPage,
+    setAppliedSearch,
+    setAppliedTags,
+    setAppliedYears,
     setIsFiltersMenu,
+    setQuery,
 } from "@/src/store"
 import {
     ISettingsStoreState,
@@ -21,14 +29,36 @@ export const Navbar = () => {
     const router = useRouter()
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
 
+    useEffect(() => {
+        dispatch(setAppliedTags([]))
+        dispatch(setAppliedAuthors([]))
+        dispatch(setAppliedYears(null))
+        dispatch(setAppliedSearch(null))
+        dispatch(setAppliedId([]))
+        dispatch(setAppliedPage(1))
+        dispatch(setQuery({}))
+        dispatch(setIsFiltersMenu(false))
+    }, [dispatch, router.pathname])
+
 
     function onFiltersBtnClicked() {
         dispatch(setIsFiltersMenu(!settings.isFiltersMenu))
     }
 
 
-    function IsSubmissionsListPage() {
-        return router.pathname === "/entries"
+    function shouldShowHomeButton() {
+        const hasQuery = Object.keys(router.query || {}).length > 0
+        const isRootPreviewPage = router.pathname === "/" && hasQuery
+        const isEntriesPreviewPage = router.pathname === "/entries" && !!router.query.id
+
+        return isRootPreviewPage || isEntriesPreviewPage
+    }
+
+    function shouldShowSearchbar() {
+        const isAddEntryPage = router.pathname === "/entries/add"
+        const isEntryPreviewPage = router.pathname === "/" && !!router.query.id
+
+        return !isAddEntryPage && !isEntryPreviewPage
     }
 
 
@@ -57,7 +87,7 @@ export const Navbar = () => {
                     sm:ml-2
                 "
             >
-                {IsSubmissionsListPage() &&
+                {shouldShowHomeButton() &&
                     <button
                         className="doom-btn flex flex-row gap-1 ml-6 doom-color-slate"
                         onClick={() => router.push("/")}
@@ -66,23 +96,24 @@ export const Navbar = () => {
                     </button>
                 }
 
-                {IsSubmissionsListPage() &&
-                    <>
-                        <button
-                            className="doom-btn flex flex-row gap-1 ml-6 mr-4 doom-color-slate"
-                            onClick={onFiltersBtnClicked}
-                        >
-                            {settings?.isFiltersMenu &&
-                                <FaCaretUp size="20px" />
-                            }
-                            {!settings?.isFiltersMenu &&
-                                <FaCaretDown size="20px" />
-                            }
+                {shouldShowSearchbar() &&
+                    <button
+                        className="doom-btn flex flex-row gap-1 ml-6 mr-4 doom-color-slate"
+                        onClick={onFiltersBtnClicked}
+                    >
+                        {settings?.isFiltersMenu &&
+                            <FaCaretUp size="20px" />
+                        }
+                        {!settings?.isFiltersMenu &&
+                            <FaCaretDown size="20px" />
+                        }
 
-                            Filters
-                        </button>
-                        <Searchbar className="sm:w-2/6 w-full" />
-                    </>
+                        Filters
+                    </button>
+                }
+
+                {shouldShowSearchbar() &&
+                    <Searchbar className="sm:w-2/6 w-full" />
                 }
 
             </div>

@@ -7,11 +7,8 @@ import {
 } from "@/src/types"
 import {
     ItemCard,
-    BtnScrollTop,
     Pagination,
     FiltersMenu,
-    CategoryContainer,
-    GrouppedMiniShowcase,
 } from "@/src/components"
 import {
     paginate,
@@ -24,7 +21,6 @@ import {
     filterBySourceCode,
     filterByAuthorsPerItem,
     stringToBoolOrNull,
-    redirectToEntries,
 } from "@/src/utils"
 import { 
     isFilterApplied,
@@ -32,7 +28,6 @@ import {
     setFiltered,
     setItems,
 } from "@/src/store"
-import router from "next/router"
 
 
 interface IMainPageProps {
@@ -88,7 +83,6 @@ export function ArchiveDataView({ items }: IMainPageProps) {
 
     const filters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
     const filteredItems: IArchiveItem[] = useSelector((state: RootState) => state.submissions.filtered)
-    const hasFilters = useSelector(isFilterApplied)
     const currentPage = filters.page || 1
     const [numberOfPages, setNumberOfPages] = useState(Math.ceil(filteredItems.length / itemsPerPage))
 
@@ -159,24 +153,6 @@ export function ArchiveDataView({ items }: IMainPageProps) {
                 className="my-8"
             />
 
-            <div className="py-4 flex flex-col grow justify-end gap-7">
-                {
-                    (hasFilters || items.length !== filteredItems.length) &&
-                        <CategoryContainer
-                            items={items.slice(0, 10)}
-                            title="All Ports"
-                            btnTitle="See All"
-                            onMoreClicked={() => redirectToEntries(router)}
-                        />
-                }
-
-                <GrouppedMiniShowcase
-                    className="bg-slate-800 py-4"
-                    items={items}
-                />
-            </div>
-
-            <BtnScrollTop className="bottom-5 sm:bottom-10 right-10 fixed z-10" />
         </div>
     )
 } // MainPage

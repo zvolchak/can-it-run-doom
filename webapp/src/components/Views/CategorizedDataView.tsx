@@ -3,17 +3,29 @@ import {
     IArchiveItem,
 } from "@/src/types"
 import {
-    BtnScrollTop,
+    BtnScrollPage,
     CategoryContainer,
     GrouppedMiniShowcase,
     ItemPreviewModal,
     LazyLoader,
 } from "@/src/components"
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { RootState, setAppliedAuthors, setAppliedSearch, setAppliedTags, setAppliedYears, } from "@/src/store"
+import {
+    RootState,
+    setAvailableAuthors,
+    setAvailableTags,
+    setAvailableYears,
+    setItems,
+} from "@/src/store"
 import { useRouter } from "next/router"
-import { redirectToEntries, sortDscOrAsc } from "@/src/utils"
+import {
+    getAuthorsFromItems,
+    getTagsFromItems,
+    getYearsFromItems,
+    redirectToEntries,
+    sortDscOrAsc,
+} from "@/src/utils"
 
 interface IMainPageProps {
     items: IArchiveItem[]
@@ -26,18 +38,17 @@ export function CategorizedDataView({ items }: IMainPageProps) {
     const selectedItem: IArchiveItem = useSelector((state: RootState) => state.submissions.selected)
     const [randomItems, setRandomItems] = useState<IArchiveItem[]>([])
 
-    // Reset filters on this page
-    dispatch(setAppliedTags([]))
-    dispatch(setAppliedAuthors([]))
-    dispatch(setAppliedSearch(""))
-    dispatch(setAppliedYears(null))
-
     useEffect(() => {
+        dispatch(setItems(items))
+        dispatch(setAvailableTags(getTagsFromItems(items)))
+        dispatch(setAvailableAuthors(getAuthorsFromItems(items).sort()))
+        dispatch(setAvailableYears(getYearsFromItems(items)))
+
         const picks = [...items]
             .sort(() => Math.random() - 0.5)
             .slice(0, 10)
         setRandomItems(picks)
-    }, [items])
+    }, [dispatch, items])
 
 
     if (!items || items?.length === 0) {
@@ -88,14 +99,6 @@ export function CategorizedDataView({ items }: IMainPageProps) {
 
                 <LazyLoader>
                     <CategoryContainer
-                        items={otherItems().splice(0, 10)}
-                        title="Other"
-                        onMoreClicked={() => redirectToEntries(router, { tag: "!baremetal" })}
-                    />
-                </LazyLoader>
-
-                <LazyLoader>
-                    <CategoryContainer
                         items={randomItems}
                         title="All Ports"
                         btnTitle="See All"
@@ -106,7 +109,10 @@ export function CategorizedDataView({ items }: IMainPageProps) {
 
             <ItemPreviewModal item={selectedItem} />
 
-            <BtnScrollTop className="bottom-5 sm:bottom-[5rem] right-10 fixed z-10" />
+            <BtnScrollPage 
+              direction="top" 
+              className="bottom-5 sm:bottom-[5rem] right-10 fixed z-10" 
+            />
         </div>
     )
 } // MainPage

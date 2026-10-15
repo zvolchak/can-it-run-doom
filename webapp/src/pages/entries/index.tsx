@@ -24,6 +24,7 @@ import {
 } from "@/src/store"
 import {
     ArchiveDataView,
+    MiniCategorizedView,
 } from "@/src/components"
 import {
     fetchDoomPorts,
@@ -134,6 +135,7 @@ export default function EntriesPage({
             </Head>
 
             <ArchiveDataView items={items} />
+            <MiniCategorizedView items={items} />
         </>
     )
 } // MainPage

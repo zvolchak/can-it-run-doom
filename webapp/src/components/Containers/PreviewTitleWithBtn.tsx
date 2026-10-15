@@ -19,7 +19,7 @@ export function PreviewTitleWithBtn({
             flex flex-row justify-between
             w-full 
             text-white 
-            p-1 mb-1
+            p-1 mb-5
             ${className}
             `}
         >
