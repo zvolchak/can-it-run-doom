@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useSelector, useDispatch, } from "react-redux"
 import { RiMenuFoldLine } from "react-icons/ri"
 import {
@@ -28,21 +28,24 @@ import {
 } from "@/src/utils"
 
 
-export const FiltersMenu = () => {
+export const FiltersMenu = ({ items }: { items: IArchiveItem[] }) => {
     const dispatch = useDispatch()
     const filters: IFiltersStoreState = useSelector((state: RootState) => state.availableFilters)
     const appliedFilters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
     const isFiltersApplied: boolean = useSelector((state: RootState) => isFilterApplied(state))
 
-    // Use filtered items list if at least one filter is applied. Otherwise, use full items list.
-    const items: IArchiveItem[] = useSelector(
-        (state: RootState) => {
-            return isFilterApplied(state) ? 
-                    state.submissions.filtered : state.submissions.items
-        }
-    )
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
-    const menuRef = useRef(null)
+    const closeRef = useRef<HTMLButtonElement>(null)
+
+    useEffect(() => {
+        if (!settings.isFiltersMenu) return
+        const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null
+        closeRef.current?.focus({ preventScroll: true })
+        return () => {
+            if (opener?.isConnected && (document.activeElement === document.body
+                || document.activeElement?.closest("#archive-filters"))) opener.focus({ preventScroll: true })
+        }
+    }, [settings.isFiltersMenu])
 
     const appliedTags = appliedFilters.tags
     const queryAuthors = appliedFilters.authors
@@ -52,6 +55,7 @@ export const FiltersMenu = () => {
 
     const activeTags = isFiltersApplied ? getTagsFromItems(items) : []
     const activeAuthors = isFiltersApplied ? getAuthorsFromItems(items) : []
+    const availableYears = (filters.availableYears || []).filter(Number.isFinite).sort((a, b) => a - b)
 
     function onYearRangeChanged(value: string, key: string) {
         const range = { 
@@ -59,10 +63,7 @@ export const FiltersMenu = () => {
             end: appliedFilters?.years?.end 
         }
         
-        if (appliedFilters.years?.[key] === value)
-            range[key] = null // turn off previously selected
-        else
-            range[key] = value // turn on filter on the selected year
+        range[key] = Number(value) || null
 
         dispatch(setAppliedYears(range))
 
@@ -71,7 +72,7 @@ export const FiltersMenu = () => {
     
  
     function createRangeValues(start: number, end: number) {
-        const result = filters.availableYears.filter(i => i >= start && i <= end)
+        const result = availableYears.filter(i => i >= start && i <= end)
             .map(i => ({ value: i.toString(), label: i.toString() }))
         return result
     } // createSequenceValues
@@ -93,29 +94,25 @@ export const FiltersMenu = () => {
 
     return (
         <nav 
-            className={`
-                h-full absolute sidebar sm:top-16
-                top-16 pl-2 z-11
-                ${settings.isFiltersMenu ? "open" : ""}`
-            }
-            ref={menuRef}
+            id="archive-filters" aria-label="Archive filters" inert={!settings.isFiltersMenu}
+            className={`archive-filters sidebar ${settings.isFiltersMenu ? "open" : ""}`}
         >
             <div className="flex justify-end w-full p-2 bg-gray-700">
-                <button onClick={onClose}>
+                <button ref={closeRef} type="button" onClick={onClose} aria-label="Close filters">
                     <RiMenuFoldLine size="24px" />
                 </button>
             </div>
             
             <hr className="border-1"/>
 
-            <div className="flex flex-col justify-between items-center w-80 bg-gray-700">
+            <div className="flex flex-col justify-between items-center w-full bg-gray-700">
                 <div className="
                         flex flex-row doom-color-slate bg-gray-700
                         w-full justify-end p-2 py-4 pl-5
                     "
                 >
                     <p className="font-semibold text-l">
-                        {items.length} Item{items.length > 1 ? "s" : ""}
+                        {items.length} {items.length === 1 ? "project" : "projects"}
                     </p>
                 </div>
 
@@ -126,7 +123,7 @@ export const FiltersMenu = () => {
                             minOptions={[
                                 { label: "Lowest", value: "" }, 
                                 ...createRangeValues(
-                                    (filters?.availableYears?.[0] || 1996),
+                                    (availableYears[0] || 1993),
                                     yearQuery?.end || new Date().getFullYear()
                                 )
                             ]} 
@@ -134,14 +131,14 @@ export const FiltersMenu = () => {
                             maxOptions={[
                                 { label: "Highest", value: "" }, 
                                 ...createRangeValues(
-                                    (yearQuery?.start || 1996), 
+                                    (yearQuery?.start || availableYears[0] || 1993),
                                     new Date().getFullYear()
                                 )
                             ]} 
                             onMinChange={(e) => onYearRangeChanged(e, "start")}
                             onMaxChange={(e) => onYearRangeChanged(e, "end")}
 
-                            minValue={appliedFilters?.years?.start?.toString() || "1996"}
+                            minValue={appliedFilters?.years?.start?.toString() || ""}
                             maxValue={appliedFilters?.years?.end?.toString() || ""}
                         />
                     </div>
@@ -160,7 +157,7 @@ export const FiltersMenu = () => {
                         {
                             filters.tags.map((tag: string) =>
                                 <Tag 
-                                    key={`tag_${tag}_${Math.random()}`} 
+                                    key={`tag_${tag}`}
                                     text={`#${tag}`} 
                                     queryKey="tags"
                                     onDispatch={setAppliedTags}
@@ -170,7 +167,7 @@ export const FiltersMenu = () => {
                                             ? "active" : ""
                                         }
                                         ${
-                                            isFilterApplied 
+                                            isFiltersApplied
                                             && activeTags?.indexOf(tag) >= 0 &&
                                             appliedTags?.indexOf(tag) < 0 
                                             ? "highlight" : ""

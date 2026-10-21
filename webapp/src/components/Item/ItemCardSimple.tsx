@@ -5,11 +5,11 @@ import {
     AuthorsField,
     ImageLoader,
     ItemContentRow,
-    ItemField,
     MediaField,
     SourceCodeField,
     TagsField,
 } from "@/src/components"
+import { useProjectLink } from "../Containers/ProjectNavigation"
 
 
 interface IItemCardProps {
@@ -19,6 +19,7 @@ interface IItemCardProps {
 
 
 export const ItemCardSimple = ({ item, className = "", }: IItemCardProps) => {
+    const projectLink = useProjectLink()
     return (
         <div className={`overflow-y-auto ${className}`}
         >
@@ -50,10 +51,8 @@ export const ItemCardSimple = ({ item, className = "", }: IItemCardProps) => {
             </div>
 
             <div className="w-full flex flex-row justify-center items-center m-0 p-0">
-                <ItemField 
-                    label={item.id}
-                    url={`entries?id=${item.id}`}
-                />
+                <a {...projectLink(item.id)} className="project-preview-trigger"
+                    aria-label={`View project: ${item.title}`}>View project <span aria-hidden="true">→</span></a>
             </div>
         </div>
     )

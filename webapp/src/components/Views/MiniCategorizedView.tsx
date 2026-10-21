@@ -6,23 +6,11 @@ import {
     BtnScrollPage,
     CategoryContainer,
     GrouppedMiniShowcase,
-    ItemPreviewModal,
     LazyLoader,
 } from "@/src/components"
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import {
-    RootState,
-    setAvailableAuthors,
-    setAvailableTags,
-    setAvailableYears,
-    setItems,
-} from "@/src/store"
 import { useRouter } from "next/router"
 import {
-    getAuthorsFromItems,
-    getTagsFromItems,
-    getYearsFromItems,
     redirectToEntries,
     sortDscOrAsc,
 } from "@/src/utils"
@@ -34,21 +22,14 @@ interface IMainPageProps {
 
 export function MiniCategorizedView({ items }: IMainPageProps) {
     const router = useRouter()
-    const dispatch = useDispatch()
-    const selectedItem: IArchiveItem = useSelector((state: RootState) => state.submissions.selected)
     const [randomItems, setRandomItems] = useState<IArchiveItem[]>([])
 
     useEffect(() => {
-        dispatch(setItems(items))
-        dispatch(setAvailableTags(getTagsFromItems(items)))
-        dispatch(setAvailableAuthors(getAuthorsFromItems(items).sort()))
-        dispatch(setAvailableYears(getYearsFromItems(items)))
-
         const picks = [...items]
             .sort(() => Math.random() - 0.5)
             .slice(0, 10)
         setRandomItems(picks)
-    }, [dispatch, items])
+    }, [items])
 
 
     if (!items || items?.length === 0) {
@@ -66,18 +47,8 @@ export function MiniCategorizedView({ items }: IMainPageProps) {
     }
 
 
-    function otherItems() {
-        return items.filter((item: IArchiveItem) => !item.tags.includes("baremetal"))
-    } // otherItems
-
-
-    const baremetalItems = items.filter(
-        (item: IArchiveItem) => item.tags.includes("baremetal")
-    ).splice(0, 15)
-
-
     return (
-        <div className="archive-data-view">
+        <div className="archive-discovery">
             <div className="flex flex-col gap-10">
                 <LazyLoader>
                     <CategoryContainer
@@ -102,8 +73,6 @@ export function MiniCategorizedView({ items }: IMainPageProps) {
                     />
                 </LazyLoader>
             </div>
-
-            <ItemPreviewModal item={selectedItem} />
 
             <BtnScrollPage 
               direction="top" 

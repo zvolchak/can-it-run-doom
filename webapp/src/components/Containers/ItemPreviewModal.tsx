@@ -1,67 +1,35 @@
-import { getMainLayout } from "@/src/layouts"
-import { 
-    IArchiveItem,
-} from "@/src/types"
-import {
-    Modal,
-    ItemCard,
-} from "@/src/components"
-import React, { useEffect } from "react"
-import { RootState, selectItem } from "@/src/store"
-import { useDispatch, useSelector } from "react-redux"
-
-
-interface IItemPreviewModalProps {
-    item: IArchiveItem | null,
-    className?: string,
+import { useId } from "react"
+import { FiArrowUpRight } from "react-icons/fi"
+import type { IArchiveItem } from "@/src/types"
+import { ProjectDetails } from "../Item/ProjectDetails"
+import { ProjectDialog } from "./ProjectDialog"
+interface ItemPreviewModalProps {
+    item: IArchiveItem | null
+    onClose: () => void
+    className?: string
 }
-
-
-export function ItemPreviewModal({ 
-    item, 
-    className="" 
-}: IItemPreviewModalProps) {
-    const dispatch = useDispatch()
-    const selectedItem: IArchiveItem = useSelector((state: RootState) => state.submissions.selected)
-    const isOpened = item !== null
-
-    useEffect(() => {
-        if (isOpened) {
-            document.body.style.overflow = "hidden"
-        } else {
-            document.body.style.overflow = ""
-        }
-
-        return () => {
-            document.body.style.overflow = ""
-        }
-    }, [isOpened])
-
-    if (!isOpened) return null
-
-    function onItemPreviewClose() {
-        dispatch(selectItem(null))
-    } // onItemPreviewClose
-
-    
+export function ItemPreviewModal({
+    item,
+    onClose,
+    className = "",
+}: ItemPreviewModalProps) {
+    const headingId = useId()
     return (
-        <div className={`${className}`}>
-            { selectedItem !== null && 
-                <Modal 
-                    open={selectedItem !== null}
-                    title={""}
-                    onClose={onItemPreviewClose}
-                    className="flex flex-row w-full sm:w-auto"
-                >
-                    <ItemCard 
-                        item={item} 
-                        className="w-full sm:w-8/12 sm:px-8 px-3"
-                    />
-                </Modal>
-            }
-        </div>
+        <ProjectDialog headingId={headingId} onClose={onClose} className={className}
+            footer={item?.id ? (
+                <>
+                    <span>Archive entry #{item.id}</span>
+                    <a href={`/?id=${encodeURIComponent(item.id)}`}>
+                        Open project page <FiArrowUpRight aria-hidden="true" />
+                    </a>
+                </>
+            ) : null}>
+            {item ? <ProjectDetails key={item.id} item={item} headingId={headingId} /> : (
+                <section className="project-not-found">
+                    <h2 id={headingId}>Project not found</h2>
+                    <p>This project is not available in the archive. Close this dialog to continue browsing.</p>
+                </section>
+            )}
+        </ProjectDialog>
     )
-} // MainPage
-
-
-ItemPreviewModal.getLayout = getMainLayout
+}

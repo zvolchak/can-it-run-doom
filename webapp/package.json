@@ -17,6 +17,8 @@
     "start": "next start",
     "start:dev": "nodemon",
     "lint": "next lint",
+    "test:project-navigation": "node --test tests/projectNavigation.test.mjs",
+    "test:archive": "node --test tests/*.test.mjs",
     "build:sitemap": "next-sitemap"
   },
   "dependencies": {

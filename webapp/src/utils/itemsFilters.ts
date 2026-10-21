@@ -1,5 +1,6 @@
 import dayjs from 'dayjs'
-import { IArchiveItem, SortOption } from "@/src/types"
+import type { IArchiveItem } from "@/src/types"
+import { SortOption } from "../types/FiltersType"
 
 
 export const findTag = (tags: Array<any>, wordToFind: string) => {
@@ -13,7 +14,7 @@ export const findTag = (tags: Array<any>, wordToFind: string) => {
 
 export const findAuthor = (authors: Array<any>, wordToFind: string) => {
   return authors?.find((author: any) => {
-    return author?.name.toLowerCase().startsWith(wordToFind.toLowerCase())
+    return typeof author?.name === "string" && author.name.toLowerCase().startsWith(wordToFind.toLowerCase())
   })
 } // findAuthor
 
@@ -47,7 +48,7 @@ export const onSearch = (items: Array<any>, searching: string): any => {
 
   items = items.filter((item: any) => {
     if (isSearchByTag) {
-      const foundTags = item.tags.filter((i: any) => keywords.includes(`#${i}`))
+      const foundTags = (item.tags || []).filter((i: any) => keywords.includes(`#${i}`))
       return foundTags.length === keywords.length
     }
 
@@ -99,11 +100,11 @@ export function filterItemsByTags(itemsToFilter: IArchiveItem[], query: string[]
 
     return itemsToFilter.filter(item => {
         const hasExcludedTag = query.some(q =>
-            q.startsWith('!') && item.tags.includes(q.slice(1))
+            q.startsWith('!') && (item.tags || []).includes(q.slice(1))
         )
 
         const hasIncludedTag = query.some(q =>
-            !q.startsWith('!') && item.tags.includes(q)
+            !q.startsWith('!') && (item.tags || []).includes(q)
         )
 
         return !hasExcludedTag && hasIncludedTag
@@ -121,7 +122,7 @@ export function filterItemsByAuthors(itemsToFilter: IArchiveItem[], query: strin
         return itemsToFilter
 
     return itemsToFilter.filter(item =>
-        item.authors.some(author => query.includes(author.name)))
+        (item.authors || []).some(author => query.includes(author?.name)))
 }
 
 
@@ -130,7 +131,7 @@ export function getTagsFromItems(itemsToFilter: IArchiveItem[]): string[] {
         return []
 
     const uniqueTags = Array.from(
-        new Set(itemsToFilter.flatMap(item => item.tags))
+        new Set(itemsToFilter.flatMap(item => item.tags || []).filter(tag => typeof tag === "string"))
     )
     return uniqueTags
 } // tagsInFilteredItems
@@ -165,15 +166,15 @@ export function getAuthorsFromItems (items: IArchiveItem[]) {
     if (!items)
         return []
 
-    return Array.from(new Set(items.flatMap((item) => item.authors.map((author) => author.name))))
+    return Array.from(new Set(items.flatMap(item => (item.authors || [])
+        .map(author => author?.name).filter(name => typeof name === "string" && name.trim()))))
 } // getAuthorsFromItems
 
 
 export function getYearsFromItems(items: IArchiveItem[]) {
     return Array.from(
-        new Set(items.flatMap(
-            (item) => new Date(item.publishDate).getFullYear())
-        )
+        new Set(items.filter(item => !!item.publishDate).map(
+            item => new Date(item.publishDate).getFullYear()).filter(Number.isFinite))
     ).reverse()
 } // getYearsFromItems
 
@@ -211,6 +212,6 @@ export function filterBySourceCode(items: IArchiveItem[], hasCode = true) {
 
 export function filterByAuthorsPerItem(items: IArchiveItem[], limit=1) {
     return items.filter((item: IArchiveItem) => {
-        return item?.authors.length > 1 && item.authors?.length <= limit
+        return item.authors?.length > 1 && item.authors.length <= limit
     })
 }

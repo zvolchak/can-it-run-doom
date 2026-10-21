@@ -35,7 +35,7 @@ export const RangePicker: React.FC<FilterProps> = ({
                     id="min_value_select"
                     name="min_value"
                     value={minValue ? minValue : minOptions[0].value}
-                    onClick={(e: any) => onMinChange(e.target.value)}
+                    onChange={(e: any) => onMinChange(e.target.value)}
                 >
                 {minOptions.map((option) => (
                     <option key={option.value} value={option.value}>

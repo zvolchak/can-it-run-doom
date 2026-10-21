@@ -1,161 +1,126 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { getMainLayout } from "@/src/layouts"
-import { 
-    IArchiveItem,
-    IFiltersStoreState,
-} from "@/src/types"
+import { FiSliders, FiX } from "react-icons/fi"
+import { SortOption, type IArchiveItem } from "@/src/types"
 import {
-    ItemCard,
-    Pagination,
-    FiltersMenu,
-} from "@/src/components"
-import {
-    paginate,
-    onSearch,
-    filterById,
-    filterItemsByTags,
-    filterItemsByAuthors,
-    sortDscOrAsc,
-    filterItemsByLvlCompleted,
-    filterBySourceCode,
-    filterByAuthorsPerItem,
-    stringToBoolOrNull,
-} from "@/src/utils"
-import { 
-    isFilterApplied,
-    RootState,
-    setFiltered,
-    setItems,
+    type RootState, setFiltered, setAppliedPage, setAppliedSearch, setAppliedTags,
+    setAppliedAuthors, setAppliedId, setAppliedYears, setQuery, clearAppliedFilters,
+    setIsFiltersMenu,
 } from "@/src/store"
+import { archiveResults, activeArchiveFilters, type ActiveArchiveFilter } from "@/src/utils/archiveResults"
+import { ProjectSummary } from "../Item/ProjectSummary"
+import { Pagination } from "../Pagination"
+import { FiltersMenu } from "../Menus/FiltersMenu"
+import { useProjectLink } from "../Containers/ProjectNavigation"
 
-
-interface IMainPageProps {
-    items: IArchiveItem[]
-}
-
-
-function filterItems({
-    items,
-    searchQuery,
-    queryTags,
-    idQuery,
-    authorQuery,
-    yearQuery,
-    query,
-}): IArchiveItem[] {
-    let filtered = [ ...items ]
-    if (query?.levelCompleted)
-        filtered = filterItemsByLvlCompleted(filtered, stringToBoolOrNull(query.levelCompleted))
-    if (searchQuery && searchQuery !== "")
-        filtered = onSearch(filtered, searchQuery)
-    if (authorQuery && authorQuery.length > 0)
-        filtered = filterItemsByAuthors(filtered, authorQuery)
-    if (idQuery && idQuery.length > 0)
-        filtered = filterById(filtered, idQuery)
-    if (queryTags && queryTags.length > 0)
-        filtered = filterItemsByTags(filtered, queryTags)
-
-    if (query?.authorsPerItem)
-        filtered = filterByAuthorsPerItem(filtered, Number(query.authorsPerItem))
-    if (query?.hasCode)
-        filtered = filterBySourceCode(filtered, stringToBoolOrNull(query.hasCode))
-    
-    if (query?.sort)
-        filtered = sortDscOrAsc(filtered, query.sort)
-    if (query?.limit)
-        filtered = filtered.slice(0, query.limit)
-
-    if (yearQuery?.start || yearQuery?.end) {
-        filtered = filtered?.filter((item: IArchiveItem) => {
-            const itemYear = new Date(item.publishDate).getFullYear()
-            const endYear = Number(yearQuery.end) || new Date().getFullYear()
-            return itemYear >= Number(yearQuery.start) && itemYear <= endYear
-        }) || []
-    }
-    return filtered
-} // filterItems
-
-
-export function ArchiveDataView({ items }: IMainPageProps) {
+export function ArchiveDataView({ items }: { items: IArchiveItem[] }) {
     const dispatch = useDispatch()
-    const itemsPerPage = 10
-
-    const filters: IFiltersStoreState = useSelector((state: RootState) => state.appliedFilters)
-    const filteredItems: IArchiveItem[] = useSelector((state: RootState) => state.submissions.filtered)
-    const currentPage = filters.page || 1
-    const [numberOfPages, setNumberOfPages] = useState(Math.ceil(filteredItems.length / itemsPerPage))
+    const projectLink = useProjectLink()
+    const filters = useSelector((state: RootState) => state.appliedFilters)
+    const filtersOpen = useSelector((state: RootState) => state.settings.isFiltersMenu)
+    const results = useMemo(() => archiveResults(items, filters), [items, filters])
+    const activeFilters = activeArchiveFilters(filters)
 
     useEffect(() => {
-        let filtered = filterItems({
-            items: items,
-            searchQuery: filters.searchString,
-            queryTags: filters.tags,
-            idQuery: filters.ids,
-            authorQuery: filters.authors,
-            yearQuery: filters.years,
-            query: filters.query,
-        })
+        dispatch(setFiltered(results.matches))
+        if (results.page !== filters.page) dispatch(setAppliedPage(results.page))
+    }, [dispatch, results, filters.page])
 
-        const pages = Math.ceil(filtered.length / itemsPerPage)
-        setNumberOfPages(pages)
-        filtered = paginate(filtered, currentPage - 1, itemsPerPage)
-
-        dispatch(setItems(items))
-        dispatch(setFiltered(filtered))
-    }, [items, filters, dispatch, setNumberOfPages, currentPage])
-
-
-    if (!items || items?.length === 0) {
-        return (
-            <div>
-                <div className="
-                    h-screen w-full justify-center mt-10 flex flex-row text-center text-white
-                    "
-                >
-                    No items found. If this error persists, please contact support 
-                through Discord channel or email.
-                </div>
-            </div>
-        )
+    function removeFilter(filter: ActiveArchiveFilter) {
+        switch (filter.group) {
+            case "search": dispatch(setAppliedSearch("")); break
+            case "tag": dispatch(setAppliedTags(filters.tags.filter(value => value !== filter.value))); break
+            case "author": dispatch(setAppliedAuthors(filters.authors.filter(value => value !== filter.value))); break
+            case "id": dispatch(setAppliedId((filters.ids || []).filter(value => value !== filter.value))); break
+            case "years": dispatch(setAppliedYears(null)); break
+            default: {
+                const query = { ...filters.query }
+                delete query[filter.group]
+                dispatch(setQuery(query))
+            }
+        }
     }
 
+    function changeSort(value: string) {
+        const query = { ...filters.query }
+        if (value) query.sort = value as SortOption
+        else delete query.sort
+        dispatch(setQuery(query))
+    }
+
+    function changePage(page: number) {
+        dispatch(setAppliedPage(page))
+        document.getElementById("archive-heading")?.scrollIntoView({ block: "start" })
+    }
 
     return (
-        <div className="archive-data-view flex flex-col">
-            <div className="h-10">
-                <Pagination 
-                    currentPage={currentPage} 
-                    numberOfPages={numberOfPages} 
-                    className="my-4"
-                />
+        <main className="archive-browser" aria-labelledby="archive-heading">
+            <FiltersMenu items={results.matches} />
+            <header className="archive-browser__header">
+                <h1 id="archive-heading">Explore the archive</h1>
+            </header>
+            <div className="archive-browser__toolbar">
+                <p id="archive-result-count" className="archive-browser__count" role="status" aria-live="polite">
+                    <strong>{results.total} {results.total === 1 ? "project" : "projects"}</strong>
+                    {results.total > 0 && <span>Showing {results.first}–{results.last}</span>}
+                </p>
+                <div className="archive-browser__controls">
+                    <button type="button" className="archive-browser__filter-button"
+                        aria-controls="archive-filters" aria-expanded={filtersOpen}
+                        onClick={() => dispatch(setIsFiltersMenu(!filtersOpen))}>
+                        <FiSliders aria-hidden="true" /> Filters
+                        {activeFilters.length > 0 && <span>({activeFilters.length})</span>}
+                    </button>
+                    <label className="archive-browser__sort">
+                        Sort by
+                        <select value={filters.query?.sort || ""} onChange={event => changeSort(event.target.value)}>
+                            <option value="">Archive order</option>
+                            <option value="latest">Newest first</option>
+                            <option value="oldest">Oldest first</option>
+                        </select>
+                    </label>
+                </div>
             </div>
-
-            <FiltersMenu />
-
-            <div className="
-                grid content-start justify-center gap-14 mt-5
-                sm:gap-6"
-            >
-                {
-                    filteredItems.map((item: IArchiveItem) => 
-                        <ItemCard 
-                            key={`doom port item for ${item.title}`} item={item} 
-                            className="justify-self-center px-4 sm:w-[40rem]"
-                        />
-                    )
-                }
-            </div>
-
-            <Pagination 
-                currentPage={currentPage} 
-                numberOfPages={numberOfPages} 
-                className="my-8"
-            />
-
-        </div>
+            {activeFilters.length > 0 && (
+                <div className="archive-browser__active-filters">
+                    <ul aria-label="Active filters">
+                        {activeFilters.map(filter => (
+                            <li key={filter.key}>
+                                <button type="button" aria-label={`Remove filter: ${filter.label}`}
+                                    onClick={() => removeFilter(filter)}>
+                                    <span>{filter.label}</span><FiX aria-hidden="true" />
+                                </button>
+                            </li>
+                        ))}
+                    </ul>
+                    <button type="button" className="archive-browser__clear" onClick={() => dispatch(clearAppliedFilters())}>
+                        Clear all filters
+                    </button>
+                </div>
+            )}
+            {results.total > 0 ? (
+                <ul className="archive-browser__list" aria-label="Archive projects" aria-describedby="archive-result-count">
+                    {results.pageItems.map(item => {
+                        const link = projectLink(item.id)
+                        return (
+                            <li key={item.id || item.title}>
+                                <ProjectSummary item={item} projectHref={link.href} onProjectClick={link.onClick} />
+                            </li>
+                        )
+                    })}
+                </ul>
+            ) : (
+                <section className="archive-browser__empty" aria-labelledby="archive-empty-heading">
+                    <h2 id="archive-empty-heading">{items.length ? "No projects match these filters" : "The archive is unavailable"}</h2>
+                    <p>{items.length ? "Try a different search or remove a filter to see more projects." : "Please reload the page to try again."}</p>
+                    {activeFilters.length > 0 && (
+                        <button type="button" className="archive-browser__filter-button" onClick={() => dispatch(clearAppliedFilters())}>
+                            Clear all filters
+                        </button>
+                    )}
+                </section>
+            )}
+            <Pagination currentPage={results.page} numberOfPages={results.numberOfPages} onPageChange={changePage} />
+        </main>
     )
-} // MainPage
-
-
-ArchiveDataView.getLayout = getMainLayout
+}

@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useState, type MouseEventHandler } from "react"
 import { 
     IArchiveItem, 
 } from "@/src/types"
@@ -17,10 +17,12 @@ import { useRouter } from "next/router"
 interface IItemCardProps {
     item: IArchiveItem
     className?: string
+    projectHref?: string
+    onProjectClick?: MouseEventHandler<HTMLAnchorElement>
 }
 
 
-export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
+export const ItemCard = ({ item, className = "", projectHref, onProjectClick }: IItemCardProps) => {
     const router = useRouter()
     const [expandedDsc, setExpandedDsc] = useState(false)
     const maxDscLength = 180
@@ -102,7 +104,13 @@ export const ItemCard = ({ item, className = "", }: IItemCardProps) => {
                 </div>
             </div>
 
-            <div className="w-full flex flex-row justify-center items-center mt-0 p-2">
+            <div className="w-full flex flex-row flex-wrap gap-4 justify-center items-center mt-0 p-2">
+                {projectHref && (
+                    <a href={projectHref} className="project-preview-trigger" onClick={onProjectClick}
+                        aria-label={`View project: ${item.title}`}>
+                        View project <span aria-hidden="true">→</span>
+                    </a>
+                )}
                 <div 
                     className={`doom-btn ${isOnItemsPage() ? "hover:cursor-default" : ""}`}
                     onClick={onIdClicked}

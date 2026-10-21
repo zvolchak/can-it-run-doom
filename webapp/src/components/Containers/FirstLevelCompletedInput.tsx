@@ -30,8 +30,8 @@ export function FirstLevelCompletedInput({
                 <div className="flex flex-row w-1/2 justify-start">
                     <select
                         className="doom-select"
-                        id="max_value_select"
-                        name="max_value"
+                        id="first_level_completed_select"
+                        name="levelCompleted"
                         value={incomingValue}
                         onChange={onSelected}
                     >

@@ -5,13 +5,9 @@ import {
 import {
     BtnScrollPage,
     CategoryContainer,
-    ItemPreviewModal,
     LazyLoader,
     ArchiveDataView,
 } from "@/src/components"
-import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "@/src/store"
 import { useRouter } from "next/router"
 import { redirectToEntries, sortDscOrAsc } from "@/src/utils"
 
@@ -22,15 +18,6 @@ interface IMainPageProps {
 
 export function PaginatedDataView({ items }: IMainPageProps) {
     const router = useRouter()
-    const selectedItem: IArchiveItem = useSelector((state: RootState) => state.submissions.selected)
-    const [randomItems, setRandomItems] = useState<IArchiveItem[]>([])
-
-    useEffect(() => {
-        const picks = [...items]
-            .sort(() => Math.random() - 0.5)
-            .slice(0, 10)
-        setRandomItems(picks)
-    }, [items])
 
     if (!items || items?.length === 0) {
         return (
@@ -71,8 +58,6 @@ export function PaginatedDataView({ items }: IMainPageProps) {
                   />
                 </LazyLoader>
             </div>
-
-            <ItemPreviewModal item={selectedItem} />
 
             <BtnScrollPage className="bottom-5 sm:bottom-[5rem] right-10 fixed z-10" />
         </div>

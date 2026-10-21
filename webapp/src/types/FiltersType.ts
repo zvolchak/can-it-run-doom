@@ -11,8 +11,10 @@ export enum SortOption {
 
 
 export interface IFilterQuery {
-    levelCompleted?: boolean
-    limit?: number
+    levelCompleted?: boolean | string
+    hasCode?: boolean | string
+    authorsPerItem?: number | string
+    limit?: number | string
     sort?: SortOption
 }
 

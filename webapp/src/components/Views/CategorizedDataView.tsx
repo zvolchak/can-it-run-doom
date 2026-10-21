@@ -6,13 +6,11 @@ import {
     BtnScrollPage,
     CategoryContainer,
     GrouppedMiniShowcase,
-    ItemPreviewModal,
     LazyLoader,
 } from "@/src/components"
 import { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
+import { useDispatch } from "react-redux"
 import {
-    RootState,
     setAvailableAuthors,
     setAvailableTags,
     setAvailableYears,
@@ -35,7 +33,6 @@ interface IMainPageProps {
 export function CategorizedDataView({ items }: IMainPageProps) {
     const router = useRouter()
     const dispatch = useDispatch()
-    const selectedItem: IArchiveItem = useSelector((state: RootState) => state.submissions.selected)
     const [randomItems, setRandomItems] = useState<IArchiveItem[]>([])
 
     useEffect(() => {
@@ -64,11 +61,6 @@ export function CategorizedDataView({ items }: IMainPageProps) {
             </div>
         )
     }
-
-
-    function otherItems() {
-        return items.filter((item: IArchiveItem) => !item.tags.includes("baremetal"))
-    } // otherItems
 
 
     const baremetalItems = items.filter(
@@ -106,8 +98,6 @@ export function CategorizedDataView({ items }: IMainPageProps) {
                     />
                 </LazyLoader>
             </div>
-
-            <ItemPreviewModal item={selectedItem} />
 
             <BtnScrollPage 
               direction="top" 
