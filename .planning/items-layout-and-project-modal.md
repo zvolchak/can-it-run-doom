@@ -1,6 +1,6 @@
 # Items layout and project modal implementation plan
 
-Status: Phases 1–4 implemented; the compact archive is ready for browser QA. Phase 5 final verification remains.
+Status: Phases 1–5 complete. Final automated checks and browser acceptance verification passed; physical-device safe-area behavior remains a manual device check.
 Date: October 21, 2026
 
 ## Progress
@@ -141,7 +141,7 @@ Verification:
   the browser. Empty filtered views do not show unrelated discovery sections.
 - Opening from the last row on page two, Back, Forward, and Escape restore page
   two and the recorded scroll position (1,242.5px in the desktop check). Enter
-  on a mobile row opens exactly one 320px-wide project dialog.
+  on the mobile View project link opens exactly one 320px-wide project dialog.
 
 QA at `http://localhost:3000/`: browse rows, change sorting, page forward, then
 search for `Neural` or a nonexistent title. Remove chips or clear filters, open
@@ -308,28 +308,65 @@ visitor's browsing context when opening, closing, and sharing a project.
   API or supported local configuration; use isolated fixtures for edge cases.
   Report environment blockers without claiming unperformed browser checks.
 
+### Phase 5: final verification (October 21, 2026)
+
+Completed final verification without further product changes. Added four focused
+presentation regression tests covering unsafe URL schemes, duplicate source
+records, credits without valid links, and invalid/timezone-sensitive dates.
+The full suite now passes 25 tests. Node 20 TypeScript, targeted ESLint, SCSS
+compilation, and a fresh isolated production webpack build pass. The build emits
+only the existing stale baseline-browser-mapping data warning.
+
+Browser verification in the local in-app browser confirms:
+
+- Only View project opens an archive row; clicking its title does nothing.
+- Tab/Shift+Tab wrap inside the modal, Escape restores the opener, and body scroll
+  locking is restored. Backdrop dismissal and category/carousel project links work.
+- Temporary local fixtures exercise zero, one, two, and five authors and links in
+  each source group. All details render, duplicate display names are preserved,
+  missing names fall back to hostnames, and the five-author row shows +3 more.
+- Missing and intentionally broken images show the preview-unavailable fallback.
+  Absent dates and optional metadata render without empty broken controls.
+- Long unbroken names/tags and a long description cause no horizontal overflow at
+  320px portrait, 740px landscape, or 768px tablet widths. The dialog has one
+  scrolling content surface and keeps its Close control reachable. Existing
+  safe-area CSS was inspected; physical notched-device insets were not emulated.
+- The /entries route accepts a copied project URL and refresh; Close keeps the
+  route/page, and keyboard activation opens its mobile dialog at exactly 320px.
+  Earlier phase checks cover legacy IDs, multiple IDs, unknown projects, encoded
+  search, empty results, invalid pages, and history/scroll restoration.
+- Submission preview updates and Hide/Show controls work. The existing moderation
+  confirmation opens and cancels using isolated fixture records. No submission or
+  moderation write was sent. External detail links retain new-tab/noopener markup;
+  remote destinations were not exhaustively checked for availability.
+
+Temporary QA routes and tabs were removed. The main archive remains open and
+viewport overrides were reset. No live archive records were modified. Acceptance
+checks below reflect these checks and the previously recorded phase verification;
+this is in-app-browser coverage, not a full cross-browser or physical-device audit.
+
 ## Acceptance checks
 
-- [ ] Rows remain readable at 320px, tablet widths, and desktop widths without
+- [x] Rows remain readable at 320px, tablet widths, and desktop widths without
   horizontal overflow or cropped device imagery.
-- [ ] Opening from rows or category cards shows one centered desktop modal or
+- [x] Opening from rows or category cards shows one centered desktop modal or
   one mobile dialog; it does not expand content below the results.
-- [ ] Entries with zero, one, two, and many authors render correctly; all authors
+- [x] Entries with zero, one, two, and many authors render correctly; all authors
   appear in details, and `+N more` is accurate in summaries.
-- [ ] Zero, one, and many links in each source section render independently.
+- [x] Zero, one, and many links in each source section render independently.
   Duplicate display names, long URLs, and absent names do not break layout.
-- [ ] Missing/broken images and absent optional metadata have usable fallbacks.
-- [ ] Keyboard users can open, traverse, and close the dialog. Focus returns to
+- [x] Missing/broken images and absent optional metadata have usable fallbacks.
+- [x] Keyboard users can open, traverse, and close the dialog. Focus returns to
   the opener, and background controls cannot receive focus while it is open.
-- [ ] Close, Escape, backdrop, Back, and Forward preserve the expected archive
+- [x] Close, Escape, backdrop, Back, and Forward preserve the expected archive
   filters, ordering, page, and scroll position.
-- [ ] Refresh, copied modal URLs, new-tab project links, legacy single-ID links,
+- [x] Refresh, copied modal URLs, new-tab project links, legacy single-ID links,
   multiple-ID filters, and unknown IDs behave as specified above.
-- [ ] Result counts represent all filtered matches, not just the visible page;
+- [x] Result counts represent all filtered matches, not just the visible page;
   empty results and invalid page numbers are recoverable.
-- [ ] Long project content uses one scroll surface; mobile safe areas and
+- [x] Long project content uses one scroll surface; mobile safe areas and
   reachable close controls work in portrait and landscape.
-- [ ] Category browsing, submission/review dialogs, and external links retain
+- [x] Category browsing, submission/review dialogs, and external links retain
   their intended behavior.
 
 ## Scope boundaries
