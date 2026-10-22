@@ -47,9 +47,9 @@ export function FiltersMenu({ items }: { items: IArchiveItem[] }) {
         </aside>}
         {!desktop && <dialog aria-labelledby="archive-filter-title" id="archive-filters" className="archive-filter-dialog" ref={dialog} onCancel={event => { event.preventDefault(); close() }} onClick={event => { if (event.target === event.currentTarget) close() }}>
             <div className="archive-filter-dialog__shell">
-                <header><h2 id="archive-filter-title">Archive filters</h2><button type="button" onClick={close} aria-label="Close filters">Close</button></header>
+                <header><h2 id="archive-filter-title">Archive filters</h2><button type="button" onClick={close} className="doom-btn" aria-label="Close filters">Close</button></header>
                 <div className="archive-filter-dialog__content"><ArchiveFilterControls items={items} value={draft} onChange={setDraft} /></div>
-                <footer><button type="button" onClick={close}>Cancel</button><button type="button" onClick={() => { dispatch(applyArchiveFilters(draft)); close() }}>Show {archiveResults(items, draft).total} projects</button></footer>
+                <footer><button type="button" className="doom-btn-secondary" onClick={close}>Cancel</button><button type="button" className="doom-action-btn" onClick={() => { dispatch(applyArchiveFilters(draft)); close() }}>Show {archiveResults(items, draft).total} projects</button></footer>
             </div>
         </dialog>}
     </>

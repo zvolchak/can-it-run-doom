@@ -47,7 +47,7 @@ export const ItemCard = ({ item, className = "", projectHref, onProjectClick }: 
 
     return (
         <div className={`
-            item flex flex-col text-slate-50 gap-1
+            item flex flex-col text-foreground gap-1
             ${className}`}
         >
             <div className="flex flex-row title py-2">

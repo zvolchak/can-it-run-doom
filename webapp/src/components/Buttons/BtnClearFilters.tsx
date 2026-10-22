@@ -27,7 +27,7 @@ export function BtnClearFilters({
             onClick={onBtnClick}
         >
             {children}
-            <CiSquareRemove className="w-5 h-5 ml-2 text-slate-100 p-0 m-0"/>
+            <CiSquareRemove className="w-5 h-5 ml-2 text-foreground p-0 m-0"/>
         </button>
     )
 }

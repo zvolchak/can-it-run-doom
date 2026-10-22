@@ -24,7 +24,7 @@ export const RangePicker: React.FC<FilterProps> = ({
     maxValue = null,
 }) => {
   return (
-    <div className={`p-4 doom-color-slate ${className}`}>
+    <div className={`p-4 text-muted ${className}`}>
         <div className="flex space-x-4" role="group">
             <div className="w-full">
                 <label htmlFor="min_value_select" className="block text-sm font-medium  mb-1">

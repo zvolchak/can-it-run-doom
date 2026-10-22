@@ -25,7 +25,7 @@ export const Sidebar: React.FC<ISidebarProps> = ({
         <>
             <button
                 onClick={() => { setIsOpen(true); onToggle?.(true); } }
-                className="ml-5 text-white"
+                className="ml-5 text-foreground"
             >
                 <RxHamburgerMenu size="24px" />
             </button>
@@ -36,7 +36,7 @@ export const Sidebar: React.FC<ISidebarProps> = ({
                 <div className="grid grid-cols-2 p-3">
                     <div className="flex w-80 pl-4">
                         <Link href="/"  onClick={() => { setIsOpen(false); onToggle?.(false); }}>
-                            <h1 className="text-white text-xl mr-14 block">Can It Run Doom</h1>
+                            <h1 className="text-foreground text-xl mr-14 block">Can It Run Doom</h1>
                         </Link>
                     </div>
 
@@ -48,7 +48,7 @@ export const Sidebar: React.FC<ISidebarProps> = ({
                     </button>
                 </div>
 
-                <hr className="h-px my-4 border-2 border-slate-600 dark:bg-gray-600" />
+                <hr className="h-px my-4 border-2 border-line" />
                 
                 <div className="p-4 pl-10">
                     {children}
@@ -57,7 +57,7 @@ export const Sidebar: React.FC<ISidebarProps> = ({
 
             {isOpen && (
                 <div
-                    className="fixed inset-0 h-screen bg-slate-800 opacity-50 z-10"
+                    className="fixed inset-0 h-screen bg-backdrop z-10"
                     onClick={() => { setIsOpen(false); onToggle?.(false); }}
                 />
             )}

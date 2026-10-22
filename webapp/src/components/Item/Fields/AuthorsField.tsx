@@ -21,7 +21,7 @@ export function AuthorsField({ item }: IProps ) {
                 item?.authors?.map((author: ISource) => 
                     <div 
                         key={`item_field_code_${author.name}`}
-                        className="flex flex-row items-center px-2 bg-slate-700"
+                        className="flex flex-row items-center px-2 bg-surface"
                     >
                         <div>
                             <FaUserAstronaut />

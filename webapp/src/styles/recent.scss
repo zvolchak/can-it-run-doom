@@ -2,11 +2,11 @@
   display: inline-flex;
   align-items: center;
   width: fit-content;
-  border: 1px solid #887542;
+  border: 1px solid var(--color-recent-border);
   border-radius: 3px;
   padding: 0.15rem 0.4rem;
-  background: #3d3521;
-  color: #f3d994;
+  background: var(--color-recent-surface);
+  color: var(--color-recent);
   font-size: 0.6875rem;
   font-weight: 600;
   line-height: 1.4;
@@ -18,10 +18,10 @@
   min-width: 0;
   margin: 0 auto;
   padding: 2rem clamp(1rem, 3vw, 2rem) 0;
-  color: #f1f0e9;
+  color: var(--color-text);
 
   a:focus-visible, button:focus-visible {
-    outline: 2px solid #f58c7b;
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
   }
 
@@ -34,7 +34,7 @@
     margin-bottom: 1rem;
 
     h2 { margin: 0; font-size: clamp(1.35rem, 3vw, 1.75rem); font-weight: 600; line-height: 1.2; }
-    a { display: inline-flex; gap: 0.5rem; align-items: center; min-height: 44px; color: #f58c7b; font-size: 0.875rem; }
+    a { display: inline-flex; gap: 0.5rem; align-items: center; min-height: 44px; color: var(--color-accent); font-size: 0.875rem; }
   }
 
   &__list {
@@ -50,7 +50,7 @@
     margin: 0;
     padding: 0.3rem 0.3rem 0.75rem;
     scrollbar-width: thin;
-    scrollbar-color: #68685f transparent;
+    scrollbar-color: var(--color-control-border) transparent;
 
     > li { display: flex; min-width: 0; scroll-snap-align: start; }
     @media (min-width: 640px) { grid-auto-columns: calc((100% - 1rem) / 2); }
@@ -63,9 +63,9 @@
     gap: 0.75rem;
     margin-top: 0.5rem;
     &[hidden] { display: none; }
-    button { min-height: 44px; padding: 0.5rem 0.75rem; border: 1px solid #68685f; border-radius: 3px; font-size: 0.875rem; }
+    button { min-height: 44px; padding: 0.5rem 0.75rem; border: 1px solid var(--color-control-border); border-radius: 3px; font-size: 0.875rem; }
     button:disabled { opacity: 0.4; cursor: default; }
-    button:hover:enabled { border-color: #f58c7b; color: #f58c7b; }
+    button:hover:enabled { border-color: var(--color-accent); color: var(--color-accent); }
   }
 }
 
@@ -75,18 +75,18 @@
   width: 100%;
   min-width: 0;
   overflow: hidden;
-  border: 1px solid #45453d;
+  border: 1px solid var(--color-border);
   border-radius: 4px;
-  background: #252523;
+  background: var(--color-surface);
 
-  .project-preview { position: relative; display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 100%; aspect-ratio: 16 / 9; border-radius: 0; background: #1d1d1b; }
-  .project-preview--empty { padding: 1rem; color: #b8b6ac; font-size: 0.8125rem; text-align: center; }
+  .project-preview { position: relative; display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 100%; aspect-ratio: 16 / 9; border-radius: 0; background: var(--color-background); }
+  .project-preview--empty { padding: 1rem; color: var(--color-muted); font-size: 0.8125rem; text-align: center; }
   .project-preview img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
   &__body { display: flex; flex-direction: column; flex: 1; gap: 0.5rem; padding: 1rem; min-width: 0; }
-  &__addition { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; color: #b8b6ac; font-size: 0.75rem; }
+  &__addition { display: flex; align-items: center; flex-wrap: wrap; gap: 0.5rem; color: var(--color-muted); font-size: 0.75rem; }
   h3 { margin: 0.125rem 0 0; font-size: 1.125rem; line-height: 1.35; font-weight: 600; overflow-wrap: anywhere; }
   p { margin: 0; }
-  &__authors { font-size: 0.8125rem; color: #dad8cc; overflow-wrap: anywhere; }
-  &__year { font-size: 0.75rem; color: #b8b6ac; }
-  &__action { display: flex; align-items: center; justify-content: space-between; min-height: 44px; margin-top: auto; padding-top: 0.5rem; color: #f58c7b; font-size: 0.875rem; }
+  &__authors { font-size: 0.8125rem; color: var(--color-text); overflow-wrap: anywhere; }
+  &__year { font-size: 0.75rem; color: var(--color-muted); }
+  &__action { display: flex; align-items: center; justify-content: space-between; min-height: 44px; margin-top: auto; padding-top: 0.5rem; color: var(--color-accent); font-size: 0.875rem; }
 }

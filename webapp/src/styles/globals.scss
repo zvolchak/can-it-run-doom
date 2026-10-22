@@ -1,3 +1,4 @@
+@use "./theme";
 @use "./doom";
 @use "./items";
 @use "./buttons";
@@ -18,11 +19,38 @@
     src: local("editundo"), url("/fonts/editundo.ttf") format("truetype");
 }
 
-body {
-    background-color: #181818;
+@layer base {
+  body {
+    background: var(--color-background);
+    color: var(--color-text);
     font-family: 'Roboto', sans-serif;
-}
+  }
 
-input {
-    border-radius: 0px;
+  a { transition: color 0.15s; }
+  a:hover { color: var(--color-accent-hover); }
+
+  input:where(:not([type="checkbox"], [type="radio"], [type="range"], [type="file"], [type="hidden"])),
+  textarea,
+  select {
+    border: 1px solid var(--color-control-border);
+    border-radius: 3px;
+    padding: 0.5rem 0.75rem;
+    background: var(--color-surface);
+    color: var(--color-text);
+    caret-color: var(--color-accent);
+  }
+
+  input::placeholder, textarea::placeholder {
+    color: var(--color-muted);
+    opacity: 1;
+  }
+
+  input[type="checkbox"], input[type="radio"] {
+    accent-color: var(--color-accent);
+  }
+
+  :where(a, button, input, textarea, select, summary):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
 }

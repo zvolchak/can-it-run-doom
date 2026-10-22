@@ -45,7 +45,7 @@ export default function AccountPage() {
                     </div>
                 }
 
-                <div className="text-white mt-10">
+                <div className="text-foreground mt-10">
                 { user !== null && !user.isVerified &&
                     <div>
                         An email associated with this account has not been verified yet. To 

@@ -20,7 +20,7 @@ export default function ReviewEntriesPage({ items }: IReviewEntriesPageProps) {
                 <ReviewEntriesView items={items} />
             }
             { items?.length === 0 &&
-                <div className="text-white text-3xl mt-40">
+                <div className="text-foreground text-3xl mt-40">
                     No items to review.
                 </div>
             }

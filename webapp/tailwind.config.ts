@@ -9,8 +9,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "var(--color-background)",
+        foreground: "var(--color-text)",
+        surface: "var(--color-surface)",
+        raised: "var(--color-surface-raised)",
+        muted: "var(--color-muted)",
+        line: "var(--color-border)",
+        control: "var(--color-control-border)",
+        accent: "var(--color-accent)",
+        danger: "var(--color-danger)",
+        backdrop: "var(--color-backdrop)",
       },
     },
   },

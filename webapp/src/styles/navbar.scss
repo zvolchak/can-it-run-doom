@@ -8,7 +8,7 @@
   gap: 0.75rem 1rem;
   min-height: 64px;
   padding: 0.5rem clamp(1rem, 3vw, 2rem);
-  background: #1f2937;
+  background: var(--color-surface);
 
   &--with-home {
     grid-template-areas: "brand home search add";
@@ -38,7 +38,7 @@
   &__search { grid-area: search; max-width: 34rem; }
 
   a:focus-visible, button:focus-visible {
-    outline: 2px solid #f58c7b;
+    outline: 2px solid var(--color-accent);
     outline-offset: 3px;
   }
 
@@ -70,7 +70,7 @@
     min-width: 0;
 
     &:focus-within {
-      outline: 2px solid #f58c7b;
+      outline: 2px solid var(--color-accent);
       outline-offset: 2px;
     }
 
@@ -79,10 +79,10 @@
       min-width: 0;
       width: 100%;
       min-height: 44px;
-      border: 1px solid #68685f;
+      border: 1px solid var(--color-control-border);
       padding: 0.5rem 0.75rem;
-      background: #fff;
-      color: #181818;
+      background: var(--color-surface);
+      color: var(--color-text);
       font: inherit;
       outline: none;
     }
@@ -93,12 +93,12 @@
       align-items: center;
       justify-content: center;
       min-height: 44px;
-      border: 1px solid #68685f;
+      border: 1px solid var(--color-control-border);
       border-left: 0;
-      background: #252523;
-      color: #fff;
+      background: var(--color-surface);
+      color: var(--color-text);
 
-      &:hover { background: #45453d; }
+      &:hover { background: var(--color-surface-raised); color: var(--color-accent-hover); }
       &:focus-visible { outline-offset: -3px; }
     }
   }

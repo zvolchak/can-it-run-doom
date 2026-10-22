@@ -10,7 +10,7 @@ export const SubNavbar = () => {
             relative
             flex flex-col 
             px-2 w-full
-            bg-gray-700
+            bg-surface
             sticky top-14 z-10
             pb-3
             "

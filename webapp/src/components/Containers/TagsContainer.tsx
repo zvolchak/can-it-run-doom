@@ -21,13 +21,13 @@ export function TagsContainer({
     return (
         <div className={`
                 flex flex-col
-                gap-2 bg-gray-600 w-full pb-3
+                gap-2 bg-raised w-full pb-3
                 ${className}
             `}
         >
-            <div className="sticky top-0 bg-gray-600 pt-4 px-2 pb-0">
+            <div className="sticky top-0 bg-raised pt-4 px-2 pb-0">
                 <div className="flex space-x-2 justify-between pl-2">
-                    <div className="doom-color-slate font-semibold">
+                    <div className="text-muted font-semibold">
                         {title}
                     </div>
                     
@@ -35,7 +35,7 @@ export function TagsContainer({
                         <div className="h-2 px-4">
                             <BtnClearFilters 
                                 onClick={onClearClick}
-                                className="doom-color-secondary doom-text-shadow-danger"
+                                className="text-accent "
                             >
                                 Clear
                             </BtnClearFilters>

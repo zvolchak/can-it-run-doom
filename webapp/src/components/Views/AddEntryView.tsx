@@ -127,7 +127,7 @@ export function AddEntryView({
     return (
         <div
             className={`
-                doom-color-secondary
+                text-foreground
                 doom-card 
                 w-full
                 ${className}
@@ -251,7 +251,7 @@ export function AddEntryView({
                     </label>
 
                     { uploadStatus.state === EProcessingState.error && 
-                        <div className="doom-color-danger self-center">
+                        <div className="text-danger self-center">
                             {uploadStatus.message}
                         </div>
                     }

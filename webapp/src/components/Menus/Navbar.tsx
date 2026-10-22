@@ -65,7 +65,7 @@ export const Navbar = () => {
                 </button>
             )}
             {showSearch && <Searchbar className="site-navbar__search" />}
-            <Link className="site-navbar__add doom-btn" href="/entries/add">Add Entry</Link>
+            <Link className="site-navbar__add doom-action-btn" href="/entries/add">Add Entry</Link>
         </nav>
     )
 }
