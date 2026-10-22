@@ -3,7 +3,7 @@ import { ReactElement } from "react"
 
 const MainLayout = ({ children }) => {
     return (
-        <div className="w-full md:w-2/3 h-screen scrollbar-hidden p-4">
+        <div className="w-full md:w-2/3 scrollbar-hidden p-4">
             {children}
         </div>
     )

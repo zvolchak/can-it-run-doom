@@ -28,7 +28,7 @@ export default function LoginPage() {
     }, [dispatch, router])
 
     return (
-        <div className="min-h-screen flex items-start justify-center">
+        <div className="flex items-start justify-center">
             <LoginView className="mt-20" />
         </div>
     )

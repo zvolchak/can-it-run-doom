@@ -1,4 +1,5 @@
 .footer {
+  flex-shrink: 0;
   background: var(--color-surface);
   color: var(--color-muted);
 }

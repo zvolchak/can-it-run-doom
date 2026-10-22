@@ -50,7 +50,6 @@ export default function AddEntryPage() {
     return (
         <div className={`
                 flex sm:flex-row flex-col
-                min-h-screen 
                 w-full 
                 items-start 
                 justify-center

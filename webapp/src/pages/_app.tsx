@@ -81,9 +81,11 @@ function App({ Component, pageProps }) {
             <UserSessionInit />
             <PageViewAnalytics />
             <Navbar />
-            {getLayout(
-                <Component {...pageProps} />
-            )}
+            <div className="site-content">
+                {getLayout(
+                    <Component {...pageProps} />
+                )}
+            </div>
             <Footer />
         </Provider>
     )

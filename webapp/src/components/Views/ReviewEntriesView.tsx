@@ -75,7 +75,6 @@ export function ReviewEntriesView({ items }: IMainPageProps) {
     return (
         <div className="">
             <div className="
-                min-h-screen
                 grid content-start justify-center gap-14 mt-5
                 sm:gap-6"
             >

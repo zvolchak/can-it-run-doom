@@ -16,26 +16,19 @@ export function ProjectPreview({ src, title, justAdded = false }: ProjectPreview
         ? text
         : externalProjectUrl(text)?.href
 
-    if (!source || source === failedSource) {
-        return (
-            <div className="project-preview project-preview--empty" role="img"
-                aria-label={`${title}: preview unavailable${justAdded ? ", just added" : ""}`}>
-                <span>No preview available</span>
-                {justAdded && <JustAddedBadge />}
-            </div>
-        )
-    }
+    const usesPlaceholder = !source || source === failedSource
+    const previewSource = usesPlaceholder ? "/doom-placeholder.jpeg" : source
 
     return (
         <div className="project-preview">
             <Image
-                key={source}
-                src={source}
-                alt={`Preview of ${title}`}
+                key={previewSource}
+                src={previewSource}
+                alt={usesPlaceholder ? `Doom placeholder for ${title}` : `Preview of ${title}`}
                 width={1200}
                 height={750}
                 unoptimized
-                onError={() => setFailedSource(source)}
+                onError={usesPlaceholder ? undefined : () => setFailedSource(source)}
             />
             {justAdded && <JustAddedBadge overlay />}
         </div>

@@ -15,7 +15,7 @@ interface IReviewEntriesPageProps {
 
 export default function ReviewEntriesPage({ items }: IReviewEntriesPageProps) {
     return (
-        <div className="min-h-screen flex flex-col items-center">
+        <div className="flex flex-col items-center">
             { items?.length > 0 &&
                 <ReviewEntriesView items={items} />
             }

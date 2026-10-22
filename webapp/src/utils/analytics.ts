@@ -1,6 +1,6 @@
-import { initializeApp } from "firebase/app"
+import { getApps, initializeApp, type FirebaseApp } from "firebase/app"
 import { 
-    Analytics, 
+    type Analytics,
     getAnalytics, 
     logEvent, 
     setAnalyticsCollectionEnabled, 
@@ -9,28 +9,27 @@ import {
 } from "firebase/analytics"
 import { IsProd } from "@/src/utils"
 
-let fbApp = null
-let analyticsApp = null
+let fbApp: FirebaseApp | null = null
+let analyticsApp: Analytics | null = null
 
 
 export function initFbApp() {
-    if (fbApp !== null && analyticsApp !== null) {
-        return { fbApp, analyticsApp }    
-    }
-
-    if (!IsProd)
+    // Analytics is browser-only; SSR and development must not initialize Firebase.
+    if (!IsProd() || typeof window === "undefined")
         return { fbApp: null, analyticsApp: null }
 
-    const firebaseConfig = {
-        apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-        authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-        projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-        storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-        appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    if (!fbApp) {
+        // Firebase's registry survives module reloads; local variables do not.
+        fbApp = getApps().find(app => app.name === "[DEFAULT]") ?? initializeApp({
+            apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+            authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+            projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+            storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+            appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+        })
     }
-    
-    fbApp = initializeApp(firebaseConfig)
-    if (typeof window !== "undefined") {
+
+    if (!analyticsApp) {
         analyticsApp = getAnalytics(fbApp)
         // Disable user data collection
         setAnalyticsCollectionEnabled(analyticsApp, false)
@@ -45,8 +44,8 @@ export function initFbApp() {
 
 
 
-export function trackPageView(analyticsApp: Analytics, page: string, sessionId: string) {
-    if (!IsProd() || !analyticsApp)
+export function trackPageView(analyticsApp: Analytics | null, page: string, sessionId: string) {
+    if (!IsProd() || typeof window === "undefined" || !analyticsApp)
         return
     if (!page || page === "")
         return

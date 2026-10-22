@@ -16,7 +16,7 @@ export default function AccountPage() {
 
     
     return (
-        <div className="min-h-screen flex flex-col w-full justify-start text-center">
+        <div className="flex flex-col w-full justify-start text-center">
             { user?.email &&
             <>
                 <div className="mt-10">
