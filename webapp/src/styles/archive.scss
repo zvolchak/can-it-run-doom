@@ -244,30 +244,42 @@
   }
 }
 
-.archive-filters.sidebar {
-  top: 4rem;
-  bottom: 0;
-  left: 0;
-  width: min(20rem, 100%);
-  height: auto;
-  padding: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  z-index: 40;
-
-  button:focus-visible,
-  select:focus-visible {
-    outline: 2px solid #f58c7b;
-    outline-offset: 3px;
-  }
-
-  button[aria-label="Close filters"] {
-    min-height: 44px;
-    min-width: 44px;
-  }
-}
-
 .archive-discovery {
   max-width: 68rem;
   margin: 2rem auto;
+}
+
+.archive-browser__results { min-width: 0; }
+.tag-filters {
+  display: grid; gap: 1rem; min-width: 0; color: #f1f0e9;
+  h2 { font-size: 1.4rem; font-weight: 600; }
+  label:not(.tag-filters__choice) { display: grid; gap: .25rem; font-size: .875rem; }
+  input:not([type=checkbox]), select { width: 100%; min-width: 0; min-height: 36px; background: #252523; color: #f1f0e9; border: 1px solid #68685f; padding: .25rem .5rem; color-scheme: dark; font: inherit; }
+  // Override the global form rules for input text and padding.
+  input[type=search] { color: #f1f0e9 !important; padding: .25rem .5rem !important; }
+  input[type=search]::placeholder { color: #b8b6ac; opacity: 1; }
+  fieldset { min-width: 0; }
+  legend, summary { font-weight: 600; margin-bottom: .5rem; }
+  summary { cursor: pointer; padding: .5rem 0; }
+  details > * + * { margin-top: 1rem; }
+  button { text-align: left; text-decoration: underline; min-height: 44px; }
+  &__help { font-size: .8rem; color: #b8b6ac; }
+  &__choice { display: flex; align-items: center; gap: .6rem; min-height: 40px; overflow-wrap: anywhere; }
+  &__choice input { flex-shrink: 0; accent-color: #f58c7b; }
+  &__choice span { flex: 1; }
+  &__choice small { color: #b8b6ac; }
+}
+.archive-filter-dialog {
+  position: fixed; inset: 0; width: 100%; height: 100dvh; max-width: none; max-height: none; margin: 0; border: 0; padding: 0; background: #20201e; color: #f1f0e9;
+  &::backdrop { background: #000a; }
+  &__shell { height: 100%; display: flex; flex-direction: column; padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+  header, footer { display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; gap: 1rem; padding: 1rem; background: #30302b; }
+  button { min-height: 44px; }
+  &__content { flex: 1; overflow-y: auto; padding: 1rem; }
+}
+@media (min-width: 1024px) {
+  .archive-browser { max-width: 88rem; display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 2rem; align-items: start; }
+  .tag-filters__vocabulary { max-height: 28rem; overflow-y: auto; }
+  .tag-filters__authors { max-height: 14rem; overflow-y: auto; }
+  .archive-tag-rail { border-right: 1px solid #45453d; padding-right: 1.5rem; }
 }

@@ -20,6 +20,7 @@ export interface IFilterQuery {
 
 
 export interface IFiltersStoreState {
+    tagMatch?: "all" | "any"
     tags: string[]
     years: IRange | null
     availableYears?: number[] | null
@@ -33,6 +34,7 @@ export interface IFiltersStoreState {
 
 export function initFiltersStoreState(): IFiltersStoreState {
     return {
+        tagMatch: "all",
         tags: [],
         years: null,
         authors: [],

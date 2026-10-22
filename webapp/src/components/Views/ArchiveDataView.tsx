@@ -5,9 +5,10 @@ import { SortOption, type IArchiveItem } from "@/src/types"
 import {
     type RootState, setFiltered, setAppliedPage, setAppliedSearch, setAppliedTags,
     setAppliedAuthors, setAppliedId, setAppliedYears, setQuery, clearAppliedFilters,
-    setIsFiltersMenu,
+    setIsFiltersMenu, toggleAppliedTag,
 } from "@/src/store"
 import { archiveResults, activeArchiveFilters, type ActiveArchiveFilter } from "@/src/utils/archiveResults"
+import { archiveTagUsage } from "@/src/utils/archiveTags"
 import { ProjectSummary } from "../Item/ProjectSummary"
 import { Pagination } from "../Pagination"
 import { FiltersMenu } from "../Menus/FiltersMenu"
@@ -19,12 +20,12 @@ export function ArchiveDataView({ items }: { items: IArchiveItem[] }) {
     const filters = useSelector((state: RootState) => state.appliedFilters)
     const filtersOpen = useSelector((state: RootState) => state.settings.isFiltersMenu)
     const results = useMemo(() => archiveResults(items, filters), [items, filters])
+    const tagUsage = useMemo(() => archiveTagUsage(items), [items])
     const activeFilters = activeArchiveFilters(filters)
 
     useEffect(() => {
         dispatch(setFiltered(results.matches))
-        if (results.page !== filters.page) dispatch(setAppliedPage(results.page))
-    }, [dispatch, results, filters.page])
+    }, [dispatch, results])
 
     function removeFilter(filter: ActiveArchiveFilter) {
         switch (filter.group) {
@@ -55,7 +56,8 @@ export function ArchiveDataView({ items }: { items: IArchiveItem[] }) {
 
     return (
         <main className="archive-browser" aria-labelledby="archive-heading">
-            <FiltersMenu items={results.matches} />
+            <FiltersMenu items={items} />
+            <div className="archive-browser__results">
             <header className="archive-browser__header">
                 <h1 id="archive-heading">Explore the archive</h1>
             </header>
@@ -104,7 +106,8 @@ export function ArchiveDataView({ items }: { items: IArchiveItem[] }) {
                         const link = projectLink(item.id)
                         return (
                             <li key={item.id || item.title}>
-                                <ProjectSummary item={item} projectHref={link.href} onProjectClick={link.onClick} />
+                                <ProjectSummary item={item} projectHref={link.href} onProjectClick={link.onClick}
+                                    tagUsage={tagUsage} selectedTags={filters.tags} onTagClick={tag => dispatch(toggleAppliedTag(tag))} />
                             </li>
                         )
                     })}
@@ -121,6 +124,7 @@ export function ArchiveDataView({ items }: { items: IArchiveItem[] }) {
                 </section>
             )}
             <Pagination currentPage={results.page} numberOfPages={results.numberOfPages} onPageChange={changePage} />
+            </div>
         </main>
     )
 }

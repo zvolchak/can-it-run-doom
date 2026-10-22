@@ -23,7 +23,12 @@ export function archiveResults(items: IArchiveItem[], filters: IFiltersStoreStat
     if (filters.searchString?.trim()) matches = onSearch(matches, filters.searchString.trim())
     if (filters.authors?.length) matches = filterItemsByAuthors(matches, filters.authors)
     if (filters.ids?.length) matches = filterById(matches, filters.ids)
-    if (filters.tags?.length) matches = filterItemsByTags(matches, filters.tags)
+    if (filters.tags?.length) {
+        // Preserve the shared legacy OR/exclusion path, including exclusion-only behavior.
+        matches = filterItemsByTags(matches, filters.tags)
+        if (filters.tagMatch === "all") matches = matches.filter(item =>
+            filters.tags.filter(tag => !tag.startsWith("!")).every(tag => (item.tags || []).includes(tag)))
+    }
     const authorLimit = positiveNumber(options.authorsPerItem)
     if (authorLimit) matches = filterByAuthorsPerItem(matches, authorLimit)
     if (hasCode !== null) matches = filterBySourceCode(matches, hasCode)
@@ -80,7 +85,7 @@ export function activeArchiveFilters(filters: IFiltersStoreState): ActiveArchive
         result.push({ key: JSON.stringify([group, value]), group, label, value })
     }
     if (filters.searchString?.trim()) add("search", `Search: ${filters.searchString.trim()}`)
-    for (const tag of new Set(filters.tags || [])) add("tag", `#${tag}`, tag)
+    for (const tag of new Set(filters.tags || [])) add("tag", tag.startsWith("!") ? `Exclude #${tag.slice(1)}` : `#${tag}`, tag)
     for (const author of new Set(filters.authors || [])) add("author", `Author: ${author}`, author)
     for (const id of new Set(filters.ids || [])) add("id", `Entry: ${id}`, id)
     const start = filters.years?.start

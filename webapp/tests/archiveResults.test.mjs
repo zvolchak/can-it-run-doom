@@ -3,7 +3,7 @@ import { after, test } from "node:test"
 import { compileModules } from "./compileModules.mjs"
 
 const modules = compileModules([
-    "src/utils/archiveResults.ts", "src/utils/itemsFilters.ts", "src/types/FiltersType.ts", "src/store/filters.ts",
+    "src/utils/archiveTags.ts", "src/utils/archiveFacets.ts", "src/utils/archiveResults.ts", "src/utils/itemsFilters.ts", "src/types/FiltersType.ts", "src/store/filters.ts",
 ])
 after(modules.dispose)
 const { archiveResults, activeArchiveFilters, paginationPages } = modules.load("src/utils/archiveResults.ts")
@@ -125,4 +125,81 @@ test("pagination ranges have no duplicate pages or out-of-range links", () => {
         assert.ok(numbers.includes(1) && numbers.includes(10) && numbers.includes(page))
         assert.ok(numbers.every(value => value >= 1 && value <= 10))
     }
+})
+
+const { archiveFacets, tagSearchKey } = modules.load("src/utils/archiveFacets.ts")
+test("All, Any and legacy exclusions retain distinct semantics", () => {
+    const items = [item("a", { tags: ["a", "a"] }), item("both", { tags: ["a", "b"] }), item("b", { tags: ["b"] }), item("null", { tags: null })]
+    assert.equal(archiveResults(items, filters({ tags: ["a", "b"], tagMatch: "all" })).total, 1)
+    assert.equal(archiveResults(items, filters({ tags: ["a", "b"], tagMatch: "any" })).total, 3)
+    assert.equal(archiveResults(items, filters({ tags: ["!b"] })).total, 0)
+    assert.equal(archiveResults(items, filters({ tags: ["a", "!b"] })).total, 1)
+    for (const tagMatch of ["all", "any"]) assert.equal(archiveResults(items, filters({ tagMatch })).total, 4)
+})
+test("prospective counts deduplicate tags, ignore limits and respect other conditions", () => {
+    const items = [item("a", { tags: ["a", "a"] }), item("both", { tags: ["a", "b"] }), item("b", { tags: ["b"] })]
+    const state = filters({ tags: ["a"], tagMatch: "all", query: { limit: 1 } })
+    const facets = archiveFacets(items, state)
+    assert.equal(facets.count("a"), 2)
+    assert.equal(facets.count("b"), 1)
+    assert.equal(archiveFacets(items, { ...state, tagMatch: "any" }).count("b"), 3)
+    assert.deepEqual(facets.popular, ["a", "b"])
+    assert.equal(tagSearchKey("  #HaRdWaRe  "), "hardware")
+    assert.equal(archiveFacets(items, { ...state, authors: ["missing"] }).count("a"), 0)
+})
+test("atomic apply changes page only on edits and clear preserves sorting", () => {
+    const state = reducer(undefined, actions.setAppliedFilters(filters({ tagMatch: "all", page: 3, query: { sort: "latest" } })))
+    assert.equal(reducer(state, actions.applyArchiveFilters(state)).page, 3)
+    const changed = reducer(state, actions.applyArchiveFilters({ ...state, tags: ["a"] }))
+    assert.equal(changed.page, 1)
+    const cleared = reducer(changed, actions.clearAppliedFilters())
+    assert.equal(cleared.query.sort, "latest")
+    assert.equal(cleared.tagMatch, "all")
+})
+
+test("UTC year bounds, missing dates and author OR combine with tag AND", () => {
+    const items = [item("utc", { tags: ["a", "b"], publishDate: "2023-12-31T23:30:00-02:00", authors: [{ name: "One" }, { name: "Two" }] }), item("missing", { publishDate: null }), item("old", { tags: ["a", "b"], publishDate: "2023-01-01" })]
+    const result = archiveResults(items, filters({ tags: ["a", "b"], tagMatch: "all", authors: ["Missing", "Two"], years: { start: 2024, end: 2024 } }))
+    assert.deepEqual(result.matches.map(item => item.id), ["utc"])
+    assert.equal(result.matches[0].authors.length, 2)
+    assert.equal(archiveResults(items, filters()).total, 3)
+    assert.equal(archiveResults(items, filters({ years: { start: 2025, end: 2020 } })).total, 0)
+    assert.deepEqual(getYearsFromItems(items).sort(), [2023, 2024])
+})
+
+test("row tag shortcuts toggle selection, preserve other filters, and reset page", () => {
+    for (const tagMatch of ["all", "any"]) {
+        const state = reducer(undefined, actions.setAppliedFilters(filters({ tags: ["a"], tagMatch, page: 3, authors: ["Author"], query: { sort: "latest", hasCode: true } })))
+        const removed = reducer(state, actions.toggleAppliedTag("a"))
+        assert.deepEqual(removed.tags, [])
+        assert.equal(removed.tagMatch, "all")
+        assert.equal(removed.page, 1)
+        assert.deepEqual(removed.authors, state.authors)
+        assert.deepEqual(removed.query, state.query)
+        const next = reducer(state, actions.toggleAppliedTag("b"))
+        assert.deepEqual(next.tags, ["a", "b"])
+        const remaining = reducer(next, actions.toggleAppliedTag("a"))
+        assert.deepEqual(remaining.tags, ["b"])
+        assert.equal(remaining.tagMatch, tagMatch)
+        assert.equal(next.tagMatch, tagMatch)
+        assert.equal(next.page, 1)
+        assert.deepEqual(next.authors, state.authors)
+        assert.deepEqual(next.query, state.query)
+    }
+    const fresh = reducer(undefined, actions.toggleAppliedTag("  stored spelling  "))
+    assert.equal(fresh.tagMatch, "all")
+    assert.deepEqual(fresh.tags, ["  stored spelling  "])
+})
+
+const { archiveTagUsage, topProjectTags } = modules.load("src/utils/archiveTags.ts")
+test("item tags show the five most used across the complete archive with stable ties", () => {
+    const tags = ["rare", "b", "a", "common", "c", "d", "common"]
+    const items = [item("one", { tags }), item("two", { tags: ["common", "common", "a"] }), item("three", { tags: null })]
+    const usage = archiveTagUsage(items)
+    assert.equal(usage.get("common"), 2)
+    assert.deepEqual(topProjectTags(tags, usage), ["a", "common", "b", "c", "d"])
+    assert.deepEqual(tags, ["rare", "b", "a", "common", "c", "d", "common"])
+    assert.deepEqual(topProjectTags(null, usage), [])
+    assert.deepEqual(topProjectTags([null, "", "  ", " stored "], usage), [" stored "])
+    assert.deepEqual(topProjectTags(["rare", "a"], usage), ["a", "rare"])
 })

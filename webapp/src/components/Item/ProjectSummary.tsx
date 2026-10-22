@@ -1,24 +1,28 @@
 import type { MouseEventHandler } from "react"
 import type { IArchiveItem } from "@/src/types"
+import { topProjectTags } from "@/src/utils/archiveTags"
 import { ProjectPreview } from "./ProjectPreview"
-import { projectAuthors, projectDate, projectTags, projectText } from "./projectPresentation"
+import { projectAuthors, projectDate, projectText } from "./projectPresentation"
 
 interface ProjectSummaryProps {
     item: IArchiveItem
     projectHref: string
     onProjectClick?: MouseEventHandler<HTMLAnchorElement>
     className?: string
+    onTagClick?: (tag: string) => void
+    selectedTags?: string[]
+    tagUsage: ReadonlyMap<string, number>
 }
 
 /** Routing and any interception of the normal link belong to the caller. */
 export function ProjectSummary({
-    item, projectHref, onProjectClick, className = "",
+    item, projectHref, onProjectClick, className = "", onTagClick, selectedTags = [], tagUsage,
 }: ProjectSummaryProps) {
     const title = projectText(item.title) || "Untitled project"
     const description = projectText(item.description)
     const authors = projectAuthors(item.authors)
     const date = projectDate(item.publishDate)
-    const tags = projectTags(item.tags)
+    const tags = topProjectTags(item.tags, tagUsage)
 
     return (
         <article className={`project-summary ${className}`}>
@@ -41,8 +45,13 @@ export function ProjectSummary({
                     <div className="project-summary__footer">
                         {tags.length > 0 && (
                             <ul className="project-tags" aria-label="Project tags">
-                                {tags.slice(0, 2).map(tag => <li key={tag}>#{tag}</li>)}
-                                {tags.length > 2 && <li>+{tags.length - 2} more</li>}
+                                {tags.map(tag => {
+                                    return <li key={tag}>{onTagClick ? (
+                                        <button type="button" className="project-tags__filter"
+                                            aria-label={`Filter by tag: ${projectText(tag)}`} aria-pressed={selectedTags.includes(tag)}
+                                            onClick={() => onTagClick(tag)}>#{projectText(tag)}</button>
+                                    ) : <>#{projectText(tag)}</>}</li>
+                                })}
                             </ul>
                         )}
                         <a className="project-summary__action" href={projectHref}

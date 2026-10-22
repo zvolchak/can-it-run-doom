@@ -23,6 +23,7 @@ export function archiveFilters(query: ParsedUrlQuery) {
     const number = (key: string) => Number(queryText(query[key])) || null
     const page = Number(queryText(query.page))
     return {
+        tagMatch: (["all", "any"].includes(queryText(query.tagMatch)) ? queryText(query.tagMatch) : queryValues(query.tag).length ? "any" : "all") as "all" | "any",
         tags: queryValues(query.tag), authors: queryValues(query.author), ids: queryValues(query.id),
         searchString: queryText(query.search),
         years: { start: number("yearstart"), end: number("yearend") },
@@ -40,6 +41,7 @@ export function archiveQuery(current: ParsedUrlQuery, filters: IFiltersStoreStat
     }
     set("search", filters.searchString)
     set("tag", filters.tags?.join(","))
+    set("tagMatch", filters.tags?.length ? filters.tagMatch || "any" : undefined)
     set("author", filters.authors?.join(","))
     set("id", filters.ids?.join(","))
     set("yearstart", filters.years?.start)

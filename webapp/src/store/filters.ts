@@ -47,10 +47,23 @@ export const appliedFiltersSlice = createSlice({
     reducers: {
         // URL hydration must preserve the requested page; user edits reset it.
         setAppliedFilters: (state, action) => ({ ...state, ...action.payload }),
-        clearAppliedFilters: () => initFiltersStoreState(),
+        clearAppliedFilters: (state) => ({ ...initFiltersStoreState(), query: { sort: state.query?.sort } }),
+        toggleAppliedTag: (state, action) => {
+            state.tags = state.tags.includes(action.payload)
+                ? state.tags.filter(tag => tag !== action.payload)
+                : [...state.tags, action.payload]
+            if (!state.tags.length) state.tagMatch = "all"
+            state.page = 1
+        },
+        applyArchiveFilters: (state, action) => {
+            const next = { ...action.payload, page: state.page }
+            resetPageIfChanged(next, { ...state, page: 1 }, { ...next, page: 1 })
+            return next
+        },
         setAppliedTags: (state, action) => {
             resetPageIfChanged(state, state.tags, action.payload || [])
             reducers.setTags(state, action || [])
+            if (!state.tags.length) state.tagMatch = "all"
         },
         
         setAppliedAuthors: (state, action) => {
@@ -98,6 +111,8 @@ export const {
 
 
 export const { 
+    toggleAppliedTag,
+    applyArchiveFilters,
     setAppliedFilters,
     clearAppliedFilters,
     setAppliedTags,

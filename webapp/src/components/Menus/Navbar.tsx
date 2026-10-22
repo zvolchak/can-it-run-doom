@@ -30,6 +30,7 @@ export const Navbar = () => {
     const settings: ISettingsStoreState = useSelector((state: RootState) => state.settings)
 
     useEffect(() => {
+        if (router.pathname === "/" || router.pathname === "/entries") return
         dispatch(setAppliedTags([]))
         dispatch(setAppliedAuthors([]))
         dispatch(setAppliedYears(null))

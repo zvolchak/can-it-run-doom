@@ -174,7 +174,7 @@ export function getAuthorsFromItems (items: IArchiveItem[]) {
 export function getYearsFromItems(items: IArchiveItem[]) {
     return Array.from(
         new Set(items.filter(item => !!item.publishDate).map(
-            item => new Date(item.publishDate).getFullYear()).filter(Number.isFinite))
+            item => new Date(item.publishDate).getUTCFullYear()).filter(Number.isFinite))
     ).reverse()
 } // getYearsFromItems
 
@@ -183,7 +183,7 @@ export function findMinYear(archiveItems: IArchiveItem[]): number | null {
     if (archiveItems.length === 0) return null;
 
     return archiveItems.reduce((minYear, item) => {
-        const itemYear = new Date(item.publishDate).getFullYear();
+        const itemYear = new Date(item.publishDate).getUTCFullYear();
         return itemYear < minYear ? itemYear : minYear;
     }, Infinity);
 } // findMinYear

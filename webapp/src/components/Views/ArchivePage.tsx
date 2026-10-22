@@ -1,14 +1,15 @@
+import { useArchiveUrl } from "./useArchiveUrl"
 import Head from "next/head"
-import { useEffect, useMemo } from "react"
+import { useEffect } from "react"
 import { useRouter } from "next/router"
 import { useDispatch, useSelector } from "react-redux"
 import type { IArchiveItem } from "@/src/types"
 import {
     setItems, setTotalSize, setAvailableAuthors, setAvailableTags, setAvailableYears,
-    setAppliedFilters, isFilterApplied,
+    isFilterApplied,
 } from "@/src/store"
 import { getAuthorsFromItems, getTagsFromItems, getYearsFromItems } from "@/src/utils"
-import { archiveFilters, archiveHref, archiveQueryKey, queryText, queryValues, withoutProject } from "@/src/utils/projectNavigation"
+import { archiveHref, queryText, queryValues, withoutProject } from "@/src/utils/projectNavigation"
 import { ProjectNavigation } from "../Containers/ProjectNavigation"
 import { ProjectDetails } from "../Item/ProjectDetails"
 import { projectText } from "../Item/projectPresentation"
@@ -25,8 +26,7 @@ export function ArchivePage({ items, totalSize }: ArchivePageProps) {
     const router = useRouter()
     const dispatch = useDispatch()
     const filtered = useSelector(isFilterApplied)
-    const queryKey = archiveQueryKey(router.query)
-    const filters = useMemo(() => archiveFilters(JSON.parse(queryKey)), [queryKey])
+    useArchiveUrl()
 
     useEffect(() => {
         dispatch(setItems(items))
@@ -36,10 +36,6 @@ export function ArchivePage({ items, totalSize }: ArchivePageProps) {
         dispatch(setAvailableYears(getYearsFromItems(items)))
     }, [dispatch, items, totalSize])
 
-    useEffect(() => {
-        if (!router.isReady) return
-        dispatch(setAppliedFilters(filters))
-    }, [dispatch, filters, router.isReady])
 
     const ids = queryValues(router.query.id)
     const hasProject = router.query.project !== undefined

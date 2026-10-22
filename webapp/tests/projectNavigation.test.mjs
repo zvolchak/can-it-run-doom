@@ -28,7 +28,7 @@ test("opening a project captures Redux changes instead of stale URL filters", ()
         searchString: "Neural", tags: ["machine-learning"], authors: ["Dani Valevski"],
         years: { start: 2020, end: 2025 }, page: 2,
     }))
-    assert.deepEqual(query, { search: "Neural", tag: "machine-learning", page: "2", author: "Dani Valevski", yearstart: "2020", yearend: "2025" })
+    assert.deepEqual(query, { search: "Neural", tag: "machine-learning", tagMatch: "any", page: "2", author: "Dani Valevski", yearstart: "2020", yearend: "2025" })
 })
 
 test("cleared filters disappear while unrelated and repeated query parameters survive", () => {
@@ -90,4 +90,12 @@ test("repeated advanced options normalize to scalar values for existing filters"
     const parsed = archiveFilters({ levelCompleted: ["true", "false"], sort: ["latest", "oldest"] })
     assert.equal(parsed.query.levelCompleted, "true")
     assert.equal(parsed.query.sort, "latest")
+})
+
+test("tag modes preserve old OR URLs and round trip explicit All", () => {
+    for (const tagMatch of [undefined, "unknown", "any"]) assert.equal(archiveFilters({ tag: ["one", "two"], tagMatch }).tagMatch, "any")
+    assert.equal(archiveFilters({}).tagMatch, "all")
+    const query = archiveQuery({}, filters({ tags: ["one", "two"], tagMatch: "all" }))
+    assert.equal(archiveFilters(query).tagMatch, "all")
+    assert.equal(archiveQuery(query, filters()).tagMatch, undefined)
 })
