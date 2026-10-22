@@ -1,5 +1,6 @@
 import type { ParsedUrlQuery } from "querystring"
-import type { IFiltersStoreState } from "@/src/types"
+import { SortOption, type IFilterQuery, type IFiltersStoreState } from "../types/FiltersType"
+import { normalizeSearch } from "./archiveSearch"
 
 export function queryValues(value: string | string[] | undefined): string[] {
     return (Array.isArray(value) ? value : value ? [value] : [])
@@ -19,16 +20,23 @@ export function archiveQueryKey(query: ParsedUrlQuery): string {
     return JSON.stringify(Object.fromEntries(Object.entries(withoutProject(query)).sort(([a], [b]) => a.localeCompare(b))))
 }
 
-export function archiveFilters(query: ParsedUrlQuery) {
+export function archiveFilters(query: ParsedUrlQuery): IFiltersStoreState {
     const number = (key: string) => Number(queryText(query[key])) || null
     const page = Number(queryText(query.page))
+    const options: IFilterQuery = {}
+    for (const name of ["levelCompleted", "hasCode", "authorsPerItem", "limit"] as const) {
+        const value = queryText(query[name])
+        if (value) options[name] = value
+    }
+    const sort = queryText(query.sort)
+    if (Object.values(SortOption).includes(sort as SortOption)) options.sort = sort as SortOption
     return {
         tagMatch: (["all", "any"].includes(queryText(query.tagMatch)) ? queryText(query.tagMatch) : queryValues(query.tag).length ? "any" : "all") as "all" | "any",
         tags: queryValues(query.tag), authors: queryValues(query.author), ids: queryValues(query.id),
-        searchString: queryText(query.search),
+        searchString: normalizeSearch(queryText(query.search)),
         years: { start: number("yearstart"), end: number("yearend") },
         page: Number.isInteger(page) && page > 0 ? page : 1,
-        query: Object.fromEntries(Object.entries(withoutProject(query)).map(([key, value]) => [key, queryText(value)])),
+        query: options,
     }
 }
 
@@ -59,4 +67,34 @@ export function archiveHref(pathname: string, query: ParsedUrlQuery): string {
         for (const part of Array.isArray(value) ? value : value === undefined ? [] : [value]) params.append(key, part)
     }
     return `${pathname}${params.size ? `?${params}` : ""}`
+}
+
+
+export interface ProjectLocationEvents {
+    on(event: "beforeHistoryChange" | "routeChangeComplete", listener: () => void): void
+    off(event: "beforeHistoryChange" | "routeChangeComplete", listener: () => void): void
+}
+
+/** Next changes browser history before its concurrent React render commits.
+ * Notify after that write, including when the router render is still pending. */
+export function subscribeProjectLocation(events: ProjectLocationEvents, target: Pick<Window, "addEventListener" | "removeEventListener">, notify: () => void) {
+    let active = true
+    const changed = () => queueMicrotask(() => { if (active) notify() })
+    events.on("beforeHistoryChange", changed)
+    events.on("routeChangeComplete", changed)
+    target.addEventListener("popstate", changed)
+    return () => {
+        active = false
+        events.off("beforeHistoryChange", changed)
+        events.off("routeChangeComplete", changed)
+        target.removeEventListener("popstate", changed)
+    }
+}
+
+export function projectLocationQuery(href: string): ParsedUrlQuery {
+    const params = new URL(href, "http://archive.local").searchParams
+    return Object.fromEntries([...new Set(params.keys())].map(key => {
+        const values = params.getAll(key)
+        return [key, values.length > 1 ? values : values[0]]
+    }))
 }

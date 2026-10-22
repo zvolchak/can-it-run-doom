@@ -3,80 +3,6 @@ import type { IArchiveItem } from "@/src/types"
 import { SortOption } from "../types/FiltersType"
 
 
-export const findTag = (tags: Array<any>, wordToFind: string) => {
-  if (!wordToFind.startsWith('#')) return undefined
-
-  return tags?.find((tag: any) => {
-    return tag?.replace('#', '').startsWith(wordToFind.replace('#', ''))
-  })
-} // findTag
-
-
-export const findAuthor = (authors: Array<any>, wordToFind: string) => {
-  return authors?.find((author: any) => {
-    return typeof author?.name === "string" && author.name.toLowerCase().startsWith(wordToFind.toLowerCase())
-  })
-} // findAuthor
-
-
-export const findDate = (date: string, wordToFind: string) => {
-  return dayjs(date).format('MMM D YYYY').split(' ').find((day: any) => {
-    return day.toLowerCase() === (wordToFind.toLowerCase())
-  })
-} // findDate
-
-
-export const findWordInTitle = (title: string, wordToFind: string) => {
-  return title?.split(' ').find((word: string) => {
-    return word.toLowerCase().startsWith(wordToFind.toLowerCase())
-  })
-} // findWordInTitle
-
-
-export const onSearch = (items: Array<any>, searching: string): any => {
-  if (!searching || searching === "")
-    return items
-
-  let keywords = searching?.split(' ').filter(i => !!i)
-  const isSearchByTag = searching.startsWith('#')
-  if (isSearchByTag)
-    keywords = extractTagsFromString(searching)
-
-  if (keywords.length === 0) {
-    return items
-  }
-
-  items = items.filter((item: any) => {
-    if (isSearchByTag) {
-      const foundTags = (item.tags || []).filter((i: any) => keywords.includes(`#${i}`))
-      return foundTags.length === keywords.length
-    }
-
-    return keywords.find((word: string) => {
-      const foundTag = findTag(item.tags, word)
-      if (foundTag) {
-        return foundTag
-      }
-
-      const foundAuthor = findAuthor(item.authors, word)
-      if (foundAuthor)
-        return foundAuthor
-
-      const foundTitleWord = findWordInTitle(item.title, word)
-      if (foundTitleWord)
-        return foundTitleWord
-
-      const foundId = `${item.id}`.startsWith(word)
-      if (foundId)
-        return word
-
-      return findDate(item.publishDate, word)
-    }) // keywords
-  }) as any // items
-  return items
-} // onSearch
-
-
 export function flattenByTagAndSort(itemsToFilter: IArchiveItem[]): string[] {
     if (!itemsToFilter)
         return []
@@ -155,11 +81,6 @@ export function proxyToArray(target: any): any {
 export function proxyToObject(target: any): any {
     return JSON.parse(JSON.stringify(target))
 } // proxyToObject
-
-
-export function extractTagsFromString (target: string) {
-    return target.split('#').filter(i => i.trim()).map(i => `#${i}`.trim())
-} // extractTagsFromString
 
 
 export function getAuthorsFromItems (items: IArchiveItem[]) {

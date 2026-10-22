@@ -2,7 +2,7 @@ import assert from "node:assert/strict"
 import { after, test } from "node:test"
 import { compileModules } from "./compileModules.mjs"
 
-const compiled = compileModules(["src/components/Item/projectPresentation.ts"])
+const compiled = compileModules(["src/utils/projectDate.ts", "src/components/Item/projectPresentation.ts"])
 const { externalProjectUrl, projectAuthors, projectSources, projectDate } = compiled.load("src/components/Item/projectPresentation.ts")
 after(() => compiled.dispose())
 

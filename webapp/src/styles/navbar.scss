@@ -1,0 +1,105 @@
+.site-navbar {
+  position: relative;
+  z-index: 20;
+  display: grid;
+  grid-template-areas: "brand search add";
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  min-height: 64px;
+  padding: 0.5rem clamp(1rem, 3vw, 2rem);
+  background: #1f2937;
+
+  &--with-home {
+    grid-template-areas: "brand home search add";
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
+  }
+
+  &__brand {
+    grid-area: brand;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    min-height: 44px;
+  }
+
+  &__home, &__add {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 0.5rem;
+    white-space: nowrap;
+  }
+
+  &__home { grid-area: home; justify-self: start; }
+  &__add { grid-area: add; justify-self: end; }
+  &__search { grid-area: search; max-width: 34rem; }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid #f58c7b;
+    outline-offset: 3px;
+  }
+
+  @media (min-width: 640px) {
+    position: sticky;
+    top: 0;
+  }
+
+  @media (max-width: 639px) {
+    grid-template-areas: "brand home add";
+    grid-template-columns: auto minmax(0, 1fr) auto;
+
+    &--with-search {
+      grid-template-areas: "brand home add" "search search search";
+    }
+
+    &__search { max-width: none; }
+  }
+}
+
+.archive-search {
+  min-width: 0;
+  width: 100%;
+
+  &__form {
+    display: flex;
+    align-items: stretch;
+    width: 100%;
+    min-width: 0;
+
+    &:focus-within {
+      outline: 2px solid #f58c7b;
+      outline-offset: 2px;
+    }
+
+    input {
+      flex: 1;
+      min-width: 0;
+      width: 100%;
+      min-height: 44px;
+      border: 1px solid #68685f;
+      padding: 0.5rem 0.75rem;
+      background: #fff;
+      color: #181818;
+      font: inherit;
+      outline: none;
+    }
+
+    button {
+      display: inline-flex;
+      flex: 0 0 44px;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      border: 1px solid #68685f;
+      border-left: 0;
+      background: #252523;
+      color: #fff;
+
+      &:hover { background: #45453d; }
+      &:focus-visible { outline-offset: -3px; }
+    }
+  }
+}

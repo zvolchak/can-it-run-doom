@@ -1,9 +1,9 @@
-import { createContext, useContext, useEffect, useRef, type MouseEvent, type ReactNode } from "react"
+import { createContext, useContext, useEffect, useRef, useCallback, useSyncExternalStore, type MouseEvent, type ReactNode } from "react"
 import { useRouter } from "next/router"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/src/store"
 import type { IArchiveItem } from "@/src/types"
-import { archiveHref, archiveQuery, archiveQueryKey, queryText, withoutProject } from "@/src/utils/projectNavigation"
+import { archiveHref, archiveQuery, archiveQueryKey, queryText, withoutProject, projectLocationQuery, subscribeProjectLocation } from "@/src/utils/projectNavigation"
 import { ItemPreviewModal } from "./ItemPreviewModal"
 
 type ProjectLink = { href: string, onClick: (event: MouseEvent<HTMLAnchorElement>) => void }
@@ -26,13 +26,18 @@ interface OpenedProject {
 
 export function ProjectNavigation({ items, children }: { items: IArchiveItem[], children: ReactNode }) {
     const router = useRouter()
+    const subscribe = useCallback((notify: () => void) => subscribeProjectLocation(router.events, window, notify), [router.events])
+    const location = useSyncExternalStore(subscribe,
+        () => window.location.pathname + window.location.search,
+        () => router.asPath)
+    const currentQuery = projectLocationQuery(location)
     const filters = useSelector((state: RootState) => state.appliedFilters)
     const opened = useRef<OpenedProject | null>(null)
     const navigating = useRef(false)
     const closing = useRef(false)
-    const projectId = router.query.project === undefined ? null : queryText(router.query.project)
+    const projectId = currentQuery.project === undefined ? null : queryText(currentQuery.project)
     const previousProject = useRef(projectId)
-    const browseKey = archiveQueryKey(router.query)
+    const browseKey = archiveQueryKey(currentQuery)
 
     useEffect(() => {
         closing.current = false
@@ -50,7 +55,7 @@ export function ProjectNavigation({ items, children }: { items: IArchiveItem[], 
     }, [projectId, browseKey, router.pathname])
 
     function projectLink(id: string): ProjectLink {
-        const baseQuery = archiveQuery(router.query, filters)
+        const baseQuery = archiveQuery(currentQuery, filters)
         const href = archiveHref(router.pathname, { ...baseQuery, project: id })
         return {
             href,
@@ -67,7 +72,7 @@ export function ProjectNavigation({ items, children }: { items: IArchiveItem[], 
                 async function navigate() {
                     // Commit Redux-only changes to the existing history entry first,
                     // so Back returns to the same filters rather than an old URL.
-                    if (archiveQueryKey(router.query) !== origin.browseKey) {
+                    if (archiveQueryKey(currentQuery) !== origin.browseKey) {
                         const replaced = await router.replace(archiveHref(origin.pathname, baseQuery), undefined, { shallow: true, scroll: false })
                         if (!replaced) return
                     }
@@ -91,7 +96,7 @@ export function ProjectNavigation({ items, children }: { items: IArchiveItem[], 
             router.back()
         } else {
             // A copied/refreshed URL has no known archive history entry to return to.
-            const href = archiveHref(router.pathname, withoutProject(router.query))
+            const href = archiveHref(router.pathname, withoutProject(currentQuery))
             void router.replace(href, undefined, { shallow: true, scroll: false })
                 .catch(error => { if (!error?.cancelled) window.location.assign(href) })
                 .finally(() => { closing.current = false })

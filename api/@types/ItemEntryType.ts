@@ -1,4 +1,4 @@
-import { DocumentReference, Timestamp, WriteBatch } from "firebase/firestore"
+import { DocumentReference, Timestamp } from "firebase/firestore"
 
 export interface ISource {
     name: string
@@ -36,6 +36,8 @@ export interface IArchiveItem {
     editHistory?: string[]
 
     createdAt?: Timestamp // when was this entry created
+    publicationState?: "unpublished" | "published" // server-owned provenance
+    addedAt?: Timestamp | null // first public archive publication; server-owned
     updatedAt?: Timestamp
     submittedBy?: string
 }
@@ -47,7 +49,6 @@ export interface ISubmissionsStoreState {
 
 
 export interface IEntryBatch {
-    batch: WriteBatch
     id: string
     entry: IArchiveItem
     docRef: DocumentReference<IArchiveItem>

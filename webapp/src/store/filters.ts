@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit"
 import { initFiltersStoreState, type IFiltersStoreState } from "../types/FiltersType"
 import type { RootState } from "./index"
+import { normalizeSearch } from "../utils/archiveSearch"
 import { activeArchiveFilters } from "../utils/archiveResults"
 
 const initialState: IFiltersStoreState = initFiltersStoreState()
@@ -77,8 +78,9 @@ export const appliedFiltersSlice = createSlice({
         },
 
         setAppliedSearch: (state, action) => {
-            resetPageIfChanged(state, state.searchString || "", action.payload || "")
-            state.searchString = action.payload || ""
+            const search = normalizeSearch(action.payload)
+            resetPageIfChanged(state, state.searchString || "", search)
+            state.searchString = search
         },
 
         setAppliedId: (state, action) => {

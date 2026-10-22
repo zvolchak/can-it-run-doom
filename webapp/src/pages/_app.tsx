@@ -1,12 +1,13 @@
 import "@/src/styles/globals.scss"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useRouter } from "next/router"
 import { Provider, useDispatch, useSelector, } from "react-redux"
 import Cookies from "js-cookie"
 import { v4 as uuidv4 } from 'uuid'
 import { 
     RootState,
-    store,
+    createAppStore,
+    type AppStore,
     setUserSessionId,
     setUserData,
 } from "@/src/store"
@@ -16,6 +17,7 @@ import {
     Footer,
 } from "@/src/components"
 import { IUserAuth } from "../types"
+import { archiveFilters } from "../utils/projectNavigation"
 import { IsSessionExpired } from "../utils"
 
 
@@ -69,10 +71,13 @@ function PageViewAnalytics() {
 
 
 function App({ Component, pageProps }) {
+    const router = useRouter()
+    const store = useRef<AppStore | null>(null)
+    if (!store.current) store.current = createAppStore(pageProps.initialArchiveFilters || archiveFilters(router.query))
     const getLayout = Component.getLayout || ((page) => page)
 
     return (
-        <Provider store={store}>
+        <Provider store={store.current}>
             <UserSessionInit />
             <PageViewAnalytics />
             <Navbar />

@@ -1,23 +1,10 @@
 import assert from "node:assert/strict"
 import { after, test } from "node:test"
-import { mkdtempSync, readFileSync, writeFileSync, rmSync } from "node:fs"
-import { tmpdir } from "node:os"
-import { dirname, join } from "node:path"
-import { fileURLToPath } from "node:url"
-import { createRequire } from "node:module"
-import ts from "typescript"
+import { compileModules } from "./compileModules.mjs"
 
-// Node 20 cannot execute TypeScript directly. Compile this dependency-free
-// utility with the project's existing compiler; no additional runner is needed.
-const directory = mkdtempSync(join(tmpdir(), "doom-project-navigation-"))
-const compiled = join(directory, "projectNavigation.cjs")
-const source = readFileSync(join(dirname(fileURLToPath(import.meta.url)), "../src/utils/projectNavigation.ts"), "utf8")
-writeFileSync(compiled, ts.transpileModule(source, {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020 },
-}).outputText)
-const loadCompiled = createRequire(import.meta.url)
-const { archiveFilters, archiveHref, archiveQuery, archiveQueryKey, queryValues } = loadCompiled(compiled)
-after(() => rmSync(directory, { recursive: true, force: true }))
+const modules = compileModules(["src/utils/projectNavigation.ts", "src/utils/archiveSearch.ts", "src/utils/projectDate.ts", "src/types/FiltersType.ts"])
+const { archiveFilters, archiveHref, archiveQuery, archiveQueryKey, queryValues, projectLocationQuery, subscribeProjectLocation } = modules.load("src/utils/projectNavigation.ts")
+after(modules.dispose)
 
 const filters = overrides => ({
     tags: [], authors: [], ids: [], years: null, searchString: "", page: 1, query: {}, ...overrides,
@@ -98,4 +85,58 @@ test("tag modes preserve old OR URLs and round trip explicit All", () => {
     const query = archiveQuery({}, filters({ tags: ["one", "two"], tagMatch: "all" }))
     assert.equal(archiveFilters(query).tagMatch, "all")
     assert.equal(archiveQuery(query, filters()).tagMatch, undefined)
+})
+
+test("added sort round-trips independently of original-project sorts and clean recent URLs", () => {
+    for (const sort of ["added", "latest", "oldest"]) {
+        const query = archiveQuery({}, filters({ query: { sort } }))
+        assert.equal(archiveFilters(query).query.sort, sort)
+        assert.equal(archiveHref("/entries", query), `/entries?page=1&sort=${sort}`)
+    }
+    assert.equal(archiveHref("/entries", { sort: "added", page: "1" }), "/entries?sort=added&page=1")
+})
+
+
+test("project location publishes the URL write before the router render completes", async () => {
+    const listeners = new Map()
+    const popListeners = new Map()
+    const events = {
+        on: (event, listener) => listeners.set(event, listener),
+        off: (event, listener) => { if (listeners.get(event) === listener) listeners.delete(event) },
+    }
+    const target = {
+        addEventListener: (event, listener) => popListeners.set(event, listener),
+        removeEventListener: (event, listener) => { if (popListeners.get(event) === listener) popListeners.delete(event) },
+    }
+    let location = "/?page=2"
+    const snapshots = []
+    const dispose = subscribeProjectLocation(events, target, () => snapshots.push(projectLocationQuery(location)))
+    // beforeHistoryChange fires before Next writes history, and routeChangeComplete
+    // may never arrive if its concurrent render is delayed. Observe the new URL.
+    listeners.get("beforeHistoryChange")()
+    location = "/?page=2&project=1062"
+    assert.equal(snapshots.length, 0)
+    await Promise.resolve()
+    assert.deepEqual(snapshots, [{ page: "2", project: "1062" }])
+    // Back/Forward have the same source of truth, without waiting for Next.
+    location = "/?page=2"
+    popListeners.get("popstate")()
+    await Promise.resolve()
+    assert.deepEqual(snapshots.at(-1), { page: "2" })
+    location = "/?page=2&project=1062"
+    popListeners.get("popstate")()
+    await Promise.resolve()
+    assert.equal(snapshots.at(-1).project, "1062")
+    listeners.get("beforeHistoryChange")()
+    dispose()
+    await Promise.resolve()
+    assert.equal(snapshots.length, 3)
+    assert.equal(listeners.size, 0)
+    assert.equal(popListeners.size, 0)
+})
+
+test("browser-location queries keep repeated filters and decoded project IDs", () => {
+    assert.deepEqual(projectLocationQuery("/entries?tag=one&tag=two&page=3&project=100%25+doom"), {
+        tag: ["one", "two"], page: "3", project: "100% doom",
+    })
 })

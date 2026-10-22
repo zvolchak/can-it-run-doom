@@ -14,7 +14,7 @@ import { Pagination } from "../Pagination"
 import { FiltersMenu } from "../Menus/FiltersMenu"
 import { useProjectLink } from "../Containers/ProjectNavigation"
 
-export function ArchiveDataView({ items }: { items: IArchiveItem[] }) {
+export function ArchiveDataView({ items, now }: { items: IArchiveItem[], now: number }) {
     const dispatch = useDispatch()
     const projectLink = useProjectLink()
     const filters = useSelector((state: RootState) => state.appliedFilters)
@@ -77,6 +77,7 @@ export function ArchiveDataView({ items }: { items: IArchiveItem[] }) {
                         Sort by
                         <select value={filters.query?.sort || ""} onChange={event => changeSort(event.target.value)}>
                             <option value="">Archive order</option>
+                            <option value="added">Recently added to archive</option>
                             <option value="latest">Newest first</option>
                             <option value="oldest">Oldest first</option>
                         </select>
@@ -106,7 +107,7 @@ export function ArchiveDataView({ items }: { items: IArchiveItem[] }) {
                         const link = projectLink(item.id)
                         return (
                             <li key={item.id || item.title}>
-                                <ProjectSummary item={item} projectHref={link.href} onProjectClick={link.onClick}
+                                <ProjectSummary item={item} now={now} projectHref={link.href} onProjectClick={link.onClick}
                                     tagUsage={tagUsage} selectedTags={filters.tags} onTagClick={tag => dispatch(toggleAppliedTag(tag))} />
                             </li>
                         )

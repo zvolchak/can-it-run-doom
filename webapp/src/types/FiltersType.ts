@@ -5,6 +5,7 @@ export interface IRange {
 
 
 export enum SortOption {
+    added = "added",
     latest = "latest",
     oldest = "oldest",
 }

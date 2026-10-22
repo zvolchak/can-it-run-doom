@@ -3,7 +3,7 @@ import { after, test } from "node:test"
 import { compileModules } from "./compileModules.mjs"
 
 const modules = compileModules([
-    "src/utils/archiveTags.ts", "src/utils/archiveFacets.ts", "src/utils/archiveResults.ts", "src/utils/itemsFilters.ts", "src/types/FiltersType.ts", "src/store/filters.ts",
+    "src/utils/additionDates.ts", "src/utils/archiveTags.ts", "src/utils/archiveFacets.ts", "src/utils/archiveSearch.ts", "src/utils/projectDate.ts", "src/utils/archiveResults.ts", "src/utils/itemsFilters.ts", "src/types/FiltersType.ts", "src/store/filters.ts",
 ])
 after(modules.dispose)
 const { archiveResults, activeArchiveFilters, paginationPages } = modules.load("src/utils/archiveResults.ts")
@@ -100,7 +100,7 @@ test("URL hydration preserves a requested page; editing a filter resets it", () 
     assert.equal(reducer(hydrated, actions.setQuery({ sort: "oldest" })).page, 1)
 })
 
-test("reapplying unchanged search text does not reset pagination on input blur", () => {
+test("reapplying unchanged search text preserves pagination", () => {
     const state = reducer(undefined, actions.setAppliedFilters(filters({ page: 3, searchString: "Camera" })))
     assert.equal(reducer(state, actions.setAppliedSearch("Camera")).page, 3)
     assert.equal(reducer(state, actions.setAppliedTags([])).page, 3)

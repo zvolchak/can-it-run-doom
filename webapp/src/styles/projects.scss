@@ -138,17 +138,14 @@
   }
 }
 
-.project-preview-trigger,
-.project-mini-trigger {
+.project-preview-trigger {
   &:focus-visible {
     outline: 2px solid #f58c7b;
     outline-offset: 3px;
   }
 }
 
-.project-mini-trigger:hover {
-  color: inherit;
-}
+
 
 .project-standalone {
   max-width: 58rem;

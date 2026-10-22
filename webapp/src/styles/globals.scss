@@ -3,8 +3,10 @@
 @use "./buttons";
 @use "./footer";
 @use "./bars";
+@use "./navbar";
 @use "./containers";
 @use "./archive";
+@use "./recent";
 
 @tailwind base;
 @tailwind components;

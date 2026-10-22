@@ -4,7 +4,11 @@ import { topProjectTags } from "@/src/utils/archiveTags"
 import { ProjectPreview } from "./ProjectPreview"
 import { projectAuthors, projectDate, projectText } from "./projectPresentation"
 
+import { JustAddedBadge } from "./JustAddedBadge"
+import { archiveAdditionDate, isJustAdded } from "@/src/utils/additionDates"
+
 interface ProjectSummaryProps {
+    now?: number
     item: IArchiveItem
     projectHref: string
     onProjectClick?: MouseEventHandler<HTMLAnchorElement>
@@ -16,7 +20,7 @@ interface ProjectSummaryProps {
 
 /** Routing and any interception of the normal link belong to the caller. */
 export function ProjectSummary({
-    item, projectHref, onProjectClick, className = "", onTagClick, selectedTags = [], tagUsage,
+    item, now, projectHref, onProjectClick, className = "", onTagClick, selectedTags = [], tagUsage,
 }: ProjectSummaryProps) {
     const title = projectText(item.title) || "Untitled project"
     const description = projectText(item.description)
@@ -30,6 +34,7 @@ export function ProjectSummary({
                 <ProjectPreview src={item.previewImg} title={title} />
                 <div className="project-summary__body">
                     <h2 className="project-summary__title">{title}</h2>
+                    {now !== undefined && isJustAdded(archiveAdditionDate(item), now) && <JustAddedBadge />}
                     {(authors.length > 0 || date) && (
                         <div className="project-summary__metadata">
                             {authors.length > 0 && (

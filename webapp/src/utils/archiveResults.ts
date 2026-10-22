@@ -1,8 +1,11 @@
 import type { IArchiveItem, IFiltersStoreState } from "@/src/types"
 import {
-    onSearch, filterById, filterItemsByTags, filterItemsByAuthors, sortDscOrAsc,
+    filterById, filterItemsByTags, filterItemsByAuthors, sortDscOrAsc,
     filterItemsByLvlCompleted, filterBySourceCode, filterByAuthorsPerItem,
 } from "./itemsFilters"
+
+import { searchArchive } from "./archiveSearch"
+import { orderByAddition } from "./additionDates"
 
 export function filterBoolean(value: unknown): boolean | null {
     if (value === null || value === undefined || value === "") return null
@@ -20,7 +23,7 @@ export function archiveResults(items: IArchiveItem[], filters: IFiltersStoreStat
     const completed = filterBoolean(options.levelCompleted)
     const hasCode = filterBoolean(options.hasCode)
     if (completed !== null) matches = filterItemsByLvlCompleted(matches, completed)
-    if (filters.searchString?.trim()) matches = onSearch(matches, filters.searchString.trim())
+    if (filters.searchString?.trim()) matches = searchArchive(matches, filters.searchString)
     if (filters.authors?.length) matches = filterItemsByAuthors(matches, filters.authors)
     if (filters.ids?.length) matches = filterById(matches, filters.ids)
     if (filters.tags?.length) {
@@ -42,7 +45,8 @@ export function archiveResults(items: IArchiveItem[], filters: IFiltersStoreStat
             return year >= start && year <= end
         })
     }
-    if (options.sort) matches = sortDscOrAsc(matches, options.sort)
+    if (options.sort === "added") matches = orderByAddition(matches)
+    else if (options.sort) matches = sortDscOrAsc(matches, options.sort)
     const limit = positiveNumber(options.limit)
     if (limit) matches = matches.slice(0, limit)
 
