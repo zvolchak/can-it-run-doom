@@ -1,32 +1,35 @@
-import { useEffect, useRef, useState, type FocusEvent } from "react"
+import { Fragment, useEffect, useRef, useState, type FocusEvent } from "react"
 import type { IArchiveItem } from "@/src/types"
 import { archiveAdditionDate, isJustAdded } from "@/src/utils/additionDates"
 import { useProjectLink } from "./Containers/ProjectNavigation"
-import { JustAddedBadge } from "./Item/JustAddedBadge"
 import { ProjectPreview } from "./Item/ProjectPreview"
+import { ProjectAuthorLink } from "./Item/ProjectAuthorLink"
 import { projectAuthors, projectDate, projectText } from "./Item/projectPresentation"
 
 function RecentCard({ item, now }: { item: IArchiveItem, now: number }) {
     const link = useProjectLink()(item.id)
     const title = projectText(item.title) || "Untitled project"
     const authors = projectAuthors(item.authors)
-    const year = projectDate(item.publishDate)
+    const date = projectDate(item.publishDate)
     const additionDate = archiveAdditionDate(item)
     const added = projectDate(additionDate)
     return (
         <article className="recent-card">
-            <ProjectPreview src={item.previewImg} title={title} />
+            <ProjectPreview src={item.previewImg} title={title} justAdded={isJustAdded(additionDate, now)} />
             <div className="recent-card__body">
                 <div className="recent-card__addition">
                     {added && <time dateTime={additionDate}>Added {added.label}</time>}
-                    {isJustAdded(additionDate, now) && <JustAddedBadge />}
                 </div>
                 <h3>{title}</h3>
+                {date && <p className="recent-card__date"><time dateTime={date.dateTime}>{date.label}</time></p>}
                 {authors.length > 0 && <p className="recent-card__authors">
-                    {authors.slice(0, 2).map(author => author.name).join(", ")}
+                    By{" "}{authors.slice(0, 2).map((author, index) => (
+                        <Fragment key={author.key}>
+                            {index > 0 && ", "}<ProjectAuthorLink author={author} />
+                        </Fragment>
+                    ))}
                     {authors.length > 2 && ` +${authors.length - 2} more`}
                 </p>}
-                {year && <p className="recent-card__year">Project year: <time dateTime={year.dateTime}>{year.year}</time></p>}
                 <a className="recent-card__action" href={link.href} onClick={link.onClick} aria-label={`View project: ${title}`}>
                     View project <span aria-hidden="true">→</span>
                 </a>

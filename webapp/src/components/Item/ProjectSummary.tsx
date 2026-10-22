@@ -1,10 +1,10 @@
-import type { MouseEventHandler } from "react"
+import { Fragment, type MouseEventHandler } from "react"
 import type { IArchiveItem } from "@/src/types"
 import { topProjectTags } from "@/src/utils/archiveTags"
 import { ProjectPreview } from "./ProjectPreview"
+import { ProjectAuthorLink } from "./ProjectAuthorLink"
 import { projectAuthors, projectDate, projectText } from "./projectPresentation"
 
-import { JustAddedBadge } from "./JustAddedBadge"
 import { archiveAdditionDate, isJustAdded } from "@/src/utils/additionDates"
 
 interface ProjectSummaryProps {
@@ -31,19 +31,23 @@ export function ProjectSummary({
     return (
         <article className={`project-summary ${className}`}>
             <div className="project-summary__layout">
-                <ProjectPreview src={item.previewImg} title={title} />
+                <ProjectPreview src={item.previewImg} title={title}
+                    justAdded={now !== undefined && isJustAdded(archiveAdditionDate(item), now)} />
                 <div className="project-summary__body">
                     <h2 className="project-summary__title">{title}</h2>
-                    {now !== undefined && isJustAdded(archiveAdditionDate(item), now) && <JustAddedBadge />}
                     {(authors.length > 0 || date) && (
                         <div className="project-summary__metadata">
+                            {date && <time dateTime={date.dateTime}>{date.label}</time>}
                             {authors.length > 0 && (
                                 <span>
-                                    {authors.slice(0, 2).map(author => author.name).join(", ")}
+                                    By{" "}{authors.slice(0, 2).map((author, index) => (
+                                        <Fragment key={author.key}>
+                                            {index > 0 && ", "}<ProjectAuthorLink author={author} />
+                                        </Fragment>
+                                    ))}
                                     {authors.length > 2 && <span> +{authors.length - 2} more</span>}
                                 </span>
                             )}
-                            {date && <time dateTime={date.dateTime}>{date.year}</time>}
                         </div>
                     )}
                     {description && <p className="project-summary__description">{description}</p>}
