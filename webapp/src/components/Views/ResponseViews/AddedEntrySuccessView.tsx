@@ -27,7 +27,7 @@ export function AddedEntrySuccessView({
     }
 
     return (
-        <div className={`flex flex-col h-screen items-center justify-center ${className} text-white`}>
+        <div className={`flex flex-col h-screen items-center justify-center ${className} text-foreground`}>
             <p className="title">
                 Thank you for your submission!
             </p>

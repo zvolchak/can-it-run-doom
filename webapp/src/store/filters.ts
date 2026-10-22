@@ -1,8 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { IFiltersStoreState, initFiltersStoreState } from "@/src/types"
-import { RootState } from "@/src/store"
+import { initFiltersStoreState, type IFiltersStoreState } from "../types/FiltersType"
+import type { RootState } from "./index"
+import { normalizeSearch } from "../utils/archiveSearch"
+import { activeArchiveFilters } from "../utils/archiveResults"
 
 const initialState: IFiltersStoreState = initFiltersStoreState()
+
+function resetPageIfChanged(state, previous, next) {
+    if (JSON.stringify(previous) !== JSON.stringify(next)) state.page = 1
+}
 
 
 const reducers = {
@@ -40,21 +46,45 @@ export const appliedFiltersSlice = createSlice({
     name: "appliedFilters",
     initialState,
     reducers: {
+        // URL hydration must preserve the requested page; user edits reset it.
+        setAppliedFilters: (state, action) => ({ ...state, ...action.payload }),
+        clearAppliedFilters: (state) => ({ ...initFiltersStoreState(), query: { sort: state.query?.sort } }),
+        toggleAppliedTag: (state, action) => {
+            state.tags = state.tags.includes(action.payload)
+                ? state.tags.filter(tag => tag !== action.payload)
+                : [...state.tags, action.payload]
+            if (!state.tags.length) state.tagMatch = "all"
+            state.page = 1
+        },
+        applyArchiveFilters: (state, action) => {
+            const next = { ...action.payload, page: state.page }
+            resetPageIfChanged(next, { ...state, page: 1 }, { ...next, page: 1 })
+            return next
+        },
         setAppliedTags: (state, action) => {
+            resetPageIfChanged(state, state.tags, action.payload || [])
             reducers.setTags(state, action || [])
+            if (!state.tags.length) state.tagMatch = "all"
         },
         
         setAppliedAuthors: (state, action) => {
+            resetPageIfChanged(state, state.authors, action.payload || [])
             reducers.setAuthors(state, action || [])
         },
 
-        setAppliedYears: (state, action) => reducers.setYears(state, action),
+        setAppliedYears: (state, action) => {
+            resetPageIfChanged(state, state.years, action.payload)
+            reducers.setYears(state, action)
+        },
 
         setAppliedSearch: (state, action) => {
-            state.searchString = action.payload || ""
+            const search = normalizeSearch(action.payload)
+            resetPageIfChanged(state, state.searchString || "", search)
+            state.searchString = search
         },
 
         setAppliedId: (state, action) => {
+            resetPageIfChanged(state, state.ids, action.payload || [])
             state.ids = action.payload || []
         },
 
@@ -63,6 +93,7 @@ export const appliedFiltersSlice = createSlice({
         },
 
         setQuery: (state, action) => {
+            resetPageIfChanged(state, state.query, action.payload)
             state.query = action.payload
         },
     }
@@ -70,13 +101,7 @@ export const appliedFiltersSlice = createSlice({
 
 
 export const isFilterApplied = (state: RootState) => {
-    return state.appliedFilters.authors?.length > 0 ||
-            state.appliedFilters.tags?.length > 0 ||
-            state.appliedFilters.years?.start !== null || 
-            state.appliedFilters.years?.end !== null || 
-            state.appliedFilters.searchString?.length > 0 ||
-            state.appliedFilters.ids?.length > 0 ||
-            state.appliedFilters.query?.levelCompleted
+    return activeArchiveFilters(state.appliedFilters).length > 0
 }
 
 
@@ -88,6 +113,10 @@ export const {
 
 
 export const { 
+    toggleAppliedTag,
+    applyArchiveFilters,
+    setAppliedFilters,
+    clearAppliedFilters,
     setAppliedTags,
     setAppliedYears,
     setAppliedAuthors,

@@ -1,17 +1,3 @@
-$doomColorDanger: #ad0101;
-$doomColorDangerDarker: #960101;
-$doomColorAccent: #4E6A2B;
-$doomColorAccentDarker: #3F561F;
-$doomColorDangerDark: #3d0106;
-$doomColorSecondary: #FCFD85;
-$doomColorAlt: #373737;
-$doomColorAltDark: #414141;
-$colorSlate: #cbd5e1;
-
-$doomTextShadowDanger: 3px 3px 0px $doomColorDangerDark;
-$doomBoxShadowDanger: 0px 5px 10px -3px $doomColorDanger;
-$doomShadowShort: 2px 2px #242424;
-
 .doom-font {
   letter-spacing: 2px;
   word-spacing: 2px;
@@ -19,95 +5,19 @@ $doomShadowShort: 2px 2px #242424;
   font-variant: small-caps;
 }
 
-.doom-bg-alt {
-    background: $doomColorAlt
-}
-
-.doom-color-danger {
-  color: $doomColorDanger;
-}
-
-.doom-color-secondary {
-  color: $doomColorSecondary;
-}
-
-.doom-color-slate {
-  color: $colorSlate;
-}
-
-.doom-text-shadow-danger {
-  text-shadow: $doomTextShadowDanger;
-}
-
-.doom-bg-dark {
-  background-color: $doomColorAltDark;
-}
-
-.doom-text-shadow-light {
-  text-shadow: none;
-  filter: drop-shadow($doomShadowShort);
-}
-
-.doom-gradient-light {
-  background: linear-gradient(to top,#B5B5B5 40%,#818181 65%);
-  background-clip: border-box;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-
 .doom-select {
-  background-color: transparent;
-  border: 1px solid $colorSlate;
-  color: $colorSlate;
-}
-
-input, textarea {
-    border: none;
-    border-radius: 0px;
-    color: black !important;
-    caret-color: $doomColorDanger;
-    padding: 5px !important;
-
-    &:focus {
-        outline: none;
-        box-shadow: $doomBoxShadowDanger;
-    }
+  padding: 0.5rem;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: 600;
 }
 
 .loading-icon {
-    width: 100px;
-    image-rendering: crisp-edges;
-    // animation: flipAnimation 1s steps(2) infinite;
+  width: 100px;
+  image-rendering: crisp-edges;
 }
 
 @keyframes flipAnimation {
-    0%, 49.99% {
-        background-image: url("/icons/doom-guy-look-left.png")
-    }
-    50%, 100% {
-        background-image: url("/icons/doom-guy-look-right.png")
-    }
-}
-
-
-.doom-select {
-    background-color: $doomColorAccentDarker;
-    color: white;
-    padding: 0.5rem;
-    border-radius: 0.375rem;
-    border: 1px solid $doomColorAccentDarker;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.2s ease-in-out;
-
-    &:hover {
-        background-color: $doomColorAccentDarker;
-        color: $doomColorSecondary;
-    }
-
-    &:focus {
-        outline: none;
-        box-shadow: 0 0 0 2px $doomColorDangerDark;
-    }
+  0%, 49.99% { background-image: url("/icons/doom-guy-look-left.png"); }
+  50%, 100% { background-image: url("/icons/doom-guy-look-right.png"); }
 }

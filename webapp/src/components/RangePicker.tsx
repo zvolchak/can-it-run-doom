@@ -24,7 +24,7 @@ export const RangePicker: React.FC<FilterProps> = ({
     maxValue = null,
 }) => {
   return (
-    <div className={`p-4 doom-color-slate ${className}`}>
+    <div className={`p-4 text-muted ${className}`}>
         <div className="flex space-x-4" role="group">
             <div className="w-full">
                 <label htmlFor="min_value_select" className="block text-sm font-medium  mb-1">
@@ -35,7 +35,7 @@ export const RangePicker: React.FC<FilterProps> = ({
                     id="min_value_select"
                     name="min_value"
                     value={minValue ? minValue : minOptions[0].value}
-                    onClick={(e: any) => onMinChange(e.target.value)}
+                    onChange={(e: any) => onMinChange(e.target.value)}
                 >
                 {minOptions.map((option) => (
                     <option key={option.value} value={option.value}>

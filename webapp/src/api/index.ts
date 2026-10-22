@@ -10,11 +10,14 @@ import {
 } from "@/src/utils"
 
 
+import { retrievePublishedArchive } from "@/src/utils/archiveRetrieval"
+
 const apiClient = axios.create({
     baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
     withCredentials: true,
 })
 
+console.debug("API Client initialized with base URL:", apiClient.defaults.baseURL)
 
 apiClient.interceptors.response.use(response => response, async error => {
         const urlIgnoreRegex = /^\/user\/(login|signup)(\/.*)?$/
@@ -52,11 +55,15 @@ export async function fetchDoomPorts({ status = "published" } = {}):
     const query = `?status=${status}`
 
     try {
+        if (status === "published") return await retrievePublishedArchive(async cursor => {
+            const response = await apiClient.get("/doom_ports", { params: { status, pagination: "cursor", perPage: 200, ...(cursor ? { cursor } : {}) } })
+            return response.data
+        })
         const url = `/doom_ports${query}`
         const response = await apiClient.get(url)
         return response?.data?.items || []
     } catch {
-        return []
+        return null
     }
 } // getArchiveData
 

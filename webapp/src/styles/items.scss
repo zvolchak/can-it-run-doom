@@ -1,21 +1,17 @@
-@use './doom.scss' as doom;
-
-a {
-  transition: 0.1s linear;
-
-  &:hover {
-    color: doom.$doomColorDanger;
-    cursor: pointer;
-  }
-}
-
+@use './projects.scss';
 
 .item {
-  background-color: doom.$doomColorAlt;
-  border: 1px solid gray;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
   transition: 0.2s ease-in-out;
   width: 100%;
   z-index: 1;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 
   @media (min-width: 640px) { // sm
     width: 100%;
@@ -30,7 +26,7 @@ a {
   }
 
   &:hover {
-    box-shadow: doom.$doomBoxShadowDanger;
+    box-shadow: 0 0.25rem 1rem var(--color-shadow);
   }
 
 //   &:hover > .item-container > .image-preview {
@@ -44,8 +40,7 @@ a {
 .title {
   font-size: 24px;
   font-weight: 600;
-  color: doom.$colorSlate;
-  // -webkit-text-stroke: 1.4px #410001;
+  color: var(--color-text);
 }
 
 .description {
@@ -54,16 +49,20 @@ a {
   font-variant: normal;
   letter-spacing: 2px;
   line-height: 18px;
-  color: doom.$colorSlate;
+  color: var(--color-text);
   transition: 0.1s ease-in, 0.4s ease-out;
 }
 
 
 .doom-card {
   overflow-y: auto;
-  // background-color: doom.$doomColorAlt;
-  // border: 1px solid gray;
   transition: 0.1s ease-in, 0.4s ease-out;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
 
 

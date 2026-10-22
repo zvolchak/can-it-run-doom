@@ -78,7 +78,7 @@ export function BtnUserAccount({
             <button 
                 className="
                     flex flex-row gap-2 items-center 
-                    doom-btn doom-color-secondary doom-text-shadow-danger
+                    doom-btn
                 "
                 onClick={() => onBtnClicked()}
             >
@@ -93,16 +93,16 @@ export function BtnUserAccount({
                     absolute 
                     ${direction === "top" ? "left-0 bottom-4 mb-2" : "right-0 top-4 mt-2"}
                     w-48 
-                    bg-gray-700 
-                    border border-gray-600 rounded-md 
+                    bg-surface
+                    border border-line rounded-md
                     shadow-lg`
                 }>
-                    <ul className="py-1 text-white">
+                    <ul className="py-1 text-foreground">
                         {listItems.map((item, index) => (
                             <li key={index}>
                                 <Link 
                                     href={item.href}
-                                    className="block px-4 py-2 hover:bg-gray-700"
+                                    className="block px-4 py-2 hover:bg-raised"
                                     onClick={() => { onBtnClicked(); item.onClick?.(); }}
                                 >
                                     {item.title}

@@ -1,24 +1,20 @@
 import { Request, Response, Router } from "express"
 import { 
-    writeBatch,
+    runTransaction,
+    Timestamp,
     doc,
-    getDoc,
 } from "firebase/firestore"
 import { 
     IEntryAddedResponse, 
     EItemStatus,
     IArchiveItem, 
 } from "../../@types"
-import {
-    createEntriesBatch,
-} from "./addEntries"
+import { publicationFields } from "../../utils/publication"
 import {
     fbDb,
     EUserRole,
     getEntriesByStatus,
     COLLECTION_NAME,
-    statusStringToEnum,
-    IsLocalhost,
 } from "../../utils"
 import {
     authenticate,
@@ -98,47 +94,37 @@ async function sendDiscordNotification(entry: IArchiveItem): Promise<boolean> {
  /* Add entries to the doomPorts collection if approved and change its status in the 
   * doomPorts-Incoming collection. 
   */
-async function approveEntries(entries: any[], status: EItemStatus) {
-    const result = { success: [], failed: [] }
-    const batch = writeBatch(fbDb)
-    const toUploadBatch = writeBatch(fbDb)
+export async function approveEntries(entries: { reviewId: string, entry: IArchiveItem }[], status: EItemStatus) {
+    const result: IEntryAddedResponse = { success: [], failed: [] }
     await Promise.all(entries.map(async ({ reviewId, entry }) => {
         try {
-            // The last value in the history list is the id of the entry that has been
-            // reviewed in the doomPorts-Incoming collection. Use it to find the doc item
-            // that is requested to be reviewed.
-            // const reviewedEntryId = entry.editHistory[entry.editHistory.length - 1]
-            const reviewedEntryId = reviewId
-            delete entry.editHistory
-
-            const toUpload = await createEntriesBatch(entry, toUploadBatch, null)
-            result.success.push(toUpload)
-
-            const ref = doc(fbDb, COLLECTION_NAME.doomPortsIncoming, reviewedEntryId)
-            const updateParams = {
-                status,
-            }
-            batch.update(ref, updateParams)
-            const prodEntry = (await getDoc(toUpload.docRef)).data()
-
-            const uploadedUpdateParams =  { 
-                editHistory: [ ...(prodEntry?.editHistory || []), reviewedEntryId]
-            }
-            toUploadBatch.update(
-                toUpload.docRef, 
-                uploadedUpdateParams
-            )
+            const incomingRef = doc(fbDb, COLLECTION_NAME.doomPortsIncoming, reviewId)
+            const { published, publicRef } = await runTransaction(fbDb, async transaction => {
+                const incoming = await transaction.get(incomingRef)
+                if (!incoming.exists() || incoming.data().status !== EItemStatus.pending)
+                    throw new Error("Submission is no longer pending")
+                const publicRef = doc(fbDb, COLLECTION_NAME.doomPorts, incoming.data().id || reviewId)
+                // Read the target before any write, so concurrent approvals/edits retry.
+                const current = await transaction.get(publicRef)
+                const approved = status === EItemStatus.approved || status === EItemStatus.published
+                let fields: IArchiveItem = { ...incoming.data(), status, id: publicRef.id }
+                if (approved) {
+                    fields = publicationFields({ ...incoming.data(), id: publicRef.id, status: EItemStatus.published },
+                        current.exists() ? current.data() : null, Timestamp.now())
+                    fields.editHistory = [...new Set([...(current.data()?.editHistory || []), reviewId])]
+                    transaction.set(publicRef, fields)
+                }
+                transaction.update(incomingRef, { status, updatedAt: Timestamp.now() })
+                return { published: fields, publicRef }
+            })
+            result.success.push({ id: reviewId, entry: published, docRef: publicRef, file: null })
         } catch (error) {
             console.error(error)
             result.failed.push(entry)
         }
-
     }))
-    
-    await batch.commit()
-    await toUploadBatch.commit()
     return result
-} // approveEntries
+}
 
 
 async function fetchIdsInChunks(ids: any[]) {
@@ -163,24 +149,19 @@ router.post(
     (req: Request, res: Response, next) => authorizeByRole(req, res, EUserRole.Moderator, next),
     async (req: Request, res: Response
 ): Promise<any> => {
-    let { ids, status } = req.body as any
-    status = statusStringToEnum(status)
-    const user = req.user
+    const { ids, status } = req.body as any
+
+    if (![EItemStatus.approved, EItemStatus.published, EItemStatus.rejected].includes(status))
+        return res.status(400).json({ error: "Invalid review status" })
 
     if (!ids || ids?.length === 0)
         return res.status(400).json({ error: "Missing list of ids!" })
 
     try {
         const snapshots = await fetchIdsInChunks(ids)
-        const entries = await Promise.all(snapshots.map(async doc => {
-            const data = doc.data()
-            data.status = EItemStatus.published
-            data.id = data.id || doc.id
-            if (data.editHistory === null || data.editHistory === undefined)
-                data.editHistory = []
-
-            data.editHistory.push(doc.id)
-            return { reviewId: doc.id, entry: data }
+        const entries = snapshots.map(snapshot => ({
+            reviewId: snapshot.id,
+            entry: { ...snapshot.data(), id: snapshot.data().id || snapshot.id },
         }))
 
         let result: IEntryAddedResponse = null

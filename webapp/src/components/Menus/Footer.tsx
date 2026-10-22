@@ -14,7 +14,7 @@ export function Footer({ className = "", }: IFooterProps) {
     const discordUrl = process.env.NEXT_PUBLIC_DISCORD_URL || "https://discord.com"
 
     return (
-        <footer className={`footer relative bottom-0 py-6 mt-12 ${className}`}>
+        <footer className={`footer py-6 ${className}`}>
             <div className="w-full mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
                 {/* Left Section */}
                 {/* <div className="flex flex-col text-center md:text-left">

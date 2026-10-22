@@ -28,12 +28,12 @@ export function Modal({
             `}
         >
             <div 
-                className="bg-black bg-opacity-75 absolute w-full h-full z-10" 
+                className="bg-backdrop absolute w-full h-full z-10"
                 onClick={onClose}
             />
             <div className={`
                 flex flex-col items-center 
-                text-white 
+                text-foreground
                 m-0 p-0
                 overflow-y-auto 
                 z-20
@@ -44,7 +44,7 @@ export function Modal({
                             <button
                 onClick={onClose}
                 className="
-                flex flex-row gap self-end doom-btn-primary doom-btn mr-2 z-20
+                flex flex-row gap self-end doom-btn mr-2 z-20
                 absolute
                 sm:top-10 sm:right-10
                 top-0

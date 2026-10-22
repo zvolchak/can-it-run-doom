@@ -67,7 +67,7 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
 
 
     return (
-        <div className="w-full p-4 border border-gray-500 rounded-sm">
+        <div className="w-full p-4 border border-control rounded-sm">
             {inputs.map((item, index) => (
                 <div key={index}
                     className="flex flex-row gap-2 my-2 items-stretch"
@@ -100,7 +100,7 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
                         {   inputs?.length > 1 &&
                             <button 
                                 type="button"
-                                className="doom-color-danger pt-4"
+                                className="text-danger pt-4"
                                 onClick={() => removeInputField(index)}
                             >
                                 <FaRegWindowClose size="20px" />
@@ -114,7 +114,7 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
                 <button
                     type="button"
                     onClick={() => addInputField(1)}
-                    className="flex gap-2 doom-btn-primary mt-2 w-24"
+                    className="flex gap-2 doom-btn-secondary mt-2 w-24"
                 >
                     <MdAdd size={19} />
                     <p>

@@ -44,13 +44,13 @@ export const Tag = ({
     } // onTagClick
 
     return (
-        <p
-            key={`tag_${text}_${Math.random()}`}
-            className={`py-1 px-2 tag bg-gray-700 text-[14px] h-7 ${className}`}
+        <button type="button"
+            aria-pressed={!!appliedFilters[queryKey]?.includes(text.replace("#", ""))}
+            className={`py-1 px-2 tag text-[14px] h-7 ${className}`}
             onClick={(e) => onTagClick(e, text.replace("#", ""))}
         >
             {text}
-        </p>
+        </button>
     )
 }
 

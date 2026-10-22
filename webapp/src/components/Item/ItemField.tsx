@@ -27,7 +27,6 @@ export const ItemField = ({
             onMouseOver={() => setHoveredItem(label)}
             onMouseOut={() => setHoveredItem(null)}
             href={url}
-            target="_blank"
             rel="noopener noreferrer"
         >
             {label}

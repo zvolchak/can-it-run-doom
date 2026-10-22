@@ -79,12 +79,12 @@ export function LoginView({
     return (
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className={`w-1/3 text-gray-300 ${className}`}
+                className={`w-1/3 text-foreground ${className}`}
             >
                 <h2 className="title text-center mb-4">Login</h2>
 
                 {errorMessage && (
-                    <p className="text-red-500 text-center mb-4">
+                    <p className="text-danger text-center mb-4">
                         {errorMessage}
                     </p>
                 )}
@@ -103,12 +103,12 @@ export function LoginView({
                             },
                         })}
                         className="
-                            w-full p-2 text-white border border-gray-500 
-                            rounded-md focus:outline-none
+                            w-full p-2 text-foreground border border-control
+                            rounded-md
                         "
                     />
                     {errors.email && (
-                        <p className="text-red-500 text-sm mt-1">
+                        <p className="text-danger text-sm mt-1">
                             {errors.email.message}
                         </p>
                     )}
@@ -124,12 +124,12 @@ export function LoginView({
                             required: 'Password is required'
                         })}
                         className="
-                            w-full p-2 text-white border border-gray-500 
-                            rounded-md focus:outline-none
+                            w-full p-2 text-foreground border border-control
+                            rounded-md
                         "
                     />
                     {errors.password && (
-                        <p className="text-red-500 text-sm mt-1">
+                        <p className="text-danger text-sm mt-1">
                             {errors.password.message}
                         </p>
                     )}

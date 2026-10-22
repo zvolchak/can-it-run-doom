@@ -50,7 +50,6 @@ export default function AddEntryPage() {
     return (
         <div className={`
                 flex sm:flex-row flex-col
-                min-h-screen 
                 w-full 
                 items-start 
                 justify-center
@@ -61,7 +60,7 @@ export default function AddEntryPage() {
             <div className="flex flex-row">
                 <AddEntryView 
                     className={`
-                        doom-bg-alt 
+                        bg-surface
                         w-3/6 sm:max-w-[55rem] sm:min-w-[45rem]
                         ${!isLoading() ? "p-4" : ""}
                     `}

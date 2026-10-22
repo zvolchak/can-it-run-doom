@@ -15,12 +15,12 @@ interface IReviewEntriesPageProps {
 
 export default function ReviewEntriesPage({ items }: IReviewEntriesPageProps) {
     return (
-        <div className="min-h-screen flex flex-col items-center">
+        <div className="flex flex-col items-center">
             { items?.length > 0 &&
                 <ReviewEntriesView items={items} />
             }
             { items?.length === 0 &&
-                <div className="text-white text-3xl mt-40">
+                <div className="text-foreground text-3xl mt-40">
                     No items to review.
                 </div>
             }

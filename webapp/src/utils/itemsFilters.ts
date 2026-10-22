@@ -1,79 +1,6 @@
 import dayjs from 'dayjs'
-import { IArchiveItem, SortOption } from "@/src/types"
-
-
-export const findTag = (tags: Array<any>, wordToFind: string) => {
-  if (!wordToFind.startsWith('#')) return undefined
-
-  return tags?.find((tag: any) => {
-    return tag?.replace('#', '').startsWith(wordToFind.replace('#', ''))
-  })
-} // findTag
-
-
-export const findAuthor = (authors: Array<any>, wordToFind: string) => {
-  return authors?.find((author: any) => {
-    return author?.name.toLowerCase().startsWith(wordToFind.toLowerCase())
-  })
-} // findAuthor
-
-
-export const findDate = (date: string, wordToFind: string) => {
-  return dayjs(date).format('MMM D YYYY').split(' ').find((day: any) => {
-    return day.toLowerCase() === (wordToFind.toLowerCase())
-  })
-} // findDate
-
-
-export const findWordInTitle = (title: string, wordToFind: string) => {
-  return title?.split(' ').find((word: string) => {
-    return word.toLowerCase().startsWith(wordToFind.toLowerCase())
-  })
-} // findWordInTitle
-
-
-export const onSearch = (items: Array<any>, searching: string): any => {
-  if (!searching || searching === "")
-    return items
-
-  let keywords = searching?.split(' ').filter(i => !!i)
-  const isSearchByTag = searching.startsWith('#')
-  if (isSearchByTag)
-    keywords = extractTagsFromString(searching)
-
-  if (keywords.length === 0) {
-    return items
-  }
-
-  items = items.filter((item: any) => {
-    if (isSearchByTag) {
-      const foundTags = item.tags.filter((i: any) => keywords.includes(`#${i}`))
-      return foundTags.length === keywords.length
-    }
-
-    return keywords.find((word: string) => {
-      const foundTag = findTag(item.tags, word)
-      if (foundTag) {
-        return foundTag
-      }
-
-      const foundAuthor = findAuthor(item.authors, word)
-      if (foundAuthor)
-        return foundAuthor
-
-      const foundTitleWord = findWordInTitle(item.title, word)
-      if (foundTitleWord)
-        return foundTitleWord
-
-      const foundId = `${item.id}`.startsWith(word)
-      if (foundId)
-        return word
-
-      return findDate(item.publishDate, word)
-    }) // keywords
-  }) as any // items
-  return items
-} // onSearch
+import type { IArchiveItem } from "@/src/types"
+import { SortOption } from "../types/FiltersType"
 
 
 export function flattenByTagAndSort(itemsToFilter: IArchiveItem[]): string[] {
@@ -99,11 +26,11 @@ export function filterItemsByTags(itemsToFilter: IArchiveItem[], query: string[]
 
     return itemsToFilter.filter(item => {
         const hasExcludedTag = query.some(q =>
-            q.startsWith('!') && item.tags.includes(q.slice(1))
+            q.startsWith('!') && (item.tags || []).includes(q.slice(1))
         )
 
         const hasIncludedTag = query.some(q =>
-            !q.startsWith('!') && item.tags.includes(q)
+            !q.startsWith('!') && (item.tags || []).includes(q)
         )
 
         return !hasExcludedTag && hasIncludedTag
@@ -121,7 +48,7 @@ export function filterItemsByAuthors(itemsToFilter: IArchiveItem[], query: strin
         return itemsToFilter
 
     return itemsToFilter.filter(item =>
-        item.authors.some(author => query.includes(author.name)))
+        (item.authors || []).some(author => query.includes(author?.name)))
 }
 
 
@@ -130,7 +57,7 @@ export function getTagsFromItems(itemsToFilter: IArchiveItem[]): string[] {
         return []
 
     const uniqueTags = Array.from(
-        new Set(itemsToFilter.flatMap(item => item.tags))
+        new Set(itemsToFilter.flatMap(item => item.tags || []).filter(tag => typeof tag === "string"))
     )
     return uniqueTags
 } // tagsInFilteredItems
@@ -156,24 +83,19 @@ export function proxyToObject(target: any): any {
 } // proxyToObject
 
 
-export function extractTagsFromString (target: string) {
-    return target.split('#').filter(i => i.trim()).map(i => `#${i}`.trim())
-} // extractTagsFromString
-
-
 export function getAuthorsFromItems (items: IArchiveItem[]) {
     if (!items)
         return []
 
-    return Array.from(new Set(items.flatMap((item) => item.authors.map((author) => author.name))))
+    return Array.from(new Set(items.flatMap(item => (item.authors || [])
+        .map(author => author?.name).filter(name => typeof name === "string" && name.trim()))))
 } // getAuthorsFromItems
 
 
 export function getYearsFromItems(items: IArchiveItem[]) {
     return Array.from(
-        new Set(items.flatMap(
-            (item) => new Date(item.publishDate).getFullYear())
-        )
+        new Set(items.filter(item => !!item.publishDate).map(
+            item => new Date(item.publishDate).getUTCFullYear()).filter(Number.isFinite))
     ).reverse()
 } // getYearsFromItems
 
@@ -182,7 +104,7 @@ export function findMinYear(archiveItems: IArchiveItem[]): number | null {
     if (archiveItems.length === 0) return null;
 
     return archiveItems.reduce((minYear, item) => {
-        const itemYear = new Date(item.publishDate).getFullYear();
+        const itemYear = new Date(item.publishDate).getUTCFullYear();
         return itemYear < minYear ? itemYear : minYear;
     }, Infinity);
 } // findMinYear
@@ -211,6 +133,6 @@ export function filterBySourceCode(items: IArchiveItem[], hasCode = true) {
 
 export function filterByAuthorsPerItem(items: IArchiveItem[], limit=1) {
     return items.filter((item: IArchiveItem) => {
-        return item?.authors.length > 1 && item.authors?.length <= limit
+        return item.authors?.length > 1 && item.authors.length <= limit
     })
 }

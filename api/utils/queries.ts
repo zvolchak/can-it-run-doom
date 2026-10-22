@@ -6,11 +6,12 @@ import {
     addDoc,
     updateDoc,
     doc,
-    setDoc,
     orderBy,
     documentId,
     limit as fbLimit,
     arrayUnion,
+    runTransaction,
+    startAfter,
 } from "firebase/firestore"
 import { 
     authorsCollection,
@@ -20,6 +21,7 @@ import {
     fbDb,
     fbStorage,
 } from "./firebaseApp"
+import { publicationFields } from "./publication"
 import { IAuthorDocument, IArchiveItem, EItemStatus, } from "../@types"
 
 
@@ -64,7 +66,7 @@ export async function getEntriesByStatus({
 
     const collection = status !== EItemStatus.pending 
         ? doomPortsCollection : doomPortsIncomingCollection
-    let q = query(
+    const q = query(
         collection,
         ...conditions
     )
@@ -114,42 +116,35 @@ export async function updateAuthor(id: string, entry: IAuthorDocument) {
 } // updateAuthor
 
 
+/** Every public writer reads persisted dates inside the same transaction. */
 export async function addDoomPort(newEntry: IArchiveItem) {
-    const data = { 
-        ...newEntry,
-        createdAt: Timestamp.now(), // UTC timezone
-        updatedAt: Timestamp.now(), // UTC timezone
-    }
-    // delete ID from explicitly adding it to the document, sinc doc id itself serves its purpose
-    delete data["id"]
-
-    if (!newEntry.id)
-        return await addDoc(doomPortsCollection, data)
-    else {
-        // add document using custom ID value to support legacy entry identification
-        const itemRef = doc(doomPortsCollection, newEntry.id)
-        return await setDoc(itemRef, data)
-    }
-} // addDoomPort
-
-
-export function updateDoomPortQuery(id: string, entry: IArchiveItem) {
-    const docRef = doc(fbDb, COLLECTION_NAME.doomPorts, id)
-    const fields: any = { 
-        ...entry,
-        updatedAt: Timestamp.now(), // UTC timezone
-    }
-    if (entry.editHistory)
-        fields.editHistory = arrayUnion(...entry.editHistory)
-
-    return { docRef, fields }
-} // updateDoomPortQuery
-
+    const ref = newEntry.id ? doc(doomPortsCollection, newEntry.id) : doc(doomPortsCollection)
+    await runTransaction(fbDb, async transaction => {
+        const snapshot = await transaction.get(ref)
+        transaction.set(ref, publicationFields(newEntry, snapshot.exists() ? snapshot.data() : null, Timestamp.now()))
+    })
+    return ref
+}
 
 export async function updateDoomPort(id: string, entry: IArchiveItem) {
-    const { docRef, fields } = updateDoomPortQuery(id, entry)
-    return await updateDoc(docRef, fields)
-} // updateDoomPort
+    const ref = doc(doomPortsCollection, id)
+    return runTransaction(fbDb, async transaction => {
+        const snapshot = await transaction.get(ref)
+        if (!snapshot.exists()) throw new Error("Entry not found")
+        const previous = snapshot.data()
+        const fields = publicationFields({ ...previous, ...entry }, previous, Timestamp.now())
+        if (entry.editHistory) fields.editHistory = arrayUnion(...entry.editHistory) as any
+        transaction.update(ref, fields)
+    })
+}
+
+/** Opt-in cursor path includes records missing updatedAt. Document IDs give a
+ * stable unique order and startAfter does not require the prior document to exist. */
+export async function getPublishedEntriesPage(pageSize: number, cursor?: string) {
+    return getDocs(query(doomPortsCollection,
+        where("status", "==", EItemStatus.published), orderBy(documentId()),
+        ...(cursor ? [startAfter(cursor)] : []), fbLimit(pageSize + 1)))
+}
 
 
 export async function getAllDoomPorts() {

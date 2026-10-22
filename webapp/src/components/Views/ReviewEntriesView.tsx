@@ -75,7 +75,6 @@ export function ReviewEntriesView({ items }: IMainPageProps) {
     return (
         <div className="">
             <div className="
-                min-h-screen
                 grid content-start justify-center gap-14 mt-5
                 sm:gap-6"
             >
@@ -108,7 +107,7 @@ export function ReviewEntriesView({ items }: IMainPageProps) {
                     </div>
                 </Modal>
 
-                <div className="flex flex-row text-white items-center gap-5">
+                <div className="flex flex-row text-foreground items-center gap-5">
                     <ActionDropdown 
                         emptyOption="Apply To All"
                         onChange={(e) => onDecisionSelected(allIds, e.target.value)}

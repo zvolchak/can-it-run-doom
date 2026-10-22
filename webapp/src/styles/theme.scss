@@ -1,0 +1,24 @@
+// Shared by component SCSS and Tailwind's semantic color utilities.
+:root {
+  color-scheme: dark;
+  --color-background: #191a17;
+  --color-surface: #272922;
+  --color-surface-raised: #30332a;
+  --color-text: #e6dec8;
+  --color-muted: #b7b09c;
+  --color-border: #484b3f;
+  --color-control-border: #7d806d;
+  --color-accent: #f0a36b;
+  --color-accent-hover: #ffc494;
+  --color-accent-subtle: #3a2d22;
+  --color-primary: #a82e27;
+  --color-primary-hover: #bd3b31;
+  --color-on-primary: #f6eedb;
+  --color-recent: #c3ad76;
+  --color-recent-surface: rgb(25 26 23 / 85%);
+  --color-success: #a8b878;
+  --color-danger: #f18f83;
+  --color-disabled: #8e907f;
+  --color-backdrop: #000b;
+  --color-shadow: #0006;
+}

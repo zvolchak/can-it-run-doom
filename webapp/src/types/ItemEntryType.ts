@@ -20,6 +20,8 @@ export interface IArchiveItem {
     sourcesUrl: ISource[]
     sourceCodeUrl: ISource[]
     isFirstLevelComplete: boolean
+    addedAt?: string | null // ISO UTC first-publication instant
+    createdAt?: string | null // ISO UTC legacy fallback for archive recency
     publishDate: string
     tags: string[]
     previewImg: string
@@ -32,11 +34,6 @@ export interface IUploadStatus {
 }
 
 
-export interface IItemCollection {
-    [key: string]: IArchiveItem[]
-}
-
-
 export interface ISubmissionsStoreState {
     items: IArchiveItem[]
     selected: IArchiveItem
@@ -44,5 +41,4 @@ export interface ISubmissionsStoreState {
     totalSize: number
     newEntryForm: IArchiveItem
     uploadStatus: IUploadStatus
-    collections: IItemCollection | null
 }

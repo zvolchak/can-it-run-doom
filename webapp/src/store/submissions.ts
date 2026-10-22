@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit"
-import { ISubmissionsStoreState, EProcessingState } from "@/src/types"
+import { type ISubmissionsStoreState, EProcessingState } from "../types/ItemEntryType"
 
 
 // const entryFormForTesting = {
@@ -37,7 +37,6 @@ const initialState: ISubmissionsStoreState = {
         tags: [],
         previewImg: ""
     },
-    collections: null
 }
 
 const submissionsSlice = createSlice({
@@ -69,9 +68,6 @@ const submissionsSlice = createSlice({
             state.selected = action.payload
         },
 
-        setCollection: (state, action) => {
-            state.collections = { ...state.collections, ...(action.payload as any) }
-        },
     }
 })
 
@@ -82,7 +78,6 @@ export const {
     setNewEntryForm,
     setUplaodStatus,
     selectItem,
-    setCollection,
 } = submissionsSlice.actions
 
 

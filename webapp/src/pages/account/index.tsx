@@ -16,7 +16,7 @@ export default function AccountPage() {
 
     
     return (
-        <div className="min-h-screen flex flex-col w-full justify-start text-center">
+        <div className="flex flex-col w-full justify-start text-center">
             { user?.email &&
             <>
                 <div className="mt-10">
@@ -45,7 +45,7 @@ export default function AccountPage() {
                     </div>
                 }
 
-                <div className="text-white mt-10">
+                <div className="text-foreground mt-10">
                 { user !== null && !user.isVerified &&
                     <div>
                         An email associated with this account has not been verified yet. To 

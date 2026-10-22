@@ -141,7 +141,7 @@ export function ImageUploaderInput({
             <label className="block mb-3">Preview Image</label>
 
             {imageError && (
-                <div className="doom-color-danger self-center mb-5">{imageError}</div>
+                <div className="text-danger self-center mb-5">{imageError}</div>
             )}
 
             <div className="flex flex-row items-center">

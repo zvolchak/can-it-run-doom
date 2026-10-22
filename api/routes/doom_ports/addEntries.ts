@@ -8,7 +8,7 @@ import {
     doc,
     DocumentReference,
     DocumentData,
-    WriteBatch,
+    runTransaction,
 } from "firebase/firestore"
 import { DecodedIdToken } from "firebase-admin/auth"
 import { 
@@ -26,6 +26,8 @@ import {
     doomPortsIncomingCollection,
     generateFirestoreId,
  } from "../../utils"
+
+import { publicationFields } from "../../utils/publication"
 
 const secrets = process.env
 
@@ -85,7 +87,7 @@ export async function downloadImgIntoArrayBuffer(fileUrl: string) {
             encoding: "7bit",
             size: fileBuffer.length
         }
-    } catch (error) {
+    } catch {
         console.error(`Error downloading image file "${fileUrl}:`)
         return null
     }
@@ -155,9 +157,8 @@ async function createGithubIssue(items: IArchiveItem[]) {
 } // createGithubIssue
 
 
-export async function createEntriesBatch(
+export async function createEntry(
     incomingEntry: IArchiveItem, 
-    batch: WriteBatch, 
     incomingFile
 ): Promise<IEntryBatch> {
     // Handle URL previewImg by downloading the file and converting it into an array buffer.
@@ -191,20 +192,18 @@ export async function createEntriesBatch(
             id: entryId,
             previewImg: fileName,
             submittedBy: null,
-            createdAt: Timestamp.now(),
-            updatedAt: Timestamp.now(),
         }
         const docId = incomingEntry.status !== EItemStatus.pending ? entryId : generateFirestoreId()
         docRef = doc(collection, docId)
-        // When id is set on the incoming entry - then it will be used as the final ID
-        // of the entry when it is approved. Otherwise, an undefined value is set to the
-        // entry that will break the batch.set operation. So need to clean it up.
-        // if (newEntry.id === undefined || newEntry.id === null)
-        //     delete newEntry.id
-
-        await batch.set(docRef, newEntry)
+        await runTransaction(fbDb, async transaction => {
+            const snapshot = await transaction.get(docRef)
+            const fields = publicationFields(newEntry, snapshot.exists() ? snapshot.data() : null, Timestamp.now())
+            // Incoming submissions never establish publication dates.
+            if (collection === doomPortsIncomingCollection) fields.addedAt = null
+            transaction.set(docRef, fields)
+            Object.assign(newEntry, fields)
+        })
         return { 
-            batch,
             id: docId,
             entry: newEntry,  
             docRef, 
@@ -214,7 +213,7 @@ export async function createEntriesBatch(
         console.error(error)
         throw Error("Failed to add entry")
     }
-} // createEntriesBatch
+} // createEntry
 
 
 export async function addEntries(
@@ -223,8 +222,6 @@ export async function addEntries(
     incomingFile
 ): Promise<IEntryAddedResponse> {
     const result = { success: [], failed: [] }
-    const batch = writeBatch(fbDb)
-
     await Promise.all(items.map(async (entry: IArchiveItem) => {
         try {
             // const authorizedToPublish = IsAuthorized(user?.role, EUserRole.User)
@@ -237,7 +234,7 @@ export async function addEntries(
             if (!entry.status)
                 entry.status = EItemStatus.pending
 
-            const toUpload = await createEntriesBatch(entry, batch, incomingFile)
+            const toUpload = await createEntry(entry, incomingFile)
             result.success.push(toUpload)
         } catch (error) {
             console.error("Failed to add an entry: ", error)
@@ -245,7 +242,6 @@ export async function addEntries(
         }
     }))
 
-    await batch.commit()
     return result
 } // addEntries
 

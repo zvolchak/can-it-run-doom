@@ -1,93 +1,32 @@
-import { useDispatch, } from "react-redux"
-// import { useRouter } from "next/router"
-import React from 'react'
-import { 
-    setAppliedPage,
-} from "@/src/store"
+import { FiChevronLeft, FiChevronRight } from "react-icons/fi"
+import { paginationPages } from "@/src/utils/archiveResults"
 
-interface IPaginationProps {
+interface PaginationProps {
     numberOfPages: number
     currentPage: number
+    onPageChange: (page: number) => void
     className?: string
 }
 
-
-export function Pagination({ numberOfPages, currentPage, className = "" }: IPaginationProps) {
-    const dispatch = useDispatch()
-    // const router = useRouter()
-
-    function onChangePage(page: number | string) {
-        if (typeof page !== 'number') return
-
-        if (page <= 1) page = 1
-        if (page >= numberOfPages) page = numberOfPages
-        window?.scrollTo(0, 0)
-        dispatch(setAppliedPage(page))
-        // const query = { ...router.query, page }
-        // router.push({
-        //     pathname: router.pathname,
-        //     query,
-        // })
-    }
-
-
-    function getRange() {
-        let maxRange = 2
-        if (currentPage > 2) maxRange = 1
-        if (currentPage >= numberOfPages - 1) maxRange = 2
-
-        const range: Array<string | number> = []
-
-        for (let i = -maxRange; i <= maxRange; i++) {
-            const page = currentPage + i
-            if (page <= 1) continue
-            if (page >= numberOfPages) continue
-            range.push(page)
-        }
-
-        if (currentPage - maxRange > 2) range.splice(0, 0, '...')
-        if (currentPage + maxRange < numberOfPages - 1) range.splice(range.length, 0, '...')
-
-        return [1, ...range, numberOfPages]
-    }
-
-
-    function getPageClass(page: string | number) {
-        if (typeof page === 'string') return 'disabled'
-        if (page === currentPage) return 'active'
-        return ''
-    }
-
+export function Pagination({ numberOfPages, currentPage, onPageChange, className = "" }: PaginationProps) {
+    if (numberOfPages <= 1) return null
     return (
-        <div className={`flex justify-center gap-4 ${className}`}>
-            {numberOfPages >= 2 && (
-                <span
-                    className="page-link"
-                    onClick={() => onChangePage(currentPage - 1)}
-                >
-                    Previous
-                </span>
-            )}
-
-            {numberOfPages > 1 &&
-                getRange().map((page, index) => (
-                    <span
-                        key={typeof page === 'string' ? `${page}-${index}` : page}
-                        className={`page-link ${getPageClass(page)}`}
-                        onClick={() => onChangePage(page)}
-                    >
-                        {page}
-                    </span>
-                ))}
-
-            {numberOfPages >= 2 && (
-                <span
-                    className="page-link"
-                    onClick={() => onChangePage(currentPage + 1)}
-                >
-                    Next
-                </span>
-            )}
-        </div>
+        <nav className={`archive-pagination ${className}`} aria-label="Archive pagination">
+            <button type="button" aria-label="Previous page" disabled={currentPage <= 1}
+                onClick={() => onPageChange(currentPage - 1)}>
+                <FiChevronLeft aria-hidden="true" /><span className="archive-pagination__direction">Previous</span>
+            </button>
+            {paginationPages(currentPage, numberOfPages).map((page, index) => page === "ellipsis" ? (
+                <span key={`ellipsis-${index}`} className="archive-pagination__ellipsis" aria-hidden="true">…</span>
+            ) : (
+                <button type="button" key={page} aria-label={`Page ${page}`}
+                    aria-current={page === currentPage ? "page" : undefined}
+                    disabled={page === currentPage} onClick={() => onPageChange(page)}>{page}</button>
+            ))}
+            <button type="button" aria-label="Next page" disabled={currentPage >= numberOfPages}
+                onClick={() => onPageChange(currentPage + 1)}>
+                <span className="archive-pagination__direction">Next</span><FiChevronRight aria-hidden="true" />
+            </button>
+        </nav>
     )
 }

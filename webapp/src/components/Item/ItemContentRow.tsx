@@ -34,7 +34,7 @@ export const ItemContentRow = ({
                     items-center justify-center flex flex-col
                     "
                 >
-                    <p className="doom-gradient-light doom-text-shadow-light">
+                    <p className="text-foreground">
                         {title}
                     </p>
                 </div>
@@ -44,7 +44,7 @@ export const ItemContentRow = ({
                 className={`${childrenParentClass}
                     flex flex-row flex-wrap justify-end
                     py-1 px-3
-                    bg-gray-700 
+                    bg-surface
                     overflow-hidden
                     ${titleClassSpan}
                 `}

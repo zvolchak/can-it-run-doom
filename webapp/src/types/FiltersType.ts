@@ -5,19 +5,23 @@ export interface IRange {
 
 
 export enum SortOption {
+    added = "added",
     latest = "latest",
     oldest = "oldest",
 }
 
 
 export interface IFilterQuery {
-    levelCompleted?: boolean
-    limit?: number
+    levelCompleted?: boolean | string
+    hasCode?: boolean | string
+    authorsPerItem?: number | string
+    limit?: number | string
     sort?: SortOption
 }
 
 
 export interface IFiltersStoreState {
+    tagMatch?: "all" | "any"
     tags: string[]
     years: IRange | null
     availableYears?: number[] | null
@@ -31,6 +35,7 @@ export interface IFiltersStoreState {
 
 export function initFiltersStoreState(): IFiltersStoreState {
     return {
+        tagMatch: "all",
         tags: [],
         years: null,
         authors: [],
