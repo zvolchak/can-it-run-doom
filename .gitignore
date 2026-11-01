@@ -118,3 +118,6 @@ firebase/public/
 .flaskenv*
 !.env.project
 !.env.vault
+
+# Local Firestore dumps
+backups/

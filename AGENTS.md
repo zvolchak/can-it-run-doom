@@ -67,3 +67,45 @@ README.md                    Project introduction
   are separate from that live request path.
 - Entry and user types exist in both packages. When changing API contracts,
   check the corresponding frontend types and callers as well as the API models.
+
+## Commands
+
+`api/` and `webapp/` are independent npm packages (Node 20). Run commands from inside the package directory.
+
+**API (`api/`)**
+- `npm run dev`: runs `tsx server.ts` under nodemon via `doppler run` (needs Doppler access)
+- `npm run build`: `tsc` into `dist/` (`build:staging` / `build:prod` first write `.env` from Doppler)
+- `npm test`: `node --test tests/*.test.cjs`
+- Single test file: `node --test tests/publication.test.cjs`; single test by name: add `--test-name-pattern "<name>"`
+
+**Webapp (`webapp/`)**
+- `npm run dev`: `next dev --turbopack` via Doppler
+- `npm run build`: `next build`; `npm run lint`: `next lint`
+- `npm run test:archive`: runs all `tests/*.test.mjs`
+- Single test file: `node --test tests/archiveSearch.test.mjs`
+
+**Deploy (repo root)**: `npm run deploy-{api,webapp}:{dev,prod}` builds the package and runs `firebase deploy --only functions:<api|webapp>`. `sync-*` scripts push Doppler secrets into Firebase functions config.
+
+## Tests
+
+Neither package uses a test framework or a TS loader. Tests use the built-in `node:test` and transpile the real TypeScript sources at runtime with `ts.transpileModule`:
+- Webapp: `tests/compileModules.mjs` compiles the listed `src/...` files to CommonJS in a temp directory that has a symlink to `node_modules`. Each test lists every source file it transitively imports, including types and store slices. When a tested util gains a new relative import, add that file to the test's `compileModules([...])` list.
+- API: `tests/publication.test.cjs` runs the real writer/approval modules against an in-memory fake Firestore (transactions, `Timestamp`, `doc`). It makes no Firebase or network calls.
+
+## Architecture details
+
+**API request pipeline** (`api/index.ts`): rate limiting is global at 10 requests/min per IP. Routers mount at `/api/v1`. The JSON and urlencoded body parsers are skipped for `/doom_ports/add` because that route parses multipart image uploads itself with busboy (`utils/bodyParsers.ts`). The same Express app is exported as the Firebase function `api` and served standalone by `server.ts`.
+
+**Auth** (`api/middleware/index.ts`): `authenticate` verifies the Firebase `session` cookie. `authorizeByRole` checks the user's role claim, or a UID listed in `FB_ROOT_UID`. Both are bypassed when the request comes from localhost and `NODE_ENV=development`.
+
+**Submission → publication flow**: new submissions go to the incoming collection (`doomPortsIncomingCollection`). `reviewEntries.ts` approves them into the public `doomPorts` collection inside a Firestore transaction. Server-owned date fields (`createdAt`, `updatedAt`, `addedAt`, `publicationState`) are computed only in `api/utils/publication.ts` and stripped from client input. `addedAt` is never invented for legacy records that lack it. Entry statuses are `pending`, `published`, `approved`, `rejected`, and `hidden`.
+
+**Webapp data flow**: `src/api/index.ts` is the only HTTP client. Its axios instance uses `NEXT_PUBLIC_API_BASE_URL` with credentials, and published entries are fetched with cursor pagination (`utils/archiveRetrieval.ts`). After fetching, search, filtering, facets, and sorting run client-side in `src/utils/archive*.ts`. Filter state lives in the Redux `filters` slice. `archiveUrlCoordinator.ts` and `projectNavigation.ts` keep it in sync with the URL query, so archive views and the project modal can be shared by link and work with Back/Forward. Session state is read from a `user` cookie (`js-cookie`).
+
+**Webapp hosting**: `next.config.mjs` uses `output: "standalone"`. `scripts/build_prod.sh` copies static assets into `.next/_next` and `.next/standalone`. `ssr.js` is both a custom local server and the `nextServer` Firebase function. Hosting rewrites all paths to that function (`firebase.json`).
+
+**Path aliases**: in both packages, `@/*` maps to the package root. The webapp imports look like `@/src/types`. The API imports look like `@/utils` and resolve at runtime through `module-alias` (`dist`).
+
+## Planning docs
+
+`.planning/*.md` holds implementation plans for in-progress and completed frontend work, such as tag-first filters and the project modal. Each plan records its status, product decisions, and outstanding QA. Read the relevant plan before changing archive filtering, layout, or the recently-added homepage section.
