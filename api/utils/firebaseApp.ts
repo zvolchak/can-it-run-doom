@@ -66,11 +66,13 @@ export const COLLECTION_NAME = {
     // staging collection is used for reviewing before publishing to prod
     doomPortsIncoming: "doomPorts-Incoming",
     authors: "authors",
+    tags: "tags",
 }
 
 export const doomPortsCollection = collection(fbDb, COLLECTION_NAME.doomPorts)
 export const doomPortsIncomingCollection = collection(fbDb, COLLECTION_NAME.doomPortsIncoming)
 export const authorsCollection = collection(fbDb, COLLECTION_NAME.authors)
+export const tagsCollection = collection(fbDb, COLLECTION_NAME.tags)
 
 
 /* Create an oAuth session token and add it to a response cookie. */

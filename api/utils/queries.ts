@@ -17,6 +17,7 @@ import {
     authorsCollection,
     doomPortsCollection,
     doomPortsIncomingCollection,
+    tagsCollection,
     COLLECTION_NAME,
     fbDb,
     fbStorage,
@@ -88,6 +89,11 @@ export async function getAllAuthors() {
         query(authorsCollection)
     )
 } // getTags
+
+
+export async function getAllTags() {
+    return await getDocs(query(tagsCollection))
+} // getAllTags
 
 
 export async function addAuthor(author: IAuthorDocument) {
