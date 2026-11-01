@@ -1,15 +1,17 @@
-import { useState, useRef, } from "react"
+import { useEffect, useMemo, useState, useRef, } from "react"
 import { useSelector, useDispatch, } from "react-redux"
 import {
     addNewEntry,
+    fetchTags,
 } from "@/src/api"
 import {
     InputWithLabel,
     LoadingIcon,
     SourcesInputField,
+    SearchableDropdown,
     ImageUploaderInput,
 } from "@/src/components"
-import { IArchiveItem, ISource, IUploadStatus, EProcessingState, } from "@/src/types"
+import { IArchiveItem, ISource, ITag, IUploadStatus, EProcessingState, } from "@/src/types"
 import { RootState, setNewEntryForm, setUplaodStatus, } from "@/src/store"
 import { AddedEntrySuccessView } from "./ResponseViews/AddedEntrySuccessView"
 
@@ -35,6 +37,14 @@ export function AddEntryView({
 
     const [imageFile, setImageFile] = useState<File | null>(null)
     const [entryResponse, setEntryResponse] = useState(null)
+    const [tagVocabulary, setTagVocabulary] = useState<ITag[] | null>(null)
+    useEffect(() => { fetchTags().then(setTagVocabulary) }, [])
+    const tagOptions = useMemo(() => (tagVocabulary || []).map(tag => ({
+        value: tag.id,
+        label: tag.label,
+        group: tag.category.charAt(0).toUpperCase() + tag.category.slice(1),
+        description: tag.description,
+    })), [tagVocabulary])
     const authorInputRef = useRef<{ getAllInputs: () => string[][] } | null>(null)
     const sourcesInputRef = useRef<{ getAllInputs: () => string[][] } | null>(null)
     const sourceCodeInputRef = useRef<{ getAllInputs: () => string[][] } | null>(null)
@@ -61,6 +71,13 @@ export function AddEntryView({
         dispatch(setNewEntryForm(nextState))
         onChange?.(nextState)
     } // handleChange
+
+
+    function onTagsChanged(tags: string[]) {
+        const nextState = { ...formData, tags }
+        dispatch(setNewEntryForm(nextState))
+        onChange?.(nextState)
+    } // onTagsChanged
 
 
     function onSourcesInputChanged(inputs: ISource[], key: string) {
@@ -222,14 +239,14 @@ export function AddEntryView({
 
 
                     <div className="">
-                        <label className="block mb-1">Tags</label>
-                        <input 
-                            type="text" 
-                            name="tags" 
-                            value={(formData.tags || []).join(",") || ""} 
-                            onChange={handleChange} 
-                            placeholder="Tags (comma separated)" 
-                            className="w-full p-2 border rounded" 
+                        <SearchableDropdown
+                            label="Tags"
+                            options={tagOptions}
+                            value={(formData.tags || []).filter(Boolean)}
+                            onChange={onTagsChanged}
+                            placeholder="Select tags"
+                            searchPlaceholder="Search tags"
+                            emptyMessage={tagVocabulary ? "No matching tags." : "Tags could not be loaded. Reload the page to try again."}
                         />
                     </div>
 
