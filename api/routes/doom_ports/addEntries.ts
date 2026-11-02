@@ -2,14 +2,7 @@ import { Request, Response, Router } from "express"
 import Busboy from "busboy"
 import axios from "axios"
 import filetype from 'magic-bytes.js'
-import { 
-    Timestamp,
-    writeBatch,
-    doc,
-    DocumentReference,
-    DocumentData,
-    runTransaction,
-} from "firebase/firestore"
+import { Timestamp, DocumentReference, DocumentData } from "firebase-admin/firestore"
 import { DecodedIdToken } from "firebase-admin/auth"
 import { 
     IArchiveItem, 
@@ -147,13 +140,12 @@ async function createGithubIssue(items: IArchiveItem[]) {
             }
         )
 
-        const batch = writeBatch(fbDb)
+        const batch = fbDb.batch()
         const issueUrl = response?.data?.html_url
         // Update DB docs with the URL to the github issue it belongs to.
         await Promise.all(items.map(async (item) => { 
             const { collection, id } = getStagingOrProdDb(item)
-            const docRef = doc(collection, id)
-            await batch.update(docRef, { id: item.id, requestUrl: issueUrl })
+            batch.update(collection.doc(id), { id: item.id, requestUrl: issueUrl })
         }))
         await batch.commit()
 
@@ -206,10 +198,10 @@ export async function createEntry(
             submittedBy: null,
         }
         const docId = incomingEntry.status !== EItemStatus.pending ? entryId : generateFirestoreId()
-        docRef = doc(collection, docId)
-        await runTransaction(fbDb, async transaction => {
+        docRef = collection.doc(docId)
+        await fbDb.runTransaction(async transaction => {
             const snapshot = await transaction.get(docRef)
-            const fields = publicationFields(newEntry, snapshot.exists() ? snapshot.data() : null, Timestamp.now())
+            const fields = publicationFields(newEntry, snapshot.exists ? snapshot.data() : null, Timestamp.now())
             // Incoming submissions never establish publication dates.
             if (collection === doomPortsIncomingCollection) fields.addedAt = null
             transaction.set(docRef, fields)

@@ -13,7 +13,7 @@ function load(path) {
     cache.set(path, exports)
     const code = ts.transpileModule(readFileSync(path, "utf8"), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, esModuleInterop: true } }).outputText
     const localRequire = name => {
-        if (name === "firebase/firestore") return { Timestamp: {} }
+        if (name === "firebase-admin/firestore") return { Timestamp: {} }
         if (name === "../@types") return { EItemStatus: { pending: "pending", published: "published" } }
         if (name.startsWith(".")) return load(resolve(dirname(path), name + ".ts"))
         return require(name)

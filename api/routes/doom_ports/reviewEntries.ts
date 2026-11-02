@@ -1,9 +1,5 @@
 import { Request, Response, Router } from "express"
-import { 
-    runTransaction,
-    Timestamp,
-    doc,
-} from "firebase/firestore"
+import { Timestamp } from "firebase-admin/firestore"
 import { 
     IEntryAddedResponse, 
     EItemStatus,
@@ -98,19 +94,19 @@ export async function approveEntries(entries: { reviewId: string, entry: IArchiv
     const result: IEntryAddedResponse = { success: [], failed: [] }
     await Promise.all(entries.map(async ({ reviewId, entry }) => {
         try {
-            const incomingRef = doc(fbDb, COLLECTION_NAME.doomPortsIncoming, reviewId)
-            const { published, publicRef } = await runTransaction(fbDb, async transaction => {
+            const incomingRef = fbDb.collection(COLLECTION_NAME.doomPortsIncoming).doc(reviewId)
+            const { published, publicRef } = await fbDb.runTransaction(async transaction => {
                 const incoming = await transaction.get(incomingRef)
-                if (!incoming.exists() || incoming.data().status !== EItemStatus.pending)
+                if (!incoming.exists || incoming.data().status !== EItemStatus.pending)
                     throw new Error("Submission is no longer pending")
-                const publicRef = doc(fbDb, COLLECTION_NAME.doomPorts, incoming.data().id || reviewId)
+                const publicRef = fbDb.collection(COLLECTION_NAME.doomPorts).doc(incoming.data().id || reviewId)
                 // Read the target before any write, so concurrent approvals/edits retry.
                 const current = await transaction.get(publicRef)
                 const approved = status === EItemStatus.approved || status === EItemStatus.published
                 let fields: IArchiveItem = { ...incoming.data(), status, id: publicRef.id }
                 if (approved) {
                     fields = publicationFields({ ...incoming.data(), id: publicRef.id, status: EItemStatus.published },
-                        current.exists() ? current.data() : null, Timestamp.now())
+                        current.exists ? current.data() : null, Timestamp.now())
                     fields.editHistory = [...new Set([...(current.data()?.editHistory || []), reviewId])]
                     transaction.set(publicRef, fields)
                 }

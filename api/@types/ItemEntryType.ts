@@ -1,4 +1,4 @@
-import { DocumentReference, Timestamp } from "firebase/firestore"
+import { DocumentReference, Timestamp } from "firebase-admin/firestore"
 
 export interface ISource {
     name: string

@@ -1,9 +1,4 @@
 import { CookieOptions, Response, Request, } from "express"
-import {
-    collection,
-    getFirestore,
-    connectFirestoreEmulator,
-} from "firebase/firestore"
 import { getAuth, connectAuthEmulator, User } from "firebase/auth"
 import { DecodedIdToken, UserRecord } from "firebase-admin/auth"
 import { initializeApp } from "firebase/app"
@@ -34,6 +29,9 @@ const firebaseConfig = {
 }
 
 if (isDev) {
+    // Admin Firestore reads this when first created, so it must be set before admin.firestore().
+    // Without it, development credentials would talk to the real project database.
+    process.env.FIRESTORE_EMULATOR_HOST ||= "localhost:8081"
     console.debug(" - Using local dev credentials json")
     const filePath = join(__dirname, `../credentials-${secrets.NODE_ENV}.json`)
     const credentials = JSON.parse(readFileSync(filePath, "utf8"))
@@ -50,14 +48,14 @@ if (isDev) {
 
 
 const fbApp = initializeApp(firebaseConfig)
-const fbDb = getFirestore(fbApp)
+// Firestore is reached only through the Admin SDK; client access is denied by firestore.rules.
+const fbDb = admin.firestore()
 const fbAuth = getAuth(fbApp)
 const fbStorage = admin.storage().bucket()
 const fbAuthAdmin = admin.auth()
 
 if (isDev) {
     console.debug(" - Using localhost emulator Auth")
-    connectFirestoreEmulator(fbDb, "localhost", 8081)
     connectAuthEmulator(fbAuth, "http://127.0.0.1:9099")
 }
 
@@ -69,10 +67,10 @@ export const COLLECTION_NAME = {
     tags: "tags",
 }
 
-export const doomPortsCollection = collection(fbDb, COLLECTION_NAME.doomPorts)
-export const doomPortsIncomingCollection = collection(fbDb, COLLECTION_NAME.doomPortsIncoming)
-export const authorsCollection = collection(fbDb, COLLECTION_NAME.authors)
-export const tagsCollection = collection(fbDb, COLLECTION_NAME.tags)
+export const doomPortsCollection = fbDb.collection(COLLECTION_NAME.doomPorts)
+export const doomPortsIncomingCollection = fbDb.collection(COLLECTION_NAME.doomPortsIncoming)
+export const authorsCollection = fbDb.collection(COLLECTION_NAME.authors)
+export const tagsCollection = fbDb.collection(COLLECTION_NAME.tags)
 
 
 /* Create an oAuth session token and add it to a response cookie. */
