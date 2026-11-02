@@ -53,6 +53,7 @@ export interface IEntryBatch {
     entry: IArchiveItem
     docRef: DocumentReference<IArchiveItem>
     file: any // FIXME: use the right file type
+    created?: boolean // set by approvals: true when no public entry existed before
 }
 
 export interface IEntryAddedResponse {

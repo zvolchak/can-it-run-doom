@@ -25,6 +25,7 @@ import {
 import { publicationFields } from "../../utils/publication"
 import { enforceSubmissionStatus, sanitizePreviewImg, validateSubmission } from "../../utils/submission"
 import { isModerator } from "../../middleware"
+import { notificationsEnabled } from "../../utils/notifications"
 
 const secrets = process.env
 
@@ -140,18 +141,23 @@ async function createGithubIssue(items: IArchiveItem[]) {
             }
         )
 
-        const batch = fbDb.batch()
         const issueUrl = response?.data?.html_url
-        // Update DB docs with the URL to the github issue it belongs to.
-        await Promise.all(items.map(async (item) => { 
-            const { collection, id } = getStagingOrProdDb(item)
-            batch.update(collection.doc(id), { id: item.id, requestUrl: issueUrl })
-        }))
-        await batch.commit()
+        try {
+            // Remember which issue each document belongs to, so approval can resolve it.
+            // `id` is left alone: for edit proposals it points at the entry being edited.
+            const batch = fbDb.batch()
+            items.forEach(item => {
+                const { collection, id } = getStagingOrProdDb(item)
+                batch.update(collection.doc(id), { requestUrl: issueUrl })
+            })
+            await batch.commit()
+        } catch (error) {
+            console.error(`Issue ${issueUrl} was created, but saving its URL failed; it won't be closed on approval:`, error)
+        }
 
         return { url: issueUrl }
     } catch (error) {
-        console.error(`Failed to create a Github Issue for entry ${items?.[0]?.id}:`, error)
+        console.error(`Failed to create a Github Issue for entry ${items?.[0]?.id}:`, error?.message)
         return { url: null }
     }
 } // createGithubIssue
@@ -367,7 +373,7 @@ router.post(
         
         let githubIssue = null
         // Create a github issue in Prod env to track and notify about new submissions.
-        if (secrets.NODE_ENV !== "development" && secrets.GITHUB_TOKEN) {
+        if (notificationsEnabled() && secrets.GITHUB_TOKEN) {
             githubIssue = await createGithubIssue(
                 result.success.map(s => ({ ...s.entry, id: s.id }))
             )
