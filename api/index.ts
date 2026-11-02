@@ -1,4 +1,5 @@
 import "./utils/loadEnv"
+import { parseCorsOrigins } from "./utils/corsOrigins"
 
 import express from "express"
 import { rateLimit } from 'express-rate-limit'
@@ -67,7 +68,7 @@ app.use((req, res, next) => {
     next()
 })
 
-const CORS_ORIGIN = (secrets.CORS_ORIGIN || "http://localhost:3000").split(",").map(origin => origin.trim())
+const CORS_ORIGIN = parseCorsOrigins(secrets.CORS_ORIGIN)
 console.debug(`CORS_ORIGIN set to: ${CORS_ORIGIN}`)
 app.use(cors({
     origin: CORS_ORIGIN,
