@@ -33,7 +33,7 @@ test("approval comments on and closes the issue as completed through the API", a
     const { resolveIssue, calls } = load({ GITHUB_TOKEN: "t" })
     assert.equal(await resolveIssue(entry, true), true)
     assert.equal(calls[0].url, "https://api.github.com/repos/zvolchak/can-it-run-doom/issues/12/comments")
-    assert.match(calls[0].body.body, /canitrundoom\.org\/\?id=pub1/)
+    assert.equal(calls[0].body.body, "Added: https://canitrundoom.org/?id=pub1")
     assert.equal(calls[0].options.headers.Authorization, "Bearer t")
     assert.deepEqual(calls[1].body, { state: "closed", state_reason: "completed" })
 })
@@ -67,4 +67,37 @@ test("notifications run in every environment except local development", () => {
     assert.equal(load({ NODE_ENV: "development" }).notificationsEnabled(), false)
     for (const env of ["production", "staging", undefined])
         assert.equal(load({ NODE_ENV: env }).notificationsEnabled(), true)
+})
+
+test("source code and author links on github credit their accounts in the comment", async () => {
+    const { githubLogins, resolveIssue, calls } = load({ GITHUB_TOKEN: "t" })
+    const credited = {
+        ...entry,
+        sourceCodeUrl: [
+            { name: "Repo", url: "https://github.com/id-Software/DOOM/tree/master" },
+            { name: "Fork", url: "https://www.github.com/id-software/DOOM-fork" },
+            { name: "Other host", url: "https://gitlab.com/someone/doom" },
+            { name: "Site page", url: "https://github.com/orgs/something/people" },
+            { name: "Lookalike", url: "https://github.com.evil.example/mallory/x" },
+            { name: "Bad", url: "not a url" },
+        ],
+        authors: [
+            { name: "Dev", url: "https://github.com/dev-person" },
+            { name: "Reddit", url: "https://reddit.com/u/someone" },
+            { name: "Bad login", url: "https://github.com/-nope-/x" },
+        ],
+    }
+    assert.deepEqual(githubLogins(credited), ["id-Software", "dev-person"])
+    await resolveIssue(credited, true)
+    assert.equal(calls[0].body.body, "Added: https://canitrundoom.org/?id=pub1\ncc: @id-Software @dev-person")
+    const none = githubLogins({ ...entry, sourceCodeUrl: [], authors: undefined })
+    assert.deepEqual(none, [])
+    const many = githubLogins({ sourceCodeUrl: Array.from({ length: 9 }, (_, i) => ({ url: `https://github.com/user${i}/r` })) })
+    assert.equal(many.length, 5)
+})
+
+test("rejections never mention anyone", async () => {
+    const { resolveIssue, calls } = load({ GITHUB_TOKEN: "t" })
+    await resolveIssue({ ...entry, sourceCodeUrl: [{ url: "https://github.com/someone/repo" }] }, false)
+    assert.doesNotMatch(calls[0].body.body, /@someone/)
 })

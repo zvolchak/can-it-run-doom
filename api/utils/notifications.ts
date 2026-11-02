@@ -5,6 +5,13 @@ const secrets = process.env
 
 const ISSUE_HTML_URL = /^https:\/\/github\.com\/([\w.-]+\/[\w.-]+)\/issues\/(\d+)$/
 const DISCORD_MAX_CONTENT = 2000
+const MAX_MENTIONS = 5
+const GITHUB_LOGIN = /^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$/
+// First path segments on github.com that are site pages, not accounts.
+const GITHUB_RESERVED = new Set([
+    "about", "apps", "collections", "events", "explore", "features", "issues", "login", "marketplace", "new",
+    "notifications", "orgs", "pricing", "pulls", "search", "settings", "sponsors", "topics", "trending",
+])
 
 
 /** Issues and Discord posts go out from every deployed environment, never from local development. */
@@ -26,6 +33,39 @@ export function announcementText(entry: IArchiveItem): string {
 } // announcementText
 
 
+/**
+ * GitHub accounts behind an entry's source code links (and author profiles), so the
+ * issue comment can credit them. Only github.com links count; the owner is the first path segment.
+ */
+export function githubLogins(entry: IArchiveItem): string[] {
+    const links = [...(entry?.sourceCodeUrl || []), ...(entry?.authors || [])]
+    const logins = new Map<string, string>()
+    for (const link of links) {
+        let url: URL
+        try {
+            url = new URL(String(link?.url || "").trim())
+        } catch {
+            continue
+        }
+        if (!/^(www\.)?github\.com$/.test(url.hostname) || !/^https?:$/.test(url.protocol))
+            continue
+        const login = url.pathname.split("/").filter(Boolean)[0]
+        if (login && GITHUB_LOGIN.test(login) && !GITHUB_RESERVED.has(login.toLowerCase()))
+            if (!logins.has(login.toLowerCase())) logins.set(login.toLowerCase(), login)
+    }
+    return [...logins.values()].slice(0, MAX_MENTIONS)
+} // githubLogins
+
+
+export function issueApprovalComment(entry: IArchiveItem): string {
+    const lines = [`Added: https://canitrundoom.org/?id=${entry.id}`]
+    const logins = githubLogins(entry)
+    if (logins.length > 0)
+        lines.push(`cc: ${logins.map(login => `@${login}`).join(" ")}`)
+    return lines.join("\n")
+} // issueApprovalComment
+
+
 /** Comments on and closes the submission's issue: "completed" if approved, "not planned" if rejected. */
 export async function resolveIssue(entry: IArchiveItem, approved: boolean): Promise<boolean> {
     const issueUrl = githubApiIssueUrl(entry?.requestUrl)
@@ -39,7 +79,7 @@ export async function resolveIssue(entry: IArchiveItem, approved: boolean): Prom
     }
 
     const body = approved
-        ? announcementText(entry)
+        ? issueApprovalComment(entry)
         : "This entry has been rejected. If reason will not be provided " +
             "shortly, please reach out to support or leave comments here."
     const headers = {
