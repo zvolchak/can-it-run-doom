@@ -96,6 +96,18 @@ export async function getAllTags() {
 } // getAllTags
 
 
+const KNOWN_TAGS_TTL_MS = 60 * 1000
+let knownTags: { ids: Set<string>, loadedAt: number } | null = null
+
+/** Ids of the curated tags, cached briefly so submissions don't re-read the collection each time. */
+export async function getKnownTagIds(): Promise<Set<string>> {
+    if (knownTags && Date.now() - knownTags.loadedAt < KNOWN_TAGS_TTL_MS) return knownTags.ids
+    const snapshot = await getAllTags()
+    knownTags = { ids: new Set(snapshot.docs.map(doc => doc.id)), loadedAt: Date.now() }
+    return knownTags.ids
+} // getKnownTagIds
+
+
 export async function addAuthor(author: IAuthorDocument) {
     return await addDoc(
         authorsCollection, 

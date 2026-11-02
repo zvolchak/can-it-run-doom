@@ -25,13 +25,21 @@ import {
     doomPortsCollection,
     doomPortsIncomingCollection,
     generateFirestoreId,
+    getKnownTagIds,
+    jsonParseString,
  } from "../../utils"
 
 import { publicationFields } from "../../utils/publication"
+import { enforceSubmissionStatus, validateSubmission } from "../../utils/submission"
+import { isModerator } from "../../middleware"
 
 const secrets = process.env
 
 const router = Router()
+
+// Submissions come from anonymous visitors; the form downsizes images to ~300kb.
+const MAX_IMAGE_BYTES = 1024 * 1024
+const MAX_ITEMS_BYTES = 200 * 1024
 
 
 async function saveFileToStorage(fileName: string, file) {
@@ -177,6 +185,8 @@ export async function createEntry(
     try {
         if (incomingFile?.buffer.length > 0) {
             const imageFileType = getFileType(incomingFile?.buffer)
+            if (!imageFileType)
+                throw Error("Only image files are supported!")
             fileName = `${entryId}.${imageFileType}`
             fileName = await saveFileToStorage(fileName, incomingFile)
         }
@@ -252,7 +262,11 @@ function parseBusboyRequest(req: Request): Promise<{
     image: { buffer: Buffer, originalname: string } | null
 }> {
     return new Promise((resolve, reject) => {
-        const busboy = Busboy({ headers: req.headers })
+        const busboy = Busboy({
+            headers: req.headers,
+            limits: { files: 1, fields: 5, fileSize: MAX_IMAGE_BYTES, fieldSize: MAX_ITEMS_BYTES },
+        })
+        let exceededLimit = false
 
         let itemsJson = ''
         let imageBuffer: Buffer | null = null
@@ -263,6 +277,7 @@ function parseBusboyRequest(req: Request): Promise<{
             imageName = filename
 
             file.on('data', data => chunks.push(data))
+            file.on('limit', () => { exceededLimit = true })
             file.on('end', () => {
                 imageBuffer = Buffer.concat(chunks)
             })
@@ -270,11 +285,18 @@ function parseBusboyRequest(req: Request): Promise<{
             file.resume()
         })
 
-        busboy.on('field', (fieldname, value) => {
+        busboy.on('field', (fieldname, value, info) => {
+            if (info?.valueTruncated) exceededLimit = true
             if (fieldname === 'items') itemsJson = value
         })
 
+        busboy.on('fieldsLimit', () => { exceededLimit = true })
         busboy.on('finish', () => {
+            if (exceededLimit) {
+                const error: any = new Error("Upload is too large")
+                error.code = "LIMIT"
+                return reject(error)
+            }
             resolve({
                 itemsJson,
                 image: imageBuffer ? { buffer: imageBuffer, originalname: imageName } : null
@@ -308,15 +330,30 @@ router.post(
         itemsJson = parsed.itemsJson
         image = parsed.image
     } catch (error) {
+        if (error.code === "LIMIT")
+            return res.status(413).json({ error: "The image or entry is too large. Use an image under 1 MB." })
         console.warn("Falling back to JSON body due to Busboy error:", error.message)
         itemsJson = req.body?.items || ''
     }
-    console.info("Incoming request to add a new entry:", itemsJson)
+    console.info("Incoming request to add a new entry:", String(itemsJson).slice(0, 2000))
     const errorMessage = "Failed to add a new entry! Please, try again or contact " +
         "support if the error persists." 
     
     try {
-        const items: IArchiveItem[] = await buildArchiveItem(itemsJson as any, req.user)
+        const rawItems = jsonParseString(itemsJson)
+        if (!Array.isArray(rawItems) || rawItems.length === 0)
+            return res.status(400).json({ error: "Missing required fields!" })
+
+        // Moderators may publish directly; everyone else only submits for review.
+        const canPublish = await isModerator(req)
+        const knownTagIds = await getKnownTagIds()
+        const problems = rawItems.flatMap((raw, index) =>
+            validateSubmission(raw, knownTagIds).map(message => rawItems.length > 1 ? `Entry ${index + 1}: ${message}` : message)
+        )
+        if (problems.length > 0)
+            return res.status(400).json({ error: `Please fix: ${problems.join("; ")}`, problems })
+
+        const items: IArchiveItem[] = enforceSubmissionStatus(await buildArchiveItem(rawItems as any, req.user), canPublish)
         const user = req.user
 
         if (!items || items.length === 0) 

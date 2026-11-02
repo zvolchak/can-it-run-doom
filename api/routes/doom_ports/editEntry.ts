@@ -3,7 +3,10 @@ import { IArchiveItem } from "../../@types"
 import {
     updateDoomPort,
     EUserRole,
+    getKnownTagIds,
+    normalizeTagsValues,
  } from "../../utils"
+import { validateTags } from "../../utils/submission"
  import {
     authenticate,
     authorizeByRole,
@@ -38,6 +41,13 @@ router.patch(
 
     if (newEntry.submittedBy !== user.uid && user.role !== EUserRole.Owner) {
         return res.status(403).json({ error: "Not authorized to edit someone's entry!" })
+    }
+
+    if (newEntry.hasOwnProperty("tags")) {
+        const problems = validateTags(newEntry.tags, await getKnownTagIds())
+        if (problems.length)
+            return res.status(400).json({ error: problems.join("; ") })
+        newEntry.tags = [...new Set(normalizeTagsValues(newEntry.tags).filter(Boolean))]
     }
 
     try {
