@@ -100,5 +100,6 @@
   p { margin: 0; }
   &__authors { font-size: 0.8125rem; color: var(--color-text); overflow-wrap: anywhere; }
   &__date { font-size: 0.75rem; color: var(--color-muted); }
-  &__action { display: flex; align-items: center; justify-content: space-between; min-height: 44px; margin-top: auto; padding-top: 0.5rem; color: var(--color-accent); font-size: 0.875rem; }
+  &__actions { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-top: auto; padding-top: 0.5rem; }
+  &__action { display: flex; align-items: center; justify-content: space-between; min-height: 44px; color: var(--color-accent); font-size: 0.875rem; }
 }

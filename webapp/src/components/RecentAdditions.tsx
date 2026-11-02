@@ -4,6 +4,7 @@ import { archiveAdditionDate, isJustAdded } from "@/src/utils/additionDates"
 import { useProjectLink } from "./Containers/ProjectNavigation"
 import { ProjectPreview } from "./Item/ProjectPreview"
 import { ProjectAuthorLink } from "./Item/ProjectAuthorLink"
+import { ShareButton } from "./Item/ShareButton"
 import { projectAuthors, projectDate, projectText } from "./Item/projectPresentation"
 
 function RecentCard({ item, now }: { item: IArchiveItem, now: number }) {
@@ -30,9 +31,12 @@ function RecentCard({ item, now }: { item: IArchiveItem, now: number }) {
                     ))}
                     {authors.length > 2 && ` +${authors.length - 2} more`}
                 </p>}
-                <a className="recent-card__action" href={link.href} onClick={link.onClick} aria-label={`View project: ${title}`}>
-                    View project <span aria-hidden="true">→</span>
-                </a>
+                <div className="recent-card__actions">
+                    <a className="recent-card__action" href={link.href} onClick={link.onClick} aria-label={`View project: ${title}`}>
+                        View project <span aria-hidden="true">→</span>
+                    </a>
+                    <ShareButton item={item} compact />
+                </div>
             </div>
         </article>
     )
