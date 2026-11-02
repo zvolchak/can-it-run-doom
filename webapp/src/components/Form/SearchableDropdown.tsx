@@ -1,4 +1,5 @@
-import { useEffect, useId, useMemo, useRef, useState } from "react"
+import { useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react"
+import { createPortal } from "react-dom"
 import type { KeyboardEvent } from "react"
 
 
@@ -25,6 +26,10 @@ interface ISearchableDropdownProps {
 }
 
 
+const MENU_GAP = 4
+const VIEWPORT_MARGIN = 8
+const MIN_ROOM = 280
+
 const matches = (option: IDropdownOption, query: string) => {
     const needle = query.trim().toLowerCase()
     return !needle || option.label.toLowerCase().includes(needle) || option.value.toLowerCase().includes(needle)
@@ -49,21 +54,56 @@ export function SearchableDropdown({
     const [open, setOpen] = useState(false)
     const [query, setQuery] = useState("")
     const [active, setActive] = useState(0)
+    const [position, setPosition] = useState<{ top: number, left: number, width: number, maxHeight: number } | null>(null)
+    const panel = useRef<HTMLDivElement>(null)
 
     const byValue = useMemo(() => new Map(options.map(option => [option.value, option])), [options])
     const visible = useMemo(() => options.filter(option => matches(option, query)), [options, query])
     const activeIndex = Math.min(active, Math.max(visible.length - 1, 0))
     const optionId = (index: number) => `${id}-option-${index}`
 
+    // The panel is fixed and portaled so it overlaps the page without clipping
+    // or lengthening it. Inside a modal <dialog> it stays in the dialog, which
+    // sits in the browser's top layer.
+    const host = () => root.current?.closest("dialog") ?? document.body
+
+    useLayoutEffect(() => {
+        if (!open) return setPosition(null)
+        const place = () => {
+            const anchor = trigger.current?.getBoundingClientRect()
+            if (!anchor) return
+            const top = anchor.bottom + MENU_GAP
+            setPosition({
+                top,
+                left: anchor.left,
+                width: anchor.width,
+                maxHeight: Math.max(0, window.innerHeight - top - VIEWPORT_MARGIN),
+            })
+        }
+        const anchor = trigger.current?.getBoundingClientRect()
+        if (anchor && window.innerHeight - anchor.bottom < MIN_ROOM) {
+            trigger.current?.scrollIntoView({ block: "center", behavior: "instant" })
+        }
+        place()
+        window.addEventListener("resize", place)
+        window.addEventListener("scroll", place, true)
+        return () => {
+            window.removeEventListener("resize", place)
+            window.removeEventListener("scroll", place, true)
+        }
+    }, [open])
+
+    const placed = position !== null
     useEffect(() => {
-        if (!open) return
-        search.current?.focus()
+        if (!open || !placed) return
+        search.current?.focus({ preventScroll: true })
         const onPointerDown = (event: PointerEvent) => {
-            if (!root.current?.contains(event.target as Node)) close(false)
+            const target = event.target as Node
+            if (!root.current?.contains(target) && !panel.current?.contains(target)) close(false)
         }
         document.addEventListener("pointerdown", onPointerDown)
         return () => document.removeEventListener("pointerdown", onPointerDown)
-    }, [open])
+    }, [open, placed])
 
     useEffect(() => {
         if (open) document.getElementById(optionId(activeIndex))?.scrollIntoView({ block: "nearest" })
@@ -128,8 +168,9 @@ export function SearchableDropdown({
                 <span aria-hidden="true" className="dropdown__caret">▾</span>
             </button>
 
-            {open && (
-                <div className="dropdown__panel">
+            {open && createPortal(
+                <div ref={panel} className="dropdown__panel"
+                    style={{ top: position?.top ?? 0, left: position?.left ?? 0, width: position?.width, maxHeight: position?.maxHeight, visibility: position ? "visible" : "hidden" }}>
                     <input
                         ref={search}
                         type="search"
@@ -172,7 +213,8 @@ export function SearchableDropdown({
                         })}
                         {visible.length === 0 && <li role="presentation" className="dropdown__empty">{emptyMessage}</li>}
                     </ul>
-                </div>
+                </div>,
+                host(),
             )}
 
             {multiple && value.length > 0 && (
