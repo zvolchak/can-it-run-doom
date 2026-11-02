@@ -74,7 +74,7 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
             {inputs.map((item, index) => (
                 <div key={index} className="source-inputs__row">
                     <div className="source-inputs__field">
-                        <label>Name {requiredName ? "*" : ""}</label>
+                        <label className="entry-form__label entry-form__label--sub">Name{requiredName && <span className="entry-form__required" aria-hidden="true"> *</span>}</label>
                         <input
                             type="text"
                             required={requiredName}
@@ -86,7 +86,7 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
                     </div>
     
                     <div className="source-inputs__field">
-                        <label>Url {requiredUrl ? "*" : ""}</label>
+                        <label className="entry-form__label entry-form__label--sub">URL{requiredUrl && <span className="entry-form__required" aria-hidden="true"> *</span>}</label>
                         <input
                             type="url"
                             inputMode="url"

@@ -2,17 +2,25 @@
   display: flex; flex-direction: column; gap: 2.75rem; width: 100%; min-width: 0;
   &__intro { text-align: center; color: var(--color-muted); font-size: .875rem; margin-top: -2rem; }
   &__section {
-    display: grid; gap: 1rem; min-width: 0; padding: 1.5rem 0 0; border: 0; border-top: 1px solid var(--color-border);
+    display: grid; gap: 1.75rem; min-width: 0; padding: 1.5rem 0 0; border: 0; border-top: 1px solid var(--color-border);
     &[data-invalid=true] > legend { color: var(--color-danger); }
     > legend { padding: 0; margin-bottom: .75rem; font-size: 1.05rem; font-weight: 600; }
   }
   // The link rows draw their own box; inside a section it only adds a second border.
   [class~="border-control"] { border: 0; padding: 0; }
-  &__hint { font-size: .8125rem; color: var(--color-muted); margin-top: -.5rem; }
+  &__hint { font-size: .8125rem; color: var(--color-muted); margin-top: -1.25rem; }
   &__error { font-size: .8125rem; color: var(--color-danger); margin-top: .25rem; }
   input[aria-invalid=true] { border-color: var(--color-danger); }
   &__actions { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; align-items: center; margin-bottom: .75rem; }
 }
+
+// Field labels sit between the section headings (600) and the input text (400).
+.entry-form__label {
+  display: block; margin-bottom: .625rem; font-size: .875rem; font-weight: 500; color: var(--color-text);
+  // Link rows repeat Name/URL, so their labels stay quiet.
+  &--sub { font-weight: 400; font-size: .8125rem; color: var(--color-muted); margin-bottom: 0; }
+}
+.entry-form__required { color: var(--color-danger); font-weight: 600; }
 
 .preview-toggle button[aria-pressed=true] { border-color: var(--color-accent); color: var(--color-accent); background: var(--color-accent-subtle); }
 

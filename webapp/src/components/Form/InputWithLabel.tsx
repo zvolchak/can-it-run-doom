@@ -28,14 +28,15 @@ export function InputWithLabel({
     error = "",
 }: IInputWithLabelProps) {
     const id = `entry-${camelCase(title)}`
+    // A trailing "*" in the title marks a required field; it is styled apart from the label text.
+    const isRequired = /\s*\*$/.test(title)
+    const label = title.replace(/\s*\*$/, "")
 
     return (
         <div className={`${className}`}>
-            <label 
-                className="block mb-1"
-                htmlFor={id}
-            >
-                {title}
+            <label className="entry-form__label" htmlFor={id}>
+                {label}
+                {isRequired && <span className="entry-form__required" aria-hidden="true"> *</span>}
             </label>
             <input 
                 required={required}

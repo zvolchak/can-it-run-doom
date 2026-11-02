@@ -261,7 +261,7 @@ export function AddEntryView({
                         </div>
 
                         <div>
-                            <label className="block mb-1" htmlFor="entry-description">Description</label>
+                            <label className="entry-form__label" htmlFor="entry-description">Description</label>
                             <textarea 
                                 id="entry-description"
                                 name="description" 
@@ -319,7 +319,7 @@ export function AddEntryView({
                         <legend>Links and media</legend>
 
                         <div data-invalid={!!errors.sourcesUrl}>
-                            <label className="block mb-1">Gameplay or screenshots</label>
+                            <label className="entry-form__label">Gameplay or screenshots</label>
                             <SourcesInputField
                                 ref={sourcesInputRef}
                                 value={formData?.sourcesUrl}
@@ -334,7 +334,7 @@ export function AddEntryView({
                         </div>
 
                         <div data-invalid={!!errors.sourceCodeUrl}>
-                            <label className="block mb-1">Source code</label>
+                            <label className="entry-form__label">Source code</label>
                             <SourcesInputField 
                                 ref={sourceCodeInputRef}
                                 value={formData?.sourceCodeUrl}
