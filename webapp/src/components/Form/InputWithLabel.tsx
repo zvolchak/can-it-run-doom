@@ -1,4 +1,3 @@
-import { useState } from "react"
 import camelCase from "lodash/camelCase"
 
 
@@ -12,6 +11,7 @@ interface IInputWithLabelProps {
     onChange?: (e) => void
     onClick?: (e) => void
     className?: string
+    error?: string
 }
 
 
@@ -25,14 +25,9 @@ export function InputWithLabel({
     onChange = null,
     onClick = null,
     className="",
+    error = "",
 }: IInputWithLabelProps) {
-    const id = `entry_row: ${title}`
-    const [inputValue, setInputValue] = useState(value)
-
-    function onInputChange(event) {
-        setInputValue(event.value)
-        onChange?.(event)
-    }
+    const id = `entry-${camelCase(title)}`
 
     return (
         <div className={`${className}`}>
@@ -47,12 +42,15 @@ export function InputWithLabel({
                 id={id}
                 type={type}
                 name={name || camelCase(title)} 
-                value={inputValue} 
-                onChange={onInputChange} 
+                value={value ?? ""} 
+                onChange={onChange} 
                 onClick={onClick}
                 placeholder={placeholder}
                 className="w-full" 
+                aria-invalid={!!error}
+                aria-describedby={error ? `${id}-error` : undefined}
             />
+            {error && <p id={`${id}-error`} role="alert" className="entry-form__error">{error}</p>}
         </div>
     )
 } // EntryRow

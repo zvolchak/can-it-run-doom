@@ -163,6 +163,8 @@ export function ImageUploaderInput({
 
                 {imageFile && (
                     <button
+                        type="button"
+                        aria-label="Remove image"
                         className="doom-btn ml-4"
                         onClick={handleClearFile}
                     >

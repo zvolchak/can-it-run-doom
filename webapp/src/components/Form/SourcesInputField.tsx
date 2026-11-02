@@ -10,6 +10,8 @@ interface ISourcesInputProps {
     requiredUrl?: boolean
     placeholderName?: string
     placeholderUrl?: string
+    /** Text of the add button, e.g. "Add another author". */
+    addLabel?: string
     onChange: (inputs: ISource[]) => void
 }
 
@@ -21,6 +23,7 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
         requiredUrl = false,
         placeholderName = "Name",
         placeholderUrl = "Url path",
+        addLabel = "Add another",
         onChange = null,
     }: ISourcesInputProps,
     ref
@@ -67,12 +70,10 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
 
 
     return (
-        <div className="w-full p-4 border border-control rounded-sm">
+        <div className="source-inputs">
             {inputs.map((item, index) => (
-                <div key={index}
-                    className="flex flex-row gap-2 my-2 items-stretch"
-                >
-                    <div className="w-full">
+                <div key={index} className="source-inputs__row">
+                    <div className="source-inputs__field">
                         <label>Name {requiredName ? "*" : ""}</label>
                         <input
                             type="text"
@@ -80,48 +81,45 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
                             value={item?.name || ""}
                             onChange={(e) => handleChange(e.target.value, "name", index)}
                             placeholder={placeholderName}
-                            className="w-full p-2 mb-2"
+                            className="w-full p-2"
                         />
                     </div>
     
-                    <div className="w-full">
+                    <div className="source-inputs__field">
                         <label>Url {requiredUrl ? "*" : ""}</label>
                         <input
-                            type="text"
+                            type="url"
+                            inputMode="url"
+                            autoCapitalize="off"
                             required={requiredUrl}
                             value={item?.url || ""}
                             onChange={(e) => handleChange(e.target.value, "url", index)}
                             placeholder={placeholderUrl}
-                            className="w-full p-2 mb-2"
+                            className="w-full p-2"
                         />
                     </div>
 
-                    <div className="pt-3">
-                        {   inputs?.length > 1 &&
-                            <button 
-                                type="button"
-                                className="text-danger pt-4"
-                                onClick={() => removeInputField(index)}
-                            >
-                                <FaRegWindowClose size="20px" />
-                            </button>
-                        }
-                    </div>
+                    {inputs?.length > 1 &&
+                        <button 
+                            type="button"
+                            className="source-inputs__remove"
+                            aria-label={`Remove row ${index + 1}`}
+                            onClick={() => removeInputField(index)}
+                        >
+                            <FaRegWindowClose size="18px" aria-hidden="true" />
+                        </button>
+                    }
                 </div>
             ))}
 
-            <div className="flex flex-row justify-between">
-                <button
-                    type="button"
-                    onClick={() => addInputField(1)}
-                    className="flex gap-2 doom-btn-secondary mt-2 w-24"
-                >
-                    <MdAdd size={19} />
-                    <p>
-                        Add
-                    </p>
-                </button>
-            </div>
+            <button
+                type="button"
+                onClick={() => addInputField(1)}
+                className="source-inputs__add"
+            >
+                <MdAdd size={18} aria-hidden="true" />
+                {addLabel}
+            </button>
         </div>
     )
 })
