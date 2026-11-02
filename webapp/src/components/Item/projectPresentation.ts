@@ -1,4 +1,5 @@
 import type { ISource } from "@/src/types"
+import { sourceNameFromUrl } from "../../utils/sourceNames"
 
 export interface ProjectSource {
     key: string
@@ -44,7 +45,7 @@ export function projectSources(sources: ISource[] | null | undefined): ProjectSo
         const url = externalProjectUrl(source?.url)
         if (!url) return []
 
-        const name = projectText(source?.name) || url.hostname
+        const name = projectText(source?.name) || sourceNameFromUrl(url.href) || url.hostname
         return [{
             key: sourceKey(JSON.stringify([url.href, name]), occurrences),
             name,

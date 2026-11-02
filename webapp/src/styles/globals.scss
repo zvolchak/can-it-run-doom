@@ -8,6 +8,8 @@
 @use "./containers";
 @use "./archive";
 @use "./recent";
+@use "./dropdown";
+@use "./entry-form";
 
 @tailwind base;
 @tailwind components;

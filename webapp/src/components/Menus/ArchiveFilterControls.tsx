@@ -1,17 +1,27 @@
 import { useMemo, useState } from "react"
-import type { IArchiveItem, IFiltersStoreState } from "@/src/types"
+import type { IArchiveItem, IFiltersStoreState, ITag } from "@/src/types"
 import { archiveFacets, clearedArchiveFilters, tagSearchKey } from "@/src/utils/archiveFacets"
+import { archiveTagUsage } from "@/src/utils/archiveTags"
 import { getAuthorsFromItems, getYearsFromItems } from "@/src/utils/itemsFilters"
 
-export function ArchiveFilterControls({ items, value, onChange }: {
-    items: IArchiveItem[], value: IFiltersStoreState, onChange: (value: IFiltersStoreState) => void
+const INITIAL_TAGS = 8
+const MORE_TAGS = 10
+
+export function ArchiveFilterControls({ items, value, onChange, vocabulary = null }: {
+    items: IArchiveItem[], value: IFiltersStoreState, onChange: (value: IFiltersStoreState) => void,
+    /** Curated tags. Without it the menu falls back to the raw tags stored on the projects. */
+    vocabulary?: ITag[] | null
 }) {
     const [search, setSearch] = useState("")
     const [authorSearch, setAuthorSearch] = useState("")
-    const [all, setAll] = useState(false)
-    const facets = useMemo(() => archiveFacets(items, value), [items, value])
+    const [shown, setShown] = useState(INITIAL_TAGS)
+    const known = useMemo(() => vocabulary && new Map(vocabulary.map(tag => [tag.id, tag])), [vocabulary])
+    const facets = useMemo(() => archiveFacets(items, value, known ? new Set(known.keys()) : undefined), [items, value, known])
+    const usage = useMemo(() => archiveTagUsage(items), [items])
+    const tagLabel = (tag: string) => known?.get(tag)?.label ?? tag
     const selected = value.tags.filter(tag => !tag.startsWith("!"))
-    const vocabulary = search.trim() ? facets.alphabetical.filter(tag => tagSearchKey(tag).includes(tagSearchKey(search))) : all ? facets.alphabetical : facets.popular
+    const matchesSearch = (tag: string) => [tag, tagLabel(tag)].some(text => tagSearchKey(text).includes(tagSearchKey(search)))
+    const visibleTags = search.trim() ? facets.alphabetical.filter(matchesSearch).sort((a, b) => (usage.get(b) || 0) - (usage.get(a) || 0) || tagLabel(a).localeCompare(tagLabel(b))) : facets.ranked.slice(0, shown)
     const years = getYearsFromItems(items).sort((a, b) => a - b)
     const authors = getAuthorsFromItems(items).sort((a, b) => a.localeCompare(b))
     const matchingAuthors = authors.filter(author => author.toLowerCase().includes(authorSearch.toLowerCase()))
@@ -21,7 +31,7 @@ export function ArchiveFilterControls({ items, value, onChange }: {
         <input type="checkbox" checked={value.tags.includes(tag)} onChange={() => {
             const tags = value.tags.includes(tag) ? value.tags.filter(item => item !== tag) : [...value.tags, tag]
             change({ tags, tagMatch: tags.length ? value.tagMatch : "all" })
-        }} /><span>{tag}</span><small>{facets.count(tag)}</small>
+        }} /><span>{tagLabel(tag)}</span><small>{facets.count(tag)}</small>
     </label>
     return <div className="tag-filters">
         <h2 tabIndex={-1} id="archive-tags-heading">Tags</h2>
@@ -32,11 +42,12 @@ export function ArchiveFilterControls({ items, value, onChange }: {
         {selected.length > 0 && <fieldset><legend>Selected tags</legend>{selected.map(tagRow)}</fieldset>}
         <button type="button" onClick={() => change({ tags: [], tagMatch: "all" })}>Clear tags</button>
         <label>Find a tag<input type="search" value={search} onChange={event => setSearch(event.target.value)} /></label>
-        <fieldset className="tag-filters__vocabulary"><legend>{search.trim() ? "Matching tags" : all ? "All tags" : "Popular tags"}</legend>
-            {vocabulary.map(tagRow)}
-            {vocabulary.length === 0 && <p>No matching tags. Try another name.</p>}
+        <fieldset className="tag-filters__vocabulary"><legend>{search.trim() ? "Matching tags" : "Popular tags"}</legend>
+            {visibleTags.map(tagRow)}
+            {visibleTags.length === 0 && <p>No matching tags. Try another name.</p>}
         </fieldset>
-        <button type="button" aria-expanded={all} onClick={() => setAll(!all)}>{all ? "Show popular tags" : "Browse all tags"}</button>
+        {!search.trim() && facets.ranked.length > shown && <button type="button" onClick={() => setShown(shown + MORE_TAGS)}>Show more tags</button>}
+        {!search.trim() && shown > INITIAL_TAGS && <button type="button" onClick={() => setShown(INITIAL_TAGS)}>Show fewer tags</button>}
         <details><summary>More filters</summary>
             <label className="tag-filters__choice"><input type="checkbox" checked={String(value.query?.hasCode) === "true"} onChange={event => change({ query: { ...value.query, hasCode: event.target.checked ? true : undefined } })} />Source code linked</label>
             <label>Find an author<input type="search" value={authorSearch} onChange={event => setAuthorSearch(event.target.value)} /></label>

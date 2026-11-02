@@ -7,7 +7,8 @@ import {
     AddEntryView,
 } from "@/src/components/Views"
 import {
-    ItemCard,
+    ProjectSummary,
+    ProjectDetails,
 } from "@/src/components"
 import { RootState, setNewEntryForm, setUplaodStatus } from "@/src/store"
 
@@ -23,6 +24,7 @@ export default function AddEntryPage() {
         (state: RootState) => state.submissions.newEntryForm
     )
     const [isShowPreview, setIsShowPreview] = useState<boolean>(true)
+    const [previewView, setPreviewView] = useState<"card" | "details">("card")
 
     useEffect(() => {
         // if (IsSessionExpired())
@@ -48,48 +50,53 @@ export default function AddEntryPage() {
 
 
     return (
-        <div className={`
-                flex sm:flex-row flex-col
-                w-full 
-                items-start 
-                justify-center
-                p-4
-                gap-5
-            `}
+        <div className="
+                grid grid-cols-1 lg:grid-cols-[minmax(0,40rem)_minmax(0,1fr)]
+                w-full max-w-[80rem] mx-auto
+                items-start
+                p-4 gap-6
+            "
         >
-            <div className="flex flex-row">
-                <AddEntryView 
-                    className={`
-                        bg-surface
-                        w-3/6 sm:max-w-[55rem] sm:min-w-[45rem]
-                        ${!isLoading() ? "p-4" : ""}
-                    `}
-                />
-            </div>
+            <AddEntryView 
+                className={!isLoading() ? "p-4" : ""}
+            />
 
-            <div className={`
-                    flex flex-col sm:sticky sm:top-0 w-full
-                `}
-            >
-                <div className="w-32">
+            <div className="flex flex-col lg:sticky lg:top-4 w-full gap-4">
+                <div>
                     <button 
-                            className="doom-btn"
-                            onClick={() => setIsShowPreview(!isShowPreview)}
-                        >
-                            {isShowPreview ? "Hide" : "Show"} Preview
+                        type="button"
+                        className="doom-btn"
+                        aria-expanded={isShowPreview}
+                        onClick={() => setIsShowPreview(!isShowPreview)}
+                    >
+                        {isShowPreview ? "Hide" : "Show"} Preview
                     </button>
                 </div>
 
-                <div className={`
-                    pt-16
-                    w-full
-                    ${isShowPreview ? "block" : "hidden"}
-                    `}
-                >
-                    <ItemCard 
-                        item={newEntryForm}                
-                        className="w-full"
-                    />
+                <div className={`w-full flex flex-col gap-4 ${isShowPreview ? "" : "hidden"}`}>
+                    <div role="group" aria-label="Preview type" className="preview-toggle flex gap-2">
+                        {(["card", "details"] as const).map(view => (
+                            <button
+                                key={view}
+                                type="button"
+                                className="doom-btn-secondary px-3 h-9"
+                                aria-pressed={previewView === view}
+                                onClick={() => setPreviewView(view)}
+                            >
+                                {view === "card" ? "In the archive" : "Project page"}
+                            </button>
+                        ))}
+                    </div>
+
+                    {previewView === "card"
+                        ? <ProjectSummary
+                            item={newEntryForm}
+                            projectHref="#"
+                            onProjectClick={event => event.preventDefault()}
+                            tagUsage={new Map()}
+                        />
+                        : <ProjectDetails item={newEntryForm} />
+                    }
                 </div>
             </div>
         </div>

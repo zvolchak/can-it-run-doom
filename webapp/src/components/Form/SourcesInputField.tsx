@@ -7,9 +7,13 @@ interface ISourcesInputProps {
     value?: ISource[]
     placeholder?: string
     requiredName?: boolean
+    /** Hide the name input: the link alone is entered and the name is derived from its address. */
+    showName?: boolean
     requiredUrl?: boolean
     placeholderName?: string
     placeholderUrl?: string
+    /** Text of the add button, e.g. "Add another author". */
+    addLabel?: string
     onChange: (inputs: ISource[]) => void
 }
 
@@ -18,9 +22,11 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
     { 
         value = [],
         requiredName = false,
+        showName = true,
         requiredUrl = false,
         placeholderName = "Name",
         placeholderUrl = "Url path",
+        addLabel = "Add another",
         onChange = null,
     }: ISourcesInputProps,
     ref
@@ -62,66 +68,61 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
 
     useImperativeHandle(ref, () => ({
         getAllInputs: (): ISource[] =>
-            inputs.filter(item => item.name !== "" && item.url !== "")
+            inputs.filter(item => item.url !== "" && (!showName || item.name !== ""))
     }))
 
 
     return (
-        <div className="w-full p-4 border border-control rounded-sm">
+        <div className="source-inputs">
             {inputs.map((item, index) => (
-                <div key={index}
-                    className="flex flex-row gap-2 my-2 items-stretch"
-                >
-                    <div className="w-full">
-                        <label>Name {requiredName ? "*" : ""}</label>
+                <div key={index} className={`source-inputs__row ${showName ? "" : "source-inputs__row--url-only"}`}>
+                    {showName && <div className="source-inputs__field">
+                        <label className="entry-form__label entry-form__label--sub">Name{requiredName && <span className="entry-form__required" aria-hidden="true"> *</span>}</label>
                         <input
                             type="text"
                             required={requiredName}
                             value={item?.name || ""}
                             onChange={(e) => handleChange(e.target.value, "name", index)}
                             placeholder={placeholderName}
-                            className="w-full p-2 mb-2"
+                            className="w-full p-2"
                         />
-                    </div>
+                    </div>}
     
-                    <div className="w-full">
-                        <label>Url {requiredUrl ? "*" : ""}</label>
+                    <div className="source-inputs__field">
+                        <label className="entry-form__label entry-form__label--sub">URL{requiredUrl && <span className="entry-form__required" aria-hidden="true"> *</span>}</label>
                         <input
-                            type="text"
+                            type="url"
+                            inputMode="url"
+                            autoCapitalize="off"
                             required={requiredUrl}
                             value={item?.url || ""}
                             onChange={(e) => handleChange(e.target.value, "url", index)}
                             placeholder={placeholderUrl}
-                            className="w-full p-2 mb-2"
+                            className="w-full p-2"
                         />
                     </div>
 
-                    <div className="pt-3">
-                        {   inputs?.length > 1 &&
-                            <button 
-                                type="button"
-                                className="text-danger pt-4"
-                                onClick={() => removeInputField(index)}
-                            >
-                                <FaRegWindowClose size="20px" />
-                            </button>
-                        }
-                    </div>
+                    {inputs?.length > 1 &&
+                        <button 
+                            type="button"
+                            className="source-inputs__remove"
+                            aria-label={`Remove row ${index + 1}`}
+                            onClick={() => removeInputField(index)}
+                        >
+                            <FaRegWindowClose size="18px" aria-hidden="true" />
+                        </button>
+                    }
                 </div>
             ))}
 
-            <div className="flex flex-row justify-between">
-                <button
-                    type="button"
-                    onClick={() => addInputField(1)}
-                    className="flex gap-2 doom-btn-secondary mt-2 w-24"
-                >
-                    <MdAdd size={19} />
-                    <p>
-                        Add
-                    </p>
-                </button>
-            </div>
+            <button
+                type="button"
+                onClick={() => addInputField(1)}
+                className="source-inputs__add"
+            >
+                <MdAdd size={18} aria-hidden="true" />
+                {addLabel}
+            </button>
         </div>
     )
 })

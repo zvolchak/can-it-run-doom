@@ -1,8 +1,11 @@
 rules_version = '2';
 service firebase.storage {
   match /b/{bucket}/o {
+    // Archive images are public to read by direct link; uploads happen only through the
+    // API (Admin SDK, which bypasses these rules). Clients can't write, delete, or list.
     match /{allPaths=**} {
-      allow read, write: if request.auth != null; // Only authenticated users can access storage
+      allow get: if true;
+      allow list, write: if false;
     }
   }
 }

@@ -2,6 +2,7 @@ import axios from "axios"
 import Cookies from "js-cookie"
 import { 
     IArchiveItem,
+    ITag,
     IUserAuthResponse,
     IUserAuth,
 } from "@/src/types"
@@ -66,6 +67,21 @@ export async function fetchDoomPorts({ status = "published" } = {}):
         return null
     }
 } // getArchiveData
+
+
+let tagsRequest: Promise<ITag[] | null> | null = null
+
+/** The curated tag vocabulary. Fetched once per page load; a failed request is retried next time. */
+export function fetchTags(): Promise<ITag[] | null> {
+    tagsRequest ||= apiClient.get("/tags")
+        .then(response => (Array.isArray(response.data?.tags) ? response.data.tags as ITag[] : null))
+        .catch(() => null)
+        .then(tags => {
+            if (!tags) tagsRequest = null
+            return tags
+        })
+    return tagsRequest
+}
 
 
 export async function validateSession(): Promise<IUserAuthResponse> {

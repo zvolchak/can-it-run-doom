@@ -1,0 +1,392 @@
+[
+  {
+    "id": "desk-phone",
+    "label": "Desk phone",
+    "category": "device",
+    "description": "Office and assistive desk phones."
+  },
+  {
+    "id": "graphing-calculator",
+    "label": "Graphing calculator",
+    "category": "device",
+    "description": "Handheld graphing and scientific calculators."
+  },
+  {
+    "id": "camera",
+    "label": "Camera",
+    "category": "device",
+    "description": "Digital, 360, and IP cameras."
+  },
+  {
+    "id": "printer",
+    "label": "Printer",
+    "category": "device",
+    "description": "2D and 3D printers."
+  },
+  {
+    "id": "audio",
+    "label": "Audio gear",
+    "category": "device",
+    "description": "Headphones, earbuds, radios, MP3 players, and music hardware."
+  },
+  {
+    "id": "wearable",
+    "label": "Wearable",
+    "category": "device",
+    "description": "Watches, bands, glasses, and worn audio."
+  },
+  {
+    "id": "kitchen-appliance",
+    "label": "Kitchen appliance",
+    "category": "device",
+    "description": "Cooking and coffee appliances and kitchen displays."
+  },
+  {
+    "id": "smart-home",
+    "label": "Smart home",
+    "category": "device",
+    "description": "Connected home, garden, and climate devices."
+  },
+  {
+    "id": "consumer-electronics",
+    "label": "Consumer electronics",
+    "category": "device",
+    "description": "Everyday gadgets that fit no narrower tag."
+  },
+  {
+    "id": "medical-device",
+    "label": "Medical device",
+    "category": "device",
+    "description": "Medical and health devices."
+  },
+  {
+    "id": "automotive",
+    "label": "Automotive",
+    "category": "device",
+    "description": "Car infotainment, controls, and EV charging."
+  },
+  {
+    "id": "retail-pos",
+    "label": "Retail and payment",
+    "category": "device",
+    "description": "ATMs, card readers, POS terminals, kiosks, scales, and price tags."
+  },
+  {
+    "id": "industrial-control",
+    "label": "Industrial control",
+    "category": "device",
+    "description": "Industrial controllers, HMIs, and broadcast gear."
+  },
+  {
+    "id": "network-equipment",
+    "label": "Network equipment",
+    "category": "device",
+    "description": "Routers, hotspots, modems, and security appliances."
+  },
+  {
+    "id": "oscilloscope",
+    "label": "Oscilloscope",
+    "category": "device",
+    "description": "Used as a display in XY mode."
+  },
+  {
+    "id": "satellite",
+    "label": "Satellite",
+    "category": "device",
+    "description": "Satellites and spacecraft."
+  },
+  {
+    "id": "biological",
+    "label": "Biological",
+    "category": "device",
+    "description": "Living cells or neurons."
+  },
+  {
+    "id": "console",
+    "label": "Console",
+    "category": "device",
+    "description": "Handheld and home game consoles, including homebrew."
+  },
+  {
+    "id": "arcade-cabinet",
+    "label": "Arcade cabinet",
+    "category": "device",
+    "description": "Arcade, pinball, and rhythm cabinets."
+  },
+  {
+    "id": "tablet",
+    "label": "Tablet or e-reader",
+    "category": "device",
+    "description": "Tablets, kids' tablets, and e-readers."
+  },
+  {
+    "id": "vintage-computer",
+    "label": "Vintage computer",
+    "category": "device",
+    "description": "Old and obsolete computers, and recreations of them."
+  },
+  {
+    "id": "microcontroller",
+    "label": "Microcontroller board",
+    "category": "device",
+    "description": "Dev boards and microcontroller-based devices."
+  },
+  {
+    "id": "custom-hardware",
+    "label": "Custom hardware",
+    "category": "device",
+    "description": "One-off PCBs and hand-built devices."
+  },
+  {
+    "id": "unusual-screen",
+    "label": "Unusual screen",
+    "category": "device",
+    "description": "Screens never meant for games: billboards, buildings, signs, touch bars."
+  },
+  {
+    "id": "unusual-power",
+    "label": "Unusual power",
+    "category": "device",
+    "description": "Powered by potatoes, ethanol, or similar."
+  },
+  {
+    "id": "raspberry-pi",
+    "label": "Raspberry Pi",
+    "category": "device",
+    "description": "Raspberry Pi boards."
+  },
+  {
+    "id": "custom-cpu",
+    "label": "Custom CPU",
+    "category": "system",
+    "description": "A processor designed for the project, real or virtual."
+  },
+  {
+    "id": "linux",
+    "label": "Linux",
+    "category": "system",
+    "description": "Runs on Linux."
+  },
+  {
+    "id": "windows",
+    "label": "Windows",
+    "category": "system",
+    "description": "Runs on Windows."
+  },
+  {
+    "id": "dos",
+    "label": "DOS",
+    "category": "system",
+    "description": "MS-DOS or a DOS emulator."
+  },
+  {
+    "id": "android",
+    "label": "Android",
+    "category": "system",
+    "description": "Runs on Android."
+  },
+  {
+    "id": "webassembly",
+    "label": "WebAssembly",
+    "category": "system",
+    "description": "Built with or running WebAssembly."
+  },
+  {
+    "id": "javascript",
+    "label": "JavaScript",
+    "category": "system",
+    "description": "Written or hosted in JavaScript or TypeScript."
+  },
+  {
+    "id": "minecraft",
+    "label": "Minecraft",
+    "category": "software",
+    "description": "Inside Minecraft."
+  },
+  {
+    "id": "turing-complete",
+    "label": "Turing Complete",
+    "category": "software",
+    "description": "Inside the game Turing Complete."
+  },
+  {
+    "id": "discord",
+    "label": "Discord",
+    "category": "software",
+    "description": "Delivered through Discord."
+  },
+  {
+    "id": "application",
+    "label": "Application",
+    "category": "software",
+    "description": "Office, graphics, and media applications."
+  },
+  {
+    "id": "developer-tool",
+    "label": "Developer tool",
+    "category": "software",
+    "description": "IDEs, debuggers, containers, languages, and toolchains."
+  },
+  {
+    "id": "database",
+    "label": "Database",
+    "category": "software",
+    "description": "Databases and query engines."
+  },
+  {
+    "id": "blockchain",
+    "label": "Blockchain",
+    "category": "software",
+    "description": "Crypto wallets and smart-contract platforms."
+  },
+  {
+    "id": "llm-chat",
+    "label": "LLM chat",
+    "category": "software",
+    "description": "AI assistants hosting the game."
+  },
+  {
+    "id": "browser-trick",
+    "label": "Browser trick",
+    "category": "software",
+    "description": "Favicons, bookmarklets, fonts, SVG, and other browser features."
+  },
+  {
+    "id": "web-service",
+    "label": "Web service",
+    "category": "software",
+    "description": "Hosted web services and SaaS platforms."
+  },
+  {
+    "id": "operating-system",
+    "label": "Operating system",
+    "category": "software",
+    "description": "Operating systems, including cloud, homebrew, and mainframe environments."
+  },
+  {
+    "id": "inside-a-game",
+    "label": "Inside a game",
+    "category": "software",
+    "description": "Runs inside another video game."
+  },
+  {
+    "id": "chocolate-doom",
+    "label": "Chocolate Doom",
+    "category": "engine",
+    "description": "Uses Chocolate Doom."
+  },
+  {
+    "id": "custom-engine",
+    "label": "Custom engine",
+    "category": "engine",
+    "description": "Not id Tech 1: a Doom-like, demake, or from-scratch engine."
+  },
+  {
+    "id": "doom-8088",
+    "label": "Doom 8088",
+    "category": "engine",
+    "description": "Uses Doom 8088."
+  },
+  {
+    "id": "doom-nano",
+    "label": "Doom-nano",
+    "category": "engine",
+    "description": "Uses the doom-nano raycaster."
+  },
+  {
+    "id": "doomgeneric",
+    "label": "doomgeneric",
+    "category": "engine",
+    "description": "Uses doomgeneric."
+  },
+  {
+    "id": "gzdoom",
+    "label": "GZDoom",
+    "category": "engine",
+    "description": "Uses GZDoom."
+  },
+  {
+    "id": "prboom",
+    "label": "PrBoom",
+    "category": "engine",
+    "description": "Uses PrBoom or a derivative."
+  },
+  {
+    "id": "bare-metal",
+    "label": "Bare metal",
+    "category": "technique",
+    "description": "Runs without an operating system."
+  },
+  {
+    "id": "firmware-hack",
+    "label": "Firmware hack",
+    "category": "technique",
+    "description": "Custom firmware, jailbreaks, or security exploits."
+  },
+  {
+    "id": "network-play",
+    "label": "Network play",
+    "category": "technique",
+    "description": "Played remotely over a network, VNC, SSH, or browser."
+  },
+  {
+    "id": "multiplayer",
+    "label": "Multiplayer",
+    "category": "technique",
+    "description": "Adds or supports multiplayer."
+  },
+  {
+    "id": "peripheral-only",
+    "label": "Peripheral only",
+    "category": "technique",
+    "description": "The game runs elsewhere; the target is only a display or controller."
+  },
+  {
+    "id": "not-playable",
+    "label": "Not playable",
+    "category": "technique",
+    "description": "Prerecorded, demo, or too slow to play live."
+  },
+  {
+    "id": "virtual-machine",
+    "label": "Virtual machine",
+    "category": "technique",
+    "description": "Runs on an emulated, interpreted, or virtual machine."
+  },
+  {
+    "id": "neural-network",
+    "label": "Neural network",
+    "category": "technique",
+    "description": "A neural network does the rendering or simulation."
+  },
+  {
+    "id": "esoteric",
+    "label": "Esoteric",
+    "category": "technique",
+    "description": "Computation in a medium never meant to compute."
+  },
+  {
+    "id": "unusual-input",
+    "label": "Unusual input",
+    "category": "input",
+    "description": "Played with something that was never an input device."
+  },
+  {
+    "id": "text-mode",
+    "label": "Text mode",
+    "category": "display",
+    "description": "Rendered as text, ASCII, or terminal output."
+  },
+  {
+    "id": "makeshift-display",
+    "label": "Makeshift display",
+    "category": "display",
+    "description": "Pixels mapped onto cells, tiles, traces, or other non-display media."
+  },
+  {
+    "id": "audio-signal",
+    "label": "Audio signal",
+    "category": "display",
+    "description": "Frames transmitted as sound."
+  }
+]

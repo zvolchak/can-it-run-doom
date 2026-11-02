@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import type { IArchiveItem, IFiltersStoreState } from "@/src/types"
+import type { IArchiveItem, IFiltersStoreState, ITag } from "@/src/types"
+import { fetchTags } from "@/src/api"
 import { type RootState, applyArchiveFilters, setIsFiltersMenu } from "@/src/store"
 import { archiveResults } from "@/src/utils/archiveResults"
 import { ArchiveFilterControls } from "./ArchiveFilterControls"
@@ -12,6 +13,8 @@ export function FiltersMenu({ items }: { items: IArchiveItem[] }) {
     const [draft, setDraft] = useState<IFiltersStoreState>(applied)
     const [desktop, setDesktop] = useState(false)
     const dialog = useRef<HTMLDialogElement>(null)
+    const [vocabulary, setVocabulary] = useState<ITag[] | null>(null)
+    useEffect(() => { fetchTags().then(setVocabulary) }, [])
     const close = () => dispatch(setIsFiltersMenu(false))
     useEffect(() => {
         const media = window.matchMedia("(min-width: 1024px)")
@@ -43,12 +46,12 @@ export function FiltersMenu({ items }: { items: IArchiveItem[] }) {
     }, [open, desktop, dispatch])
     return <>
         {desktop && <aside id="archive-filters" className="archive-tag-rail" aria-label="Archive filters">
-            <ArchiveFilterControls items={items} value={applied} onChange={value => dispatch(applyArchiveFilters(value))} />
+            <ArchiveFilterControls items={items} vocabulary={vocabulary} value={applied} onChange={value => dispatch(applyArchiveFilters(value))} />
         </aside>}
         {!desktop && <dialog aria-labelledby="archive-filter-title" id="archive-filters" className="archive-filter-dialog" ref={dialog} onCancel={event => { event.preventDefault(); close() }} onClick={event => { if (event.target === event.currentTarget) close() }}>
             <div className="archive-filter-dialog__shell">
                 <header><h2 id="archive-filter-title">Archive filters</h2><button type="button" onClick={close} className="doom-btn" aria-label="Close filters">Close</button></header>
-                <div className="archive-filter-dialog__content"><ArchiveFilterControls items={items} value={draft} onChange={setDraft} /></div>
+                <div className="archive-filter-dialog__content"><ArchiveFilterControls items={items} vocabulary={vocabulary} value={draft} onChange={setDraft} /></div>
                 <footer><button type="button" className="doom-btn-secondary" onClick={close}>Cancel</button><button type="button" className="doom-action-btn" onClick={() => { dispatch(applyArchiveFilters(draft)); close() }}>Show {archiveResults(items, draft).total} projects</button></footer>
             </div>
         </dialog>}

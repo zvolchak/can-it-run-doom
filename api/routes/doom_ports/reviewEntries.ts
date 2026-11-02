@@ -1,9 +1,5 @@
 import { Request, Response, Router } from "express"
-import { 
-    runTransaction,
-    Timestamp,
-    doc,
-} from "firebase/firestore"
+import { Timestamp } from "firebase-admin/firestore"
 import { 
     IEntryAddedResponse, 
     EItemStatus,
@@ -20,75 +16,10 @@ import {
     authenticate,
     authorizeByRole,
 } from "../../middleware"
-import axios from "axios"
+import { notificationsEnabled, resolveIssue, sendDiscordNotification } from "../../utils/notifications"
 
-const secrets = process.env
 
 const router = Router()
-
-
-function getSuccessNotification(entry: IArchiveItem) {
-    const entryUrl = `https://canitrundoom.org?id=${entry.id}`
-    const submittedBy = entry?.submittedBy ? `Submitted by: ${entry.submittedBy}` : ""
-    const content = `${entry.title}:\n${entryUrl}\n${submittedBy}`
-    return content
-} // getSuccessNotification
-
-
-async function resolveIssue(entry: IArchiveItem): Promise<boolean> {
-    if (!entry?.requestUrl)
-        return false
-
-    console.info(`- Attempting to resolve an issue "${entry.requestUrl}" for entry ${entry.id}`)
-    const token = secrets.GITHUB_TOKEN
-    if (!token) {
-        console.warn(`Missing github token to resolve an issue ${entry?.id}: ${entry?.requestUrl}`)
-        return
-    }
-
-    let comment = { body: getSuccessNotification(entry) }
-    if (entry.status === EItemStatus.rejected) {
-        comment = { 
-            body: "This entry has been rejected. If reason will not be provided " + 
-            "shortly, please reach out to support or leave comments here." 
-        }
-    }
-
-    const headers = {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/vnd.github+json"
-    }
-
-    try {
-        await axios.post(`${entry.requestUrl}/comments`, comment, { headers })
-        await axios.patch(entry.requestUrl, { state: "closed"}, { headers })
-    } catch (error) {
-        console.error("Failed to resolve an issue for entry " +
-            `${entry.id} : ${entry.requestUrl}`, error)
-        return false
-    }
-    return true
-} // resolveIssue
-
-
-async function sendDiscordNotification(entry: IArchiveItem): Promise<boolean> {
-    const webhook = secrets.DISCORD_ENTRY_NOTIFY_WEBHOOK
-    if (!webhook)
-        return false
-
-    const payload = {
-        content: getSuccessNotification(entry)
-    }
-
-    try {
-        await axios.post(webhook, payload)
-    } catch (error) {
-        console.error("Failed to send discord notification for entry " +
-            `${entry.id} : ${entry.requestUrl}`, error)
-        return false
-    }
-    return true
-} // sendDiscordNotification
 
 
  /* Add entries to the doomPorts collection if approved and change its status in the 
@@ -98,26 +29,26 @@ export async function approveEntries(entries: { reviewId: string, entry: IArchiv
     const result: IEntryAddedResponse = { success: [], failed: [] }
     await Promise.all(entries.map(async ({ reviewId, entry }) => {
         try {
-            const incomingRef = doc(fbDb, COLLECTION_NAME.doomPortsIncoming, reviewId)
-            const { published, publicRef } = await runTransaction(fbDb, async transaction => {
+            const incomingRef = fbDb.collection(COLLECTION_NAME.doomPortsIncoming).doc(reviewId)
+            const { published, publicRef, created } = await fbDb.runTransaction(async transaction => {
                 const incoming = await transaction.get(incomingRef)
-                if (!incoming.exists() || incoming.data().status !== EItemStatus.pending)
+                if (!incoming.exists || incoming.data().status !== EItemStatus.pending)
                     throw new Error("Submission is no longer pending")
-                const publicRef = doc(fbDb, COLLECTION_NAME.doomPorts, incoming.data().id || reviewId)
+                const publicRef = fbDb.collection(COLLECTION_NAME.doomPorts).doc(incoming.data().id || reviewId)
                 // Read the target before any write, so concurrent approvals/edits retry.
                 const current = await transaction.get(publicRef)
                 const approved = status === EItemStatus.approved || status === EItemStatus.published
                 let fields: IArchiveItem = { ...incoming.data(), status, id: publicRef.id }
                 if (approved) {
                     fields = publicationFields({ ...incoming.data(), id: publicRef.id, status: EItemStatus.published },
-                        current.exists() ? current.data() : null, Timestamp.now())
+                        current.exists ? current.data() : null, Timestamp.now())
                     fields.editHistory = [...new Set([...(current.data()?.editHistory || []), reviewId])]
                     transaction.set(publicRef, fields)
                 }
                 transaction.update(incomingRef, { status, updatedAt: Timestamp.now() })
-                return { published: fields, publicRef }
+                return { published: fields, publicRef, created: !current.exists }
             })
-            result.success.push({ id: reviewId, entry: published, docRef: publicRef, file: null })
+            result.success.push({ id: reviewId, entry: published, docRef: publicRef, file: null, created })
         } catch (error) {
             console.error(error)
             result.failed.push(entry)
@@ -171,10 +102,12 @@ router.post(
             return res.status(400).json({ error: "No entries has been processed!", ...result })
         }
         
-        if (secrets.NODE_ENV === "production") {
+        if (notificationsEnabled()) {
             await Promise.all(result.success.map(async (batch) => {
-                const hasIssueReolved = await resolveIssue(batch.entry)
-                if (hasIssueReolved)
+                const approved = status !== EItemStatus.rejected
+                await resolveIssue(batch.entry, approved)
+                // Only brand-new approved entries are announced; edits and rejections stay quiet.
+                if (approved && batch.created)
                     await sendDiscordNotification(batch.entry)
             }))
         }

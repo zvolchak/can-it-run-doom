@@ -2,14 +2,7 @@ import { Request, Response, Router } from "express"
 import Busboy from "busboy"
 import axios from "axios"
 import filetype from 'magic-bytes.js'
-import { 
-    Timestamp,
-    writeBatch,
-    doc,
-    DocumentReference,
-    DocumentData,
-    runTransaction,
-} from "firebase/firestore"
+import { Timestamp, DocumentReference, DocumentData } from "firebase-admin/firestore"
 import { DecodedIdToken } from "firebase-admin/auth"
 import { 
     IArchiveItem, 
@@ -25,13 +18,23 @@ import {
     doomPortsCollection,
     doomPortsIncomingCollection,
     generateFirestoreId,
+    getKnownTagIds,
+    jsonParseString,
  } from "../../utils"
 
 import { publicationFields } from "../../utils/publication"
+import { enforceSubmissionStatus, sanitizePreviewImg, validateSubmission } from "../../utils/submission"
+import { isModerator } from "../../middleware"
+import { notificationsEnabled } from "../../utils/notifications"
+import { sourceNameFromUrl } from "../../utils/sourceNames"
 
 const secrets = process.env
 
 const router = Router()
+
+// Submissions come from anonymous visitors; the form downsizes images to ~300kb.
+const MAX_IMAGE_BYTES = 1024 * 1024
+const MAX_ITEMS_BYTES = 200 * 1024
 
 
 async function saveFileToStorage(fileName: string, file) {
@@ -64,12 +67,16 @@ function getFileType(buffer: string) {
 } // getFileType
 
 
-function sourcesArrayToFirebaseObject(sources: any): ISource[] {
+/* Links may be submitted without a name; those get a readable one derived from the URL.
+ * Authors keep theirs as given: a person's name can't be read off a profile link. */
+function sourcesArrayToFirebaseObject(sources: any, deriveNames = false): ISource[] {
     if (!Array.isArray(sources))
         return []
 
     return sources.map((source) => {
-        return { name: source.name || "", url: source.url || "" }
+        const url = source.url || ""
+        const name = source.name || (deriveNames ? sourceNameFromUrl(url) : "") || ""
+        return { name, url }
     })
 } // sourcesArrayToFirebaseObject
 
@@ -139,19 +146,23 @@ async function createGithubIssue(items: IArchiveItem[]) {
             }
         )
 
-        const batch = writeBatch(fbDb)
         const issueUrl = response?.data?.html_url
-        // Update DB docs with the URL to the github issue it belongs to.
-        await Promise.all(items.map(async (item) => { 
-            const { collection, id } = getStagingOrProdDb(item)
-            const docRef = doc(collection, id)
-            await batch.update(docRef, { id: item.id, requestUrl: issueUrl })
-        }))
-        await batch.commit()
+        try {
+            // Remember which issue each document belongs to, so approval can resolve it.
+            // `id` is left alone: for edit proposals it points at the entry being edited.
+            const batch = fbDb.batch()
+            items.forEach(item => {
+                const { collection, id } = getStagingOrProdDb(item)
+                batch.update(collection.doc(id), { requestUrl: issueUrl })
+            })
+            await batch.commit()
+        } catch (error) {
+            console.error(`Issue ${issueUrl} was created, but saving its URL failed; it won't be closed on approval:`, error)
+        }
 
         return { url: issueUrl }
     } catch (error) {
-        console.error(`Failed to create a Github Issue for entry ${items?.[0]?.id}:`, error)
+        console.error(`Failed to create a Github Issue for entry ${items?.[0]?.id}:`, error?.message)
         return { url: null }
     }
 } // createGithubIssue
@@ -166,18 +177,22 @@ export async function createEntry(
     //     incomingFile = await downloadImgIntoArrayBuffer(incomingEntry.previewImg)
     // }
     incomingEntry.authors = sourcesArrayToFirebaseObject(incomingEntry?.authors)
-    incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl)
-    incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl)
+    incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl, true)
+    incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl, true)
     if (!incomingEntry.editHistory)
         incomingEntry.editHistory = []
     
     const { collection } = getStagingOrProdDb(incomingEntry)
     const entryId = incomingEntry.id || generateFirestoreId()
-    let fileName = incomingFile?.originalname || incomingEntry.previewImg
+    // Never derive the stored name from client input: a client-chosen id or file name
+    // would let a pending submission overwrite a live entry's image.
+    let fileName = incomingEntry.previewImg
     try {
         if (incomingFile?.buffer.length > 0) {
             const imageFileType = getFileType(incomingFile?.buffer)
-            fileName = `${entryId}.${imageFileType}`
+            if (!imageFileType)
+                throw Error("Only image files are supported!")
+            fileName = `${generateFirestoreId()}.${imageFileType}`
             fileName = await saveFileToStorage(fileName, incomingFile)
         }
     } catch (error) {
@@ -194,10 +209,10 @@ export async function createEntry(
             submittedBy: null,
         }
         const docId = incomingEntry.status !== EItemStatus.pending ? entryId : generateFirestoreId()
-        docRef = doc(collection, docId)
-        await runTransaction(fbDb, async transaction => {
+        docRef = collection.doc(docId)
+        await fbDb.runTransaction(async transaction => {
             const snapshot = await transaction.get(docRef)
-            const fields = publicationFields(newEntry, snapshot.exists() ? snapshot.data() : null, Timestamp.now())
+            const fields = publicationFields(newEntry, snapshot.exists ? snapshot.data() : null, Timestamp.now())
             // Incoming submissions never establish publication dates.
             if (collection === doomPortsIncomingCollection) fields.addedAt = null
             transaction.set(docRef, fields)
@@ -252,7 +267,11 @@ function parseBusboyRequest(req: Request): Promise<{
     image: { buffer: Buffer, originalname: string } | null
 }> {
     return new Promise((resolve, reject) => {
-        const busboy = Busboy({ headers: req.headers })
+        const busboy = Busboy({
+            headers: req.headers,
+            limits: { files: 1, fields: 5, fileSize: MAX_IMAGE_BYTES, fieldSize: MAX_ITEMS_BYTES },
+        })
+        let exceededLimit = false
 
         let itemsJson = ''
         let imageBuffer: Buffer | null = null
@@ -263,6 +282,7 @@ function parseBusboyRequest(req: Request): Promise<{
             imageName = filename
 
             file.on('data', data => chunks.push(data))
+            file.on('limit', () => { exceededLimit = true })
             file.on('end', () => {
                 imageBuffer = Buffer.concat(chunks)
             })
@@ -270,11 +290,18 @@ function parseBusboyRequest(req: Request): Promise<{
             file.resume()
         })
 
-        busboy.on('field', (fieldname, value) => {
+        busboy.on('field', (fieldname, value, info) => {
+            if (info?.valueTruncated) exceededLimit = true
             if (fieldname === 'items') itemsJson = value
         })
 
+        busboy.on('fieldsLimit', () => { exceededLimit = true })
         busboy.on('finish', () => {
+            if (exceededLimit) {
+                const error: any = new Error("Upload is too large")
+                error.code = "LIMIT"
+                return reject(error)
+            }
             resolve({
                 itemsJson,
                 image: imageBuffer ? { buffer: imageBuffer, originalname: imageName } : null
@@ -288,7 +315,6 @@ function parseBusboyRequest(req: Request): Promise<{
 
         // Check if the request has a rawBody (e.g., in cloud functions)
         if ((req as any).rawBody) {
-            console.info("Using rawBody for busboy", (req as any).rawBody)
             busboy.end((req as any).rawBody)
         } else {
             req.pipe(busboy)
@@ -308,15 +334,33 @@ router.post(
         itemsJson = parsed.itemsJson
         image = parsed.image
     } catch (error) {
+        if (error.code === "LIMIT")
+            return res.status(413).json({ error: "The image or entry is too large. Use an image under 1 MB." })
         console.warn("Falling back to JSON body due to Busboy error:", error.message)
         itemsJson = req.body?.items || ''
     }
-    console.info("Incoming request to add a new entry:", itemsJson)
+    console.info("Incoming request to add a new entry:", String(itemsJson).slice(0, 2000))
     const errorMessage = "Failed to add a new entry! Please, try again or contact " +
         "support if the error persists." 
     
     try {
-        const items: IArchiveItem[] = await buildArchiveItem(itemsJson as any, req.user)
+        const rawItems = jsonParseString(itemsJson)
+        if (!Array.isArray(rawItems) || rawItems.length === 0)
+            return res.status(400).json({ error: "Missing required fields!" })
+
+        // Moderators may publish directly; everyone else only submits for review.
+        const canPublish = await isModerator(req)
+        const knownTagIds = await getKnownTagIds()
+        const problems = rawItems.flatMap((raw, index) =>
+            validateSubmission(raw, knownTagIds).map(message => rawItems.length > 1 ? `Entry ${index + 1}: ${message}` : message)
+        )
+        if (problems.length > 0)
+            return res.status(400).json({ error: `Please fix: ${problems.join("; ")}`, problems })
+
+        const items: IArchiveItem[] = enforceSubmissionStatus(await buildArchiveItem(rawItems as any, req.user), canPublish)
+        // Anonymous submitters may only reference images already in our own storage.
+        if (!canPublish)
+            items.forEach(item => { item.previewImg = sanitizePreviewImg(item.previewImg, secrets.FB_STORAGE_BUCKET) })
         const user = req.user
 
         if (!items || items.length === 0) 
@@ -334,7 +378,7 @@ router.post(
         
         let githubIssue = null
         // Create a github issue in Prod env to track and notify about new submissions.
-        if (secrets.NODE_ENV !== "development" && secrets.GITHUB_TOKEN) {
+        if (notificationsEnabled() && secrets.GITHUB_TOKEN) {
             githubIssue = await createGithubIssue(
                 result.success.map(s => ({ ...s.entry, id: s.id }))
             )

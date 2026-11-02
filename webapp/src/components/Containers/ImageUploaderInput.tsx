@@ -138,7 +138,7 @@ export function ImageUploaderInput({
 
     return (
         <div className={className}>
-            <label className="block mb-3">Preview Image</label>
+            <label className="entry-form__label">Preview Image</label>
 
             {imageError && (
                 <div className="text-danger self-center mb-5">{imageError}</div>
@@ -163,6 +163,8 @@ export function ImageUploaderInput({
 
                 {imageFile && (
                     <button
+                        type="button"
+                        aria-label="Remove image"
                         className="doom-btn ml-4"
                         onClick={handleClearFile}
                     >

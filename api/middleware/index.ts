@@ -12,7 +12,7 @@ import {
 
 const secrets = process.env
 
-async function getUserClaim(req: Request, res: Response): Promise<DecodedIdToken> {
+async function getUserClaim(req: Request): Promise<DecodedIdToken> {
     const sessionCookie = req.cookies.session || null
     const claim = await verifySessionCookie(sessionCookie)
     if (!claim) {
@@ -31,7 +31,7 @@ export async function authenticate(req: Request, res: Response, next: NextFuncti
     }
 
     try {
-        const claim = await getUserClaim(req, res)
+        const claim = await getUserClaim(req)
         req.user = claim
 
         next()
@@ -72,3 +72,15 @@ export async function authorizeByRole(
         res.status(401).json({ "error": "Unauthorized access!" })
     }
 }
+
+
+/** True only for a real session of a moderator or an owner; never relaxed for localhost. */
+export async function isModerator(req: Request): Promise<boolean> {
+    try {
+        const claim = await getUserClaim(req)
+        const isOwner = (secrets.FB_ROOT_UID?.split(",") || []).includes(claim.uid)
+        return isOwner || IsAuthorized(claim.role?.toLocaleLowerCase(), EUserRole.Moderator)
+    } catch {
+        return false
+    }
+} // isModerator

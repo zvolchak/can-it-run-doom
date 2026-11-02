@@ -14,16 +14,34 @@ function fixture() {
     let retry = false
     let queue = Promise.resolve()
     const stamp = () => ({ toDate: () => new Date(clock++) })
-    const snapshot = ref => ({ id: ref.id, exists: () => records.has(ref.path), data: () => records.get(ref.path) })
+    const snapshot = ref => ({ id: ref.id, exists: records.has(ref.path), data: () => records.get(ref.path) })
+    async function getDocs(query) {
+        const status = query.conditions.find(c => c.kind === "where")?.args[2]
+        const after = query.conditions.find(c => c.kind === "after")?.id
+        const limit = query.conditions.find(c => c.kind === "limit")?.count || Infinity
+        const docs = [...records].filter(([path, value]) => path.startsWith(query.path + "/") && (!status || value.status === status))
+            .map(([path]) => snapshot({ path, id: path.split("/")[1] })).sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0)
+            .filter(doc => !after || doc.id > after).slice(0, limit)
+        return { docs }
+    }
+    // Mirrors the Admin SDK's chained, immutable query builders.
+    const collection = (path, conditions = []) => ({
+        path, conditions,
+        doc: id => { const docId = id || `generated-${++sequence}`; return { id: docId, path: `${path}/${docId}` } },
+        where: (...args) => collection(path, [...conditions, { kind: "where", args }]),
+        orderBy: (...args) => collection(path, [...conditions, { kind: "order", args }]),
+        startAfter: id => collection(path, [...conditions, { kind: "after", id }]),
+        limit: count => collection(path, [...conditions, { kind: "limit", count }]),
+        get: () => getDocs({ path, conditions }),
+    })
     const firestore = {
         Timestamp: { now: stamp },
-        doc: (...args) => {
-            const [collection, id] = args.length === 3 ? [args[1], args[2]] : args
-            const name = typeof collection === "string" ? collection : collection.path
-            const docId = id || `generated-${++sequence}`
-            return { id: docId, path: `${name}/${docId}` }
-        },
-        runTransaction: (_db, callback) => {
+        FieldValue: { arrayUnion: (...values) => values },
+        FieldPath: { documentId: () => "__name__" },
+    }
+    const fbDb = {
+        collection: name => collection(name),
+        runTransaction: callback => {
             const task = queue.then(async () => {
                 async function attempt(commit) {
                     const writes = []
@@ -42,25 +60,9 @@ function fixture() {
             queue = task.catch(() => {})
             return task
         },
-        arrayUnion: (...values) => values,
-        query: (collection, ...conditions) => ({ collection, conditions }),
-        where: (...args) => ({ kind: "where", args }),
-        orderBy: (...args) => ({ kind: "order", args }),
-        documentId: () => "__name__",
-        startAfter: id => ({ kind: "after", id }),
-        limit: count => ({ kind: "limit", count }),
-        getDocs: async query => {
-            const status = query.conditions.find(c => c.kind === "where")?.args[2]
-            const after = query.conditions.find(c => c.kind === "after")?.id
-            const limit = query.conditions.find(c => c.kind === "limit")?.count || Infinity
-            const docs = [...records].filter(([path, value]) => path.startsWith(query.collection.path + "/") && (!status || value.status === status))
-                .map(([path]) => snapshot({ path, id: path.split("/")[1] })).sort((a, b) => a.id < b.id ? -1 : a.id > b.id ? 1 : 0)
-                .filter(doc => !after || doc.id > after).slice(0, limit)
-            return { docs }
-        },
     }
     const environment = {
-        fbDb: {}, doomPortsCollection: { path: "doomPorts" }, doomPortsIncomingCollection: { path: "doomPorts-Incoming" },
+        fbDb, doomPortsCollection: collection("doomPorts"), doomPortsIncomingCollection: collection("doomPorts-Incoming"),
         COLLECTION_NAME: { doomPorts: "doomPorts", doomPortsIncoming: "doomPorts-Incoming" },
         generateFirestoreId: () => `generated-${++sequence}`,
         EUserRole: { Moderator: "Moderator" }, getUserFromRequest: req => req.user,
@@ -75,7 +77,7 @@ function fixture() {
         cache.set(path, exports)
         const code = ts.transpileModule(readFileSync(path, "utf8"), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2020, esModuleInterop: true } }).outputText
         function localRequire(name) {
-            if (name === "firebase/firestore") return firestore
+            if (name === "firebase-admin/firestore") return firestore
             if (name === "express") return { Router: () => ({ post() {}, get: (_path, callback) => routes.push(callback) }) }
             if (name.endsWith("/@types")) return { EItemStatus: statuses }
             if (name.endsWith("/middleware")) return { authenticate() {}, authorizeByRole() {} }
@@ -114,6 +116,7 @@ test("pending submission dates never claim publication; approval establishes ser
     f.retry()
     const result = await approveEntries([{ reviewId: incoming.id, entry: incoming.entry }], "approved")
     assert.equal(result.success.length, 1)
+    assert.equal(result.success[0].created, true)
     assert.ok(f.records.get("doomPorts/target").addedAt)
     assert.equal(f.records.get(`doomPorts-Incoming/${incoming.id}`).status, "approved")
     assert.deepEqual(f.records.get("doomPorts/target").editHistory, [incoming.id])
@@ -128,7 +131,8 @@ test("edit approvals preserve addition and creation; rejection never publishes",
     await createEntry({ id: "target", title: "Original", previewImg: "", status: "published" }, null)
     const first = f.records.get("doomPorts/target")
     const edit = await createEntry({ id: "target", title: "Edited", previewImg: "", status: "pending" }, null)
-    await approveEntries([{ reviewId: edit.id, entry: edit.entry }], "approved")
+    const editResult = await approveEntries([{ reviewId: edit.id, entry: edit.entry }], "approved")
+    assert.equal(editResult.success[0].created, false)
     const edited = f.records.get("doomPorts/target")
     assert.equal(edited.title, "Edited")
     assert.equal(edited.addedAt, first.addedAt)
@@ -183,4 +187,18 @@ test("cursor endpoint retrieves more than 200 with stable ID ties and preserves 
     const legacy = await request({})
     assert.equal(legacy.body.pagination, undefined)
     assert.equal(legacy.body.items.length, 200)
+})
+
+test("links submitted without a name are stored with a name derived from the URL; authors are left alone", async () => {
+    const f = fixture()
+    const { createEntry } = f.load("routes/doom_ports/addEntries.ts")
+    const created = await createEntry({
+        id: "named", title: "One", previewImg: "", status: "pending",
+        authors: [{ name: "", url: "https://reddit.com/u/someone" }],
+        sourcesUrl: [{ url: "https://youtu.be/abc" }, { name: "Custom", url: "https://youtu.be/def" }],
+        sourceCodeUrl: [{ url: "https://github.com/aal80/agentcore-doom" }],
+    }, null)
+    assert.deepEqual(created.entry.sourcesUrl.map(s => s.name), ["YouTube", "Custom"])
+    assert.equal(created.entry.sourceCodeUrl[0].name, "aal80/agentcore-doom")
+    assert.equal(created.entry.authors[0].name, "")
 })

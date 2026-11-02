@@ -1,4 +1,3 @@
-import { useState } from "react"
 import camelCase from "lodash/camelCase"
 
 
@@ -12,6 +11,7 @@ interface IInputWithLabelProps {
     onChange?: (e) => void
     onClick?: (e) => void
     className?: string
+    error?: string
 }
 
 
@@ -25,34 +25,33 @@ export function InputWithLabel({
     onChange = null,
     onClick = null,
     className="",
+    error = "",
 }: IInputWithLabelProps) {
-    const id = `entry_row: ${title}`
-    const [inputValue, setInputValue] = useState(value)
-
-    function onInputChange(event) {
-        setInputValue(event.value)
-        onChange?.(event)
-    }
+    const id = `entry-${camelCase(title)}`
+    // A trailing "*" in the title marks a required field; it is styled apart from the label text.
+    const isRequired = /\s*\*$/.test(title)
+    const label = title.replace(/\s*\*$/, "")
 
     return (
         <div className={`${className}`}>
-            <label 
-                className="block mb-1"
-                htmlFor={id}
-            >
-                {title}
+            <label className="entry-form__label" htmlFor={id}>
+                {label}
+                {isRequired && <span className="entry-form__required" aria-hidden="true"> *</span>}
             </label>
             <input 
                 required={required}
                 id={id}
                 type={type}
                 name={name || camelCase(title)} 
-                value={inputValue} 
-                onChange={onInputChange} 
+                value={value ?? ""} 
+                onChange={onChange} 
                 onClick={onClick}
                 placeholder={placeholder}
                 className="w-full" 
+                aria-invalid={!!error}
+                aria-describedby={error ? `${id}-error` : undefined}
             />
+            {error && <p id={`${id}-error`} role="alert" className="entry-form__error">{error}</p>}
         </div>
     )
 } // EntryRow

@@ -1,23 +1,9 @@
-import { 
-    Timestamp,
-    query, 
-    where, 
-    getDocs,
-    addDoc,
-    updateDoc,
-    doc,
-    orderBy,
-    documentId,
-    limit as fbLimit,
-    arrayUnion,
-    runTransaction,
-    startAfter,
-} from "firebase/firestore"
+import { Timestamp, FieldValue, FieldPath } from "firebase-admin/firestore"
 import { 
     authorsCollection,
     doomPortsCollection,
     doomPortsIncomingCollection,
-    COLLECTION_NAME,
+    tagsCollection,
     fbDb,
     fbStorage,
 } from "./firebaseApp"
@@ -26,24 +12,8 @@ import { IAuthorDocument, IArchiveItem, EItemStatus, } from "../@types"
 
 
 export async function getAllEntries() {
-    return await getDocs(query(doomPortsCollection, fbLimit(200)))
+    return await doomPortsCollection.limit(200).get()
 } // getAllEntries
-
-
-// export async function getEntriesForReview({
-//     limit = 200,
-//     ids = []
-// } = {}) {
-//     const conditions: any[] = [ fbLimit(limit) ]
-//     if (ids?.length > 0) {
-//         conditions.push(where(documentId(), "in", ids))
-//     }
-//     const q = query(
-//         doomPortsIncomingCollection,
-//         ...conditions
-//     )
-//     return await getDocs(q)
-// }
 
 
 /* Get entries with a status == "published" to be displayed to users. 
@@ -54,45 +24,49 @@ export async function getEntriesByStatus({
     limit = 200,
     ids = []
 } = {}) {
-    const conditions = [
-        where("status", "==", status),
-        orderBy("updatedAt", "desc"),
-        fbLimit(limit)  
-    ]
-    
-    if (ids?.length > 0) {
-        conditions.push(where(documentId(), "in", ids))
-    }
-
     const collection = status !== EItemStatus.pending 
         ? doomPortsCollection : doomPortsIncomingCollection
-    const q = query(
-        collection,
-        ...conditions
-    )
+    let q = collection.where("status", "==", status).orderBy("updatedAt", "desc")
 
-    return await getDocs(q)
+    if (ids?.length > 0) {
+        q = q.where(FieldPath.documentId(), "in", ids)
+    }
+
+    return await q.limit(limit).get()
 } // getEntriesByStatus
 
 
 export async function getAuthorsByName(name: string) { 
-    return await getDocs(query(
-        authorsCollection, 
-        where("name_lowerCase", "==", name.toLocaleLowerCase())
-    ))
+    return await authorsCollection
+        .where("name_lowerCase", "==", name.toLocaleLowerCase())
+        .get()
 } // getAuthorsByName
 
 
 export async function getAllAuthors() {
-    return await getDocs(
-        query(authorsCollection)
-    )
+    return await authorsCollection.get()
 } // getTags
 
 
+export async function getAllTags() {
+    return await tagsCollection.get()
+} // getAllTags
+
+
+const KNOWN_TAGS_TTL_MS = 60 * 1000
+let knownTags: { ids: Set<string>, loadedAt: number } | null = null
+
+/** Ids of the curated tags, cached briefly so submissions don't re-read the collection each time. */
+export async function getKnownTagIds(): Promise<Set<string>> {
+    if (knownTags && Date.now() - knownTags.loadedAt < KNOWN_TAGS_TTL_MS) return knownTags.ids
+    const snapshot = await getAllTags()
+    knownTags = { ids: new Set(snapshot.docs.map(doc => doc.id)), loadedAt: Date.now() }
+    return knownTags.ids
+} // getKnownTagIds
+
+
 export async function addAuthor(author: IAuthorDocument) {
-    return await addDoc(
-        authorsCollection, 
+    return await authorsCollection.add(
         { 
             isDeleted: false,
             ...author, 
@@ -105,9 +79,7 @@ export async function addAuthor(author: IAuthorDocument) {
 
 
 export async function updateAuthor(id: string, entry: IAuthorDocument) {
-    const docRef = doc(fbDb, COLLECTION_NAME.authors, id)
-    return await updateDoc(
-        docRef, 
+    return await authorsCollection.doc(id).update(
         { 
             ...entry,
             updatedAt: Timestamp.now(), // UTC timezone
@@ -118,22 +90,22 @@ export async function updateAuthor(id: string, entry: IAuthorDocument) {
 
 /** Every public writer reads persisted dates inside the same transaction. */
 export async function addDoomPort(newEntry: IArchiveItem) {
-    const ref = newEntry.id ? doc(doomPortsCollection, newEntry.id) : doc(doomPortsCollection)
-    await runTransaction(fbDb, async transaction => {
+    const ref = newEntry.id ? doomPortsCollection.doc(newEntry.id) : doomPortsCollection.doc()
+    await fbDb.runTransaction(async transaction => {
         const snapshot = await transaction.get(ref)
-        transaction.set(ref, publicationFields(newEntry, snapshot.exists() ? snapshot.data() : null, Timestamp.now()))
+        transaction.set(ref, publicationFields(newEntry, snapshot.exists ? snapshot.data() : null, Timestamp.now()))
     })
     return ref
 }
 
 export async function updateDoomPort(id: string, entry: IArchiveItem) {
-    const ref = doc(doomPortsCollection, id)
-    return runTransaction(fbDb, async transaction => {
+    const ref = doomPortsCollection.doc(id)
+    return fbDb.runTransaction(async transaction => {
         const snapshot = await transaction.get(ref)
-        if (!snapshot.exists()) throw new Error("Entry not found")
+        if (!snapshot.exists) throw new Error("Entry not found")
         const previous = snapshot.data()
         const fields = publicationFields({ ...previous, ...entry }, previous, Timestamp.now())
-        if (entry.editHistory) fields.editHistory = arrayUnion(...entry.editHistory) as any
+        if (entry.editHistory) fields.editHistory = FieldValue.arrayUnion(...entry.editHistory) as any
         transaction.update(ref, fields)
     })
 }
@@ -141,16 +113,15 @@ export async function updateDoomPort(id: string, entry: IArchiveItem) {
 /** Opt-in cursor path includes records missing updatedAt. Document IDs give a
  * stable unique order and startAfter does not require the prior document to exist. */
 export async function getPublishedEntriesPage(pageSize: number, cursor?: string) {
-    return getDocs(query(doomPortsCollection,
-        where("status", "==", EItemStatus.published), orderBy(documentId()),
-        ...(cursor ? [startAfter(cursor)] : []), fbLimit(pageSize + 1)))
+    let q = doomPortsCollection
+        .where("status", "==", EItemStatus.published).orderBy(FieldPath.documentId())
+    if (cursor) q = q.startAfter(cursor)
+    return q.limit(pageSize + 1).get()
 }
 
 
 export async function getAllDoomPorts() {
-    return await getDocs(
-        query(doomPortsCollection)
-    )
+    return await doomPortsCollection.get()
 } // getTags
 
 
