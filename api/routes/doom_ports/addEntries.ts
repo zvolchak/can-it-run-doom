@@ -26,6 +26,7 @@ import { publicationFields } from "../../utils/publication"
 import { enforceSubmissionStatus, sanitizePreviewImg, validateSubmission } from "../../utils/submission"
 import { isModerator } from "../../middleware"
 import { notificationsEnabled } from "../../utils/notifications"
+import { sourceNameFromUrl } from "../../utils/sourceNames"
 
 const secrets = process.env
 
@@ -66,12 +67,16 @@ function getFileType(buffer: string) {
 } // getFileType
 
 
-function sourcesArrayToFirebaseObject(sources: any): ISource[] {
+/* Links may be submitted without a name; those get a readable one derived from the URL.
+ * Authors keep theirs as given: a person's name can't be read off a profile link. */
+function sourcesArrayToFirebaseObject(sources: any, deriveNames = false): ISource[] {
     if (!Array.isArray(sources))
         return []
 
     return sources.map((source) => {
-        return { name: source.name || "", url: source.url || "" }
+        const url = source.url || ""
+        const name = source.name || (deriveNames ? sourceNameFromUrl(url) : "") || ""
+        return { name, url }
     })
 } // sourcesArrayToFirebaseObject
 
@@ -172,8 +177,8 @@ export async function createEntry(
     //     incomingFile = await downloadImgIntoArrayBuffer(incomingEntry.previewImg)
     // }
     incomingEntry.authors = sourcesArrayToFirebaseObject(incomingEntry?.authors)
-    incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl)
-    incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl)
+    incomingEntry.sourcesUrl = sourcesArrayToFirebaseObject(incomingEntry.sourcesUrl, true)
+    incomingEntry.sourceCodeUrl = sourcesArrayToFirebaseObject(incomingEntry.sourceCodeUrl, true)
     if (!incomingEntry.editHistory)
         incomingEntry.editHistory = []
     

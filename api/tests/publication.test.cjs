@@ -188,3 +188,17 @@ test("cursor endpoint retrieves more than 200 with stable ID ties and preserves 
     assert.equal(legacy.body.pagination, undefined)
     assert.equal(legacy.body.items.length, 200)
 })
+
+test("links submitted without a name are stored with a name derived from the URL; authors are left alone", async () => {
+    const f = fixture()
+    const { createEntry } = f.load("routes/doom_ports/addEntries.ts")
+    const created = await createEntry({
+        id: "named", title: "One", previewImg: "", status: "pending",
+        authors: [{ name: "", url: "https://reddit.com/u/someone" }],
+        sourcesUrl: [{ url: "https://youtu.be/abc" }, { name: "Custom", url: "https://youtu.be/def" }],
+        sourceCodeUrl: [{ url: "https://github.com/aal80/agentcore-doom" }],
+    }, null)
+    assert.deepEqual(created.entry.sourcesUrl.map(s => s.name), ["YouTube", "Custom"])
+    assert.equal(created.entry.sourceCodeUrl[0].name, "aal80/agentcore-doom")
+    assert.equal(created.entry.authors[0].name, "")
+})

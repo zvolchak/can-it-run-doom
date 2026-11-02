@@ -323,6 +323,7 @@ export function AddEntryView({
                             <SourcesInputField
                                 ref={sourcesInputRef}
                                 value={formData?.sourcesUrl}
+                                showName={false}
                                 placeholderUrl="Link to a video or images of the port"
                                 addLabel="Add another link"
                                 onChange={
@@ -338,6 +339,8 @@ export function AddEntryView({
                             <SourcesInputField 
                                 ref={sourceCodeInputRef}
                                 value={formData?.sourceCodeUrl}
+                                showName={false}
+                                placeholderUrl="Link to the repository or download"
                                 addLabel="Add another repository"
                                 onChange={
                                     (inputs: ISource[]) => 

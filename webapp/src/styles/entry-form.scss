@@ -40,6 +40,7 @@
 }
 @media (min-width: 640px) {
   .source-inputs__row { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr) auto; }
+  .source-inputs__row--url-only { grid-template-columns: minmax(0, 1fr) auto; }
   .source-inputs__field { grid-column: auto; }
   .source-inputs__remove { grid-column: auto; justify-self: auto; }
 }

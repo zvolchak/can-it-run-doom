@@ -7,6 +7,8 @@ interface ISourcesInputProps {
     value?: ISource[]
     placeholder?: string
     requiredName?: boolean
+    /** Hide the name input: the link alone is entered and the name is derived from its address. */
+    showName?: boolean
     requiredUrl?: boolean
     placeholderName?: string
     placeholderUrl?: string
@@ -20,6 +22,7 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
     { 
         value = [],
         requiredName = false,
+        showName = true,
         requiredUrl = false,
         placeholderName = "Name",
         placeholderUrl = "Url path",
@@ -65,15 +68,15 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
 
     useImperativeHandle(ref, () => ({
         getAllInputs: (): ISource[] =>
-            inputs.filter(item => item.name !== "" && item.url !== "")
+            inputs.filter(item => item.url !== "" && (!showName || item.name !== ""))
     }))
 
 
     return (
         <div className="source-inputs">
             {inputs.map((item, index) => (
-                <div key={index} className="source-inputs__row">
-                    <div className="source-inputs__field">
+                <div key={index} className={`source-inputs__row ${showName ? "" : "source-inputs__row--url-only"}`}>
+                    {showName && <div className="source-inputs__field">
                         <label className="entry-form__label entry-form__label--sub">Name{requiredName && <span className="entry-form__required" aria-hidden="true"> *</span>}</label>
                         <input
                             type="text"
@@ -83,7 +86,7 @@ export const SourcesInputField = forwardRef(function SourcesInputField(
                             placeholder={placeholderName}
                             className="w-full p-2"
                         />
-                    </div>
+                    </div>}
     
                     <div className="source-inputs__field">
                         <label className="entry-form__label entry-form__label--sub">URL{requiredUrl && <span className="entry-form__required" aria-hidden="true"> *</span>}</label>
