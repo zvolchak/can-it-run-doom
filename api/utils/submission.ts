@@ -91,3 +91,11 @@ export function validateTags(value: unknown, knownTagIds: ReadonlySet<string>): 
     const unknown = knownTagIds.size > 0 ? tags.filter(tag => !knownTagIds.has(tag)) : []
     return unknown.length ? [`Unknown tags: ${unknown.join(", ")}`] : []
 }
+
+/** Keeps a preview only when it points at our own uploaded images; anything else is dropped. */
+export function sanitizePreviewImg(value: unknown, bucket: string | undefined): string | null {
+    if (typeof value !== "string" || !bucket) return null
+    const prefix = `/v0/b/${bucket}/o/doom-preview-images%2F`
+    const name = value.slice(prefix.length)
+    return value.startsWith(prefix) && /^[A-Za-z0-9_-]+\.[A-Za-z0-9]+\?alt=media$/.test(name) ? value : null
+}

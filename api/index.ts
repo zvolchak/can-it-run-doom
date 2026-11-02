@@ -60,7 +60,8 @@ app.use((req, res, next) => {
         message: `Request received for "${req.path}"`,
         method: req.method,
         url: req.url,
-        headers: req.headers,
+        // Cookies and auth headers carry session credentials; never log them.
+        headers: { ...req.headers, cookie: undefined, authorization: undefined },
         statusCode: res.statusCode,
     })
     next()

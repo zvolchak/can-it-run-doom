@@ -30,7 +30,7 @@ import {
  } from "../../utils"
 
 import { publicationFields } from "../../utils/publication"
-import { enforceSubmissionStatus, validateSubmission } from "../../utils/submission"
+import { enforceSubmissionStatus, sanitizePreviewImg, validateSubmission } from "../../utils/submission"
 import { isModerator } from "../../middleware"
 
 const secrets = process.env
@@ -181,13 +181,15 @@ export async function createEntry(
     
     const { collection } = getStagingOrProdDb(incomingEntry)
     const entryId = incomingEntry.id || generateFirestoreId()
-    let fileName = incomingFile?.originalname || incomingEntry.previewImg
+    // Never derive the stored name from client input: a client-chosen id or file name
+    // would let a pending submission overwrite a live entry's image.
+    let fileName = incomingEntry.previewImg
     try {
         if (incomingFile?.buffer.length > 0) {
             const imageFileType = getFileType(incomingFile?.buffer)
             if (!imageFileType)
                 throw Error("Only image files are supported!")
-            fileName = `${entryId}.${imageFileType}`
+            fileName = `${generateFirestoreId()}.${imageFileType}`
             fileName = await saveFileToStorage(fileName, incomingFile)
         }
     } catch (error) {
@@ -310,7 +312,6 @@ function parseBusboyRequest(req: Request): Promise<{
 
         // Check if the request has a rawBody (e.g., in cloud functions)
         if ((req as any).rawBody) {
-            console.info("Using rawBody for busboy", (req as any).rawBody)
             busboy.end((req as any).rawBody)
         } else {
             req.pipe(busboy)
@@ -354,6 +355,9 @@ router.post(
             return res.status(400).json({ error: `Please fix: ${problems.join("; ")}`, problems })
 
         const items: IArchiveItem[] = enforceSubmissionStatus(await buildArchiveItem(rawItems as any, req.user), canPublish)
+        // Anonymous submitters may only reference images already in our own storage.
+        if (!canPublish)
+            items.forEach(item => { item.previewImg = sanitizePreviewImg(item.previewImg, secrets.FB_STORAGE_BUCKET) })
         const user = req.user
 
         if (!items || items.length === 0) 

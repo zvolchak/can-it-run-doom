@@ -21,7 +21,7 @@ function load(path) {
     new Function("require", "exports", "console", code)(localRequire, exports, console)
     return exports
 }
-const { validateSubmission, enforceSubmissionStatus, validateTags, isHttpUrl } = load("utils/submission.ts")
+const { validateSubmission, enforceSubmissionStatus, validateTags, isHttpUrl, sanitizePreviewImg } = load("utils/submission.ts")
 
 const known = new Set(["raspberry-pi", "linux", "camera"])
 const valid = () => ({
@@ -69,4 +69,13 @@ test("only moderators keep a requested status", () => {
     const requested = () => [{ status: "published" }, { status: undefined }]
     assert.deepEqual(enforceSubmissionStatus(requested(), false).map(i => i.status), ["pending", "pending"])
     assert.deepEqual(enforceSubmissionStatus(requested(), true).map(i => i.status), ["published", undefined])
+})
+
+test("preview images are limited to our own uploaded files", () => {
+    const own = "/v0/b/bkt/o/doom-preview-images%2Fabc123.png?alt=media"
+    assert.equal(sanitizePreviewImg(own, "bkt"), own)
+    for (const bad of ["https://tracker.example/p.gif", "//evil.example/x", "/v0/b/other/o/doom-preview-images%2Fa.png?alt=media",
+        "/v0/b/bkt/o/doom-preview-images%2F..%2Fa.png?alt=media", undefined, 5])
+        assert.equal(sanitizePreviewImg(bad, "bkt"), null)
+    assert.equal(sanitizePreviewImg(own, undefined), null)
 })
