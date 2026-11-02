@@ -2,6 +2,7 @@ import { useId } from "react"
 import { FiArrowUpRight, FiCheckCircle, FiCode, FiExternalLink } from "react-icons/fi"
 import type { IArchiveItem } from "@/src/types"
 import { ProjectPreview } from "./ProjectPreview"
+import { ShareButton } from "./ShareButton"
 import {
     projectAuthors, projectDate, projectSources, projectTags, projectText,
     type ProjectSource,
@@ -59,7 +60,10 @@ export function ProjectDetails({ item, headingId, className = "" }: ProjectDetai
     return (
         <article className={`project-details ${className}`} aria-labelledby={titleId}>
             <header className="project-details__header">
-                {date && <time className="project-details__date" dateTime={date.dateTime}>{date.label}</time>}
+                <div className="project-details__meta">
+                    {date ? <time className="project-details__date" dateTime={date.dateTime}>{date.label}</time> : <span />}
+                    <ShareButton item={item} compact />
+                </div>
                 <h2 id={titleId} className="project-details__title">{title}</h2>
                 {authors.length > 0 && (
                     <div className="project-details__authors">

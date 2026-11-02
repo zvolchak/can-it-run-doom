@@ -65,6 +65,9 @@ export function ArchivePage({ items, totalSize, referenceTime }: ArchivePageProp
                 {description && <meta property="og:description" content={description} key="og:description" />}
                 {description && <meta name="twitter:description" content={description} key="twitter:description" />}
                 {item?.previewImg && <meta property="og:image" content={item.previewImg} key="og:image" />}
+                <meta name="twitter:card" content={item?.previewImg ? "summary_large_image" : "summary"} key="twitter:card" />
+                <meta name="twitter:title" content={title} key="twitter:title" />
+                {item?.previewImg && <meta name="twitter:image" content={item.previewImg} key="twitter:image" />}
             </Head>
             {standalone ? (
                 <main className="project-standalone">

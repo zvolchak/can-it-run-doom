@@ -306,6 +306,13 @@
     overflow: hidden;
   }
 
+  &__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
   &__action {
     flex-shrink: 0;
     color: var(--color-accent);
@@ -343,12 +350,15 @@
       align-items: flex-start;
     }
 
+    &__actions {
+      margin-top: 0.75rem;
+    }
+
     &__action {
       display: inline-flex;
       align-items: center;
       gap: 0.375rem;
       min-height: 44px;
-      margin-top: 0.75rem;
     }
   }
 }
@@ -515,4 +525,85 @@
   text-underline-offset: 3px;
 
   &:hover { color: var(--color-accent-hover); }
+}
+
+.share-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &__menu {
+    position: fixed;
+    z-index: 1000;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: min(18rem, calc(100vw - 1rem));
+    overflow-y: auto;
+    margin: 0;
+    padding: 0.25rem;
+    list-style: none;
+    border: 1px solid var(--color-control-border);
+    border-radius: 3px;
+    background: var(--color-surface);
+    box-shadow: 0 4px 16px rgb(0 0 0 / 0.35);
+
+    a, button {
+      display: flex;
+      align-items: center;
+      gap: 0.625rem;
+      width: 100%;
+      min-height: 44px;
+      padding: 0.5rem 0.75rem;
+      border: 0;
+      background: none;
+      color: var(--color-text);
+      font-size: 0.875rem;
+      text-align: left;
+      cursor: pointer;
+
+      &:hover, &:focus-visible {
+        background: var(--color-control-border);
+        color: var(--color-accent);
+        outline: none;
+      }
+    }
+  }
+
+  &__status {
+    color: var(--color-text);
+    font-size: 0.875rem;
+  }
+}
+
+.project-details__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.share-button__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-height: 32px;
+  border: 0;
+  background: none;
+  padding: 0 0.25rem;
+  color: var(--color-accent);
+  font-size: 0.8125rem;
+  cursor: pointer;
+
+  svg { width: 0.875rem; height: 0.875rem; }
+
+  &:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
 }

@@ -3,6 +3,7 @@ import type { IArchiveItem } from "@/src/types"
 import { topProjectTags } from "@/src/utils/archiveTags"
 import { ProjectPreview } from "./ProjectPreview"
 import { ProjectAuthorLink } from "./ProjectAuthorLink"
+import { ShareButton } from "./ShareButton"
 import { projectAuthors, projectDate, projectText } from "./projectPresentation"
 
 import { archiveAdditionDate, isJustAdded } from "@/src/utils/additionDates"
@@ -63,10 +64,13 @@ export function ProjectSummary({
                                 })}
                             </ul>
                         )}
-                        <a className="project-summary__action" href={projectHref}
-                            onClick={onProjectClick} aria-label={`View project: ${title}`}>
-                            View project <span aria-hidden="true">→</span>
-                        </a>
+                        <div className="project-summary__actions">
+                            <ShareButton item={item} compact />
+                            <a className="project-summary__action" href={projectHref}
+                                onClick={onProjectClick} aria-label={`View project: ${title}`}>
+                                View project <span aria-hidden="true">→</span>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
