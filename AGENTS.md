@@ -60,7 +60,7 @@ README.md                    Project introduction
 - `api/` and `webapp/` have separate `package.json` and lock files. Install and
   run dependencies within the relevant package; the root scripts coordinate
   builds and deployment.
-- Both packages declare Node.js 20. Their `npm run dev` scripts use Doppler;
+- Both packages declare Node.js 22. Their `npm run dev` scripts use Doppler;
   local development also depends on the appropriate Firebase configuration.
 - The frontend fetches live archive entries through `webapp/src/api/`; Firestore
   queries live in `api/utils/queries.ts`. Bundled JSON files in `webapp/public/db/`
@@ -70,7 +70,7 @@ README.md                    Project introduction
 
 ## Commands
 
-`api/` and `webapp/` are independent npm packages (Node 20). Run commands from inside the package directory.
+`api/` and `webapp/` are independent npm packages (Node 22). Run commands from inside the package directory.
 
 **API (`api/`)**
 - `npm run dev`: runs `tsx server.ts` under nodemon via `doppler run` (needs Doppler access)
