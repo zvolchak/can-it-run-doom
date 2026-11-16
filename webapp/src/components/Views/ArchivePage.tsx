@@ -55,7 +55,7 @@ export function ArchivePage({ items, totalSize, referenceTime }: ArchivePageProp
     const item = requestedId === null ? null : items.find(item => String(item.id) === requestedId) || null
     const title = item ? `${projectText(item.title) || "Untitled project"} | Can It Run Doom?`
         : requestedId !== null ? "Project not found | Can It Run Doom?" : "Can It Run Doom? An Archive of All Known Ports."
-    const description = projectText(item?.description).slice(0, 150)
+    const description = projectText(item?.description).slice(0, 150) || SITE_DESCRIPTION
     const canonical = canonicalUrl(standalone && item ? String(item.id) : null)
     const jsonLd = standalone && item ? [entryJsonLd(item)]
         : requestedId === null && !filtered ? archiveJsonLd(items, SITE_DESCRIPTION) : []
