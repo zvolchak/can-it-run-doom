@@ -19,6 +19,8 @@ import {
 import { IUserAuth } from "../types"
 import { archiveFilters } from "../utils/projectNavigation"
 import { IsSessionExpired } from "../utils"
+import { PRIVATE_PATHS } from "../utils/seo"
+import { NoIndex } from "../components/NoIndex"
 
 
 function UserSessionInit() {
@@ -78,6 +80,7 @@ function App({ Component, pageProps }) {
 
     return (
         <Provider store={store.current}>
+            {PRIVATE_PATHS.some(path => router.pathname === path || router.pathname.startsWith(`${path}/`)) && <NoIndex />}
             <UserSessionInit />
             <PageViewAnalytics />
             <Navbar />

@@ -19,6 +19,9 @@ import { BtnScrollPage } from "../Buttons/BtnScrollPage"
 import { useAdditionClock } from "./useAdditionClock"
 import { recentAdditions } from "@/src/utils/additionDates"
 import { activeArchiveFilters } from "@/src/utils/archiveResults"
+import { archiveJsonLd, canonicalUrl, entryJsonLd, jsonLdString } from "@/src/utils/seo"
+
+const SITE_DESCRIPTION = "Explore an archive of Doom ports showcasing how the game has been adapted to run on various devices, even those not originally intended for gaming."
 
 export interface ArchivePageProps {
     items: IArchiveItem[]
@@ -53,6 +56,9 @@ export function ArchivePage({ items, totalSize, referenceTime }: ArchivePageProp
     const title = item ? `${projectText(item.title) || "Untitled project"} | Can It Run Doom?`
         : requestedId !== null ? "Project not found | Can It Run Doom?" : "Can It Run Doom? An Archive of All Known Ports."
     const description = projectText(item?.description).slice(0, 150)
+    const canonical = canonicalUrl(standalone && item ? String(item.id) : null)
+    const jsonLd = standalone && item ? [entryJsonLd(item)]
+        : requestedId === null && !filtered ? archiveJsonLd(items, SITE_DESCRIPTION) : []
     const browseQuery = withoutProject(router.query)
     delete browseQuery.id
 
@@ -60,6 +66,12 @@ export function ArchivePage({ items, totalSize, referenceTime }: ArchivePageProp
         <ProjectNavigation items={items}>
             <Head>
                 <title>{title}</title>
+                <link rel="canonical" href={canonical} key="canonical" />
+                {standalone && !item && <meta name="robots" content="noindex" key="robots" />}
+                {jsonLd.map((entry, index) => (
+                    <script key={`ld-${index}`} type="application/ld+json"
+                        dangerouslySetInnerHTML={{ __html: jsonLdString(entry) }} />
+                ))}
                 <meta property="og:title" content={title} key="og:title" />
                 {description && <meta name="description" content={description} key="description" />}
                 {description && <meta property="og:description" content={description} key="og:description" />}

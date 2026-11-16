@@ -1,9 +1,9 @@
-# *
 User-agent: *
 Allow: /
+Disallow: /login
+Disallow: /signup
+Disallow: /account
+Disallow: /entries/add
+Disallow: /entries/review
 
-# Host
-Host: https://canitrundoom.org
-
-# Sitemaps
 Sitemap: https://canitrundoom.org/sitemap.xml
