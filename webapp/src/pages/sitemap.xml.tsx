@@ -5,8 +5,8 @@ import { buildSitemap } from "@/src/utils/seo"
 /** Rendered from the live published archive so new entries appear without a rebuild. */
 export const getServerSideProps: GetServerSideProps = async ({ res }) => {
     const items = await fetchDoomPorts()
-    if (!items) {
-        // Never serve a sitemap that silently drops every entry.
+    if (!items?.length) {
+        // A failed or empty fetch must not be cached as a sitemap with no entries.
         res.statusCode = 503
         res.setHeader("Retry-After", "300")
         res.end()

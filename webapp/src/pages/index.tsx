@@ -9,7 +9,13 @@ export { ArchivePage as default } from "@/src/components/Views/ArchivePage"
 export const getServerSideProps: GetServerSideProps = async context => {
     // Do not serve server-rendered badges across their exact expiry boundaries.
     context.res.setHeader("Cache-Control", "no-store")
-    const items = await fetchDoomPorts() || []
+    const fetched = await fetchDoomPorts()
+    // A failed fetch must not look like an empty archive or a missing project to crawlers.
+    if (!fetched) {
+        context.res.statusCode = 503
+        context.res.setHeader("Retry-After", "300")
+    }
+    const items = fetched || []
     const storageBaseUrl = process.env.NEXT_PUBLIC_STORAGE_BASE_URL?.replace(/\/$/, "")
     const normalized = items.map((item: IArchiveItem) => ({
         ...item,
