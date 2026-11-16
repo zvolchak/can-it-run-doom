@@ -1,3 +1,5 @@
+import { projectPath } from "./projectSlug"
+
 export type ShareResult = "shared" | "copied" | "cancelled" | "failed"
 
 interface ShareNavigator {
@@ -6,8 +8,8 @@ interface ShareNavigator {
 }
 
 /** One canonical link per entry, free of the sharer's filters and pagination. */
-export function projectShareUrl(origin: string, id: string | number): string {
-    return `${origin.replace(/\/+$/, "")}/entries?id=${encodeURIComponent(String(id))}`
+export function projectShareUrl(origin: string, id: string | number, title?: unknown): string {
+    return `${origin.replace(/\/+$/, "")}${projectPath(id, title)}`
 }
 
 /** Native share sheet when available, clipboard otherwise. */

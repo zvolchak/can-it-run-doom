@@ -18,8 +18,7 @@
     "start:dev": "nodemon",
     "lint": "next lint",
     "test:project-navigation": "node --test tests/projectNavigation.test.mjs",
-    "test:archive": "node --test tests/*.test.mjs",
-    "build:sitemap": "next-sitemap"
+    "test:archive": "node --test tests/*.test.mjs"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.5.0",
@@ -46,7 +45,6 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "15.1.4",
-    "next-sitemap": "^4.2.3",
     "nodemon": "^3.1.9",
     "postcss": "^8",
     "sass": "^1.83.4",

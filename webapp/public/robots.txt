@@ -1,9 +1,21 @@
-# *
 User-agent: *
 Allow: /
+Disallow: /login
+Disallow: /signup
+Disallow: /account
+Disallow: /entries/add
+Disallow: /entries/review
 
-# Host
-Host: https://canitrundoom.org
+# AI training crawlers. Search and answer-retrieval bots (Googlebot, Bingbot,
+# OAI-SearchBot, ChatGPT-User, PerplexityBot, Claude-SearchBot) stay allowed above.
+User-agent: GPTBot
+User-agent: ClaudeBot
+User-agent: anthropic-ai
+User-agent: CCBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Meta-ExternalAgent
+User-agent: Bytespider
+Disallow: /
 
-# Sitemaps
 Sitemap: https://canitrundoom.org/sitemap.xml

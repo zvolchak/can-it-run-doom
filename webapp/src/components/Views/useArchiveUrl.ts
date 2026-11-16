@@ -13,7 +13,8 @@ export function useArchiveUrl() {
     const currentRouter = useRef(router)
     currentRouter.current = router
     useEffect(() => {
-        if (!router.isReady) return
+        // Other pages (tag pages, `/entries/[slug]`) get their filters from the server.
+        if (!router.isReady || !["/", "/entries"].includes(router.pathname)) return
         return coordinateArchiveUrl(store, () => currentRouter.current, window)
         // Shallow transitions change router snapshots; callbacks read the current ref.
     }, [router.isReady, router.pathname, store])
