@@ -85,7 +85,7 @@ export function ShareButton({ item, className = "", compact = false }: ShareButt
         }
     }, [open])
 
-    const url = () => projectShareUrl(window.location.origin, item.id)
+    const url = () => projectShareUrl(window.location.origin, item.id, item.title)
 
     function announce(message: string) {
         clearTimeout(timer.current)

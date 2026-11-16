@@ -27,7 +27,8 @@ export function Footer({ className = "", }: IFooterProps) {
                 </div>
 
                 {/* Right Section */}
-                <div className="mt-4 md:mt-0 flex space-x-4">
+                <div className="mt-4 md:mt-0 flex items-center space-x-4">
+                    <a href="/why-doom-runs-on-everything">Why Doom runs on everything</a>
                     <a
                         href={sourceUrl}
                         target="_blank"

@@ -14,7 +14,7 @@ import { Pagination } from "../Pagination"
 import { FiltersMenu } from "../Menus/FiltersMenu"
 import { useProjectLink } from "../Containers/ProjectNavigation"
 
-export function ArchiveDataView({ items, now }: { items: IArchiveItem[], now: number }) {
+export function ArchiveDataView({ items, now, heading = "Explore the archive" }: { items: IArchiveItem[], now: number, heading?: string }) {
     const dispatch = useDispatch()
     const projectLink = useProjectLink()
     const filters = useSelector((state: RootState) => state.appliedFilters)
@@ -59,7 +59,7 @@ export function ArchiveDataView({ items, now }: { items: IArchiveItem[], now: nu
             <FiltersMenu items={items} />
             <div className="archive-browser__results">
             <header className="archive-browser__header">
-                <h1 id="archive-heading">Explore the archive</h1>
+                <h1 id="archive-heading">{heading}</h1>
             </header>
             <div className="archive-browser__toolbar">
                 <p id="archive-result-count" className="archive-browser__count" role="status" aria-live="polite">

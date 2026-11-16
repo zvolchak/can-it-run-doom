@@ -2,13 +2,14 @@ import assert from "node:assert/strict"
 import { after, test } from "node:test"
 import { compileModules } from "./compileModules.mjs"
 
-const compiled = compileModules(["src/utils/shareProject.ts"])
+const compiled = compileModules(["src/utils/shareProject.ts", "src/utils/projectSlug.ts"])
 const { projectShareUrl, shareProject } = compiled.load("src/utils/shareProject.ts")
 after(() => compiled.dispose())
 
 test("share URL is canonical regardless of origin slashes or id type", () => {
-    assert.equal(projectShareUrl("https://canitrundoom.org/", 1043), "https://canitrundoom.org/entries?id=1043")
-    assert.equal(projectShareUrl("http://localhost:3000", "a b"), "http://localhost:3000/entries?id=a%20b")
+    assert.equal(projectShareUrl("https://canitrundoom.org/", 1043), "https://canitrundoom.org/entries/1043")
+    assert.equal(projectShareUrl("https://canitrundoom.org/", 1043, "Doom in a PDF"), "https://canitrundoom.org/entries/doom-in-a-pdf-1043")
+    assert.equal(projectShareUrl("http://localhost:3000", "a b"), "http://localhost:3000/entries/a%20b")
 })
 
 test("native share wins, cancel is silent, other failures fall back to the clipboard", async () => {
